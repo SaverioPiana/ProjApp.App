@@ -4,12 +4,16 @@ public partial class MainPage : ContentPage
 {
 	int count = 0;
 
-	public MainPage()
-	{
-		InitializeComponent();
-	}
+    public MainPage()
+    {
+        InitializeComponent();
 
-	private void OnCounterClicked(object sender, EventArgs e)
+        var mapControl = new Mapsui.UI.Maui.MapControl();
+        mapControl.Map?.Layers.Add(Mapsui.Tiling.OpenStreetMap.CreateTileLayer());
+        Content = mapControl;
+    }
+
+    private void OnCounterClicked(object sender, EventArgs e)
 	{
 		count++;
 
