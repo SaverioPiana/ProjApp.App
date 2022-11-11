@@ -1,3 +1,4 @@
 # ProjApp
 
-PROGETTO IN XAMARIN
+PROGETTO IN MAUI
+problema con posizione gps -> capire come funge
