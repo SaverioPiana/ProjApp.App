@@ -14,14 +14,14 @@ namespace ProjApp.Map
     {
         public static TileLayer CreateTileLayer()
         {
-            return new TileLayer(CreateTileSource()) { Name = "OpenStreetMap" };
+            return new TileLayer(CreateTileSource()) { Name = "CartoDB.Voyager" };
         }
 
         private static HttpTileSource CreateTileSource()
         {
-            return new HttpTileSource(new GlobalSphericalMercator(),
+            return new HttpTileSource(new GlobalSphericalMercator(minZoomLevel: 10, maxZoomLevel: 20, name: null ),
                 "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
-                new[] { "a", "b", "c", "d" }, name: "OpenStreetMap");
+                new[] { "a", "b", "c", "d" }, name: "CartoDB.Voyager") ;
         }
     }
 }
