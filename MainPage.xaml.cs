@@ -35,7 +35,7 @@ public  partial class MainPage : ContentPage
             return null;
         }
     }
-    public MPoint MapHomeToCurrentLocation(Mapsui.Map map)
+    public Location MapHomeToCurrentLocation(Mapsui.Map map)
     {
         const double STARTING_RES = 0.1;
         Location posizione = null;
@@ -57,12 +57,12 @@ public  partial class MainPage : ContentPage
         MPoint punto = SphericalMercator.FromLonLat(mpointPosizione);
         map.Home = n => n.NavigateTo(center: punto,
                                      resolution: STARTING_RES);
-        return punto;
+        return posizione;
     }
 
 
 
-    public MemoryLayer CreaPuntoGps(Mapsui.Map map , MPoint posizione)
+    public MemoryLayer CreaPunto(Mapsui.Map map , MPoint posizione)
     {
        
         var pointFeature = new PointFeature(posizione.X, posizione.Y);
@@ -92,8 +92,11 @@ public  partial class MainPage : ContentPage
         var mapControl = new Mapsui.UI.Maui.MapControl();
         mapControl.Map?.Layers.Add(CartoDBVoyagerTileProviderClass.CreateTileLayer());
         var map = mapControl.Map;
-        MapHomeToCurrentLocation(map); 
-        Content = mapControl;
+        Location position = MapHomeToCurrentLocation(map);
+        MapView mapView = new();
+        mapView.Map = map;
+        mapView.MyLocationLayer.UpdateMyLocation(new Position(position.Latitude, position.Longitude), true);
+        Content = mapView;
     }
 }
 
