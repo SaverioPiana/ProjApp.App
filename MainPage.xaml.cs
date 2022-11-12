@@ -96,6 +96,8 @@ public  partial class MainPage : ContentPage
         MapView mapView = new();
         mapView.Map = map;
         mapView.MyLocationLayer.UpdateMyLocation(new Position(position.Latitude, position.Longitude), true);
+        mapView.IsZoomButtonVisible = false;
+        mapView.IsMyLocationButtonVisible = false;
         Content = mapView;
     }
 }
