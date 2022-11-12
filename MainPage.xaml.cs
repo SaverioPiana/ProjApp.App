@@ -1,72 +1,99 @@
 ﻿
+using Android.OS;
 using Mapsui;
 using Mapsui.Extensions;
+using Mapsui.Layers;
 using Mapsui.Projections;
-
+using Mapsui.UI.Maui;
 using ProjApp.Map;
+using System.Collections.ObjectModel;
 
 namespace ProjApp;
 
-public partial class MainPage : ContentPage
+public  partial class MainPage : ContentPage
 {
-    public Location posizione = null;
 
-    private CancellationTokenSource _cancelTokenSource;
-    private bool _isCheckingLocation;
-
-    public async Task GetCurrentLocation()
+    public async Task<Location> Get_Location()
     {
         try
         {
-            _isCheckingLocation = true;
+             var location = await Geolocation.GetLastKnownLocationAsync();
+            if(location == null)
+            {
+                 location = await Geolocation.GetLocationAsync(new GeolocationRequest
+                {
+                    DesiredAccuracy = GeolocationAccuracy.Best,
+                    Timeout = TimeSpan.FromSeconds(20)
+                }) ;
+            }
+            return location;
 
-            GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
-
-            _cancelTokenSource = new CancellationTokenSource();
-
-            Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
-
-            if (location != null)
-                Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
         }
-        // Catch one of the following exceptions:
-        //   FeatureNotSupportedException
-        //   FeatureNotEnabledException
-        //   PermissionException
         catch (Exception ex)
         {
-            // Unable to get location
+            Console.WriteLine($"Error: {ex.Message}" );
+            return null;
         }
-        finally
+    }
+    public MPoint MapHomeToCurrentLocation(Mapsui.Map map)
+    {
+        const double STARTING_RES = 0.1;
+,
+        Location posizione = null;
+        MPoint mpointPosizione = new Mapsui.MPoint(0, 0);
+
+        try
         {
-            _isCheckingLocation = false;
+            posizione = Get_Location().Result;
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Errore nel mainPage: {ex.Message}");
+        }
+        if (posizione != null)
+        {
+            mpointPosizione.X = posizione.Longitude;
+            mpointPosizione.Y = posizione.Latitude;
+        }
+        MPoint punto = SphericalMercator.FromLonLat(mpointPosizione);
+        map.Home = n => n.NavigateTo(center: punto,
+                                     resolution: STARTING_RES);
+        return punto;
     }
 
-    public void CancelRequest()
+
+
+    public MemoryLayer CreaPuntoGps(Mapsui.Map map , MPoint posizione)
     {
-        if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
-            _cancelTokenSource.Cancel();
+       
+        var pointFeature = new PointFeature(posizione.X, posizione.Y);
+        pointFeature["name"] = "currentLocation";
+        Collection<IEnumerable<IFeature>> features = new();
+        features.Add((IEnumerable<IFeature>)pointFeature);
+
+
+
+        return new MemoryLayer
+        {
+            Name = "punti",
+            IsMapInfoLayer = true,
+            Features = (IEnumerable<IFeature>)features
+        };
+
     }
+
+
 
 
 
     public MainPage()
     {
-        const double STARTING_RES = 0.1;
-
-        
         InitializeComponent();
 
         var mapControl = new Mapsui.UI.Maui.MapControl();
         mapControl.Map?.Layers.Add(CartoDBVoyagerTileProviderClass.CreateTileLayer());
         var map = mapControl.Map;
-       
-        GetCurrentLocation();
-        
-        var centerOfMadonnetta =  new Mapsui.MPoint(posizione.Longitude, posizione.Latitude);
-        var sugo = SphericalMercator.FromLonLat(centerOfMadonnetta);
-        map.Home = n => n.NavigateTo(center: sugo, resolution: STARTING_RES );
+        MapHomeToCurrentLocation(map); 
         Content = mapControl;
     }
 }
