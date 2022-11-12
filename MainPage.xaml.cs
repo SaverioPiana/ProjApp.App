@@ -38,7 +38,6 @@ public  partial class MainPage : ContentPage
     public MPoint MapHomeToCurrentLocation(Mapsui.Map map)
     {
         const double STARTING_RES = 0.1;
-,
         Location posizione = null;
         MPoint mpointPosizione = new Mapsui.MPoint(0, 0);
 
