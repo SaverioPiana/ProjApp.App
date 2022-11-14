@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using BruTile.Predefined;
@@ -11,9 +12,10 @@ using Mapsui.Projections;
 using Mapsui.Styles;
 using Mapsui.Tiling.Layers;
 using Mapsui.UI.Maui;
+using Mapsui.UI.Maui.Extensions;
 using ProjApp.Map.GPS;
+using static Google.Android.Material.Tabs.TabLayout;
 
-using Color = Mapsui.Styles.Color;
 
 namespace ProjApp.Map
 {
@@ -47,42 +49,64 @@ namespace ProjApp.Map
                                         resolution: STARTING_RES);
             mapView.IsZoomButtonVisible = false;
             mapView.IsMyLocationButtonVisible = true;
-            mapView.Map.Layers.Add(creaLayerPins());
+
+
+
+            //mapView.Map.Layers.Add(creaLayerPins());
+
+
+            AddPin(mapView, new Position(41.746168, 12.340037), "Casetta");
+            
+
             return mapView;
 
         }
 
-
-
-
-        public static MemoryLayer creaLayerPins()
+        public static void AddPin(MapView mapView, Position pos, String label)
         {
-            return new MemoryLayer {
-                Name = "Points",
-                IsMapInfoLayer = true,
-                Features = creaPins(),
-                Style = CreaStile()
-            }; 
-            
-        }
-        
-        public static IEnumerable<IFeature> creaPins()
-        {
-            var listaPins = new List<MPoint>();
-            listaPins.Add(SphericalMercator.FromLonLat(new MPoint(41.7509, 12.33964)));
-
-            return listaPins.Select(p =>
+            mapView.Pins.Add(new Pin(mapView)
             {
-                var feature = new PointFeature(p);
-                feature["Name"] = "Tana";
-                feature.Styles.Add(CreaStile());
-                return feature;
-            });
+                Label = label,
+                Position = pos,
+                Type = PinType.Pin,
+                Color = Colors.Aqua,
+                Scale = 0.35F,
+            }) ;
+        }
+        // NON FUNGE -> DA VEDERE
 
-        }
-        private static IStyle CreaStile()
-        {
-            return new SymbolStyle { SymbolScale = 0.2, Fill = new Mapsui.Styles.Brush(new Color(40, 40, 40)) };
-        }
+        //public static MemoryLayer creaLayerPins()
+        //{
+        //    return new MemoryLayer {
+        //        Name = "Points",
+        //        IsMapInfoLayer = true,
+        //        Features = creaPins(),
+        //        Style = CreaStile()
+        //    }; 
+            
+        //}
+        
+        //public static IEnumerable<IFeature> creaPins()
+        //{
+        //    var listaPins = new List<MPoint>();
+        //    listaPins.Add(SphericalMercator.FromLonLat(new MPoint(41.7509, 12.33964)));
+
+        //    return listaPins.Select(p =>
+        //    {
+        //        var feature = new PointFeature(p);
+        //        feature["Name"] = "Tana";
+        //        return feature;
+        //    });
+
+        //}
+        //private static SymbolStyle CreaStile()
+        //{
+        //    var assembly = typeof(OurMapController).Assembly;
+        //    var image = assembly.GetManifestResourceStream("ProjApp.Resources.Images.pin_icon.png");
+        //    var ID = BitmapRegistry.Instance.Register(image);
+
+
+        //    return new SymbolStyle{ BitmapId = ID, SymbolScale = 0.50, SymbolOffset = new Offset(0, 32 * 0.5) };
+        //}
     }
 }
