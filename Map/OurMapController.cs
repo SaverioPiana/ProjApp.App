@@ -15,7 +15,7 @@ using Mapsui.UI.Maui;
 using Mapsui.UI.Maui.Extensions;
 using ProjApp.Map.GPS;
 using static Google.Android.Material.Tabs.TabLayout;
-
+using Color = Microsoft.Maui.Graphics.Color;
 
 namespace ProjApp.Map
 {
@@ -55,21 +55,23 @@ namespace ProjApp.Map
             //mapView.Map.Layers.Add(creaLayerPins());
 
 
-            AddPin(mapView, new Position(41.746168, 12.340037), "Casetta");
-            
+            AddPin(mapView, new Position(41.746168, 12.340037), "Casetta", Colors.Aqua);
+            AddPin(mapView, new Position(41.767523, 12.359897), "Carlium", Colors.Red);
+            AddPin(mapView, new Position(41.757395, 12.353765), "Nardium", Colors.Orange);
+
 
             return mapView;
 
         }
 
-        public static void AddPin(MapView mapView, Position pos, String label)
+        public static void AddPin(MapView mapView, Position pos, String label, Color c)
         {
             mapView.Pins.Add(new Pin(mapView)
             {
                 Label = label,
                 Position = pos,
                 Type = PinType.Pin,
-                Color = Colors.Aqua,
+                Color = c,
                 Scale = 0.35F,
             }) ;
         }
