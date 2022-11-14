@@ -19,6 +19,7 @@ namespace ProjApp.Map
 
         private static HttpTileSource CreateTileSource()
         {
+            //nel link z rappresenta il livello di zoom, x e y le coordinate, l'ultimo campo la risoluzione delle tiles
             return new HttpTileSource(new GlobalSphericalMercator(minZoomLevel: 10, maxZoomLevel: 20, name: null ),
                 "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{@2x}.png",
                 new[] { "a", "b", "c", "d" }, name: "CartoDB.Voyager") ;
