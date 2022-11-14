@@ -20,7 +20,7 @@ namespace ProjApp.Map
         private static HttpTileSource CreateTileSource()
         {
             return new HttpTileSource(new GlobalSphericalMercator(minZoomLevel: 10, maxZoomLevel: 20, name: null ),
-                "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+                "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{@2x}.png",
                 new[] { "a", "b", "c", "d" }, name: "CartoDB.Voyager") ;
         }
     }
