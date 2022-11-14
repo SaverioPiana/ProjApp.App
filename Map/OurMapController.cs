@@ -8,9 +8,12 @@ using BruTile.Web;
 using Mapsui;
 using Mapsui.Layers;
 using Mapsui.Projections;
+using Mapsui.Styles;
 using Mapsui.Tiling.Layers;
 using Mapsui.UI.Maui;
 using ProjApp.Map.GPS;
+
+using Color = Mapsui.Styles.Color;
 
 namespace ProjApp.Map
 {
@@ -38,13 +41,48 @@ namespace ProjApp.Map
 
             Position startingPos = new MyPosition().position;
             mapView.MyLocationLayer.UpdateMyLocation(startingPos, true);
-            mapView.Map.Home = n => n.NavigateTo(center: 
+            mapView.Map.Home = n => n.NavigateTo(center:
                                         SphericalMercator.FromLonLat(new MPoint(
                                         startingPos.Longitude, startingPos.Latitude)),
                                         resolution: STARTING_RES);
             mapView.IsZoomButtonVisible = false;
             mapView.IsMyLocationButtonVisible = true;
+            mapView.Map.Layers.Add(creaLayerPins());
             return mapView;
+
+        }
+
+
+
+
+        public static MemoryLayer creaLayerPins()
+        {
+            return new MemoryLayer {
+                Name = "Points",
+                IsMapInfoLayer = true,
+                Features = creaPins(),
+                Style = CreaStile()
+            }; 
+            
+        }
+        
+        public static IEnumerable<IFeature> creaPins()
+        {
+            var listaPins = new List<MPoint>();
+            listaPins.Add(SphericalMercator.FromLonLat(new MPoint(41.7509, 12.33964)));
+
+            return listaPins.Select(p =>
+            {
+                var feature = new PointFeature(p);
+                feature["Name"] = "Tana";
+                feature.Styles.Add(CreaStile());
+                return feature;
+            });
+
+        }
+        private static IStyle CreaStile()
+        {
+            return new SymbolStyle { SymbolScale = 0.2, Fill = new Mapsui.Styles.Brush(new Color(40, 40, 40)) };
         }
     }
 }
