@@ -85,8 +85,7 @@ namespace ProjApp.Map
 
         }
 
-        //updates the position once or continuously
-        //IF YOU WANT TO DO IT ONCE SET THE update_once = true BEFORE CALLING this task
+        //updates the position once
         public async Task Update_MyPosition_ONCE()
         {   
             await mypos.Get_Position();
@@ -97,6 +96,7 @@ namespace ProjApp.Map
             Console.WriteLine($"Position updated {updateCtr} times (single update)");
         }
 
+        //updates the position finche non casca il mondo
         public async Task Update_MyPosition_ALWAYS()
         {
             //finchè vogliamo la posizione la queriamo, possiamo in qualsiasi momento
@@ -110,6 +110,41 @@ namespace ProjApp.Map
                 Console.WriteLine($"Position updated {updateCtr} times (continuos update)");
             }
         }
+
+        /////////////////////////////////////////////////////////////////////////////////
+        ///ALTRO MODO DI IMPLEMENTARE MA DEVI CHIAMARE DUE VOLTE UPDATE POSITION PERCHE//
+        // UPDATE MAP TO POS VA FATTA MEGLIO/////////////////////////////////////////////
+        /*
+        * 
+        * //IF YOU WANT TO DO IT ONCE SET THE update_once = true BEFORE CALLING this task
+        * 
+        public async Task Update_MyPosition()
+        if(update_once)
+        {
+            await mypos.Get_Position();
+            Position p = MyPosition.position;
+            mapView.MyLocationLayer.UpdateMyLocation(p, true);
+            update_once = false;
+            updateCtr++;
+            Console.WriteLine($"Position updated {updateCtr} times (single update)");
+        }
+        else
+        //updates the position finche non casca il mondo
+        {
+            //finchè vogliamo la posizione la queriamo, possiamo in qualsiasi momento
+            //smettere di chiederla
+            while (want_position)
+            {
+                await mypos.Get_Position();
+                Position p = MyPosition.position;
+                mapView.MyLocationLayer.UpdateMyLocation(p, true);
+                updateCtr++;
+                Console.WriteLine($"Position updated {updateCtr} times (continuos update)");
+            }
+        }
+           
+        */
+
 
         //easier way to add pins
         public static void AddPin(MapView mapView, Position pos, String label, Color c)
