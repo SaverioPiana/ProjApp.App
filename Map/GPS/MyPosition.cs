@@ -18,10 +18,15 @@ namespace ProjApp.Map.GPS
 
         public MyPosition()
         {
-            position = new Position();
+
+            position = new();
                 
         }
-
+        public async Task<Position> returnPosition()
+        {
+            await Get_Position();
+            return position;
+        }
 
         public async Task Get_Position()
         {

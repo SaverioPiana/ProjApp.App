@@ -21,10 +21,10 @@ namespace ProjApp.Map
 {
     public class OurMapController
     {
-        MyPosition mypos = new ();
+        MyPosition mypos = new();
         MapView mapView = new();
 
-        const double STARTING_RES = 0.1;
+        const double STARTING_RES = 2;
 
         public static TileLayer CreateTileLayer()
         {
@@ -41,17 +41,21 @@ namespace ProjApp.Map
 
         public MapView MapInitializer()
         {
+            Task.Run(() => this.Update_MyPosition());
+            Task.Run(() => this.Update_MapToPos());
+
+
             mapView.Map?.Layers.Add(OurMapController.CreateTileLayer());
 
-            mapView.Map.Home = n => n.NavigateTo(center:
-                                        SphericalMercator.FromLonLat(new MPoint(
-                                        MyPosition.position.Longitude, MyPosition.position.Latitude)),
-                                        resolution: STARTING_RES);
             mapView.IsZoomButtonVisible = false;
             mapView.IsMyLocationButtonVisible = true;
-            Task.Run(() => this.Update_MyPosition());
-
-
+            mapView.MyLocationFollow = false;
+            
+            
+            mapView.Map.Home = n => n.NavigateTo(center:
+                                      SphericalMercator.FromLonLat(new MPoint(
+                                      12.340445071924254, 41.74608176704198)),
+                                      resolution: STARTING_RES);
 
 
             //mapView.Map.Layers.Add(creaLayerPins());
@@ -65,12 +69,25 @@ namespace ProjApp.Map
             return mapView;
 
         }
+        public async Task Update_MapToPos()
+        {
+            {
+                Thread.Sleep(5000);
+                mapView.Navigator.FlyTo(
+                    SphericalMercator.FromLonLat(new MPoint(MyPosition.position.Longitude, MyPosition.position.Latitude)), 3 , 5000);
+                
+
+            }
+
+        }
         public async Task Update_MyPosition()
         {
             /////ATTENTO FA SCHIFO WHILE TRUE////////
             while (true) {
-                await mypos.Get_Position();
-                mapView.MyLocationLayer.UpdateMyLocation(MyPosition.position, true);
+                Position p = mypos.returnPosition().Result;
+                mapView.MyLocationLayer.UpdateMyLocation(p, true);
+                Thread.Sleep(3000);
+
             }
 
         }
