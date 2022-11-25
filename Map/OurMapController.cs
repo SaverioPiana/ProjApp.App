@@ -25,6 +25,10 @@ namespace ProjApp.Map
         MapView mapView = new();
 
         const double STARTING_RES = 2;
+        private bool update_once = true;   //carina l'idea ma non penso la useremo,
+                                           //a sto punto forse meglio usare due funzioni updateposition(ONCE/ALWAYS)
+        private bool want_position = true;
+        private int updateCtr = 0;
 
         public static TileLayer CreateTileLayer()
         {
@@ -41,8 +45,8 @@ namespace ProjApp.Map
 
         public MapView MapInitializer()
         {
-            Task.Run(() => this.Update_MyPosition());
             Task.Run(() => this.Update_MapToPos());
+            Task.Run(() => this.Update_MyPosition_ALWAYS());
 
 
             mapView.Map?.Layers.Add(OurMapController.CreateTileLayer());
@@ -69,28 +73,45 @@ namespace ProjApp.Map
             return mapView;
 
         }
-        public async Task Update_MapToPos()
+
+        //updates the position ONCE and animates the fly to the new position
+        public async void Update_MapToPos()
         {
             {
-                Thread.Sleep(5000);
+                await Update_MyPosition_ONCE();    
                 mapView.Navigator.FlyTo(
-                    SphericalMercator.FromLonLat(new MPoint(MyPosition.position.Longitude, MyPosition.position.Latitude)), 3 , 5000);
-                
-
+                    SphericalMercator.FromLonLat(new MPoint(MyPosition.position.Longitude, MyPosition.position.Latitude)), 3, 5000);
             }
 
         }
-        public async Task Update_MyPosition()
+
+        //updates the position once or continuously
+        //IF YOU WANT TO DO IT ONCE SET THE update_once = true BEFORE CALLING this task
+        public async Task Update_MyPosition_ONCE()
+        {   
+            await mypos.Get_Position();
+            Position p = MyPosition.position;
+            mapView.MyLocationLayer.UpdateMyLocation(p, true);
+            update_once = false;
+            updateCtr++;
+            Console.WriteLine($"Position updated {updateCtr} times (single update)");
+        }
+
+        public async Task Update_MyPosition_ALWAYS()
         {
-            /////ATTENTO FA SCHIFO WHILE TRUE////////
-            while (true) {
-                Position p = mypos.returnPosition().Result;
+            //finchè vogliamo la posizione la queriamo, possiamo in qualsiasi momento
+            //smettere di chiederla
+            while (want_position)
+            {
+                await mypos.Get_Position();
+                Position p = MyPosition.position;
                 mapView.MyLocationLayer.UpdateMyLocation(p, true);
-                Thread.Sleep(3000);
-
+                updateCtr++;
+                Console.WriteLine($"Position updated {updateCtr} times (continuos update)");
             }
-
         }
+
+        //easier way to add pins
         public static void AddPin(MapView mapView, Position pos, String label, Color c)
         {
             mapView.Pins.Add(new Pin(mapView)
