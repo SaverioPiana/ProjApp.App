@@ -14,7 +14,8 @@ public  partial class MainPage : ContentPage
     {
         InitializeComponent();
 
-        Content = OurMapController.MapInitializer();
+        Content = new OurMapController().MapInitializer();
+
     }
     
     

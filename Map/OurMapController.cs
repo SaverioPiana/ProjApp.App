@@ -19,8 +19,11 @@ using Color = Microsoft.Maui.Graphics.Color;
 
 namespace ProjApp.Map
 {
-    public static class OurMapController
+    public class OurMapController
     {
+        MyPosition mypos = new ();
+        MapView mapView = new();
+
         const double STARTING_RES = 0.1;
 
         public static TileLayer CreateTileLayer()
@@ -36,19 +39,18 @@ namespace ProjApp.Map
                 new[] { "a", "b", "c", "d" }, name: "CartoDB.Voyager");
         }
 
-        public static MapView MapInitializer()
+        public MapView MapInitializer()
         {
-            MapView mapView = new();
             mapView.Map?.Layers.Add(OurMapController.CreateTileLayer());
 
-            Position startingPos = new MyPosition().position;
-            mapView.MyLocationLayer.UpdateMyLocation(startingPos, true);
             mapView.Map.Home = n => n.NavigateTo(center:
                                         SphericalMercator.FromLonLat(new MPoint(
-                                        startingPos.Longitude, startingPos.Latitude)),
+                                        MyPosition.position.Longitude, MyPosition.position.Latitude)),
                                         resolution: STARTING_RES);
             mapView.IsZoomButtonVisible = false;
             mapView.IsMyLocationButtonVisible = true;
+            Task.Run(() => this.Update_MyPosition());
+
 
 
 
@@ -63,7 +65,15 @@ namespace ProjApp.Map
             return mapView;
 
         }
+        public async Task Update_MyPosition()
+        {
+            /////ATTENTO FA SCHIFO WHILE TRUE////////
+            while (true) {
+                await mypos.Get_Position();
+                mapView.MyLocationLayer.UpdateMyLocation(MyPosition.position, true);
+            }
 
+        }
         public static void AddPin(MapView mapView, Position pos, String label, Color c)
         {
             mapView.Pins.Add(new Pin(mapView)
