@@ -1,12 +1,4 @@
-﻿using Mapsui.Projections;
-using Mapsui;
-using Mapsui.UI.Maui;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Kotlin.Contracts;
+﻿using Mapsui.UI.Maui;
 
 namespace ProjApp.Map.GPS
 {
