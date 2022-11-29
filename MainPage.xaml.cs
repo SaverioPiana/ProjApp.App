@@ -1,5 +1,4 @@
-﻿using Android.OS;
-using Mapsui;
+﻿using Mapsui;
 using Mapsui.Extensions;
 using Mapsui.Layers;
 using Mapsui.Projections;
@@ -15,7 +14,11 @@ public  partial class MainPage : ContentPage
     {
         InitializeComponent();
 
-        Content = OurMapController.MapInitializer();
+        Content = new OurMapController().MapInitializer();
+
     }
+    
+    
+
 }
 

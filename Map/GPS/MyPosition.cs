@@ -6,41 +6,63 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kotlin.Contracts;
 
 namespace ProjApp.Map.GPS
 {
     public class MyPosition
     {
-
-        public Position position { get; set; }
+        private CancellationTokenSource _cancelTokenSource;
+        private bool _isCheckingLocation;
+        public static Position position { get; set; }
 
         public MyPosition()
         {
-            position = Get_Position().Result;
+
+            position = new();
+                
         }
 
+        /* NON VEDO A CHE SERVE SAVE SPIEGA */
+        //public async Task<Position> returnPosition()
+        //{
+        //    await Get_Position();
+        //    return position;
+        //}
 
-        public async Task<Position> Get_Position()
+        public async Task Get_Position()
         {
             try
             {
-                var location = await Geolocation.GetLastKnownLocationAsync();
-                if (location == null)
-                {
-                    location = await Geolocation.GetLocationAsync(new GeolocationRequest
-                    {
-                        DesiredAccuracy = GeolocationAccuracy.Best,
-                        Timeout = TimeSpan.FromSeconds(20)
-                    });
-                }  
-                return new Position(location.Latitude, location.Longitude);
+                _isCheckingLocation = true;
+
+                GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+
+                _cancelTokenSource = new CancellationTokenSource();
+
+                Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
+                position = new Position(location.Latitude , location.Longitude);
+
+                if (location != null)
+                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
             }
+            // Catch one of the following exceptions:
+            //   FeatureNotSupportedException
+            //   FeatureNotEnabledException
+            //   PermissionException
             catch (Exception ex)
             {
-                // CODICE PERICOLOSO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                Console.WriteLine($"Error: {ex.Message}");
-                return new Position(0,0);
+               
             }
+            finally
+            {
+                _isCheckingLocation = false;
+            }
+        }
+        public void CancelRequest()
+        {
+            if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
+                _cancelTokenSource.Cancel();
         }
     }
 }

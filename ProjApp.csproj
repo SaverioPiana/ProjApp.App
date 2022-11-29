@@ -49,6 +49,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\pin_icon.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <PackageReference Include="Mapsui.Maui" Version="4.0.0-beta.5" />
 	</ItemGroup>
 
