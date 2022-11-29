@@ -12,19 +12,26 @@ public  partial class MainPage : ContentPage
 {
     public MainPage()
     {
-            InitializeComponent();
-        //MainThread.BeginInvokeOnMainThread(async() =>
-        //{
-        //    var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+        InitializeComponent();
 
-        //    if (status != PermissionStatus.Granted)
-        //        await Task.Run(()=> Permissions.RequestAsync<Permissions.LocationWhenInUse>());
-        //});
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            CheckANDSetPermission();
+        });
 
-         
-           Content = new OurMapController().MapInitializer();
+        Content = new OurMapController().MapInitializer();
            
 
+    }
+
+
+    //forse va messa una condizione in modo tale che non runni sempre all avvio, tipo salvarci un bool su un file boh
+    private async void CheckANDSetPermission()
+    {
+        var status =  await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+
+        if (status == PermissionStatus.Denied) //chiamiamo Geolocation perche fa la richiesta del gps 
+             await Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Lowest));
     }
     
     

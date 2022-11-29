@@ -32,12 +32,8 @@ namespace ProjApp.Map.GPS
 
         public async Task Get_Position()
         {
-             MainThread.BeginInvokeOnMainThread(async() =>
-            {
-                try
+            try
                 {
-
-
                     _isCheckingLocation = true;
 
                     GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.High, TimeSpan.FromSeconds(10));
@@ -65,7 +61,7 @@ namespace ProjApp.Map.GPS
                 {
                     _isCheckingLocation = false;
                 }
-            });
+            
         }
         public void CancelRequest()
         {
