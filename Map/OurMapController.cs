@@ -46,7 +46,7 @@ namespace ProjApp.Map
         public MapView MapInitializer()
         {
 
-            Task.Run(() => this.Update_MapToPos());
+            Task.Run(() => this.Update_MapToPos()).Wait();
             Task.Run(() => this.Update_MyPosition_ALWAYS());
 
 
