@@ -14,7 +14,6 @@ using Mapsui.Tiling.Layers;
 using Mapsui.UI.Maui;
 using Mapsui.UI.Maui.Extensions;
 using ProjApp.Map.GPS;
-using static Google.Android.Material.Tabs.TabLayout;
 using Color = Microsoft.Maui.Graphics.Color;
 
 namespace ProjApp.Map
