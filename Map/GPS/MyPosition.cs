@@ -32,32 +32,40 @@ namespace ProjApp.Map.GPS
 
         public async Task Get_Position()
         {
-            try
+             MainThread.BeginInvokeOnMainThread(async() =>
             {
-                _isCheckingLocation = true;
+                try
+                {
 
-                GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
 
-                _cancelTokenSource = new CancellationTokenSource();
+                    _isCheckingLocation = true;
 
-                Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
-                position = new Position(location.Latitude , location.Longitude);
+                    GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.High, TimeSpan.FromSeconds(10));
 
-                if (location != null)
-                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
-            }
-            // Catch one of the following exceptions:
-            //   FeatureNotSupportedException
-            //   FeatureNotEnabledException
-            //   PermissionException
-            catch (Exception ex)
-            {
-               
-            }
-            finally
-            {
-                _isCheckingLocation = false;
-            }
+                    _cancelTokenSource = new CancellationTokenSource();
+
+                    Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
+                    position = new Position(location.Latitude, location.Longitude);
+
+
+                    if (location != null)
+                        Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+
+                }
+                // Catch one of the following exceptions:
+                //   FeatureNotSupportedException
+                //   FeatureNotEnabledException
+                //   PermissionException
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"EXCEPTION position not found {ex.Message}");
+
+                }
+                finally
+                {
+                    _isCheckingLocation = false;
+                }
+            });
         }
         public void CancelRequest()
         {

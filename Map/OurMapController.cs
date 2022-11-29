@@ -45,8 +45,11 @@ namespace ProjApp.Map
 
         public MapView MapInitializer()
         {
-            Task.Run(() => this.Update_MapToPos());
-            Task.Run(() => this.Update_MyPosition_ALWAYS());
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                Task.Run(() => this.Update_MapToPos());
+                Task.Run(() => this.Update_MyPosition_ALWAYS());
+            });
 
 
             mapView.Map?.Layers.Add(OurMapController.CreateTileLayer());

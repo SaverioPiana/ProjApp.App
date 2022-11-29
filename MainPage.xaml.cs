@@ -12,9 +12,18 @@ public  partial class MainPage : ContentPage
 {
     public MainPage()
     {
-        InitializeComponent();
+            InitializeComponent();
+        //MainThread.BeginInvokeOnMainThread(async() =>
+        //{
+        //    var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
 
-        Content = new OurMapController().MapInitializer();
+        //    if (status != PermissionStatus.Granted)
+        //        await Task.Run(()=> Permissions.RequestAsync<Permissions.LocationWhenInUse>());
+        //});
+
+         
+           Content = new OurMapController().MapInitializer();
+           
 
     }
     
