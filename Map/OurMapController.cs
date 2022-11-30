@@ -166,7 +166,7 @@ namespace ProjApp.Map
 
                
 
-                Console.WriteLine($"Position updated {DeviceInfo.Name} {updateCtr} times (continuos update)");
+                Console.WriteLine($"Position updated from {DeviceInfo.Name} {updateCtr} times (continuos update)");
             }
         }
 
