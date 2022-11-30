@@ -96,7 +96,7 @@ namespace ProjApp.Map
                           arg2: MyPosition.position.Latitude,
                           arg3: MyPosition.position.Longitude);
                  }
-                await Task.Delay(1500); 
+                await Task.Delay(1500);
             }
 
         }
@@ -149,7 +149,7 @@ namespace ProjApp.Map
             mapView.MyLocationLayer.UpdateMyLocation(p, true);
             update_once = false;
             updateCtr++;
-            Console.WriteLine($"Position updated {updateCtr} times (single update)");
+            Console.WriteLine($"Position updated from {DeviceInfo.Name} {updateCtr} times (single update)");
         }
 
         //updates the position finche non casca il mondo
@@ -166,7 +166,7 @@ namespace ProjApp.Map
 
                
 
-                Console.WriteLine($"Position updated {updateCtr} times (continuos update)");
+                Console.WriteLine($"Position updated {DeviceInfo.Name} {updateCtr} times (continuos update)");
             }
         }
 
