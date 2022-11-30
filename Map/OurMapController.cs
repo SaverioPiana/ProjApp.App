@@ -13,6 +13,7 @@ using Mapsui.Styles;
 using Mapsui.Tiling.Layers;
 using Mapsui.UI.Maui;
 using Mapsui.UI.Maui.Extensions;
+using Microsoft.AspNetCore.SignalR.Client;
 using ProjApp.Map.GPS;
 using Color = Microsoft.Maui.Graphics.Color;
 
@@ -29,6 +30,9 @@ namespace ProjApp.Map
         private bool want_position = true;
         private int updateCtr = 0;
 
+
+        //SignalR Parametri
+        private HubConnection connection_nelMC;
         public static TileLayer CreateTileLayer()
         {
             return new TileLayer(CreateTileSource()) { Name = "CartoDB.Voyager" };
@@ -42,8 +46,10 @@ namespace ProjApp.Map
                 new[] { "a", "b", "c", "d" }, name: "CartoDB.Voyager");
         }
 
-        public MapView MapInitializer()
+        public MapView MapInitializer(HubConnection _connection)
         {
+
+            connection_nelMC = _connection;
 
             Task.Run(() => this.Update_MapToPos()).Wait();
             Task.Run(() => this.Update_MyPosition_ALWAYS());
@@ -73,6 +79,18 @@ namespace ProjApp.Map
             return mapView;
 
         }
+
+        //SIGNALR METODI TEMPORANEI
+        private async void inviaPos(Position p)
+        {
+            await connection_nelMC.InvokeAsync("SendPosition",
+                arg1: DeviceInfo.Name, arg2: p.Latitude, arg3: p.Longitude);
+
+        }
+
+
+        //FINE METODI TEMPORANEI SIGNALR
+
 
         //updates the position ONCE and animates the fly to the new position
         public async void Update_MapToPos()
@@ -107,6 +125,10 @@ namespace ProjApp.Map
                 Position p = MyPosition.position;
                 mapView.MyLocationLayer.UpdateMyLocation(p, true);
                 updateCtr++;
+
+                //invia la pos a signalr
+                this.inviaPos(p);
+
                 Console.WriteLine($"Position updated {updateCtr} times (continuos update)");
             }
         }
