@@ -117,8 +117,10 @@ namespace ProjApp.Map
                     foreach (Pin p in mapView.Pins)
                     {
                         if (user == p.Label)
+                        {
                             trovato = true;
                             p.Position = position;
+                        }
                     }
                     if (!trovato)
                     {
