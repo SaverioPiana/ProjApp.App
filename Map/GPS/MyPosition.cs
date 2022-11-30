@@ -33,11 +33,13 @@ namespace ProjApp.Map.GPS
                     _cancelTokenSource = new CancellationTokenSource();
 
                     Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
-                    position = new Position(location.Latitude, location.Longitude);
 
 
                     if (location != null)
-                        Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+                    {
+                         position = new Position(location.Latitude, location.Longitude);
+                         Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+                    }
 
                 }
                 // Catch one of the following exceptions:
