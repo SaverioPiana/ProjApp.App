@@ -29,10 +29,13 @@ namespace ProjApp.Map
                                            //a sto punto forse meglio usare due funzioni updateposition(ONCE/ALWAYS)
         private bool want_position = true;
         private int updateCtr = 0;
-
-
+        
         //SignalR Parametri
         private HubConnection connection_nelMC;
+        private bool want_sendposition = true;
+
+
+
         public static TileLayer CreateTileLayer()
         {
             return new TileLayer(CreateTileSource()) { Name = "CartoDB.Voyager" };
@@ -54,6 +57,8 @@ namespace ProjApp.Map
             Task.Run(() => this.Update_MapToPos()).Wait();
             Task.Run(() => this.Update_MyPosition_ALWAYS());
 
+            Task.Run(() => this.inviaPosSignalR());
+            Task.Run(() => this.aggiungiAltriGiocatoriAllaMappa());
 
             mapView.Map?.Layers.Add(OurMapController.CreateTileLayer());
 
@@ -81,16 +86,49 @@ namespace ProjApp.Map
         }
 
         //SIGNALR METODI TEMPORANEI
-        private async void inviaPos(Position p)
+        private async void inviaPosSignalR()
         {
-            await connection_nelMC.InvokeAsync("SendPosition",
-                arg1: DeviceInfo.Name, arg2: p.Latitude, arg3: p.Longitude);
+            while (want_sendposition)
+            {
+                if (connection_nelMC.State.Equals(HubConnectionState.Connected)) { 
+                    await connection_nelMC.InvokeAsync("SendPosition",
+                          arg1: DeviceInfo.Name,
+                          arg2: MyPosition.position.Latitude,
+                          arg3: MyPosition.position.Longitude);
+                 }
+                await Task.Delay(1500); 
+            }
 
         }
 
 
         //FINE METODI TEMPORANEI SIGNALR
+        private void aggiungiAltriGiocatoriAllaMappa()
+        {
 
+            string my_user = DeviceInfo.Name;
+
+            connection_nelMC.On<string, double, double>("PositionReceived", (user, lat, lon) =>
+            {
+                Console.WriteLine($"/////////Posizione ricevuta da:{user} , lat:{lat}, lon: {lon}");
+                if (user != my_user) {
+                    bool trovato = false;
+                    Position position = new(lat, lon);
+                    foreach (Pin p in mapView.Pins)
+                    {
+                        if (user == p.Label)
+                            trovato = true;
+                            p.Position = position;
+                    }
+                    if (!trovato)
+                    {
+                        Random r = new();
+                        AddPin(mapView, position, user,
+                            Color.FromRgb(r.Next(256), r.Next(256), r.Next(256)));
+                    }
+                }
+            });
+        }
 
         //updates the position ONCE and animates the fly to the new position
         public async void Update_MapToPos()
@@ -126,8 +164,7 @@ namespace ProjApp.Map
                 mapView.MyLocationLayer.UpdateMyLocation(p, true);
                 updateCtr++;
 
-                //invia la pos a signalr
-                this.inviaPos(p);
+               
 
                 Console.WriteLine($"Position updated {updateCtr} times (continuos update)");
             }

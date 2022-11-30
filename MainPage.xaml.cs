@@ -23,16 +23,11 @@ public  partial class MainPage : ContentPage
         });
     //Connession a SignalR
         _connection = new HubConnectionBuilder()
-            .WithUrl("/lobby")
+            .WithUrl("https://nascondapp.azurewebsites.net/lobby")
             .WithAutomaticReconnect()
             .Build();
 
-    //Quando ricevo una posizione broadcast la stampo su console per debugging
-        _connection.On<string, double, double>("PositionReceived", (user, lat ,lon) =>
-        {
-            Console.WriteLine($"/////////Posizione ricevuta da:{user} , lat:{lat}, lon: {lon}");
-        });
-    //starto la connessione
+        //starto la connessione
         Task.Run(() =>
         {
             Dispatcher.Dispatch(async () =>
