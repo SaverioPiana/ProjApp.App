@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Android.Icu.Number;
 using BruTile.Predefined;
 using BruTile.Web;
 using Mapsui;
@@ -27,12 +28,15 @@ namespace ProjApp.Map
         const double STARTING_RES = 2;
         private bool update_once = true;   //carina l'idea ma non penso la useremo,
                                            //a sto punto forse meglio usare due funzioni updateposition(ONCE/ALWAYS)
+        const int INTERPOLATION_STEPS = 100;
+        
         private bool want_position = true;
         private int updateCtr = 0;
         
         //SignalR Parametri
         private HubConnection connection_nelMC;
         private bool want_sendposition = true;
+        const int SEND_POS_DELAY = 3000;
 
 
 
@@ -96,7 +100,7 @@ namespace ProjApp.Map
                           arg2: MyPosition.position.Latitude,
                           arg3: MyPosition.position.Longitude);
                  }
-                await Task.Delay(3000);
+                await Task.Delay(SEND_POS_DELAY);
             }
 
         }
@@ -120,7 +124,7 @@ namespace ProjApp.Map
                         if (user == p.Label)
                         {
                             trovato = true;
-                            p.Position = position;
+                            Interpolate(p, position);
                         }
                     }
                     //altrimenti ne creo uno nuovo (di pin)
@@ -173,6 +177,35 @@ namespace ProjApp.Map
                 Console.WriteLine($"Position updated from {DeviceInfo.Name} {updateCtr} times (continuos update)");
             }
         }
+
+
+        //Per interpolare le posizioni ricevute dagli utenti
+        public async void Interpolate(Pin p, Position newPos)
+        {
+            Position oldPos = p.Position;
+
+            for (double i = 1; i<=INTERPOLATION_STEPS; i++)
+            {
+                p.Position = await Interpolate_points_scalar(oldPos, newPos, i);
+                await Task.Delay(SEND_POS_DELAY/INTERPOLATION_STEPS);
+            }
+        }
+        //funzione di supporto
+        public async Task<Position> Interpolate_points_scalar(Position p1, Position p2, double scale) 
+        {
+            double x1 = p1.Longitude;
+            double y1 = p1.Latitude;
+            double x2 = p2.Longitude;
+            double y2 = p2.Latitude;
+
+            double x3 = (x1 + ((scale / INTERPOLATION_STEPS) * (x2 - x1)));
+            double y3 = (y1 + ((scale / INTERPOLATION_STEPS) * (y2 - y1)));
+
+            Position newPos = new Position(y3, x3);
+            return newPos;
+
+        }
+
 
         /////////////////////////////////////////////////////////////////////////////////
         ///ALTRO MODO DI IMPLEMENTARE MA DEVI CHIAMARE DUE VOLTE UPDATE POSITION PERCHE//

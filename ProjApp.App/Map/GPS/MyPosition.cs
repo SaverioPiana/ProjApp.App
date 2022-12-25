@@ -35,7 +35,7 @@ namespace ProjApp.Map.GPS
                     Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
 
 
-                    if (location != null && location.Altitude != null)
+                    if (location != null)
                     {
                          position = new Position(location.Latitude, location.Longitude);
                          Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
