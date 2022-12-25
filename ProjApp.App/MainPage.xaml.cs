@@ -21,7 +21,7 @@ public  partial class MainPage : ContentPage
         {
             CheckANDSetPermission();
         });
-    //Connession a SignalR
+        //Connession a SignalR
         _connection = new HubConnectionBuilder()
             .WithUrl("https://nascondapp.azurewebsites.net/lobby")
             .WithAutomaticReconnect()

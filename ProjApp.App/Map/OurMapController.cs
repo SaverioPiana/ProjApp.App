@@ -114,6 +114,7 @@ namespace ProjApp.Map
                 if (user != my_user) {
                     bool trovato = false;
                     Position position = new(lat, lon);
+                    //se trovo l'utente aggiorno la sua posizione
                     foreach (Pin p in mapView.Pins)
                     {
                         if (user == p.Label)
@@ -122,6 +123,7 @@ namespace ProjApp.Map
                             p.Position = position;
                         }
                     }
+                    //altrimenti ne creo uno nuovo (di pin)
                     if (!trovato)
                     {
                         Random r = new();
