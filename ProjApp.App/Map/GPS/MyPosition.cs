@@ -28,14 +28,14 @@ namespace ProjApp.Map.GPS
                 {
                     _isCheckingLocation = true;
 
-                    GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.High, TimeSpan.FromSeconds(10));
+                    GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(6));
 
                     _cancelTokenSource = new CancellationTokenSource();
 
                     Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
 
 
-                    if (location != null)
+                    if (location != null && location.Altitude != null)
                     {
                          position = new Position(location.Latitude, location.Longitude);
                          Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");

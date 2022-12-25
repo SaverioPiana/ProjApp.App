@@ -96,7 +96,7 @@ namespace ProjApp.Map
                           arg2: MyPosition.position.Latitude,
                           arg3: MyPosition.position.Longitude);
                  }
-                await Task.Delay(1500);
+                await Task.Delay(3000);
             }
 
         }
