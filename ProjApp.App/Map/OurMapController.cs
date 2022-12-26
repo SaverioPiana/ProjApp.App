@@ -124,7 +124,7 @@ namespace ProjApp.Map
                         if (user == p.Label)
                         {
                             trovato = true;
-                            Interpolate(p, position);
+                            Interpolate(p, position); //animazione piu fluida
                         }
                     }
                     //altrimenti ne creo uno nuovo (di pin)
@@ -172,8 +172,6 @@ namespace ProjApp.Map
                 mapView.MyLocationLayer.UpdateMyLocation(p, true);
                 updateCtr++;
 
-               
-
                 Console.WriteLine($"Position updated from {DeviceInfo.Name} {updateCtr} times (continuos update)");
             }
         }
@@ -191,6 +189,8 @@ namespace ProjApp.Map
             }
         }
         //funzione di supporto
+        //ritorna il punto che si trova a (scale/INTERPOLATION_STEPS) fra i due punti in input
+        //tipo il punto a 3/10 di distanza tra i due punti estremi del segmento
         public async Task<Position> Interpolate_points_scalar(Position p1, Position p2, double scale) 
         {
             double x1 = p1.Longitude;
