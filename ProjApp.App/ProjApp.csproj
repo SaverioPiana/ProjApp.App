@@ -11,7 +11,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>ProjApp</ApplicationTitle>
+		<ApplicationTitle>NascondApp</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.projapp</ApplicationId>
@@ -39,7 +39,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-
+		<MauiIcon Include="Resources\AppIcon\appiconprova.svg" BaseSize="128,128"/>		
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
@@ -55,7 +55,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\AppIcon\appiconprova.svg" />
 	  <None Remove="Resources\Images\pin_icon.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiIcon Include="Resources\AppIcon\appiconprova.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
