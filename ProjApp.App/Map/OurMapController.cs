@@ -184,14 +184,14 @@ namespace ProjApp.Map
 
             for (double i = 1; i<=INTERPOLATION_STEPS; i++)
             {
-                p.Position = await Interpolate_points_scalar(oldPos, newPos, i);
+                p.Position = Interpolate_points_scalar(oldPos, newPos, i);
                 await Task.Delay(SEND_POS_DELAY/INTERPOLATION_STEPS);
             }
         }
         //funzione di supporto
         //ritorna il punto che si trova a (scale/INTERPOLATION_STEPS) fra i due punti in input
         //tipo il punto a 3/10 di distanza tra i due punti estremi del segmento
-        public async Task<Position> Interpolate_points_scalar(Position p1, Position p2, double scale) 
+        public Position Interpolate_points_scalar(Position p1, Position p2, double scale) 
         {
             double x1 = p1.Longitude;
             double y1 = p1.Latitude;
@@ -203,7 +203,6 @@ namespace ProjApp.Map
 
             Position newPos = new Position(y3, x3);
             return newPos;
-
         }
 
 

@@ -40,7 +40,6 @@ public  partial class MainPage : ContentPage
 
     }
 
-
     //forse va messa una condizione in modo tale che non runni sempre all avvio, tipo salvarci un bool su un file boh
     private async void CheckANDSetPermission()
     {
@@ -49,8 +48,5 @@ public  partial class MainPage : ContentPage
         if (status == PermissionStatus.Denied) //chiamiamo Geolocation perche fa la richiesta del gps 
              await Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Lowest));
     }
-    
-    
-
 }
 
