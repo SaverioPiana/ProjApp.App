@@ -10,13 +10,18 @@ using BruTile.Web;
 using Mapsui;
 using Mapsui.Layers;
 using Mapsui.Projections;
+using Mapsui.Providers;
 using Mapsui.Styles;
 using Mapsui.Tiling.Layers;
 using Mapsui.UI.Maui;
 using Mapsui.UI.Maui.Extensions;
 using Microsoft.AspNetCore.SignalR.Client;
+using NetTopologySuite.Geometries;
+using Polygon = NetTopologySuite.Geometries.Polygon;
+using Position = Mapsui.UI.Maui.Position;
 using ProjApp.Map.GPS;
-using Color = Microsoft.Maui.Graphics.Color;
+using Microsoft.Maui.Graphics;
+using Mapsui.Nts.Extensions;
 
 namespace ProjApp.Map
 {
@@ -48,7 +53,7 @@ namespace ProjApp.Map
         private static HttpTileSource CreateTileSource()
         {
             //nel link z rappresenta il livello di zoom, x e y le coordinate, l'ultimo campo la risoluzione delle tiles
-            return new HttpTileSource(new GlobalSphericalMercator(minZoomLevel: 10, maxZoomLevel: 20, name: null),
+            return new HttpTileSource(new GlobalSphericalMercator(minZoomLevel: 0, maxZoomLevel: 20, name: null),
                 "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{@2x}.png",
                 new[] { "a", "b", "c", "d" }, name: "CartoDB.Voyager");
         }
@@ -65,6 +70,8 @@ namespace ProjApp.Map
             Task.Run(() => this.aggiungiAltriGiocatoriAllaMappa());
 
             mapView.Map?.Layers.Add(OurMapController.CreateTileLayer());
+
+            mapView.Map?.Layers.Add(CreateCustomLayer("RandomPolys"));
 
             mapView.IsZoomButtonVisible = false;
             mapView.IsMyLocationButtonVisible = true;
@@ -88,6 +95,66 @@ namespace ProjApp.Map
             return mapView;
 
         }
+
+        //metodo che crea layer generici
+        public ILayer CreateCustomLayer(string name)
+        {
+            return new Layer(name)
+            {
+                DataSource = new MemoryProvider(CreaListaPoligoni().ToFeatures()),
+                Style = new VectorStyle
+                {
+                    Fill = new Mapsui.Styles.Brush(new Mapsui.Styles.Color(205, 255, 255, 100)),
+                    Outline = new Pen
+                    {
+                        Color = Mapsui.Styles.Color.Cyan,
+                        Width = 2,
+                        PenStyle = PenStyle.DashDotDot,
+                        PenStrokeCap = PenStrokeCap.Round
+                    }
+                }
+            };
+
+        }
+
+
+        //crea una lista di poligoni
+        public List<Polygon> CreaListaPoligoni()
+        {
+            var result = new List<Polygon>();
+
+            var poly1 = new NetTopologySuite.Geometries.Polygon(new LinearRing
+                (new[]
+                    {
+                        SphMerc_TO_Coord(12.338212 , 41.731604 ),
+                        SphMerc_TO_Coord(12.314546 , 41.749755 ),
+                        SphMerc_TO_Coord(12.325532 , 41.768707 ),
+                        SphMerc_TO_Coord(12.362954 , 41.756030 ),
+                        SphMerc_TO_Coord(12.338212 , 41.731604 )
+                    })
+                );
+
+            var poly2 = new NetTopologySuite.Geometries.Polygon(new LinearRing
+                (new[]
+                    {
+                        SphMerc_TO_Coord( 12.337542 , 41.761940 ),
+                        SphMerc_TO_Coord( 12.340910 , 41.764191 ),
+                        SphMerc_TO_Coord( 12.340559 , 41.760128 ),
+                        SphMerc_TO_Coord( 12.337542 , 41.761940 )
+                    })
+                );
+            result.Add(poly1);
+            result.Add(poly2);
+            return result;
+        }
+
+        //cleaner way to convert from spherical mercator mpoints to coordinate points
+        public Coordinate SphMerc_TO_Coord(double lon, double lat) 
+        {
+            MPoint point = SphericalMercator.FromLonLat(new MPoint(lon, lat));
+            return point.ToCoordinate();
+        }
+
 
         //SIGNALR METODI TEMPORANEI
         private async void inviaPosSignalR()
@@ -132,7 +199,7 @@ namespace ProjApp.Map
                     {
                         Random r = new();
                         AddPin(mapView, position, user,
-                            Color.FromRgb(r.Next(256), r.Next(256), r.Next(256)));
+                            Microsoft.Maui.Graphics.Color.FromRgb(r.Next(256), r.Next(256), r.Next(256)));
                     }
                 }
             });
@@ -242,7 +309,7 @@ namespace ProjApp.Map
 
 
         //easier way to add pins
-        public static void AddPin(MapView mapView, Position pos, String label, Color c)
+        public static void AddPin(MapView mapView, Position pos, String label, Microsoft.Maui.Graphics.Color c)
         {
             mapView.Pins.Add(new Pin(mapView)
             {
