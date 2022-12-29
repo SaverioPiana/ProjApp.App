@@ -1,19 +1,21 @@
-﻿using Mapsui.UI.Maui;
+﻿using Android.Text.Style;
+using Mapsui.UI.Maui;
+using ProjApp.Gioco;
 
 namespace ProjApp.Map.GPS
 {
-    public class MyPosition
+    public class MyUser
     {
         private CancellationTokenSource _cancelTokenSource;
         private bool _isCheckingLocation;
-        public static Position position { get; set; }
+        public static User user;
 
-        public MyPosition()
+        //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
+        public MyUser()
         {
-
-            position = new();
-                
+            user = new("Nickname", DeviceInfo.Name, new());
         }
+
 
         /* NON VEDO A CHE SERVE SAVE SPIEGA */
         //public async Task<Position> returnPosition()
@@ -37,7 +39,7 @@ namespace ProjApp.Map.GPS
 
                     if (location != null)
                     {
-                         position = new Position(location.Latitude, location.Longitude);
+                         user.position = new Position(location.Latitude, location.Longitude);
                          Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
                     }
 

@@ -22,12 +22,13 @@ using Position = Mapsui.UI.Maui.Position;
 using ProjApp.Map.GPS;
 using Microsoft.Maui.Graphics;
 using Mapsui.Nts.Extensions;
+using ProjApp.Gioco;
 
 namespace ProjApp.Map
 {
     public class OurMapController
     {
-        MyPosition mypos = new();
+        MyUser myuser = new();
         MapView mapView = new();
 
         const double STARTING_RES = 2;
@@ -62,6 +63,7 @@ namespace ProjApp.Map
         {
 
             connection_nelMC = _connection;
+            mapView.IsMyLocationButtonVisible = false;
 
             Task.Run(() => this.Update_MapToPos()).Wait();
             Task.Run(() => this.Update_MyPosition_ALWAYS());
@@ -74,9 +76,10 @@ namespace ProjApp.Map
             mapView.Map?.Layers.Add(CreateCustomLayer("RandomPolys"));
 
             mapView.IsZoomButtonVisible = false;
-            mapView.IsMyLocationButtonVisible = true;
             mapView.MyLocationFollow = false;
-            
+
+            User user1 = new("o", "o", new(12.340445071924254, 41.74608176704198));
+            mapView.Pins.Add(user1.pin);
             
             mapView.Map.Home = n => n.NavigateTo(center:
                                       SphericalMercator.FromLonLat(new MPoint(
@@ -155,9 +158,9 @@ namespace ProjApp.Map
             {
                 if (connection_nelMC.State.Equals(HubConnectionState.Connected)) { 
                     await connection_nelMC.InvokeAsync("SendPosition",
-                          arg1: DeviceInfo.Name,
-                          arg2: MyPosition.position.Latitude,
-                          arg3: MyPosition.position.Longitude);
+                          arg1: MyUser.user.UserID,
+                          arg2: MyUser.user.position.Latitude,
+                          arg3: MyUser.user.position.Longitude);
                  }
                 await Task.Delay(SEND_POS_DELAY);
             }
@@ -168,13 +171,10 @@ namespace ProjApp.Map
         //FINE METODI TEMPORANEI SIGNALR
         private void aggiungiAltriGiocatoriAllaMappa()
         {
-
-            string my_user = DeviceInfo.Name;
-
             connection_nelMC.On<string, double, double>("PositionReceived", (user, lat, lon) =>
             {
                 Console.WriteLine($"/////////Posizione ricevuta da:{user} , lat:{lat}, lon: {lon}");
-                if (user != my_user) {
+                if (user != MyUser.user.UserID) {
                     bool trovato = false;
                     Position position = new(lat, lon);
                     //se trovo l'utente aggiorno la sua posizione
@@ -200,23 +200,23 @@ namespace ProjApp.Map
         //updates the position ONCE and animates the fly to the new position
         public async void Update_MapToPos()
         {
-            {
-                await Update_MyPosition_ONCE();    
-                mapView.Navigator.FlyTo(
-                    SphericalMercator.FromLonLat(new MPoint(MyPosition.position.Longitude, MyPosition.position.Latitude)), 3, 5000);
-            }
+            
+            await Update_MyPosition_ONCE();    
+            mapView.Navigator.FlyTo(
+                SphericalMercator.FromLonLat(new MPoint(MyUser.user.position.Longitude, MyUser.user.position.Latitude)), 3, 5000);
+            mapView.IsMyLocationButtonVisible = true;
 
         }
 
         //updates the position once
         public async Task Update_MyPosition_ONCE()
         {   
-            await mypos.Get_Position();
-            Position p = MyPosition.position;
+            await myuser.Get_Position();
+            Position p = MyUser.user.position;
             mapView.MyLocationLayer.UpdateMyLocation(p, true);
             update_once = false;
             updateCtr++;
-            Console.WriteLine($"Position updated from {DeviceInfo.Name} {updateCtr} times (single update)");
+            Console.WriteLine($"Position updated from {MyUser.user.UserID} {updateCtr} times (single update)");
         }
 
         //updates the position finche non casca il mondo
@@ -226,12 +226,12 @@ namespace ProjApp.Map
             //smettere di chiederla
             while (want_position)
             {
-                await mypos.Get_Position();
-                Position p = MyPosition.position;
+                await myuser.Get_Position();
+                Position p = MyUser.user.position;
                 mapView.MyLocationLayer.UpdateMyLocation(p, true);
                 updateCtr++;
 
-                Console.WriteLine($"Position updated from {DeviceInfo.Name} {updateCtr} times (continuos update)");
+                Console.WriteLine($"Position updated from {MyUser.user.UserID} {updateCtr} times (continuos update)");
             }
         }
 
@@ -276,7 +276,7 @@ namespace ProjApp.Map
         if(update_once)
         {
             await mypos.Get_Position();
-            Position p = MyPosition.position;
+            Position p = MyUser.user.position;
             mapView.MyLocationLayer.UpdateMyLocation(p, true);
             update_once = false;
             updateCtr++;
@@ -290,7 +290,7 @@ namespace ProjApp.Map
             while (want_position)
             {
                 await mypos.Get_Position();
-                Position p = MyPosition.position;
+                Position p = MyUser.user.position;
                 mapView.MyLocationLayer.UpdateMyLocation(p, true);
                 updateCtr++;
                 Console.WriteLine($"Position updated {updateCtr} times (continuos update)");
