@@ -126,35 +126,27 @@ namespace ProjApp.Map
             var poly1 = new NetTopologySuite.Geometries.Polygon(new LinearRing
                 (new[]
                     {
-                        SphMerc_TO_Coord(12.338212 , 41.731604 ),
-                        SphMerc_TO_Coord(12.314546 , 41.749755 ),
-                        SphMerc_TO_Coord(12.325532 , 41.768707 ),
-                        SphMerc_TO_Coord(12.362954 , 41.756030 ),
-                        SphMerc_TO_Coord(12.338212 , 41.731604 )
+                        new Position(12.338212 , 41.731604 ).ToMapsui().ToCoordinate(),
+                        new Position(12.314546 , 41.749755 ).ToMapsui().ToCoordinate(),
+                        new Position(12.325532 , 41.768707 ).ToMapsui().ToCoordinate(),
+                        new Position(12.362954 , 41.756030 ).ToMapsui().ToCoordinate(),
+                        new Position(12.338212 , 41.731604 ).ToMapsui().ToCoordinate()
                     })
                 );
 
             var poly2 = new NetTopologySuite.Geometries.Polygon(new LinearRing
                 (new[]
                     {
-                        SphMerc_TO_Coord( 12.337542 , 41.761940 ),
-                        SphMerc_TO_Coord( 12.340910 , 41.764191 ),
-                        SphMerc_TO_Coord( 12.340559 , 41.760128 ),
-                        SphMerc_TO_Coord( 12.337542 , 41.761940 )
+                        new Position( 12.337542 , 41.761940 ).ToMapsui().ToCoordinate(),
+                        new Position( 12.340910 , 41.764191 ).ToMapsui().ToCoordinate(),
+                        new Position( 12.340559 , 41.760128 ).ToMapsui().ToCoordinate(),
+                        new Position( 12.337542 , 41.761940 ).ToMapsui().ToCoordinate()
                     })
                 );
             result.Add(poly1);
             result.Add(poly2);
             return result;
         }
-
-        //cleaner way to convert from spherical mercator mpoints to coordinate points
-        public Coordinate SphMerc_TO_Coord(double lon, double lat) 
-        {
-            MPoint point = SphericalMercator.FromLonLat(new MPoint(lon, lat));
-            return point.ToCoordinate();
-        }
-
 
         //SIGNALR METODI TEMPORANEI
         private async void inviaPosSignalR()
