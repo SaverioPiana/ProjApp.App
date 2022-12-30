@@ -1,0 +1,1 @@
+﻿Possiamo usare il bool isVisible sui Pin per aiutarci con la logica del gioco

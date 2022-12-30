@@ -1,12 +1,16 @@
 ﻿using Mapsui.Extensions;
 using Mapsui.UI.Maui;
-using ProjApp.Map.GPS;
+using Microsoft.Maui.Graphics.Platform;
+using ProjApp.MapEl.GPS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
+using System.IO;
+using Android.Runtime;
 
 namespace ProjApp.Gioco
 {
@@ -14,42 +18,46 @@ namespace ProjApp.Gioco
     {
         public string Nickname {  get; private set; }
         public string UserID { get; private set; }
-        public Position position
-        {
-            get { return position; }
-
-            set 
-            {
-                if (position != value)
-                {
-                    position = value;
-                    this.pin.Position = position;
-                }
-            }
-        }
-
-        //CRASHA
-        ////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////////////////////////////
+        public Position position { get; set; }
         public Pin pin;
-        byte[] UserIcon = Assembly.GetExecutingAssembly().GetManifestResourceStream
-                            (Assembly.GetExecutingAssembly().GetManifestResourceNames().Single(
-                                str => str.EndsWith("pinicon.png"))).ToBytes();
-        //////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////////////////////////////////////////
-        public User(string nickname, string userID, Position posizione)
+        byte[] UserIcon = ReadResource("pinicon.png");
+        
+        public User(string nickname, string userID, Position posizione, MapView mv)
         {
             Nickname = nickname;
             UserID = userID;
             this.position = posizione;
-            this.pin = new Pin
+            this.pin = new Pin(mv)
             {
                 Icon = UserIcon,
                 Label = UserID,
                 Position = posizione
             };
+        }
+
+        //da far fungere
+        public static byte[] ReadResource(String filename)
+        {
+            byte[] result;
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            string resourceName = assembly.GetManifestResourceNames()
+                                .Single(str => str.EndsWith(filename));
+            if (resourceName == null)
+            {
+                Console.WriteLine("///////////////////////" +
+                    "IL NOME DEL FILE O IL FILE NON ESISTONO" +
+                    "/////////////////////////");
+                throw new ArgumentNullException();
+            }
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    stream.CopyTo(memoryStream);
+                    result = (byte[])memoryStream.ToArray();
+                }
+            }
+            return result;
         }
     }
 }

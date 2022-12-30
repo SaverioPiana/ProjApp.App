@@ -4,7 +4,7 @@ using Mapsui.Layers;
 using Mapsui.Projections;
 using Mapsui.UI.Maui;
 using Microsoft.AspNetCore.SignalR.Client;
-using ProjApp.Map;
+using ProjApp.MapEl;
 using System.Collections.ObjectModel;
 
 namespace ProjApp;

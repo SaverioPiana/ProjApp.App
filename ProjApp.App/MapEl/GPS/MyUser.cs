@@ -2,7 +2,7 @@
 using Mapsui.UI.Maui;
 using ProjApp.Gioco;
 
-namespace ProjApp.Map.GPS
+namespace ProjApp.MapEl.GPS
 {
     public class MyUser
     {
@@ -11,9 +11,9 @@ namespace ProjApp.Map.GPS
         public static User user;
 
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
-        public MyUser()
+        public MyUser(MapView mv)
         {
-            user = new("Nickname", DeviceInfo.Name, new());
+            user = new("Nickname", DeviceInfo.Name, new(), mv);
         }
 
 

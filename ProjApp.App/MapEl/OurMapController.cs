@@ -19,17 +19,17 @@ using Microsoft.AspNetCore.SignalR.Client;
 using NetTopologySuite.Geometries;
 using Polygon = NetTopologySuite.Geometries.Polygon;
 using Position = Mapsui.UI.Maui.Position;
-using ProjApp.Map.GPS;
+using ProjApp.MapEl.GPS;
 using Microsoft.Maui.Graphics;
 using Mapsui.Nts.Extensions;
 using ProjApp.Gioco;
 
-namespace ProjApp.Map
+namespace ProjApp.MapEl
 {
     public class OurMapController
     {
-        MyUser myuser = new();
         MapView mapView = new();
+        MyUser myuser;
 
         const double STARTING_RES = 2;
         private bool update_once = true;   //carina l'idea ma non penso la useremo,
@@ -61,6 +61,7 @@ namespace ProjApp.Map
 
         public MapView MapInitializer(HubConnection _connection)
         {
+            myuser = new MyUser(mapView);
 
             connection_nelMC = _connection;
             mapView.IsMyLocationButtonVisible = false;
@@ -78,15 +79,14 @@ namespace ProjApp.Map
             mapView.IsZoomButtonVisible = false;
             mapView.MyLocationFollow = false;
 
-            User user1 = new("o", "o", new(12.340445071924254, 41.74608176704198));
-            mapView.Pins.Add(user1.pin);
-            
+            //prova, esplodera tutto aiut
+            mapView.Map.Layers.Add(CustomSymbols.CreateStylesLayer(mapView.Map.Extent));
+
             mapView.Map.Home = n => n.NavigateTo(center:
                                       SphericalMercator.FromLonLat(new MPoint(
                                       12.340445071924254, 41.74608176704198)),
                                       resolution: STARTING_RES);
-
-
+            
             //mapView.Map.Layers.Add(creaLayerPins());
 
 
@@ -129,21 +129,21 @@ namespace ProjApp.Map
             var poly1 = new NetTopologySuite.Geometries.Polygon(new LinearRing
                 (new[]
                     {
-                        new Position(12.338212 , 41.731604 ).ToMapsui().ToCoordinate(),
-                        new Position(12.314546 , 41.749755 ).ToMapsui().ToCoordinate(),
-                        new Position(12.325532 , 41.768707 ).ToMapsui().ToCoordinate(),
-                        new Position(12.362954 , 41.756030 ).ToMapsui().ToCoordinate(),
-                        new Position(12.338212 , 41.731604 ).ToMapsui().ToCoordinate()
+                        new Position( 41.731604 , 12.338212 ).ToMapsui().ToCoordinate(),
+                        new Position( 41.749755 , 12.314546 ).ToMapsui().ToCoordinate(),
+                        new Position( 41.768707 , 12.325532 ).ToMapsui().ToCoordinate(),
+                        new Position( 41.756030 , 12.362954 ).ToMapsui().ToCoordinate(),
+                        new Position( 41.731604 , 12.338212 ).ToMapsui().ToCoordinate()
                     })
                 );
 
             var poly2 = new NetTopologySuite.Geometries.Polygon(new LinearRing
                 (new[]
                     {
-                        new Position( 12.337542 , 41.761940 ).ToMapsui().ToCoordinate(),
-                        new Position( 12.340910 , 41.764191 ).ToMapsui().ToCoordinate(),
-                        new Position( 12.340559 , 41.760128 ).ToMapsui().ToCoordinate(),
-                        new Position( 12.337542 , 41.761940 ).ToMapsui().ToCoordinate()
+                        new Position( 41.761940 , 12.337542 ).ToMapsui().ToCoordinate(),
+                        new Position( 41.764191 , 12.340910 ).ToMapsui().ToCoordinate(),
+                        new Position( 41.760128 , 12.340559 ).ToMapsui().ToCoordinate(),
+                        new Position( 41.761940 , 12.337542 ).ToMapsui().ToCoordinate()
                     })
                 );
             result.Add(poly1);
@@ -312,6 +312,7 @@ namespace ProjApp.Map
                 Scale = 0.35F,
             }) ;
         }
+
         // NON FUNGE -> DA VEDERE
 
         //public static MemoryLayer creaLayerPins()
@@ -322,9 +323,9 @@ namespace ProjApp.Map
         //        Features = creaPins(),
         //        Style = CreaStile()
         //    }; 
-            
+
         //}
-        
+
         //public static IEnumerable<IFeature> creaPins()
         //{
         //    var listaPins = new List<MPoint>();
