@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.SignalR.Client;
 using ProjApp.Gioco;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Mapsui.Nts;
+using Mapsui.Extensions;
 
 namespace ProjApp.MapEl.GPS
 {
@@ -75,15 +77,18 @@ namespace ProjApp.MapEl.GPS
         {
             while (want_sendposition)
             {
-                string jsonPin = JsonSerializer.Serialize<Pin>(user.UserPin,
+                if (connection_nelMC.State.Equals(HubConnectionState.Connected))
+                {
+                    string jsonUser = JsonSerializer.Serialize<User>(user,
                           new JsonSerializerOptions
                           {
                               NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+                              IgnoreReadOnlyProperties = true,
+                              IgnoreReadOnlyFields = true
                           });
-                if (connection_nelMC.State.Equals(HubConnectionState.Connected))
-                {
+
                     await connection_nelMC.InvokeAsync("SendPosition",
-                          arg1: jsonPin);
+                          arg1: jsonUser);
                 }
                 await Task.Delay(delay);
             }

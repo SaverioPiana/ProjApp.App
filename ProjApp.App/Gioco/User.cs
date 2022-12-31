@@ -13,7 +13,7 @@ namespace ProjApp.Gioco
     public class User
     {
         public string Nickname { get; set; }
-        public string UserID { get; private set; }
+        public string UserID { get; set; }
         public Pin UserPin { get; set; }
         public byte[] UserIcon = OurMapController.ReadResource(Assembly.GetExecutingAssembly(), "pinicon.png");
 

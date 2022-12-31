@@ -182,16 +182,16 @@ namespace ProjApp.MapEl
         {
             connection_nelMC.On<string>("PositionReceived", (receiveduser) =>
             {
-                Pin? user = JsonSerializer.Deserialize<Pin>(receiveduser);
-                Console.WriteLine($"/////////Posizione ricevuta da:{user.Label} , " +
-                    $"lat:{user.Position.Latitude}, lon: {user.Position.Longitude}");
-                if (user.Label != MyUser.user.UserID) {
+                User? user = JsonSerializer.Deserialize<User>(receiveduser);
+                Console.WriteLine($"/////////Posizione ricevuta da:{user.UserID} , " +
+                    $"lat:{user.UserPin.Position.Latitude}, lon: {user.UserPin.Position.Longitude}");
+                if (user.UserID != MyUser.user.UserID) {
                     bool trovato = false;
-                    Position position = user.Position;
+                    Position position = user.UserPin.Position;
                     //se trovo l'utente aggiorno la sua posizione
                     foreach (Pin p in mapView.Pins)
                     {
-                        if (user.Label.Equals(p.Label))
+                        if (user.UserID.Equals(p.Label))
                         {
                             trovato = true;
                             Interpolate(p, position); //animazione piu fluida
@@ -200,7 +200,7 @@ namespace ProjApp.MapEl
                     //altrimenti ne creo uno nuovo (di pin)
                     if (!trovato)
                     {
-                        mapView.Pins.Add(user);
+                        mapView.Pins.Add(user.UserPin);
                     }
                 }
             });
