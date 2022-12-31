@@ -37,7 +37,6 @@ public  partial class MainPage : ContentPage
     //mando la connessione a mapInitializer
         Content = new OurMapController().MapInitializer(_connection);
            
-
     }
 
     //forse va messa una condizione in modo tale che non runni sempre all avvio, tipo salvarci un bool su un file boh

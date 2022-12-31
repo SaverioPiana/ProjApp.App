@@ -23,6 +23,7 @@ using ProjApp.MapEl.GPS;
 using Microsoft.Maui.Graphics;
 using Mapsui.Nts.Extensions;
 using ProjApp.Gioco;
+using System.Reflection;
 
 namespace ProjApp.MapEl
 {
@@ -44,7 +45,28 @@ namespace ProjApp.MapEl
         private bool want_sendposition = true;
         const int SEND_POS_DELAY = 3000;
 
-
+        //legge risorse come e le trasforma in byte array
+        public static byte[] ReadResource(Assembly assembly, String filename)
+        {
+            byte[] result;
+            string resourceName = assembly.GetManifestResourceNames()
+                                .Single(str => str.EndsWith(filename));
+            if (resourceName == null)
+            {
+                throw new ArgumentNullException("///////////////////////" +
+                    "IL NOME DEL FILE O IL FILE NON ESISTONO" +
+                    "/////////////////////////");
+            }
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    stream.CopyTo(memoryStream);
+                    result = memoryStream.ToArray();
+                }
+            }
+            return result;
+        }
 
         public static TileLayer CreateTileLayer()
         {
@@ -62,7 +84,7 @@ namespace ProjApp.MapEl
         public MapView MapInitializer(HubConnection _connection)
         {
             myuser = new MyUser(mapView);
-
+            
             connection_nelMC = _connection;
             mapView.IsMyLocationButtonVisible = false;
 
@@ -79,15 +101,17 @@ namespace ProjApp.MapEl
             mapView.IsZoomButtonVisible = false;
             mapView.MyLocationFollow = false;
 
-            //prova, esplodera tutto aiut
-            mapView.Map.Layers.Add(CustomSymbols.CreateStylesLayer(mapView.Map.Extent));
-
             mapView.Map.Home = n => n.NavigateTo(center:
                                       SphericalMercator.FromLonLat(new MPoint(
                                       12.340445071924254, 41.74608176704198)),
                                       resolution: STARTING_RES);
-            
+
             //mapView.Map.Layers.Add(creaLayerPins());
+
+            //PROVA
+            User userFake = new User("O", "ulala", new Position(41.767523, 12.359897), mapView);
+            mapView.Pins.Add(userFake.UserPin);
+            //
 
 
             AddPin(mapView, new Position(41.746168, 12.340037), "Casetta", Colors.Aqua);
