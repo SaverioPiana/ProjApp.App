@@ -117,7 +117,7 @@ namespace ProjApp.MapEl
             //
 
             //PROVA 2
-            string jsonpin = JsonSerializer.Serialize<Pin>(MyUser.user.UserPin,
+            string jsonpin = JsonSerializer.Serialize<Pin>(userFake.UserPin,
                           new JsonSerializerOptions
                           {
                               NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
@@ -126,6 +126,17 @@ namespace ProjApp.MapEl
                           });
 
             SerializablePin pin = JsonSerializer.Deserialize<SerializablePin>(jsonpin);
+            //
+
+            //PROVA 3
+            string jsonpos = JsonSerializer.Serialize<Position>(userFake.UserPin.Position,
+                          new JsonSerializerOptions
+                          {
+                              NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+                              PropertyNameCaseInsensitive = true
+                          });
+
+            Position pos = JsonSerializer.Deserialize<Position>(jsonpos);
             //
 
 
