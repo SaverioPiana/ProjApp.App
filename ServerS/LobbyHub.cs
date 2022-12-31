@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 
 namespace ServerS
 {
     public class LobbyHub : Hub
     {
-        public async Task SendPosition(string user , double lat, double lon)
+        public async Task SendPosition(object user)
         {
-            await Clients.All.SendAsync("PositionReceived", user, lat, lon);
+            await Clients.All.SendAsync("PositionReceived", user);
         }
     }
 }
