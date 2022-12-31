@@ -1,6 +1,9 @@
 ﻿using Android.Text.Style;
 using Mapsui.UI.Maui;
+using Microsoft.AspNetCore.SignalR.Client;
 using ProjApp.Gioco;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace ProjApp.MapEl.GPS
 {
@@ -9,6 +12,8 @@ namespace ProjApp.MapEl.GPS
         private CancellationTokenSource _cancelTokenSource;
         private bool _isCheckingLocation;
         public static User user;
+
+        private static bool want_sendposition = true;
 
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
         public MyUser(MapView mv)
@@ -63,6 +68,26 @@ namespace ProjApp.MapEl.GPS
         {
             if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
                 _cancelTokenSource.Cancel();
+        }
+
+        //non funziona
+        public static async void inviaPosSignalR(HubConnection connection_nelMC, int delay)
+        {
+            while (want_sendposition)
+            {
+                string jsonPin = JsonSerializer.Serialize<Pin>(user.UserPin,
+                          new JsonSerializerOptions
+                          {
+                              NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+                          });
+                if (connection_nelMC.State.Equals(HubConnectionState.Connected))
+                {
+                    await connection_nelMC.InvokeAsync("SendPosition",
+                          arg1: jsonPin);
+                }
+                await Task.Delay(delay);
+            }
+
         }
     }
 }

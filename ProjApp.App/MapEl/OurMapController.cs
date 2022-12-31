@@ -24,6 +24,8 @@ using Microsoft.Maui.Graphics;
 using Mapsui.Nts.Extensions;
 using ProjApp.Gioco;
 using System.Reflection;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace ProjApp.MapEl
 {
@@ -42,7 +44,6 @@ namespace ProjApp.MapEl
         
         //SignalR Parametri
         private HubConnection connection_nelMC;
-        private bool want_sendposition = true;
         const int SEND_POS_DELAY = 3000;
 
         //legge risorse come nomi di file e le trasforma in byte array
@@ -91,7 +92,7 @@ namespace ProjApp.MapEl
             Task.Run(() => this.Update_MapToPos()).Wait();
             Task.Run(() => this.Update_MyPosition_ALWAYS());
 
-            Task.Run(() => this.inviaPosSignalR());
+            Task.Run(() => MyUser.inviaPosSignalR(connection_nelMC, SEND_POS_DELAY));
             Task.Run(() => this.aggiungiAltriGiocatoriAllaMappa());
 
             mapView.Map?.Layers.Add(OurMapController.CreateTileLayer());
@@ -176,36 +177,21 @@ namespace ProjApp.MapEl
             return result;
         }
 
-        //SIGNALR METODI TEMPORANEI
-        private async void inviaPosSignalR()
-        {
-            while (want_sendposition)
-            {
-                if (connection_nelMC.State.Equals(HubConnectionState.Connected)) { 
-                    await connection_nelMC.InvokeAsync("SendPosition",
-                          arg1: MyUser.user.UserID,
-                          arg2: MyUser.user.UserPin.Position.Latitude,
-                          arg3: MyUser.user.UserPin.Position.Longitude);
-                 }
-                await Task.Delay(SEND_POS_DELAY);
-            }
-
-        }
-
-
         //FINE METODI TEMPORANEI SIGNALR
         private void aggiungiAltriGiocatoriAllaMappa()
         {
-            connection_nelMC.On<string, double, double>("PositionReceived", (user, lat, lon) =>
+            connection_nelMC.On<string>("PositionReceived", (receiveduser) =>
             {
-                Console.WriteLine($"/////////Posizione ricevuta da:{user} , lat:{lat}, lon: {lon}");
-                if (user != MyUser.user.UserID) {
+                Pin? user = JsonSerializer.Deserialize<Pin>(receiveduser);
+                Console.WriteLine($"/////////Posizione ricevuta da:{user.Label} , " +
+                    $"lat:{user.Position.Latitude}, lon: {user.Position.Longitude}");
+                if (user.Label != MyUser.user.UserID) {
                     bool trovato = false;
-                    Position position = new(lat, lon);
+                    Position position = user.Position;
                     //se trovo l'utente aggiorno la sua posizione
                     foreach (Pin p in mapView.Pins)
                     {
-                        if (user == p.Label)
+                        if (user.Label.Equals(p.Label))
                         {
                             trovato = true;
                             Interpolate(p, position); //animazione piu fluida
@@ -214,9 +200,7 @@ namespace ProjApp.MapEl
                     //altrimenti ne creo uno nuovo (di pin)
                     if (!trovato)
                     {
-                        Random r = new();
-                        AddPin(mapView, position, user,
-                            Microsoft.Maui.Graphics.Color.FromRgb(r.Next(256), r.Next(256), r.Next(256)));
+                        mapView.Pins.Add(user);
                     }
                 }
             });
