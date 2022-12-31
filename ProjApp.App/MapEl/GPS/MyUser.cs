@@ -39,7 +39,7 @@ namespace ProjApp.MapEl.GPS
 
                     if (location != null)
                     {
-                         user.position = new Position(location.Latitude, location.Longitude);
+                         user.UserPin.Position = new Position(location.Latitude, location.Longitude);
                          Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
                     }
 

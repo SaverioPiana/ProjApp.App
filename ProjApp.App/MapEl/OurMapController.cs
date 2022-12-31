@@ -29,8 +29,8 @@ namespace ProjApp.MapEl
 {
     public class OurMapController
     {
-        MapView mapView = new();
-        MyUser myuser;
+        private MapView mapView = new();
+        private MyUser myuser;
 
         const double STARTING_RES = 2;
         private bool update_once = true;   //carina l'idea ma non penso la useremo,
@@ -45,7 +45,7 @@ namespace ProjApp.MapEl
         private bool want_sendposition = true;
         const int SEND_POS_DELAY = 3000;
 
-        //legge risorse come e le trasforma in byte array
+        //legge risorse come nomi di file e le trasforma in byte array
         public static byte[] ReadResource(Assembly assembly, String filename)
         {
             byte[] result;
@@ -111,6 +111,7 @@ namespace ProjApp.MapEl
             //PROVA
             User userFake = new User("O", "ulala", new Position(41.767523, 12.359897), mapView);
             mapView.Pins.Add(userFake.UserPin);
+
             //
 
 
@@ -183,8 +184,8 @@ namespace ProjApp.MapEl
                 if (connection_nelMC.State.Equals(HubConnectionState.Connected)) { 
                     await connection_nelMC.InvokeAsync("SendPosition",
                           arg1: MyUser.user.UserID,
-                          arg2: MyUser.user.position.Latitude,
-                          arg3: MyUser.user.position.Longitude);
+                          arg2: MyUser.user.UserPin.Position.Latitude,
+                          arg3: MyUser.user.UserPin.Position.Longitude);
                  }
                 await Task.Delay(SEND_POS_DELAY);
             }
@@ -227,7 +228,7 @@ namespace ProjApp.MapEl
             
             await Update_MyPosition_ONCE();    
             mapView.Navigator.FlyTo(
-                SphericalMercator.FromLonLat(new MPoint(MyUser.user.position.Longitude, MyUser.user.position.Latitude)), 3, 5000);
+                SphericalMercator.FromLonLat(new MPoint(MyUser.user.UserPin.Position.Longitude, MyUser.user.UserPin.Position.Latitude)), 3, 5000);
             mapView.IsMyLocationButtonVisible = true;
 
         }
@@ -236,7 +237,7 @@ namespace ProjApp.MapEl
         public async Task Update_MyPosition_ONCE()
         {   
             await myuser.Get_Position();
-            Position p = MyUser.user.position;
+            Position p = MyUser.user.UserPin.Position;
             mapView.MyLocationLayer.UpdateMyLocation(p, true);
             update_once = false;
             updateCtr++;
@@ -251,7 +252,7 @@ namespace ProjApp.MapEl
             while (want_position)
             {
                 await myuser.Get_Position();
-                Position p = MyUser.user.position;
+                Position p = MyUser.user.UserPin.Position;
                 mapView.MyLocationLayer.UpdateMyLocation(p, true);
                 updateCtr++;
 

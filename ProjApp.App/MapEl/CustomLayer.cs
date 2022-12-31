@@ -37,11 +37,13 @@ namespace ProjApp.MapEl
             };
         }
         
-        public IFeature CreateUserFeature(User user)
+        public IFeature CreateUserFeature(User user, MapView mv)
         {
             var UserStyle = user.UserIcon;
 
-            var feature = new PointFeature(user.position.ToMapsui());
+            var feature = new PointFeature(user.UserPin.Position.ToMapsui());
+
+            feature.Styles.Add(PositionDot());
 
             feature.Styles.Add(new LabelStyle
             {
@@ -50,14 +52,14 @@ namespace ProjApp.MapEl
                 VerticalAlignment = LabelStyle.VerticalAlignmentEnum.Top
             });
 
-            
-            feature.Styles.Add(PositionDot());
-
             features.Add(feature);
-            if(userlayer == null)
+            if (userlayer == null)
                 CreateLayer();
             else
+            {
                 userlayer.DataHasChanged();
+                mv.Refresh();
+            }
 
             return feature;
         }
