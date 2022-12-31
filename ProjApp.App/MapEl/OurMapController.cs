@@ -45,6 +45,7 @@ namespace ProjApp.MapEl
         //SignalR Parametri
         private HubConnection connection_nelMC;
         const int SEND_POS_DELAY = 3000;
+        private bool want_sendposition = true;
 
         //legge risorse come nomi di file e le trasforma in byte array
         public static byte[] ReadResource(Assembly assembly, String filename)
@@ -92,7 +93,8 @@ namespace ProjApp.MapEl
             Task.Run(() => this.Update_MapToPos()).Wait();
             Task.Run(() => this.Update_MyPosition_ALWAYS());
 
-            Task.Run(() => MyUser.inviaPosSignalR(connection_nelMC, SEND_POS_DELAY));
+            Task.Run(() => this.inviaPosSignalR());
+            Task.Delay(10000).Wait();
             Task.Run(() => this.aggiungiAltriGiocatoriAllaMappa());
 
             mapView.Map?.Layers.Add(OurMapController.CreateTileLayer());
@@ -178,6 +180,29 @@ namespace ProjApp.MapEl
         }
 
         //FINE METODI TEMPORANEI SIGNALR
+
+        public async void inviaPosSignalR()
+        {
+            while (want_sendposition)
+            {
+                if (connection_nelMC.State.Equals(HubConnectionState.Connected))
+                {
+                    string jsonUser = JsonSerializer.Serialize<User>(MyUser.user,
+                          new JsonSerializerOptions
+                          {
+                              NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+                              IgnoreReadOnlyProperties = true,
+                              IgnoreReadOnlyFields = true
+                          });
+
+                    await connection_nelMC.InvokeAsync("SendPosition",
+                          arg1: jsonUser);
+                }
+                await Task.Delay(SEND_POS_DELAY);
+            }
+
+        }
+
         private void aggiungiAltriGiocatoriAllaMappa()
         {
             connection_nelMC.On<string>("PositionReceived", (receiveduser) =>

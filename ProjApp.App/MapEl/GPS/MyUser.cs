@@ -15,7 +15,7 @@ namespace ProjApp.MapEl.GPS
         private bool _isCheckingLocation;
         public static User user;
 
-        private static bool want_sendposition = true;
+        
 
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
         public MyUser(MapView mv)
@@ -70,29 +70,6 @@ namespace ProjApp.MapEl.GPS
         {
             if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
                 _cancelTokenSource.Cancel();
-        }
-
-        //non funziona
-        public static async void inviaPosSignalR(HubConnection connection_nelMC, int delay)
-        {
-            while (want_sendposition)
-            {
-                if (connection_nelMC.State.Equals(HubConnectionState.Connected))
-                {
-                    string jsonUser = JsonSerializer.Serialize<User>(user,
-                          new JsonSerializerOptions
-                          {
-                              NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-                              IgnoreReadOnlyProperties = true,
-                              IgnoreReadOnlyFields = true
-                          });
-
-                    await connection_nelMC.InvokeAsync("SendPosition",
-                          arg1: jsonUser);
-                }
-                await Task.Delay(delay);
-            }
-
         }
     }
 }
