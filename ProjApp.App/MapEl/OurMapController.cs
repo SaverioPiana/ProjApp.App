@@ -94,7 +94,6 @@ namespace ProjApp.MapEl
             Task.Run(() => this.Update_MyPosition_ALWAYS());
 
             Task.Run(() => this.inviaPosSignalR());
-            Task.Delay(10000).Wait();
             Task.Run(() => this.aggiungiAltriGiocatoriAllaMappa());
 
             mapView.Map?.Layers.Add(OurMapController.CreateTileLayer());
@@ -115,6 +114,18 @@ namespace ProjApp.MapEl
             User userFake = new User("O", "ulala", new Position(41.767523, 12.359897), mapView);
             mapView.Pins.Add(userFake.UserPin);
 
+            //
+
+            //PROVA 2
+            string jsonpin = JsonSerializer.Serialize<Pin>(MyUser.user.UserPin,
+                          new JsonSerializerOptions
+                          {
+                              NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+                              IgnoreReadOnlyProperties = true,
+                              PropertyNameCaseInsensitive = true
+                          });
+
+            SerializablePin pin = JsonSerializer.Deserialize<SerializablePin>(jsonpin);
             //
 
 
@@ -192,11 +203,13 @@ namespace ProjApp.MapEl
                           {
                               NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
                               IgnoreReadOnlyProperties = true,
-                              IgnoreReadOnlyFields = true
+                              PropertyNameCaseInsensitive = true
                           });
 
                     await connection_nelMC.InvokeAsync("SendPosition",
                           arg1: jsonUser);
+
+                    SerializableUser user = JsonSerializer.Deserialize<SerializableUser>(jsonUser);
                 }
                 await Task.Delay(SEND_POS_DELAY);
             }
@@ -207,7 +220,7 @@ namespace ProjApp.MapEl
         {
             connection_nelMC.On<string>("PositionReceived", (receiveduser) =>
             {
-                User? user = JsonSerializer.Deserialize<User>(receiveduser);
+                SerializableUser user = JsonSerializer.Deserialize<SerializableUser>(receiveduser);
                 Console.WriteLine($"/////////Posizione ricevuta da:{user.UserID} , " +
                     $"lat:{user.UserPin.Position.Latitude}, lon: {user.UserPin.Position.Longitude}");
                 if (user.UserID != MyUser.user.UserID) {
@@ -225,7 +238,14 @@ namespace ProjApp.MapEl
                     //altrimenti ne creo uno nuovo (di pin)
                     if (!trovato)
                     {
-                        mapView.Pins.Add(user.UserPin);
+                        mapView.Pins.Add(new Pin(mapView)
+                            {
+                                Label = user.UserPin.Label,
+                                Position = user.UserPin.Position,
+                                Type = PinType.Icon,
+                                Icon = user.UserPin.Icon,
+                                Scale = 0.6F
+                            });
                     }
                 }
             });

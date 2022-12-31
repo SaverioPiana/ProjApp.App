@@ -15,6 +15,7 @@ namespace ProjApp.Gioco
         public string Nickname { get; set; }
         public string UserID { get; set; }
         public Pin UserPin { get; set; }
+        [JsonIgnore]
         public byte[] UserIcon = OurMapController.ReadResource(Assembly.GetExecutingAssembly(), "pinicon.png");
 
         public User(string nickname, string userID, Position posizione, MapView mv)
