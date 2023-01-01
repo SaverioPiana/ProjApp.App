@@ -26,6 +26,7 @@ using ProjApp.Gioco;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Location = Microsoft.Maui.Devices.Sensors.Location;
 
 namespace ProjApp.MapEl
 {
@@ -110,35 +111,10 @@ namespace ProjApp.MapEl
 
             //mapView.Map.Layers.Add(creaLayerPins());
 
-            //PROVA
-            User userFake = new User("O", "ulala", new Position(41.767523, 12.359897), mapView);
+            //PROVA LEVALAAAAAAAAAAAAAAAAAAA
+            User userFake = new User("O", "ulala", new Location(41.767523, 12.359897), mapView);
             mapView.Pins.Add(userFake.UserPin);
-
             //
-
-            //PROVA 2
-            string jsonpin = JsonSerializer.Serialize<Pin>(userFake.UserPin,
-                          new JsonSerializerOptions
-                          {
-                              NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-                              IgnoreReadOnlyProperties = true,
-                              PropertyNameCaseInsensitive = true
-                          });
-
-            SerializablePin pin = JsonSerializer.Deserialize<SerializablePin>(jsonpin);
-            //
-
-            //PROVA 3
-            string jsonpos = JsonSerializer.Serialize<Position>(userFake.UserPin.Position,
-                          new JsonSerializerOptions
-                          {
-                              NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-                              PropertyNameCaseInsensitive = true
-                          });
-
-            Position pos = JsonSerializer.Deserialize<Position>(jsonpos);
-            //
-
 
             AddPin(mapView, new Position(41.746168, 12.340037), "Casetta", Colors.Aqua);
             AddPin(mapView, new Position(41.767523, 12.359897), "Carlium", Colors.Red);
@@ -213,7 +189,6 @@ namespace ProjApp.MapEl
                           new JsonSerializerOptions
                           {
                               NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-                              IgnoreReadOnlyProperties = true,
                               PropertyNameCaseInsensitive = true
                           });
 
@@ -233,10 +208,10 @@ namespace ProjApp.MapEl
             {
                 SerializableUser user = JsonSerializer.Deserialize<SerializableUser>(receiveduser);
                 Console.WriteLine($"/////////Posizione ricevuta da:{user.UserID} , " +
-                    $"lat:{user.UserPin.Position.Latitude}, lon: {user.UserPin.Position.Longitude}");
+                    $"lat:{user.Position.Latitude}, lon: {user.Position.Longitude}");
                 if (user.UserID != MyUser.user.UserID) {
                     bool trovato = false;
-                    Position position = user.UserPin.Position;
+                    Position position = new(user.Position.Latitude, user.Position.Longitude);
                     //se trovo l'utente aggiorno la sua posizione
                     foreach (Pin p in mapView.Pins)
                     {
@@ -251,10 +226,10 @@ namespace ProjApp.MapEl
                     {
                         mapView.Pins.Add(new Pin(mapView)
                             {
-                                Label = user.UserPin.Label,
-                                Position = user.UserPin.Position,
+                                Label = user.UserID,
+                                Position = position,
                                 Type = PinType.Icon,
-                                Icon = user.UserPin.Icon,
+                                Icon = user.UserIcon,
                                 Scale = 0.6F
                             });
                     }
@@ -268,7 +243,7 @@ namespace ProjApp.MapEl
             
             await Update_MyPosition_ONCE();    
             mapView.Navigator.FlyTo(
-                SphericalMercator.FromLonLat(new MPoint(MyUser.user.UserPin.Position.Longitude, MyUser.user.UserPin.Position.Latitude)), 3, 5000);
+                SphericalMercator.FromLonLat(new MPoint(MyUser.user.Position.Longitude, MyUser.user.Position.Latitude)), 3, 5000);
             mapView.IsMyLocationButtonVisible = true;
 
         }
