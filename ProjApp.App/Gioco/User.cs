@@ -14,8 +14,10 @@ namespace ProjApp.Gioco
     {
         [JsonIgnore]
         private object lockObject = new object();
-
         private Location position;
+        private bool isCercatore = false;
+
+        public bool IsCercatore { get; set; }
         public string Nickname { get; set; }
         public string UserID { get; set; }
         [JsonIgnore]

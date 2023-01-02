@@ -87,7 +87,9 @@ namespace ProjApp.MapEl
         public MapView MapInitializer(HubConnection _connection)
         {
             myuser = new MyUser(mapView);
-            
+            //PROVA//
+            Partita p = new();
+            ////////
             connection_nelMC = _connection;
             mapView.IsMyLocationButtonVisible = false;
 

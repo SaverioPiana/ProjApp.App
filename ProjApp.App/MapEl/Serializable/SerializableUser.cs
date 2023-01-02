@@ -6,4 +6,5 @@ public class SerializableUser
     public string UserID { get; set; }
     public Location Position { get; set; }
     public byte[] UserIcon { get; set; }
+    public bool IsCercatore { get; set; }
 }
