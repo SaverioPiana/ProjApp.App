@@ -1,4 +1,5 @@
-﻿using ProjApp.MapEl.GPS;
+﻿using Microsoft.AspNetCore.SignalR.Client;
+using ProjApp.MapEl.GPS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +17,41 @@ namespace ProjApp.Gioco
 
         public IList<User> Players { get; set; }
         public bool GiocoInCorso { get; set; }
-        public string Cod_partita { get; set; }
+        public string Cod_partita { get { return cod_partita; } set { cod_partita = value; } }
 
-        public Partita()
+        private readonly HubConnection _connection;
+
+        public Partita(HubConnection con)
         {
+            _connection = con;
             players = new List<User>();
             cod_partita = CreateCode();
+            
+
+
         }
+        public void CreateLobby()
+        {
+            _connection.InvokeAsync("CreateLobby", arg1: cod_partita);
+            this.JoinLobby(cod_partita);
+            Console.WriteLine($"Lobby Creata con codice {cod_partita}");
+
+        }
+        public void JoinLobby(string lid)
+        {
+            _connection.InvokeAsync("JoinLobby", lid);
+            MyUser.currPartita = lid;   
+        }
+        public void LeaveLobby()
+        {
+            _connection.InvokeAsync("LeaveLobby", MyUser.currPartita);
+        }
+        public void StartGame()
+        {
+            _connection.InvokeAsync("StartGame", arg1: cod_partita);
+            
+        }
+
 
         //crea un codice hash per la partita usando data e ora e userID
         private static string CreateCode()

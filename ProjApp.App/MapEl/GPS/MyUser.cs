@@ -14,8 +14,11 @@ namespace ProjApp.MapEl.GPS
         private CancellationTokenSource _cancelTokenSource;
         private bool _isCheckingLocation;
         public static User user;
+        public static string currPartita;
+
 
         
+
 
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
         public MyUser(MapView mv)

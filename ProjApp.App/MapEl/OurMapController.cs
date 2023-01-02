@@ -46,6 +46,7 @@ namespace ProjApp.MapEl
         //SignalR Parametri
         private HubConnection connection_nelMC;
         const int SEND_POS_DELAY = 3000;
+        
         private bool want_sendposition = true;
 
         //legge risorse come nomi di file e le trasforma in byte array
@@ -87,16 +88,16 @@ namespace ProjApp.MapEl
         public MapView MapInitializer(HubConnection _connection)
         {
             myuser = new MyUser(mapView);
-            //PROVA//
-            Partita p = new();
-            ////////
             connection_nelMC = _connection;
             mapView.IsMyLocationButtonVisible = false;
 
+            //PROVA//
+            Task.Run(() => this.creaPartita(_connection));
+            ////////
             Task.Run(() => this.Update_MapToPos()).Wait();
             Task.Run(() => this.Update_MyPosition_ALWAYS());
 
-            Task.Run(() => this.inviaPosSignalR());
+            //Task.Run(() => this.inviaPosSignalR());
             Task.Run(() => this.aggiungiAltriGiocatoriAllaMappa());
 
             mapView.Map?.Layers.Add(OurMapController.CreateTileLayer());
@@ -126,6 +127,23 @@ namespace ProjApp.MapEl
             return mapView;
 
         }
+
+        private async void creaPartita(HubConnection con)
+        {
+            //aspetto che si connetta prima (temporaneao)
+            await Task.Delay(7000);
+            Partita p = new(con);
+            p.StartGame();
+            con.On("GameStarted", () => {
+                Console.WriteLine("GameStarted message from server");
+                Task.Run(() => this.inviaPosSignalR());
+            });
+
+            
+        }
+
+
+
 
         //metodo che crea layer generici
         public ILayer CreateCustomLayer(string name)
@@ -195,7 +213,9 @@ namespace ProjApp.MapEl
                           });
 
                     await connection_nelMC.InvokeAsync("SendPosition",
-                          arg1: jsonUser);
+                          arg1: jsonUser,
+                          //Codice lobby
+                          arg2: MyUser.currPartita);
                 }
                 await Task.Delay(SEND_POS_DELAY);
             }
