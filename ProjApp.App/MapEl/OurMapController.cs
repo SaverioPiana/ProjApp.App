@@ -30,7 +30,7 @@ using Location = Microsoft.Maui.Devices.Sensors.Location;
 
 namespace ProjApp.MapEl
 {
-    public class OurMapController
+    public class OurMapController : MapControl
     {
         private MapView mapView = new();
         private MyUser myuser;

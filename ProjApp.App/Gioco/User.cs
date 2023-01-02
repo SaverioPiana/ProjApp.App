@@ -20,7 +20,7 @@ namespace ProjApp.Gioco
         public string UserID { get; set; }
         [JsonIgnore]
         public Pin UserPin { get; set; }
-        public Location Position 
+        public Location Position
         {
             get
             {
