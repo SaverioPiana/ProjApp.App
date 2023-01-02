@@ -47,7 +47,7 @@ namespace ProjApp.MapEl.GPS
                     if (location != null)
                     {
                          user.Position = location;
-                         Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+                         Console.WriteLine($"GET_POSITION::: Accuracy: {location.Accuracy} Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
                     }
 
                 }
