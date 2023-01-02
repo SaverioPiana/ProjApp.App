@@ -194,12 +194,9 @@ namespace ProjApp.MapEl
 
                     await connection_nelMC.InvokeAsync("SendPosition",
                           arg1: jsonUser);
-
-                    SerializableUser user = JsonSerializer.Deserialize<SerializableUser>(jsonUser);
                 }
                 await Task.Delay(SEND_POS_DELAY);
             }
-
         }
 
         private void aggiungiAltriGiocatoriAllaMappa()
