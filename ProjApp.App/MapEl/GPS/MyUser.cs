@@ -44,7 +44,7 @@ namespace ProjApp.MapEl.GPS
                     Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
 
 
-                    if (location != null)
+                    if (location != null && location.Accuracy < 50)
                     {
                          user.Position = location;
                          Console.WriteLine($"GET_POSITION::: Accuracy: {location.Accuracy} Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
