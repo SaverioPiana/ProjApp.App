@@ -17,10 +17,12 @@ public  partial class MainPage : ContentPage
     {
         InitializeComponent();
 
+        //runniamo il check dei permessi sul main thread
         MainThread.BeginInvokeOnMainThread(() =>
         {
             CheckANDSetPermission();
         });
+
         //Connession a SignalR
         _connection = new HubConnectionBuilder()
             .WithUrl("https://nascondapp.azurewebsites.net/lobby")
@@ -34,9 +36,9 @@ public  partial class MainPage : ContentPage
             await _connection.StartAsync());
         });
 
-    //mando la connessione a mapInitializer
+        //mando la connessione a mapInitializer
         Content = new OurMapController().MapInitializer(_connection);
-           
+
     }
 
     //forse va messa una condizione in modo tale che non runni sempre all avvio, tipo salvarci un bool su un file boh
