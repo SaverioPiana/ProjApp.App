@@ -37,7 +37,7 @@ public  partial class MainPage : ContentPage
         });
 
         //mando la connessione a mapInitializer
-        Content = new OurMapController().MapInitializer(_connection);
+        Content = new OurMapController().MapInitializer();
 
     }
 

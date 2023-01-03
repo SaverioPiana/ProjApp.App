@@ -76,13 +76,13 @@ namespace ServerS
                 {
                     string cacciatore = lobby.ConnectedClients[random.Next(num_clients - 1)];
                     lobby.cacciatori.Add(cacciatore);
-                    //await Clients.Client(cacciatore).SendAsync("GameStarted" , true);
+                    await Clients.Client(cacciatore).SendAsync("GameStarted" , true);
                 }
             }
 
             // invoke the GameStarted clients method
-            //await Clients.GroupExcept(lobbyId, lobby.cacciatori).SendAsync("GameStarted" , false);
-            await Clients.Group(lobbyId).SendAsync("GameStarted", false);
+            await Clients.GroupExcept(lobbyId, lobby.cacciatori).SendAsync("GameStarted" , false);
+            //await Clients.Group(lobbyId).SendAsync("GameStarted", false);
 
         }
     }

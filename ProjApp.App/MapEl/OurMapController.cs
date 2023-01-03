@@ -160,16 +160,16 @@ namespace ProjApp.MapEl
 
         private void isGameStarted()
         {
-            MainPage._connection.On<bool>("GameStarted", (cacciatore) =>
+            MainPage._connection.On<bool>("GameStarted", (isCacciatore) =>
             {
                
-                if (cacciatore)
+                if (isCacciatore)
                 {
-                    Console.WriteLine("GameStarted message from server, non sei il cacciatore");
+                    Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
                 }
                 else
                 {
-                    Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
+                    Console.WriteLine("GameStarted message from server, non sei il cacciatore");
                 }
 
                 

@@ -26,7 +26,7 @@ namespace ProjApp.Gioco
         {
             _connection = con;
             players = new List<User>();
-            cod_partita = "AAA";
+            cod_partita = "AAA"; //codice temporaneo
             
 
 
