@@ -12,7 +12,7 @@ namespace ProjApp;
 public  partial class MainPage : ContentPage
 {
     //variabile di connessione all HUB di SignalR
-    private readonly HubConnection _connection;
+    public static HubConnection _connection;
     public MainPage()
     {
         InitializeComponent();

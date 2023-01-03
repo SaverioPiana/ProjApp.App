@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using ProjApp.MapEl;
 using ProjApp.MapEl.GPS;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace ProjApp.Gioco
         {
             _connection = con;
             players = new List<User>();
-            cod_partita = CreateCode();
+            cod_partita = "AAA";
             
 
 
@@ -40,7 +41,8 @@ namespace ProjApp.Gioco
         public void JoinLobby(string lid)
         {
             _connection.InvokeAsync("JoinLobby", lid);
-            MyUser.currPartita = lid;   
+            MyUser.currPartita = lid;
+            Task.Run(() => OurMapController.inviaPosSignalR());
         }
         public void LeaveLobby()
         {

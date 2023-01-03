@@ -28,6 +28,7 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using Location = Microsoft.Maui.Devices.Sensors.Location;
 
+
 namespace ProjApp.MapEl
 {
     public class OurMapController : MapControl
@@ -44,10 +45,9 @@ namespace ProjApp.MapEl
         private int updateCtr = 0;
         
         //SignalR Parametri
-        private HubConnection connection_nelMC;
         const int SEND_POS_DELAY = 3000;
         
-        private bool want_sendposition = true;
+        private static bool want_sendposition = true;
 
         //legge risorse come nomi di file e le trasforma in byte array
         public static byte[] ReadResource(Assembly assembly, String filename)
@@ -85,15 +85,15 @@ namespace ProjApp.MapEl
                 new[] { "a", "b", "c", "d" }, name: "CartoDB.Voyager");
         }
 
-        public MapView MapInitializer(HubConnection _connection)
+        public MapView MapInitializer()
         {
             myuser = new MyUser(mapView);
-            connection_nelMC = _connection;
             mapView.IsMyLocationButtonVisible = false;
 
-           
+            Partita part = new(MainPage._connection);
 
-            Task.Run(() => this.serverMessages());
+
+            Task.Run(() => this.serverMessages(part));
             Task.Run(() => this.isGameStarted());
 
             Task.Run(() => this.Update_MapToPos()).Wait();
@@ -115,7 +115,7 @@ namespace ProjApp.MapEl
                                       resolution: STARTING_RES);
 
             //PROVA//
-            Task.Run(() => this.creaPartitaEGioca());
+            Task.Run(() => this.creaPartitaEGioca(part));
             ////////
             //mapView.Map.Layers.Add(creaLayerPins());
 
@@ -135,16 +135,24 @@ namespace ProjApp.MapEl
         
         private void waitConnected()
         {
-            while (!connection_nelMC.State.Equals(HubConnectionState.Connected)){
+            while (!MainPage._connection.State.Equals(HubConnectionState.Connected)){
                 Task.Delay(1000).Wait();
             }
         }
 
-        private void serverMessages()
+        private void serverMessages(Partita p)
         {
-            connection_nelMC.On<string>("ServerMessage", (mess) =>
+            int count = 0;
+
+            MainPage._connection.On<string>("ServerMessage", (mess) =>
             {
                 Console.WriteLine($"///SERVER///::  {mess}");
+                count++;
+                if (count == 2)
+                {
+                    p.StartGame();
+                    p.GiocoInCorso = true;
+                }
 
             });
         }
@@ -152,7 +160,7 @@ namespace ProjApp.MapEl
 
         private void isGameStarted()
         {
-            connection_nelMC.On<bool>("GameStarted", (cacciatore) =>
+            MainPage._connection.On<bool>("GameStarted", (cacciatore) =>
             {
                
                 if (cacciatore)
@@ -164,7 +172,7 @@ namespace ProjApp.MapEl
                     Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
                 }
 
-                Task.Run(() => this.inviaPosSignalR());
+                
             });
 
 
@@ -172,16 +180,11 @@ namespace ProjApp.MapEl
 
 
 
-        private async void creaPartitaEGioca()
+        private async void creaPartitaEGioca(Partita p)
         {
             await Task.Delay(7000);
-            Partita p = new(connection_nelMC);
             p.CreateLobby();
-            p.StartGame();
-            p.GiocoInCorso = true;
-
-
-
+           
 
         }
 
@@ -242,11 +245,11 @@ namespace ProjApp.MapEl
 
         //FINE METODI TEMPORANEI SIGNALR
 
-        public async void inviaPosSignalR()
+        public static async void inviaPosSignalR()
         {
             while (want_sendposition)
             {
-                if (connection_nelMC.State.Equals(HubConnectionState.Connected))
+                if (MainPage._connection.State.Equals(HubConnectionState.Connected))
                 {
                     string jsonUser = JsonSerializer.Serialize<User>(MyUser.user,
                           new JsonSerializerOptions
@@ -255,7 +258,7 @@ namespace ProjApp.MapEl
                               PropertyNameCaseInsensitive = true
                           });
 
-                    await connection_nelMC.InvokeAsync("SendPosition",
+                    await MainPage._connection.InvokeAsync("SendPosition",
                           arg1: jsonUser,
                           //Codice lobby
                           arg2: MyUser.currPartita);
@@ -266,7 +269,7 @@ namespace ProjApp.MapEl
 
         private void aggiungiAltriGiocatoriAllaMappa()
         {
-            connection_nelMC.On<string>("PositionReceived", (receiveduser) =>
+            MainPage._connection.On<string>("PositionReceived", (receiveduser) =>
             {
                 SerializableUser user = JsonSerializer.Deserialize<SerializableUser>(receiveduser);
                 Console.WriteLine($"/////////Posizione ricevuta da:{user.UserID} , " +
