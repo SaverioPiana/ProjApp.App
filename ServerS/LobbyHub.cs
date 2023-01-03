@@ -9,8 +9,9 @@ namespace ServerS
         private static readonly Dictionary<string, Lobby> lobbies = new Dictionary<string, Lobby>();
         public async Task SendPosition(string user, string lobbid)
         {
-            await Clients.OthersInGroup(lobbid).SendAsync("PositionReceived", user);
-           
+            //await Clients.OthersInGroup(lobbid).SendAsync("PositionReceived", user);
+            await Clients.Group(lobbid).SendAsync("PositionReceived", user);
+
 
         }
 
@@ -66,12 +67,12 @@ namespace ServerS
                 {
                     string cacciatore = lobby.ConnectedClients[random.Next(num_clients - 1)];
                     lobby.cacciatori.Add(cacciatore);
-                    Clients.Client(cacciatore).SendAsync("GameStartedAsCacciatore");
+                    Clients.Client(cacciatore).SendAsync("GameStarted" , true);
                 }
             }
 
             // invoke the GameStarted clients method
-            Clients.GroupExcept(lobbyId, lobby.cacciatori).SendAsync("GameStarted");
+            Clients.GroupExcept(lobbyId, lobby.cacciatori).SendAsync("GameStarted" , false);
 
         }
     }

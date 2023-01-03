@@ -131,24 +131,22 @@ namespace ProjApp.MapEl
         private async void creaPartitaEGioca(HubConnection con)
         {
             //aspetto che si connetta prima (temporaneao)
-            await Task.Delay(7000);
+            await Task.Delay(8000);
             Partita p = new(con);
             p.CreateLobby();
 
             p.StartGame();
 
-
-            con.On("GameStarted", () => {
+            con.On<bool>("GameStarted", (cacciatore) => {
                 p.GiocoInCorso = true;
+                if(cacciatore)
                 Console.WriteLine("GameStarted message from server, non sei il cacciatore");
-                Task.Run(() => this.inviaPosSignalR());
-            });
-            con.On("GameStartedAsCacciatore", () => {
-                p.GiocoInCorso = true;
+                else
                 Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
-                Task.Run(() => this.inviaPosSignalR());
+
             });
 
+            Task.Run(() => this.inviaPosSignalR());
 
         }
 
