@@ -9,8 +9,9 @@ namespace ServerS
         private static readonly Dictionary<string, Lobby> lobbies = new Dictionary<string, Lobby>();
         public async Task SendPosition(string user, string lobbid)
         {
-            //await Clients.OthersInGroup(lobbid).SendAsync("PositionReceived", user);
-            await Clients.Group(lobbid).SendAsync("PositionReceived", user);
+            await Clients.OthersInGroup(lobbid).SendAsync("PositionReceived", user);
+           
+
         }
 
         public void CreateLobby(string id)
@@ -31,6 +32,8 @@ namespace ServerS
             string clientId = Context.ConnectionId;
             lobby.ConnectedClients.Add(clientId);
 
+            Groups.AddToGroupAsync(clientId, lobbyId);
+
         }
 
         public void LeaveLobby(string lobbyId)
@@ -42,6 +45,7 @@ namespace ServerS
             string clientId = Context.ConnectionId;
             lobby.ConnectedClients.Remove(clientId);
 
+            Groups.RemoveFromGroupAsync(clientId, lobbyId);
         }
 
         public void StartGame(string lobbyId)

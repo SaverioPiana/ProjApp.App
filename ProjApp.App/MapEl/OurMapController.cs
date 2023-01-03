@@ -133,6 +133,7 @@ namespace ProjApp.MapEl
             //aspetto che si connetta prima (temporaneao)
             await Task.Delay(7000);
             Partita p = new(con);
+            p.CreateLobby();
             p.StartGame();
             con.On("GameStarted", () => {
                 Console.WriteLine("GameStarted message from server");
