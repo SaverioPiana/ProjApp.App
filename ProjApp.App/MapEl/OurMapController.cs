@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using Android.Icu.Number;
+
 using BruTile.Predefined;
 using BruTile.Web;
 using Mapsui;
@@ -91,9 +91,11 @@ namespace ProjApp.MapEl
             connection_nelMC = _connection;
             mapView.IsMyLocationButtonVisible = false;
 
-            //PROVA//
-            Task.Run(() => this.creaPartitaEGioca(_connection));
-            ////////
+           
+
+            Task.Run(() => this.serverMessages());
+            Task.Run(() => this.isGameStarted());
+
             Task.Run(() => this.Update_MapToPos()).Wait();
             Task.Run(() => this.Update_MyPosition_ALWAYS());
 
@@ -112,6 +114,9 @@ namespace ProjApp.MapEl
                                       12.340445071924254, 41.74608176704198)),
                                       resolution: STARTING_RES);
 
+            //PROVA//
+            Task.Run(() => this.creaPartitaEGioca());
+            ////////
             //mapView.Map.Layers.Add(creaLayerPins());
 
             //PROVA LEVALAAAAAAAAAAAAAAAAAAA
@@ -127,26 +132,56 @@ namespace ProjApp.MapEl
             return mapView;
 
         }
-
-        private async void creaPartitaEGioca(HubConnection con)
+        
+        private void waitConnected()
         {
-            //aspetto che si connetta prima (temporaneao)
-            await Task.Delay(8000);
-            Partita p = new(con);
-            p.CreateLobby();
+            while (!connection_nelMC.State.Equals(HubConnectionState.Connected)){
+                Task.Delay(1000).Wait();
+            }
+        }
 
-            p.StartGame();
-
-            con.On<bool>("GameStarted", (cacciatore) => {
-                p.GiocoInCorso = true;
-                if(cacciatore)
-                Console.WriteLine("GameStarted message from server, non sei il cacciatore");
-                else
-                Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
+        private void serverMessages()
+        {
+            connection_nelMC.On<string>("ServerMessage", (mess) =>
+            {
+                Console.WriteLine($"///SERVER///::  {mess}");
 
             });
+        }
 
-            Task.Run(() => this.inviaPosSignalR());
+
+        private void isGameStarted()
+        {
+            connection_nelMC.On<bool>("GameStarted", (cacciatore) =>
+            {
+               
+                if (cacciatore)
+                {
+                    Console.WriteLine("GameStarted message from server, non sei il cacciatore");
+                }
+                else
+                {
+                    Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
+                }
+
+                Task.Run(() => this.inviaPosSignalR());
+            });
+
+
+        }
+
+
+
+        private async void creaPartitaEGioca()
+        {
+            await Task.Delay(7000);
+            Partita p = new(connection_nelMC);
+            p.CreateLobby();
+            p.StartGame();
+            p.GiocoInCorso = true;
+
+
+
 
         }
 

@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServerS
 {
     public class LobbyHub : Hub
     {
-        private static readonly Dictionary<string, Lobby> lobbies = new Dictionary<string, Lobby>();
+        private static Dictionary<string, Lobby> lobbies = new Dictionary<string, Lobby>();
         public async Task SendPosition(string user, string lobbid)
         {
             //await Clients.OthersInGroup(lobbid).SendAsync("PositionReceived", user);
@@ -24,7 +25,7 @@ namespace ServerS
             lobbies.Add(lobby.Id, lobby);
         }
 
-        public void JoinLobby(string lobbyId)
+        public async Task JoinLobby(string lobbyId)
         {
             // find the lobby with the specified ID
             var lobby = lobbies[lobbyId];
@@ -33,11 +34,15 @@ namespace ServerS
             string clientId = Context.ConnectionId;
             lobby.ConnectedClients.Add(clientId);
 
-            Groups.AddToGroupAsync(clientId, lobbyId);
+            await Groups.AddToGroupAsync(clientId, lobbyId);
+
+            string mess = $"{clientId} joined {lobbyId}";
+
+            await Clients.All.SendAsync("ServerMessage", mess);
 
         }
 
-        public void LeaveLobby(string lobbyId)
+        public async Task LeaveLobby(string lobbyId)
         {
             // find the lobby with the specified ID
             var lobby = lobbies[lobbyId];
@@ -46,14 +51,18 @@ namespace ServerS
             string clientId = Context.ConnectionId;
             lobby.ConnectedClients.Remove(clientId);
 
-            Groups.RemoveFromGroupAsync(clientId, lobbyId);
+            await Groups.RemoveFromGroupAsync(clientId, lobbyId);
         }
 
-        public void StartGame(string lobbyId)
+        public async Task StartGame(string lobbyId)
         {
             // find the lobby with the specified ID
             var lobby = lobbies[lobbyId];
             lobby.isStarted = true;
+            foreach (string s in lobby.ConnectedClients){
+                string mess = $"Giocatore :({s}) nella lobby : ({lobbyId})";
+                await Clients.All.SendAsync("ServerMessage", mess);
+            }
             int num_clients = lobby.ConnectedClients.Count();
             int num_cacciatori = num_clients / 4;
             Random random = new Random();
@@ -67,12 +76,13 @@ namespace ServerS
                 {
                     string cacciatore = lobby.ConnectedClients[random.Next(num_clients - 1)];
                     lobby.cacciatori.Add(cacciatore);
-                    Clients.Client(cacciatore).SendAsync("GameStarted" , true);
+                    //await Clients.Client(cacciatore).SendAsync("GameStarted" , true);
                 }
             }
 
             // invoke the GameStarted clients method
-            Clients.GroupExcept(lobbyId, lobby.cacciatori).SendAsync("GameStarted" , false);
+            //await Clients.GroupExcept(lobbyId, lobby.cacciatori).SendAsync("GameStarted" , false);
+            await Clients.Group(lobbyId).SendAsync("GameStarted", false);
 
         }
     }
