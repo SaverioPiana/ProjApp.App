@@ -4,6 +4,8 @@
     {
         public string Id { get; set; }
         public bool isStarted { get; set; }
+
+        public List<string> cacciatori { get; set; } = new List<string>();
         public List<string> ConnectedClients { get; set; } = new List<string>();
 
 

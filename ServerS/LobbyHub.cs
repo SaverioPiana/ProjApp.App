@@ -53,8 +53,25 @@ namespace ServerS
             // find the lobby with the specified ID
             var lobby = lobbies[lobbyId];
             lobby.isStarted = true;
+            int num_clients = lobby.ConnectedClients.Count();
+            int num_cacciatori = num_clients / 4;
+            Random random = new Random();
+            if (num_cacciatori == 0)
+            {
+                lobby.cacciatori.Add(lobby.ConnectedClients[random.Next(num_clients - 1)]);
+            }
+            else
+            {
+                for (int i = 0; i < num_cacciatori; i++)
+                {
+                    string cacciatore = lobby.ConnectedClients[random.Next(num_clients - 1)];
+                    lobby.cacciatori.Add(cacciatore);
+                    Clients.Client(cacciatore).SendAsync("GameStartedAsCacciatore");
+                }
+            }
+
             // invoke the GameStarted clients method
-            Clients.Group(lobbyId).SendAsync("GameStarted"); 
+            Clients.GroupExcept(lobbyId, lobby.cacciatori).SendAsync("GameStarted");
 
         }
     }

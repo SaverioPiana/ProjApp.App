@@ -92,7 +92,7 @@ namespace ProjApp.MapEl
             mapView.IsMyLocationButtonVisible = false;
 
             //PROVA//
-            Task.Run(() => this.creaPartita(_connection));
+            Task.Run(() => this.creaPartitaEGioca(_connection));
             ////////
             Task.Run(() => this.Update_MapToPos()).Wait();
             Task.Run(() => this.Update_MyPosition_ALWAYS());
@@ -128,19 +128,28 @@ namespace ProjApp.MapEl
 
         }
 
-        private async void creaPartita(HubConnection con)
+        private async void creaPartitaEGioca(HubConnection con)
         {
             //aspetto che si connetta prima (temporaneao)
             await Task.Delay(7000);
             Partita p = new(con);
             p.CreateLobby();
+
             p.StartGame();
+
+
             con.On("GameStarted", () => {
-                Console.WriteLine("GameStarted message from server");
+                p.GiocoInCorso = true;
+                Console.WriteLine("GameStarted message from server, non sei il cacciatore");
+                Task.Run(() => this.inviaPosSignalR());
+            });
+            con.On("GameStartedAsCacciatore", () => {
+                p.GiocoInCorso = true;
+                Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
                 Task.Run(() => this.inviaPosSignalR());
             });
 
-            
+
         }
 
 
