@@ -23,7 +23,7 @@ namespace ProjApp.MapEl.GPS
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
         public MyUser(MapView mv)
         {
-            user = new("Nickname", DeviceInfo.Name, new(), mv);
+            user = new("Nickname", DeviceInfo.Name, Geolocation.GetLastKnownLocationAsync().Result, mv);
         }
 
 

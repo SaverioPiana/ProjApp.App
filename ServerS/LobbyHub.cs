@@ -64,11 +64,13 @@ namespace ServerS
                 await Clients.All.SendAsync("ServerMessage", mess);
             }
             int num_clients = lobby.ConnectedClients.Count();
-            int num_cacciatori = num_clients / 4;
+            int num_cacciatori = num_clients / 3;
             Random random = new Random();
             if (num_cacciatori == 0)
             {
-                lobby.cacciatori.Add(lobby.ConnectedClients[random.Next(num_clients - 1)]);
+                string cacciatore = lobby.ConnectedClients[random.Next(num_clients - 1)];
+                lobby.cacciatori.Add(cacciatore);
+                await Clients.Client(cacciatore).SendAsync("GameStarted", true);
             }
             else
             {
