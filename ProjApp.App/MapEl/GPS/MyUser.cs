@@ -27,13 +27,6 @@ namespace ProjApp.MapEl.GPS
         }
 
 
-        /* NON VEDO A CHE SERVE SAVE SPIEGA */
-        //public async Task<Position> returnPosition()
-        //{
-        //    await Get_Position();
-        //    return position;
-        //}
-
         public async Task Get_Position()
         {
             try
