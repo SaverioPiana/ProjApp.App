@@ -9,7 +9,7 @@ namespace ProjApp.ViewModel
         public ProfilePageViewModel() { }
 
         [RelayCommand]
-        Task Navigate() => Shell.Current.GoToAsync(nameof(StartPage));
+        Task NavigateBack() => Shell.Current.GoToAsync("..");
 
 
 

@@ -77,10 +77,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="ProfilePage.xaml">
+	  <MauiXaml Update="Pages\ProfilePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="StartPage.xaml">
+	  <MauiXaml Update="Pages\Settings.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\StartPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

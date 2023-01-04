@@ -16,7 +16,8 @@ namespace ProjApp.ViewModel
         [RelayCommand]
         Task NavigateToProfile() => Shell.Current.GoToAsync(nameof(ProfilePage));
 
-
+        [RelayCommand]
+        Task NavigateToSettings() => Shell.Current.GoToAsync(nameof(Settings));
 
     }
 }

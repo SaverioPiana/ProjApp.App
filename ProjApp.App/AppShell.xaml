@@ -5,20 +5,34 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:ProjApp"
     Shell.FlyoutBehavior="Disabled">
+    
+    <TabBar>
+        
+        <ShellContent
+            Title="Start"
+            ContentTemplate="{DataTemplate local:StartPage}"
+            Route= "StartPage" 
+            Icon="play_button_icon.svg"/>
 
-    <ShellContent
-        Title=" StartPage!"
-        ContentTemplate="{DataTemplate local:StartPage}"
-        Route= "StartPage" />
+        
 
+        <ShellContent
+            Title="Profile"
+            ContentTemplate="{DataTemplate local:ProfilePage}"
+            Route= "ProfilePage"
+            />
+
+        <ShellContent
+            Title="Settings"
+            ContentTemplate="{DataTemplate local:Settings}"
+            Route= "Settings"
+            />
+
+    </TabBar>
+    
     <ShellContent
         Title=" MainPage!"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route= "MainPage" />
-
-    <ShellContent
-        Title=" ProfilePage!"
-        ContentTemplate="{DataTemplate local:ProfilePage}"
-        Route= "ProfilePage" />
-
+        Route= "MainPage" 
+        />
 </Shell>

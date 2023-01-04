@@ -6,26 +6,34 @@
              x:DataType="viewmodel:StartPageViewModel"
 
              Title="StartPage">
-    <VerticalStackLayout Margin="10">
-        
+
+    <VerticalStackLayout 
+            Spacing="10"
+            Padding="30,0"
+            VerticalOptions="Start"
+            HorizontalOptions="Center">
+
+
         <Button
             Text="Navigate to Map"
-            Command="{Binding NavigateToMainPageCommand}"
-            VerticalOptions="Center" 
+            Margin="15"
             HeightRequest="50"
             WidthRequest="200"
-            Padding="10"
-            HorizontalOptions="Center" />
+            Command="{Binding NavigateToMainPageCommand}"/>
 
         <Button
             Text="Navigate to Profile"
-            Command="{Binding NavigateToProfileCommand}"
-            VerticalOptions="Center" 
+            Margin="15"
             HeightRequest="50"
             WidthRequest="200"
-            Margin="10"
-            Padding="10"
-            HorizontalOptions="Center" />
+            Command="{Binding NavigateToProfileCommand}"/>
+
+        <Button
+            Text="Navigate to Settings"
+            Margin="15"
+            HeightRequest="50"
+            WidthRequest="200"
+            Command="{Binding NavigateToSettingsCommand}"/>
 
 
     </VerticalStackLayout>
