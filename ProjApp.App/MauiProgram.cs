@@ -1,4 +1,5 @@
-﻿using SkiaSharp.Views.Maui.Controls.Hosting;
+﻿using ProjApp.ViewModel;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace ProjApp;
 
@@ -16,6 +17,13 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
-		return builder.Build();
+		builder.Services.AddTransient<StartPageViewModel>();
+        builder.Services.AddTransient<StartPage>();
+        builder.Services.AddTransient<MainViewModel>();
+        builder.Services.AddTransient<MainPage>();
+        builder.Services.AddTransient<ProfilePageViewModel>();
+        builder.Services.AddTransient<ProfilePage>();
+
+        return builder.Build();
 	}
 }

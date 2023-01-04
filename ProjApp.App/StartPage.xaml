@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjApp.StartPage"
+             xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
+             x:DataType="viewmodel:StartPageViewModel"
+
+             Title="StartPage">
+    <VerticalStackLayout Margin="10">
+        
+        <Button
+            Text="Navigate to Map"
+            Command="{Binding NavigateToMainPageCommand}"
+            VerticalOptions="Center" 
+            HeightRequest="50"
+            WidthRequest="200"
+            Padding="10"
+            HorizontalOptions="Center" />
+
+        <Button
+            Text="Navigate to Profile"
+            Command="{Binding NavigateToProfileCommand}"
+            VerticalOptions="Center" 
+            HeightRequest="50"
+            WidthRequest="200"
+            Margin="10"
+            Padding="10"
+            HorizontalOptions="Center" />
+
+
+    </VerticalStackLayout>
+    
+</ContentPage>
