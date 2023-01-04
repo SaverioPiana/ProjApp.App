@@ -10,12 +10,12 @@ namespace ServerS
         private static Dictionary<string, Lobby> lobbies = new Dictionary<string, Lobby>();
         public async Task SendPosition(string user, string lobbid)
         {
-            //await Clients.OthersInGroup(lobbid).SendAsync("PositionReceived", user);
-            await Clients.Group(lobbid).SendAsync("PositionReceived", user);
+            await Clients.OthersInGroup(lobbid).SendAsync("PositionReceived", user);
+            //await Clients.Group(lobbid).SendAsync("PositionReceived", user);
 
 
         }
-
+        
         public void CreateLobby(string id)
         {
             // create a new lobby
@@ -37,7 +37,7 @@ namespace ServerS
             await Groups.AddToGroupAsync(clientId, lobbyId);
 
             string mess = $"{clientId} joined {lobbyId}";
-
+            await Clients.Caller.SendAsync("ServerMessage", "SEI TU --->");
             await Clients.All.SendAsync("ServerMessage", mess);
 
         }

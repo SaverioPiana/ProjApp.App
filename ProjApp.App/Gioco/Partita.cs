@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using Mapsui;
+using Mapsui.UI;
+using Mapsui.UI.Maui;
+using Microsoft.AspNetCore.SignalR.Client;
 using ProjApp.MapEl;
 using ProjApp.MapEl.GPS;
 using System;
@@ -42,7 +45,11 @@ namespace ProjApp.Gioco
         {
             _connection.InvokeAsync("JoinLobby", lid);
             MyUser.currPartita = lid;
-            Task.Run(() => OurMapController.inviaPosSignalR());
+            Task.Run(() => isGameStarted());
+            Task.Run(() => MyUser.inviaPosSignalR());
+
+            //Long tap per mettere la tana
+            OurMapController.mapView.LongTap += creaTana;
         }
         public void LeaveLobby()
         {
@@ -53,6 +60,38 @@ namespace ProjApp.Gioco
             _connection.InvokeAsync("StartGame", arg1: cod_partita);
             
         }
+
+        private void isGameStarted()
+        {
+            Connessione.con.On<bool>("GameStarted", (isCacciatore) =>
+            {
+
+                if (isCacciatore)
+                {
+                    Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
+                }
+                else
+                {
+                    Console.WriteLine("GameStarted message from server, non sei il cacciatore");
+                }
+
+
+            });
+
+
+        }
+
+        
+        private void creaTana(object sender, Mapsui.UI.TappedEventArgs e)
+        {
+   
+            // Get the coordinates of the tap
+            MPoint worldPosition = OurMapController.mapView.Viewport.ScreenToWorld(e.ScreenPosition);
+
+            Tana tana = new(worldPosition);
+            
+        }
+
 
 
         //crea un codice hash per la partita usando data e ora e userID

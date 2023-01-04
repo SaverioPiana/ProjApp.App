@@ -33,7 +33,7 @@ namespace ProjApp.MapEl
 {
     public class OurMapController : MapControl
     {
-        private MapView mapView = new();
+        public static MapView mapView = new();
         private MyUser myuser;
 
         const double STARTING_RES = 2;
@@ -44,10 +44,7 @@ namespace ProjApp.MapEl
         private bool want_position = true;
         private int updateCtr = 0;
         
-        //SignalR Parametri
-        const int SEND_POS_DELAY = 3000;
-        
-        private static bool want_sendposition = true;
+       
 
         //legge risorse come nomi di file e le trasforma in byte array
         public static byte[] ReadResource(Assembly assembly, String filename)
@@ -90,11 +87,8 @@ namespace ProjApp.MapEl
             myuser = new MyUser(mapView);
             mapView.IsMyLocationButtonVisible = false;
 
-            Partita part = new(MainPage._connection);
+            Partita part = new(Connessione.con);
 
-
-            Task.Run(() => this.serverMessages(part));
-            Task.Run(() => this.isGameStarted());
 
             Task.Run(() => this.Update_MapToPos()).Wait();
             Task.Run(() => this.Update_MyPosition_ALWAYS());
@@ -119,76 +113,22 @@ namespace ProjApp.MapEl
             ////////
             //mapView.Map.Layers.Add(creaLayerPins());
 
-            //PROVA LEVALAAAAAAAAAAAAAAAAAAA
-            User userFake = new User("O", "ulala", new Location(41.767523, 12.359897), mapView);
-            mapView.Pins.Add(userFake.UserPin);
-            //
-
-            AddPin(mapView, new Position(41.746168, 12.340037), "Casetta", Colors.Aqua);
-            AddPin(mapView, new Position(41.767523, 12.359897), "Carlium", Colors.Red);
-            AddPin(mapView, new Position(41.757395, 12.353765), "Nardium", Colors.Orange);
+            AddPin( new Position(41.746168, 12.340037), "Casetta", Colors.Aqua);
+            AddPin( new Position(41.767523, 12.359897), "Carlium", Colors.Red);
+            AddPin( new Position(41.757395, 12.353765), "Nardium", Colors.Orange);
 
 
             return mapView;
 
         }
-        
-        private void waitConnected()
-        {
-            while (!MainPage._connection.State.Equals(HubConnectionState.Connected)){
-                Task.Delay(1000).Wait();
-            }
-        }
-
-        private void serverMessages(Partita p)
-        {
-            int count = 0;
-
-            MainPage._connection.On<string>("ServerMessage", (mess) =>
-            {
-                Console.WriteLine($"///SERVER///::  {mess}");
-                count++;
-                if (count == 2)
-                {
-                    p.StartGame();
-                    p.GiocoInCorso = true;
-                }
-
-            });
-        }
-
-
-        private void isGameStarted()
-        {
-            MainPage._connection.On<bool>("GameStarted", (isCacciatore) =>
-            {
-               
-                if (isCacciatore)
-                {
-                    Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
-                }
-                else
-                {
-                    Console.WriteLine("GameStarted message from server, non sei il cacciatore");
-                }
-
-                
-            });
-
-
-        }
-
 
 
         private async void creaPartitaEGioca(Partita p)
         {
             await Task.Delay(7000);
             p.CreateLobby();
-           
-
+  
         }
-
-
 
 
         //metodo che crea layer generici
@@ -243,33 +183,12 @@ namespace ProjApp.MapEl
             return result;
         }
 
-        //FINE METODI TEMPORANEI SIGNALR
+        
 
-        public static async void inviaPosSignalR()
-        {
-            while (want_sendposition)
-            {
-                if (MainPage._connection.State.Equals(HubConnectionState.Connected))
-                {
-                    string jsonUser = JsonSerializer.Serialize<User>(MyUser.user,
-                          new JsonSerializerOptions
-                          {
-                              NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-                              PropertyNameCaseInsensitive = true
-                          });
-
-                    await MainPage._connection.InvokeAsync("SendPosition",
-                          arg1: jsonUser,
-                          //Codice lobby
-                          arg2: MyUser.currPartita);
-                }
-                await Task.Delay(SEND_POS_DELAY);
-            }
-        }
 
         private void aggiungiAltriGiocatoriAllaMappa()
         {
-            MainPage._connection.On<string>("PositionReceived", (receiveduser) =>
+            Connessione.con.On<string>("PositionReceived", (receiveduser) =>
             {
                 SerializableUser user = JsonSerializer.Deserialize<SerializableUser>(receiveduser);
                 Console.WriteLine($"/////////Posizione ricevuta da:{user.UserID} , " +
@@ -318,7 +237,7 @@ namespace ProjApp.MapEl
         {   
             await myuser.Get_Position();
             Position p = MyUser.user.UserPin.Position;
-            mapView.MyLocationLayer.UpdateMyLocation(p, true);
+            mapView.MyLocationLayer.UpdateMyLocation(p, false);
             update_once = false;
             updateCtr++;
             Console.WriteLine($"Position updated from {MyUser.user.UserID} {updateCtr} times (single update)");
@@ -333,7 +252,7 @@ namespace ProjApp.MapEl
             {
                 await myuser.Get_Position();
                 Position p = MyUser.user.UserPin.Position;
-                mapView.MyLocationLayer.UpdateMyLocation(p, true);
+                mapView.MyLocationLayer.UpdateMyLocation(p, false);
                 updateCtr++;
 
                 Console.WriteLine($"Position updated from {MyUser.user.UserID} {updateCtr} times (continuos update)");
@@ -349,7 +268,7 @@ namespace ProjApp.MapEl
             for (double i = 1; i<=INTERPOLATION_STEPS; i++)
             {
                 p.Position = Interpolate_points_scalar(oldPos, newPos, i);
-                await Task.Delay(SEND_POS_DELAY/INTERPOLATION_STEPS);
+                await Task.Delay(MyUser.SEND_POS_DELAY/INTERPOLATION_STEPS);
             }
         }
         //funzione di supporto
@@ -406,7 +325,7 @@ namespace ProjApp.MapEl
 
 
         //easier way to add pins
-        public static void AddPin(MapView mapView, Position pos, String label, Microsoft.Maui.Graphics.Color c)
+        public static void AddPin(Position pos, String label, Microsoft.Maui.Graphics.Color c)
         {
             mapView.Pins.Add(new Pin(mapView)
             {
