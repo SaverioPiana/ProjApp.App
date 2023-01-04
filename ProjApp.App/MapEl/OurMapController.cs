@@ -34,7 +34,6 @@ namespace ProjApp.MapEl
     public class OurMapController : MapControl
     {
         private MapView mapView = new();
-        private MyUser myuser;
 
         const double STARTING_RES = 2;
         private bool update_once = true;   //carina l'idea ma non penso la useremo,
@@ -43,6 +42,7 @@ namespace ProjApp.MapEl
         
         private bool want_position = true;
         private int updateCtr = 0;
+        private bool flyToIsRunning = false;
         
         //SignalR Parametri
         const int SEND_POS_DELAY = 3000;
@@ -87,50 +87,41 @@ namespace ProjApp.MapEl
 
         public MapView MapInitializer()
         {
-            myuser = new MyUser(mapView);
-            mapView.IsMyLocationButtonVisible = false;
+            Task.Run( async () => {
+
+                MyUser.BuildMyUser(mapView);
+                mapView.IsMyLocationButtonVisible = false;
+                mapView.MyLocationLayer.Opacity = 0;
+
+                mapView.Pins.Add(MyUser.user.UserPin);
+
+                mapView.Map?.Layers.Add(OurMapController.CreateTileLayer());
+
+                mapView.Map?.Layers.Add(CreateCustomLayer("RandomPolys"));
+                mapView.IsZoomButtonVisible = false;
+                mapView.MyLocationFollow = false;
+                mapView.Map.Home = n => n.NavigateTo(center:
+                                          SphericalMercator.FromLonLat(new MPoint(
+                                          MyUser.user.Position.Longitude, MyUser.user.Position.Latitude)),
+                                          resolution: STARTING_RES);
+
+                await Update_MyPosition_ONCE();
+                Update_MyPosition_ALWAYS();
+            }).Wait();
 
             Partita part = new(MainPage._connection);
-
 
             Task.Run(() => this.serverMessages(part));
             Task.Run(() => this.isGameStarted());
 
-            Task.Run(() => this.Update_MapToPos()).Wait();
-            Task.Run(() => this.Update_MyPosition_ALWAYS());
-
-            //Task.Run(() => this.inviaPosSignalR());
             Task.Run(() => this.aggiungiAltriGiocatoriAllaMappa());
 
-            mapView.Map?.Layers.Add(OurMapController.CreateTileLayer());
-
-            mapView.Map?.Layers.Add(CreateCustomLayer("RandomPolys"));
-
-            mapView.IsZoomButtonVisible = false;
-            mapView.MyLocationFollow = false;
-
-            mapView.Map.Home = n => n.NavigateTo(center:
-                                      SphericalMercator.FromLonLat(new MPoint(
-                                      12.340445071924254, 41.74608176704198)),
-                                      resolution: STARTING_RES);
 
             //PROVA//
             Task.Run(() => this.creaPartitaEGioca(part));
             ////////
-            //mapView.Map.Layers.Add(creaLayerPins());
-
-            //PROVA LEVALAAAAAAAAAAAAAAAAAAA
-            User userFake = new User("O", "ulala", new Location(41.767523, 12.359897), mapView);
-            mapView.Pins.Add(userFake.UserPin);
-            //
-
-            AddPin(mapView, new Position(41.746168, 12.340037), "Casetta", Colors.Aqua);
-            AddPin(mapView, new Position(41.767523, 12.359897), "Carlium", Colors.Red);
-            AddPin(mapView, new Position(41.757395, 12.353765), "Nardium", Colors.Orange);
-
 
             return mapView;
-
         }
         
         private void waitConnected()
@@ -162,7 +153,6 @@ namespace ProjApp.MapEl
         {
             MainPage._connection.On<bool>("GameStarted", (isCacciatore) =>
             {
-               
                 if (isCacciatore)
                 {
                     Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
@@ -171,21 +161,13 @@ namespace ProjApp.MapEl
                 {
                     Console.WriteLine("GameStarted message from server, non sei il cacciatore");
                 }
-
-                
             });
-
-
         }
-
-
 
         private async void creaPartitaEGioca(Partita p)
         {
             await Task.Delay(7000);
             p.CreateLobby();
-           
-
         }
 
 
@@ -302,28 +284,28 @@ namespace ProjApp.MapEl
             });
         }
 
-        //updates the position ONCE and animates the fly to the new position
-        public async void Update_MapToPos()
-        {
-            
-            await Update_MyPosition_ONCE();    
-            mapView.Navigator.FlyTo(
-                SphericalMercator.FromLonLat(new MPoint(MyUser.user.Position.Longitude, MyUser.user.Position.Latitude)), 3, 5000);
-            mapView.IsMyLocationButtonVisible = true;
-
-        }
-
         //updates the position once
         public async Task Update_MyPosition_ONCE()
         {   
-            await myuser.Get_Position();
-            Position p = MyUser.user.UserPin.Position;
-            mapView.MyLocationLayer.UpdateMyLocation(p, true);
-            update_once = false;
-            updateCtr++;
-            Console.WriteLine($"Position updated from {MyUser.user.UserID} {updateCtr} times (single update)");
-        }
+            Position p = new(MyUser.user.Position.Latitude, MyUser.user.Position.Longitude);
+            if (p.Longitude == 0 && p.Latitude == 0)
+            {
+                await MyUser.Get_Position();
+                Console.WriteLine($"Position updated from {MyUser.user.UserID} {updateCtr} times (single update)");
+            }
+            else
+            {
+                Console.WriteLine($"Position retrieved from file for user {MyUser.user.UserID} (single update)");
+            }
 
+            mapView.MyLocationLayer.UpdateMyLocation(p, false);
+            mapView.Navigator.NavigateTo(new MPoint(MyUser.user.Position.Longitude,
+                MyUser.user.Position.Latitude), STARTING_RES, 2000);
+            update_once = false;
+            mapView.IsMyLocationButtonVisible = true;
+            updateCtr++;
+        }
+       
         //updates the position finche non casca il mondo
         public async Task Update_MyPosition_ALWAYS()
         {
@@ -331,9 +313,9 @@ namespace ProjApp.MapEl
             //smettere di chiederla
             while (want_position)
             {
-                await myuser.Get_Position();
+                await MyUser.Get_Position();
                 Position p = MyUser.user.UserPin.Position;
-                mapView.MyLocationLayer.UpdateMyLocation(p, true);
+                mapView.MyLocationLayer.UpdateMyLocation(p, false);
                 updateCtr++;
 
                 Console.WriteLine($"Position updated from {MyUser.user.UserID} {updateCtr} times (continuos update)");

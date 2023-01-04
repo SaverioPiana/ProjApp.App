@@ -6,35 +6,25 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using Mapsui.Nts;
 using Mapsui.Extensions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ProjApp.MapEl.GPS
 {
     public class MyUser
     {
-        private CancellationTokenSource _cancelTokenSource;
-        private bool _isCheckingLocation;
+        private static CancellationTokenSource _cancelTokenSource;
+        private static bool _isCheckingLocation;
         public static User user;
         public static string currPartita;
 
-
-        
-
-
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
-        public MyUser(MapView mv)
+        public static void BuildMyUser(MapView mv)
         {
-            user = new("Nickname", DeviceInfo.Name, Geolocation.GetLastKnownLocationAsync().Result, mv);
+            Location loc = RetrieveLocFromFile("lastSavedPosition.txt");
+            user = new("Nickname", DeviceInfo.Name, loc, mv);
         }
 
-
-        /* NON VEDO A CHE SERVE SAVE SPIEGA */
-        //public async Task<Position> returnPosition()
-        //{
-        //    await Get_Position();
-        //    return position;
-        //}
-
-        public async Task Get_Position()
+        public static async Task Get_Position()
         {
             try
                 {
@@ -49,8 +39,9 @@ namespace ProjApp.MapEl.GPS
 
                     if (location != null && location.Accuracy < 50)
                     {
-                         user.Position = location;
-                         Console.WriteLine($"GET_POSITION::: Accuracy: {location.Accuracy} Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+                        user.Position = location;
+                        SaveLastPositionOnFile(location);
+                        Console.WriteLine($"GET_POSITION::: Accuracy: {location.Accuracy} Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
                     }
 
                 }
@@ -74,5 +65,66 @@ namespace ProjApp.MapEl.GPS
             if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
                 _cancelTokenSource.Cancel();
         }
+
+        //salva la posizione su un file
+        private static async void SaveLastPositionOnFile(Location loc)
+        {
+            try
+            {
+                string jsonPos = JsonSerializer.Serialize<Location>(loc,
+                    new JsonSerializerOptions
+                    {
+                        NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+                        PropertyNameCaseInsensitive = true
+                    });
+                string targetFileName = "lastSavedPosition.txt";
+                string path = System.IO.Path.Combine(FileSystem.Current.AppDataDirectory, targetFileName);
+                using StreamWriter streamWriter = new StreamWriter(path, false);
+                await streamWriter.WriteAsync(jsonPos);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Qualcosa e andato storto col file zi");
+            }
+        }
+
+        //legge l'ultima posizione da un file
+        private static Location RetrieveLocFromFile(string filename)
+        {
+            try
+            {
+                string jpos;
+                string path = System.IO.Path.Combine(FileSystem.Current.AppDataDirectory, filename);
+                //se non esiste il file lo creo
+                if (!File.Exists(path))
+                {
+                    using StreamWriter streamWriter = new StreamWriter(path);
+                    return new(0,0);
+                }
+                //poi lo leggo
+                using (StreamReader sr = File.OpenText(path))
+                {
+                    jpos = sr.ReadToEnd();
+                    Location loc;
+                    if (jpos.Equals("") || jpos.Length < 1)
+                    {
+                        loc = new(0,0);
+                    }
+                    else
+                    {
+                        loc = JsonSerializer.Deserialize<Location>(jpos);
+                    }
+                    if (loc == null) loc = new(0,0);
+                    return loc;
+                };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("/////////////////////Qualcosa e andato storto col file zi//////////////////");
+                return new(0,0);
+            }
+        }
+
+
     }
 }
