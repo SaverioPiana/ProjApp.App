@@ -23,18 +23,7 @@ public  partial class MainPage : ContentPage
             CheckANDSetPermission();
         });
 
-        //Connession a SignalR
-        _connection = new HubConnectionBuilder()
-            .WithUrl("https://nascondapp.azurewebsites.net/lobby")
-            .WithAutomaticReconnect()
-            .Build();
-
-        //starto la connessione
-        Task.Run(() =>
-        {
-            Dispatcher.Dispatch(async () =>
-            await _connection.StartAsync());
-        });
+       
 
         //mando la connessione a mapInitializer
         Content = new OurMapController().MapInitializer(_connection);

@@ -94,8 +94,6 @@ namespace ProjApp.MapEl
             Task.Run(() => this.Update_MapToPos()).Wait();
             Task.Run(() => this.Update_MyPosition_ALWAYS());
 
-            Task.Run(() => this.inviaPosSignalR());
-            Task.Run(() => this.aggiungiAltriGiocatoriAllaMappa());
 
             mapView.Map?.Layers.Add(OurMapController.CreateTileLayer());
 
