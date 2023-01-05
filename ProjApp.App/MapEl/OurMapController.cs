@@ -43,9 +43,6 @@ namespace ProjApp.MapEl
         
         private bool want_position = true;
         private int updateCtr = 0;
-        private bool flyToIsRunning = false;
-        
-       
 
         //legge risorse come nomi di file e le trasforma in byte array
         public static byte[] ReadResource(Assembly assembly, String filename)
@@ -107,13 +104,9 @@ namespace ProjApp.MapEl
                 Update_MyPosition_ALWAYS();
             }).Wait();
 
-            Partita part = new(MainPage._connection);
-
-            Task.Run(() => this.serverMessages(part));
-            Task.Run(() => this.isGameStarted());
+            Partita part = new(Connessione.con);
 
             Task.Run(() => this.aggiungiAltriGiocatoriAllaMappa());
-
 
             //PROVA//
             Task.Run(() => this.creaPartitaEGioca(part));
@@ -183,8 +176,6 @@ namespace ProjApp.MapEl
         }
 
         
-
-
         private void aggiungiAltriGiocatoriAllaMappa()
         {
             Connessione.con.On<string>("PositionReceived", (receiveduser) =>

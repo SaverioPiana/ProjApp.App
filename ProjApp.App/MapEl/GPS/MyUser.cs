@@ -20,11 +20,7 @@ namespace ProjApp.MapEl.GPS
 
         //SignalR Parametri
         public readonly static int SEND_POS_DELAY = 3000;
-
         private static bool want_sendposition = true;
-
-
-
 
 
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
@@ -136,15 +132,13 @@ namespace ProjApp.MapEl.GPS
         }
 
 
-
-
         public static async void inviaPosSignalR()
         {
             while (want_sendposition)
             {
                 if (Connessione.con.State.Equals(HubConnectionState.Connected))
                 {
-                    string jsonUser = JsonSerializer.Serialize<User>(MyUser.user,
+                    string jsonUser = JsonSerializer.Serialize<User>(user,
                           new JsonSerializerOptions
                           {
                               NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
@@ -154,7 +148,7 @@ namespace ProjApp.MapEl.GPS
                     await Connessione.con.InvokeAsync("SendPosition",
                           arg1: jsonUser,
                           //Codice lobby
-                          arg2: MyUser.currPartita);
+                          arg2: currPartita);
                 }
                 await Task.Delay(SEND_POS_DELAY);
             }

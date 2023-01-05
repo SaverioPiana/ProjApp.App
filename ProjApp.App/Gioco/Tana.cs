@@ -21,8 +21,6 @@ namespace ProjApp.Gioco
             position = new(punto.Y, punto.X);   
 
             OurMapController.AddPin(position, "Tana" , Colors.Red);
-
-
         }
     }
 }

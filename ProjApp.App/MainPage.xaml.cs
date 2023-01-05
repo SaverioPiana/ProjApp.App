@@ -22,7 +22,6 @@ public  partial class MainPage : ContentPage
             CheckANDSetPermission();
         });
 
-
         //Signalr
         Connessione c = new();
 
@@ -33,7 +32,6 @@ public  partial class MainPage : ContentPage
         });
 
         Content = new OurMapController().MapInitializer();
-
     }
 
     //forse va messa una condizione in modo tale che non runni sempre all avvio, tipo salvarci un bool su un file boh

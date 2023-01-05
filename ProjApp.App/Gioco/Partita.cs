@@ -30,10 +30,8 @@ namespace ProjApp.Gioco
             _connection = con;
             players = new List<User>();
             cod_partita = CreateCode();
-            
-
-
         }
+
         public void CreateLobby()
         {
             _connection.InvokeAsync("CreateLobby", arg1: cod_partita);
@@ -41,6 +39,7 @@ namespace ProjApp.Gioco
             Console.WriteLine($"Lobby Creata con codice {cod_partita}");
 
         }
+
         public void JoinLobby(string lid)
         {
             _connection.InvokeAsync("JoinLobby", lid);
@@ -51,6 +50,7 @@ namespace ProjApp.Gioco
             //Long tap per mettere la tana
             OurMapController.mapView.LongTap += creaTana;
         }
+
         public void LeaveLobby()
         {
             _connection.InvokeAsync("LeaveLobby", MyUser.currPartita);
@@ -65,7 +65,6 @@ namespace ProjApp.Gioco
         {
             Connessione.con.On<bool>("GameStarted", (isCacciatore) =>
             {
-
                 if (isCacciatore)
                 {
                     Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
@@ -74,22 +73,16 @@ namespace ProjApp.Gioco
                 {
                     Console.WriteLine("GameStarted message from server, non sei il cacciatore");
                 }
-
-
             });
-
-
         }
 
         
         private void creaTana(object sender, Mapsui.UI.TappedEventArgs e)
         {
-   
             // Get the coordinates of the tap
             MPoint worldPosition = OurMapController.mapView.Viewport.ScreenToWorld(e.ScreenPosition);
 
             Tana tana = new(worldPosition);
-            
         }
 
 
@@ -118,9 +111,5 @@ namespace ProjApp.Gioco
 
             return uniqueCode; // prints the unique code
         }
-
-
-
-
     }
 }
