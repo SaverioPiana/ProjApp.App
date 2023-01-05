@@ -127,19 +127,19 @@ namespace ProjApp.MapEl
 
 
         //metodo che crea layer generici
-        public ILayer CreateCustomLayer(string name)
+        public static ILayer CreateCustomLayer(string name, Coordinate[] punti)
         {
             return new Layer(name)
             {
-                DataSource = new MemoryProvider(CreaListaPoligoni().ToFeatures()),
+                DataSource = new MemoryProvider(CreaListaPoligoni(punti).ToFeatures()),
                 Style = new VectorStyle
                 {
-                    Fill = new Mapsui.Styles.Brush(new Mapsui.Styles.Color(205, 255, 255, 100)),
+                    Fill = null,
                     Outline = new Pen
                     {
-                        Color = Mapsui.Styles.Color.Cyan,
-                        Width = 2,
-                        PenStyle = PenStyle.DashDotDot,
+                        Color = Mapsui.Styles.Color.Red,
+                        Width = 4,
+                        PenStyle = PenStyle.ShortDashDot,
                         PenStrokeCap = PenStrokeCap.Round
                     }
                 }
@@ -149,32 +149,15 @@ namespace ProjApp.MapEl
 
 
         //crea una lista di poligoni
-        public List<Polygon> CreaListaPoligoni()
+        public static List<Polygon> CreaListaPoligoni(Coordinate[] punti)
         {
             var result = new List<Polygon>();
 
-            var poly1 = new NetTopologySuite.Geometries.Polygon(new LinearRing
-                (new[]
-                    {
-                        new Position( 41.731604 , 12.338212 ).ToMapsui().ToCoordinate(),
-                        new Position( 41.749755 , 12.314546 ).ToMapsui().ToCoordinate(),
-                        new Position( 41.768707 , 12.325532 ).ToMapsui().ToCoordinate(),
-                        new Position( 41.756030 , 12.362954 ).ToMapsui().ToCoordinate(),
-                        new Position( 41.731604 , 12.338212 ).ToMapsui().ToCoordinate()
-                    })
-                );
+            var poly1 = new NetTopologySuite.Geometries.Polygon( new LinearRing(punti) );
 
-            var poly2 = new NetTopologySuite.Geometries.Polygon(new LinearRing
-                (new[]
-                    {
-                        new Position( 41.761940 , 12.337542 ).ToMapsui().ToCoordinate(),
-                        new Position( 41.764191 , 12.340910 ).ToMapsui().ToCoordinate(),
-                        new Position( 41.760128 , 12.340559 ).ToMapsui().ToCoordinate(),
-                        new Position( 41.761940 , 12.337542 ).ToMapsui().ToCoordinate()
-                    })
-                );
             result.Add(poly1);
-            result.Add(poly2);
+            
+
             return result;
         }
 

@@ -20,7 +20,7 @@ namespace ProjApp.Gioco
             MPoint punto = new(SphericalMercator.ToLonLat(p));
             position = new(punto.Y, punto.X);   
 
-            OurMapController.AddPin(position, "Tana" , Colors.Red);
+            OurMapController.AddPin(position, "Tana" , Colors.Blue);
         }
     }
 }

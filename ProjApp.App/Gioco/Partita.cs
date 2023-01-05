@@ -1,4 +1,5 @@
 ﻿using Mapsui;
+using Mapsui.Projections;
 using Mapsui.UI;
 using Mapsui.UI.Maui;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -7,6 +8,7 @@ using ProjApp.MapEl.GPS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +20,13 @@ namespace ProjApp.Gioco
         private IList<User> players;
         private string cod_partita;
         private bool giocoInCorso = false;
+
+
+        //temp
+        private int tap_counter = 0;
+        AreaGiocabile area = new();
+        //
+
 
         public IList<User> Players { get; set; }
         public bool GiocoInCorso { get; set; }
@@ -47,8 +56,8 @@ namespace ProjApp.Gioco
             Task.Run(() => isGameStarted());
             Task.Run(() => MyUser.inviaPosSignalR());
 
-            //signle tap per mettere la tana
-            OurMapController.mapView.SingleTap += creaTana;
+            //creazione area di gioco
+            OurMapController.mapView.SingleTap += creaPin;
         }
 
         public void LeaveLobby()
@@ -77,12 +86,23 @@ namespace ProjApp.Gioco
         }
 
         
-        private void creaTana(object sender, Mapsui.UI.TappedEventArgs e)
+        private void creaPin(object sender, Mapsui.UI.TappedEventArgs e)
         {
+            tap_counter++;
             // Get the coordinates of the tap
             MPoint worldPosition = OurMapController.mapView.Viewport.ScreenToWorld(e.ScreenPosition);
-
-            Tana tana = new(worldPosition);
+            switch (tap_counter){
+                case <6:
+                    area.puntoBordo(worldPosition);
+                    break;
+                case 6:
+                    area.creaArea();
+                    break;
+                case 7:
+                    Tana tana = new(worldPosition);
+                    break;
+            };
+ 
         }
 
 
