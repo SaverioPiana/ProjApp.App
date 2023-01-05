@@ -31,7 +31,8 @@ public  partial class MainPage : ContentPage
             await Connessione.con.StartAsync());
         });
 
-        Content = new OurMapController().MapInitializer();
+        new OurMapController().MapInitializer();
+        Content = OurMapController.mapView;
     }
 
     //forse va messa una condizione in modo tale che non runni sempre all avvio, tipo salvarci un bool su un file boh
