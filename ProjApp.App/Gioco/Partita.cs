@@ -47,8 +47,8 @@ namespace ProjApp.Gioco
             Task.Run(() => isGameStarted());
             Task.Run(() => MyUser.inviaPosSignalR());
 
-            //Long tap per mettere la tana
-            OurMapController.mapView.LongTap += creaTana;
+            //signle tap per mettere la tana
+            OurMapController.mapView.SingleTap += creaTana;
         }
 
         public void LeaveLobby()
