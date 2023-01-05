@@ -14,7 +14,7 @@ using Style = Mapsui.Styles.Style;
 using Mapsui.Styles.Thematics;
 using ProjApp.Gioco;
 using Mapsui.Providers;
-using static Java.Util.Jar.Attributes;
+
 
 namespace ProjApp.MapEl
 {   //PROBABILMENTE LA USEREMO BOH

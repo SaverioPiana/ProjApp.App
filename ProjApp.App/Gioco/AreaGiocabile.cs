@@ -1,4 +1,4 @@
-﻿using Android.Provider;
+﻿
 using Mapsui.Projections;
 using Mapsui;
 using Mapsui.UI.Maui;
@@ -29,7 +29,7 @@ namespace ProjApp.Gioco
             MPoint punto = new(SphericalMercator.ToLonLat(worldPosition));
             position = new(punto.Y, punto.X);
 
-            OurMapController.AddPin(position, "Bordi", Colors.Red);
+            OurMapController.AddPinFromFile(position, "Bordi", "reddot.png", 0.15F);
 
             bordi.Add(position.ToCoordinate());
 

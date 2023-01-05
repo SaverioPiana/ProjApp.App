@@ -91,7 +91,6 @@ namespace ProjApp.MapEl
 
             mapView.Map?.Layers.Add(OurMapController.CreateTileLayer());
 
-            mapView.Map?.Layers.Add(CreateCustomLayer("RandomPolys"));
             mapView.IsZoomButtonVisible = false;
             mapView.MyLocationFollow = false;
 
@@ -303,6 +302,7 @@ namespace ProjApp.MapEl
 
         //easier way to add pins
         public static void AddPin(Position pos, String label, Microsoft.Maui.Graphics.Color c)
+                                  
         {
             mapView.Pins.Add(new Pin(mapView)
             {
@@ -311,8 +311,22 @@ namespace ProjApp.MapEl
                 Type = PinType.Pin,
                 Color = c,
                 Scale = 0.35F,
-            }) ;
+            });
         }
+
+        public static void AddPinFromFile(Position pos, String label, string iconFilename, float scale)
+
+        {
+            mapView.Pins.Add(new Pin(mapView)
+            {
+                Label = label,
+                Position = pos,
+                Type = PinType.Icon,
+                Scale = scale,
+                Icon = ReadResource(Assembly.GetExecutingAssembly(), iconFilename)
+            });
+        }
+
 
         // NON FUNGE -> DA VEDERE
 

@@ -56,14 +56,17 @@
 
 	<ItemGroup>
 	  <MauiImage Remove="Resources\Images\pinicon.png" />
+	  <MauiImage Remove="Resources\Images\reddot.png" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\appiconprova.svg" />
+	  <None Remove="Resources\Images\reddot.png" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <EmbeddedResource Include="Resources\Images\pinicon.png" />
+	  <EmbeddedResource Include="Resources\Images\reddot.png" />
 	</ItemGroup>
 
 	<ItemGroup>
