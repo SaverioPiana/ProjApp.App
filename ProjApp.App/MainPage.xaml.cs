@@ -4,6 +4,7 @@ using Mapsui.Layers;
 using Mapsui.Projections;
 using Mapsui.UI.Maui;
 using Microsoft.AspNetCore.SignalR.Client;
+using ProjApp.Gioco;
 using ProjApp.MapEl;
 using System.Collections.ObjectModel;
 
@@ -11,8 +12,6 @@ namespace ProjApp;
 
 public  partial class MainPage : ContentPage
 {
-    //variabile di connessione all HUB di SignalR
-    public static HubConnection _connection;
     public MainPage()
     {
         InitializeComponent();
@@ -23,20 +22,16 @@ public  partial class MainPage : ContentPage
             CheckANDSetPermission();
         });
 
-        //Connession a SignalR
-        _connection = new HubConnectionBuilder()
-            .WithUrl("https://nascondapp.azurewebsites.net/lobby")
-            .WithAutomaticReconnect()
-            .Build();
 
-        //starto la connessione
+        //Signalr
+        Connessione c = new();
+
         Task.Run(() =>
         {
             Dispatcher.Dispatch(async () =>
-            await _connection.StartAsync());
+            await Connessione.con.StartAsync());
         });
 
-        //mando la connessione a mapInitializer
         Content = new OurMapController().MapInitializer();
 
     }

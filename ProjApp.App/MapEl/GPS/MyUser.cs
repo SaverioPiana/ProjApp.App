@@ -1,4 +1,4 @@
-﻿using Android.Text.Style;
+﻿
 using Mapsui.UI.Maui;
 using Microsoft.AspNetCore.SignalR.Client;
 using ProjApp.Gioco;
@@ -16,6 +16,16 @@ namespace ProjApp.MapEl.GPS
         private static bool _isCheckingLocation;
         public static User user;
         public static string currPartita;
+
+
+        //SignalR Parametri
+        public readonly static int SEND_POS_DELAY = 3000;
+
+        private static bool want_sendposition = true;
+
+
+
+
 
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
         public static void BuildMyUser(MapView mv)
@@ -126,5 +136,28 @@ namespace ProjApp.MapEl.GPS
         }
 
 
+
+
+        public static async void inviaPosSignalR()
+        {
+            while (want_sendposition)
+            {
+                if (Connessione.con.State.Equals(HubConnectionState.Connected))
+                {
+                    string jsonUser = JsonSerializer.Serialize<User>(MyUser.user,
+                          new JsonSerializerOptions
+                          {
+                              NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+                              PropertyNameCaseInsensitive = true
+                          });
+
+                    await Connessione.con.InvokeAsync("SendPosition",
+                          arg1: jsonUser,
+                          //Codice lobby
+                          arg2: MyUser.currPartita);
+                }
+                await Task.Delay(SEND_POS_DELAY);
+            }
+        }
     }
 }
