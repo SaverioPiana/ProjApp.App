@@ -91,7 +91,7 @@ namespace ProjApp.MapEl
 
             mapView.Map?.Layers.Add(OurMapController.CreateTileLayer());
 
-            mapView.Map?.Layers.Add(CreateCustomLayer("RandomPolys"));
+            
             mapView.IsZoomButtonVisible = false;
             mapView.MyLocationFollow = false;
 
