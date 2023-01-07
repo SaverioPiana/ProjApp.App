@@ -16,6 +16,7 @@ namespace ProjApp.MapEl.GPS
         private static bool _isCheckingLocation;
         public static User user;
         public static string currPartita;
+        public static bool isAdmin = false;
 
 
         //SignalR Parametri

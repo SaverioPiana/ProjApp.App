@@ -1,17 +1,23 @@
 ﻿using Mapsui;
+using Mapsui.Extensions;
 using Mapsui.Projections;
 using Mapsui.UI;
 using Mapsui.UI.Maui;
 using Microsoft.AspNetCore.SignalR.Client;
+using NetTopologySuite.Geometries;
 using ProjApp.MapEl;
 using ProjApp.MapEl.GPS;
+using ProjApp.MapEl.Serializable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Position = Mapsui.UI.Maui.Position;
 
 namespace ProjApp.Gioco
 {
@@ -25,6 +31,7 @@ namespace ProjApp.Gioco
         //temp
         private int tap_counter = 0;
         AreaGiocabile area = new();
+        Tana tana;
         //
 
 
@@ -38,11 +45,12 @@ namespace ProjApp.Gioco
         {
             _connection = con;
             players = new List<User>();
-            cod_partita = CreateCode();
+            cod_partita = "SASSO";
         }
 
         public void CreateLobby()
         {
+            MyUser.isAdmin = true;
             _connection.InvokeAsync("CreateLobby", arg1: cod_partita);
             this.JoinLobby(cod_partita);
             Console.WriteLine($"Lobby Creata con codice {cod_partita}");
@@ -57,12 +65,16 @@ namespace ProjApp.Gioco
             Task.Run(() => MyUser.inviaPosSignalR());
 
             //creazione area di gioco
-            OurMapController.mapView.SingleTap += creaPin;
+            if (MyUser.isAdmin)
+                OurMapController.mapView.SingleTap += creaPin;
+            else Task.Run(() => riceviOggettiDiGioco());
+                
         }
 
         public void LeaveLobby()
         {
             _connection.InvokeAsync("LeaveLobby", MyUser.currPartita);
+            MyUser.isAdmin = false;
         }
         public void StartGame()
         {
@@ -99,10 +111,49 @@ namespace ProjApp.Gioco
                     area.creaArea();
                     break;
                 case 7:
-                    Tana tana = new(worldPosition);
+                    this.tana = new(worldPosition);
+                    inviaOggettiDiGioco();
                     break;
             };
  
+        }
+
+        private void riceviOggettiDiGioco()
+        {
+            Connessione.con.On<string, string>("RiceviOggettiDiGioco", (coordarea , tana) =>
+           {
+               SerializableCoordinate[] ca = JsonSerializer.Deserialize<SerializableCoordinate[]>(coordarea);
+               SerializableCoordinate ct = JsonSerializer.Deserialize<SerializableCoordinate>(tana);
+               area.drawArea(ca);
+               this.tana = new(ct);
+
+           });
+        }
+
+        private void inviaOggettiDiGioco()
+        {
+            SerializableCoordinate[] gioco = SerializableCoordinate.fromCoordinateArray(area.bordi.ToArray());
+            SerializableCoordinate tana = new(this.tana.position.Longitude ,this.tana.position.Latitude);
+
+
+            string jcord = JsonSerializer.Serialize<SerializableCoordinate[]>
+                ( gioco , new JsonSerializerOptions
+                { 
+                    NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+                    PropertyNameCaseInsensitive = true
+                });
+
+            string jtana = JsonSerializer.Serialize<SerializableCoordinate>
+                (tana, new JsonSerializerOptions
+                {
+                    NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+                    PropertyNameCaseInsensitive = true
+                });
+
+            Connessione.con.InvokeAsync("InviaOggettiDiGioco", 
+                arg1:MyUser.currPartita, 
+                arg2: jcord, 
+                arg3 : jtana);
         }
 
 

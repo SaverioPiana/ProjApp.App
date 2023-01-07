@@ -8,7 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using NetTopologySuite.Geometries;
+using Position = Mapsui.UI.Maui.Position;
+using ProjApp.MapEl.Serializable;
 
 namespace ProjApp.Gioco
 {
@@ -47,7 +49,29 @@ namespace ProjApp.Gioco
                 }
             bordi.Add(bordi.First());
 
-            OurMapController.mapView.Map.Layers.Add(OurMapController.CreateCustomLayer("AreaDiGioco" , bordi.ToArray()));
+            drawArea(bordi.ToArray());
         }
+
+        public void drawArea(Coordinate[] c)
+        {
+
+            OurMapController.mapView.Map.Layers.Add(OurMapController.CreateCustomLayer("AreaDiGioco", c));
+
+        }
+
+        public void drawArea(SerializableCoordinate[] c)
+        {
+            List <Coordinate> lc = new();
+
+            foreach (SerializableCoordinate c2 in c)
+            {
+                lc.Add(new Coordinate(c2.X, c2.Y));
+            }
+
+            OurMapController.mapView.Map.Layers.Add(OurMapController.CreateCustomLayer("AreaDiGioco", lc.ToArray()));
+
+        }
+
+
     }
 }

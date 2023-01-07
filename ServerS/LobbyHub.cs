@@ -41,7 +41,14 @@ namespace ServerS
             await Clients.All.SendAsync("ServerMessage", mess);
 
         }
+        public async Task InviaOggettiDiGioco(string lobbyId, string area , string tana)
+        {
 
+            await Clients.Group(lobbyId).SendAsync("RiceviOggettiDiGioco",
+                arg1: area,
+                arg2: tana);
+
+        } 
         public async Task LeaveLobby(string lobbyId)
         {
             // find the lobby with the specified ID
@@ -81,6 +88,7 @@ namespace ServerS
                     await Clients.Client(cacciatore).SendAsync("GameStarted" , true);
                 }
             }
+
 
             // invoke the GameStarted clients method
             await Clients.GroupExcept(lobbyId, lobby.cacciatori).SendAsync("GameStarted" , false);
