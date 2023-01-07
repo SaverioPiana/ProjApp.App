@@ -126,7 +126,6 @@ namespace ProjApp.Gioco
                SerializableCoordinate ct = JsonSerializer.Deserialize<SerializableCoordinate>(tana);
                area.drawArea(ca);
                this.tana = new(ct);
-
            });
         }
 
@@ -151,9 +150,9 @@ namespace ProjApp.Gioco
                 });
 
             Connessione.con.InvokeAsync("InviaOggettiDiGioco", 
-                arg1:MyUser.currPartita, 
+                arg1: MyUser.currPartita, 
                 arg2: jcord, 
-                arg3 : jtana);
+                arg3: jtana);
         }
 
 

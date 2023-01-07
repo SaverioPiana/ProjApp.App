@@ -24,12 +24,10 @@ namespace ProjApp.Gioco
             OurMapController.AddPin(position, "Tana" , Colors.Blue);
         }
 
+        //questo costruttore lo usiamo quando creiamo la tana da server
         public Tana(SerializableCoordinate c)
         {
-            MPoint pun = new(c.X, c.Y);
-            MPoint corr = new(SphericalMercator.ToLonLat(pun));
-            position = new(corr.Y, corr.X);
-
+            position = new(c.Y, c.X);
             OurMapController.AddPin(position, "Tana", Colors.Blue);
         }
     }
