@@ -44,9 +44,10 @@ namespace ServerS
         public async Task InviaOggettiDiGioco(string lobbyId, string area , string tana)
         {
 
-            await Clients.Group(lobbyId).SendAsync("RiceviOggettiDiGioco",
+            await Clients.OthersInGroup(lobbyId).SendAsync("RiceviOggettiDiGioco",
                 arg1: area,
                 arg2: tana);
+            await Clients.Group(lobbyId).SendAsync("ServerMessage", "OGGETTI DI GIOCO INVIATI");
 
         } 
         public async Task LeaveLobby(string lobbyId)
