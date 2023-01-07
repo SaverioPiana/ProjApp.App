@@ -27,6 +27,8 @@ namespace ProjApp.Gioco
         //questo costruttore lo usiamo quando creiamo la tana da server
         public Tana(SerializableCoordinate c)
         {
+            //qua "c" ci arriva gia in lat lon perche l'admin la crea col
+            //costruttore sopra che gia la converte in lat lon
             position = new(c.Y, c.X);
             OurMapController.AddPin(position, "Tana", Colors.Blue);
         }
