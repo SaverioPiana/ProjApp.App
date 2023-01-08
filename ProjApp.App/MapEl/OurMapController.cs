@@ -51,7 +51,7 @@ namespace ProjApp.MapEl
                                 .Single(str => str.EndsWith(filename));
             if (resourceName == null)
             {
-                throw new ArgumentNullException("///////////////////////" +
+                Console.WriteLine("///////////////////////" +
                     "IL NOME DEL FILE O IL FILE NON ESISTONO" +
                     "/////////////////////////");
             }

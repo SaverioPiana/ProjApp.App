@@ -14,7 +14,7 @@ using Style = Mapsui.Styles.Style;
 using Mapsui.Styles.Thematics;
 using ProjApp.Gioco;
 using Mapsui.Providers;
-
+using System.Reflection;
 
 namespace ProjApp.MapEl
 {   //PROBABILMENTE LA USEREMO BOH
@@ -49,7 +49,8 @@ namespace ProjApp.MapEl
             {
                 Text = user.UserID,
                 HorizontalAlignment = LabelStyle.HorizontalAlignmentEnum.Center,
-                VerticalAlignment = LabelStyle.VerticalAlignmentEnum.Top
+                VerticalAlignment = LabelStyle.VerticalAlignmentEnum.Top,
+                
             });
 
             features.Add(feature);
@@ -69,10 +70,14 @@ namespace ProjApp.MapEl
             return new SymbolStyle { SymbolScale = 0.2, Fill = new Brush(new Color(40, 40, 40)) };
         }
 
-        public static SymbolStyle CreateBitmapStyle(string embeddedResourcePath, double scale)
+        public static SymbolStyle CreateBitmapStyle(string filename, double scale, RelativeOffset relOff)
         {
-            var bitmapId = typeof(CustomLayer).LoadBitmapId(embeddedResourcePath);
-            return new SymbolStyle { BitmapId = bitmapId, SymbolScale = scale, SymbolOffset = new Offset(0, 20) };
+            var assembly = Assembly.GetExecutingAssembly();
+            string resourceName = assembly.GetManifestResourceNames()
+                                .Single(str => str.EndsWith(filename));
+            var tanaicon = assembly.GetManifestResourceStream(resourceName);
+            var bitmapId = BitmapRegistry.Instance.Register(tanaicon);
+            return new SymbolStyle { BitmapId = bitmapId, SymbolScale = scale, SymbolOffset = relOff};
         }
 
         public static SymbolStyle CreateSvgStyle(string embeddedResourcePath, double scale)

@@ -57,6 +57,7 @@
 	<ItemGroup>
 	  <MauiImage Remove="Resources\Images\pinicon.png" />
 	  <MauiImage Remove="Resources\Images\reddot.png" />
+	  <MauiImage Remove="Resources\Images\tanaicon.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -67,6 +68,7 @@
 	<ItemGroup>
 	  <EmbeddedResource Include="Resources\Images\pinicon.png" />
 	  <EmbeddedResource Include="Resources\Images\reddot.png" />
+	  <EmbeddedResource Include="Resources\Images\tanaicon.png" />
 	</ItemGroup>
 
 	<ItemGroup>
