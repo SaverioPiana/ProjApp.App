@@ -17,6 +17,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Font = Mapsui.Styles.Font;
 
 namespace ProjApp.Gioco
 {
@@ -72,20 +73,30 @@ namespace ProjApp.Gioco
                 },
                 Fill = new Mapsui.Styles.Brush(new Mapsui.Styles.Color(0,150,0,100)),
                 
+                
+
             });
 
             feature.Styles.Add(CustomLayer.CreateBitmapStyle("tanaicon.png", 0.55F, new RelativeOffset(0.0, 0.0)));
             
             feature.Styles.Add(new LabelStyle
             {
-                Text = "Tana",
+                Text = "TANA",
                 HorizontalAlignment = LabelStyle.HorizontalAlignmentEnum.Center,
                 VerticalAlignment = LabelStyle.VerticalAlignmentEnum.Top,
                 Offset = new RelativeOffset(0.0, -4.0),
-                Enabled = true
+                Enabled = true,
+                Font = new Font { Size = 13, FontFamily = "Arial" },
+
+                ForeColor = Mapsui.Styles.Color.Green,
+                BackColor = new Mapsui.Styles.Brush(Mapsui.Styles.Color.White),
+                
+                
+
+
             });
 
-            feature.Styles.Add(CustomLayer.PositionDot());
+            
 
             features.Add(feature);
 
