@@ -7,11 +7,26 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using Position = Mapsui.UI.Maui.Position;
+using Java.Util;
+using Random = System.Random;
+using NetTopologySuite.Triangulate;
+using System.Globalization;
+using Java.Lang;
 
 namespace ProjApp.Gioco
 {
     public class User
     {
+        ////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////IMPORTANTE/////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        //LE ICONE DELL UTENTE DA ORA IN POI DEVONO PER FORZA FINIRE PER "pinicon.png" O
+        // NON LE CARICA, BELLA
+
+        ////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////IMPORTANTE/////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////
         [JsonIgnore]
         private object lockObject = new object();
         private Location position;
@@ -42,8 +57,12 @@ namespace ProjApp.Gioco
                 }
             }
         }
+
+        [JsonIgnore]
+        private static List<string> icone = GetIconsFromImages();
+
         [JsonInclude]
-        public byte[] UserIcon = OurMapController.ReadResource(Assembly.GetExecutingAssembly(), "pinicon.png");
+        public byte[] UserIcon = OurMapController.ReadResource(icone.ToArray()[new Random().Next(0, 3)]);
 
         public User(string nickname, string userID, Location posizione, MapView mv)
         {
@@ -55,9 +74,34 @@ namespace ProjApp.Gioco
                 Position = new Position(posizione.Latitude, posizione.Longitude),
                 Type = PinType.Icon,
                 Icon = UserIcon,
-                Scale = 0.6F
+                Scale = 0.4F
             };
             position = posizione;
+        }
+
+        private static List<string> GetIconsFromImages()
+        {
+            List<string> icons = new();
+            foreach(string resource in Assembly.GetExecutingAssembly().GetManifestResourceNames())
+            {
+                if (resource.EndsWith("pinicon.png")) {
+                    
+                    List<string> path = resource.Split(".").ToList();
+                    StringBuilder filename = new();
+                    foreach(string s in path)
+                    {
+                        if(s.EndsWith("pinicon"))
+                        {
+                            //non è supportato per ios????
+                            filename.Append(s);
+                            filename.Append(".");
+                        }
+                        if (s.EndsWith("png")) filename.Append(s);
+                    }
+                    icons.Add(filename.ToString());
+                }
+            }
+            return icons;
         }
     }
 }

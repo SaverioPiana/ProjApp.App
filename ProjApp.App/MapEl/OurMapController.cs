@@ -44,9 +44,10 @@ namespace ProjApp.MapEl
         private int updateCtr = 0;
 
         //legge risorse come nomi di file e le trasforma in byte array
-        public static byte[] ReadResource(Assembly assembly, String filename)
+        public static byte[] ReadResource(String filename)
         {
             byte[] result;
+            Assembly assembly = Assembly.GetExecutingAssembly();
             string resourceName = assembly.GetManifestResourceNames()
                                 .Single(str => str.EndsWith(filename));
             if (resourceName == null)
@@ -323,7 +324,7 @@ namespace ProjApp.MapEl
                 Position = pos,
                 Type = PinType.Icon,
                 Scale = scale,
-                Icon = ReadResource(Assembly.GetExecutingAssembly(), iconFilename)
+                Icon = ReadResource(iconFilename)
             });
         }
 
