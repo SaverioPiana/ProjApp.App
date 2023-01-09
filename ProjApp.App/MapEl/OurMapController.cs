@@ -190,7 +190,7 @@ namespace ProjApp.MapEl
                                 Position = position,
                                 Type = PinType.Icon,
                                 Icon = user.UserIcon,
-                                Scale = 0.6F
+                                Scale = 0.4F
                             });
                     }
                 }

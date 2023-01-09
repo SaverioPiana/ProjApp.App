@@ -84,11 +84,11 @@ namespace ProjApp.Gioco
                 FillColor = Color.FromRgba("#006F0032"),
                 StrokeColor = Colors.DarkGreen,
                 StrokeWidth = 2,
-                ZIndex = 1
+                MaxVisible = OurMapController.mapView.Map.Resolutions[16]
             };
 
-            features.Add(circle.Feature);
             features.Add(feature);
+            features.Add(circle.Feature);
 
             return features;
         }
