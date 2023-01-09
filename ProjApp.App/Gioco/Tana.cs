@@ -3,21 +3,17 @@ using HarfBuzzSharp;
 using Mapsui;
 using Mapsui.Extensions;
 using Mapsui.Layers;
-using Mapsui.Nts.Extensions;
+using Mapsui.Nts;
 using Mapsui.Projections;
 using Mapsui.Styles;
 using Mapsui.UI.Maui;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Graphics;
+using Mapsui.UI.Objects;
 using ProjApp.MapEl;
 using ProjApp.MapEl.Serializable;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using Color = Microsoft.Maui.Graphics.Color;
 using Font = Mapsui.Styles.Font;
+using Polygon = NetTopologySuite.Geometries.Polygon;
+using Position = Mapsui.UI.Maui.Position;
 
 namespace ProjApp.Gioco
 {
@@ -25,6 +21,7 @@ namespace ProjApp.Gioco
     {
         public Position position;
         private WritableLayer tanalayer;
+        private const double RADIUS_TANA = 50;
 
         public Tana(MPoint p)
         {
@@ -50,7 +47,10 @@ namespace ProjApp.Gioco
 
         public void CreaLayerTana()
         {
-            tanalayer = new WritableLayer();
+            tanalayer = new WritableLayer()
+            {
+                Style = null
+            };
             tanalayer.AddRange(CreateTanaFeatures());
         }
 
@@ -60,25 +60,9 @@ namespace ProjApp.Gioco
 
             IFeature feature = new PointFeature(position.ToMapsui());
 
-            feature.Styles.Add(new SymbolStyle
-            {
-                SymbolType = SymbolType.Ellipse,
-                SymbolScale = 2,
-                Outline = new Pen
-                {
-                    Color = Mapsui.Styles.Color.Green,
-                    Width = 2,
-                    PenStyle = PenStyle.ShortDashDot,
-                    PenStrokeCap = PenStrokeCap.Round
-                },
-                Fill = new Mapsui.Styles.Brush(new Mapsui.Styles.Color(0,150,0,100)),
-                
-                
-
-            });
 
             feature.Styles.Add(CustomLayer.CreateBitmapStyle("tanaicon.png", 0.55F, new RelativeOffset(0.0, 0.0)));
-            
+
             feature.Styles.Add(new LabelStyle
             {
                 Text = "TANA",
@@ -90,14 +74,20 @@ namespace ProjApp.Gioco
 
                 ForeColor = Mapsui.Styles.Color.Green,
                 BackColor = new Mapsui.Styles.Brush(Mapsui.Styles.Color.White),
-                
-                
-
-
             });
 
-            
+            IFeatureProvider circle = new Circle
+            {
+                Center = position,
+                Radius = new(meters: RADIUS_TANA),
+                Quality = 100,
+                FillColor = Color.FromRgba("#006F0032"),
+                StrokeColor = Colors.DarkGreen,
+                StrokeWidth = 2,
+                ZIndex = 1
+            };
 
+            features.Add(circle.Feature);
             features.Add(feature);
 
             return features;
