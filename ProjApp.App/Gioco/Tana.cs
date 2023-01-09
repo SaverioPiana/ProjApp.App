@@ -21,6 +21,7 @@ namespace ProjApp.Gioco
     {
         public Position position;
         private WritableLayer tanalayer;
+        private WritableLayer circleLayer;
         private const double RADIUS_TANA = 50;
 
         public Tana(MPoint p)
@@ -28,8 +29,9 @@ namespace ProjApp.Gioco
             MPoint punto = new(SphericalMercator.ToLonLat(p));
             position = new(punto.Y, punto.X);
 
-            CreaLayerTana();
+            CreaLayersTana();
 
+            OurMapController.mapView.Map.Layers.Add(circleLayer);
             OurMapController.mapView.Map.Layers.Add(tanalayer);
         }
 
@@ -40,41 +42,34 @@ namespace ProjApp.Gioco
             //costruttore sopra che gia la converte in lat lon
             position = new(c.Y, c.X);
 
-            CreaLayerTana();
+            CreaLayersTana();
 
+            OurMapController.mapView.Map.Layers.Add(circleLayer);
             OurMapController.mapView.Map.Layers.Add(tanalayer);
         }
 
-        public void CreaLayerTana()
+        public void CreaLayersTana()
         {
             tanalayer = new WritableLayer()
             {
                 Style = null
             };
-            tanalayer.AddRange(CreateTanaFeatures());
+
+            circleLayer = new WritableLayer()
+            {
+                Style = null
+            };
+
+            CreateTanaFeatures();
         }
 
-        public IEnumerable<IFeature> CreateTanaFeatures()
+        public void CreateTanaFeatures()
         {
-            List<IFeature> features = new();
-
             IFeature feature = new PointFeature(position.ToMapsui());
-
 
             feature.Styles.Add(CustomLayer.CreateBitmapStyle("tanaicon.png", 0.55F, new RelativeOffset(0.0, 0.0)));
 
-            feature.Styles.Add(new LabelStyle
-            {
-                Text = "TANA",
-                HorizontalAlignment = LabelStyle.HorizontalAlignmentEnum.Center,
-                VerticalAlignment = LabelStyle.VerticalAlignmentEnum.Top,
-                Offset = new RelativeOffset(0.0, -4.0),
-                Enabled = true,
-                Font = new Font { Size = 13, FontFamily = "Arial" },
-
-                ForeColor = Mapsui.Styles.Color.Green,
-                BackColor = new Mapsui.Styles.Brush(Mapsui.Styles.Color.White),
-            });
+            tanalayer.Add(feature);
 
             IFeatureProvider circle = new Circle
             {
@@ -87,10 +82,7 @@ namespace ProjApp.Gioco
                 MaxVisible = OurMapController.mapView.Map.Resolutions[16]
             };
 
-            features.Add(feature);
-            features.Add(circle.Feature);
-
-            return features;
+            circleLayer.Add(circle.Feature);
         }
     }
 }
