@@ -77,7 +77,7 @@ namespace ProjApp.Gioco
                 Radius = new(meters: RADIUS_TANA),
                 Quality = 100,
                 FillColor = Color.FromRgba("#006F0032"),
-                StrokeColor = Colors.DarkGreen,
+                StrokeColor = Colors.Green,
                 StrokeWidth = 2,
                 MaxVisible = OurMapController.mapView.Map.Resolutions[16]
             };
