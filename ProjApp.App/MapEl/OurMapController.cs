@@ -125,42 +125,6 @@ namespace ProjApp.MapEl
             p.CreateLobby();
         }
 
-
-        //metodo che crea layer generici
-        public static ILayer CreateCustomLayer(string name, Coordinate[] punti)
-        {
-            return new Layer(name)
-            {
-                DataSource = new MemoryProvider(CreaListaPoligoni(punti).ToFeatures()),
-                Style = new VectorStyle
-                {
-                    Fill = null,
-                    Outline = new Pen
-                    {
-                        Color = Mapsui.Styles.Color.Red,
-                        Width = 4,
-                        PenStyle = PenStyle.ShortDashDot,
-                        PenStrokeCap = PenStrokeCap.Round
-                    }
-                }
-            };
-
-        }
-
-
-        //crea una lista di poligoni
-        public static List<Polygon> CreaListaPoligoni(Coordinate[] punti)
-        {
-            var result = new List<Polygon>();
-
-            var poly1 = new NetTopologySuite.Geometries.Polygon( new LinearRing(punti) );
-
-            result.Add(poly1);
-            
-
-            return result;
-        }
-
         
         private void aggiungiAltriGiocatoriAllaMappa()
         {

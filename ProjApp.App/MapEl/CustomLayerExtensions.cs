@@ -15,54 +15,43 @@ using Mapsui.Styles.Thematics;
 using ProjApp.Gioco;
 using Mapsui.Providers;
 using System.Reflection;
+using NetTopologySuite.Geometries;
+using Polygon = NetTopologySuite.Geometries.Polygon;
+using Mapsui.Nts.Extensions;
+using Svg.FilterEffects;
 
 namespace ProjApp.MapEl
-{   //PROBABILMENTE LA USEREMO BOH
-    public class CustomLayer
+{   
+    public static class CustomLayerExtensions
     {
-        public IList<IFeature> features { get; set; }
-        public Layer userlayer { get; set; }
-
-        public CustomLayer()
+        //crea un layer generico (style puo essere nullo)
+        public static ILayer CreateCustomLayer(string name, IEnumerable<IFeature> features, Style style)
         {
-            features = new List<IFeature>();
-        }
-        
-        public void CreateLayer()
-        {
-            userlayer = new Layer("UserPinsLayer")
+            ILayer custom = new Layer(name)
             {   
                 DataSource = new MemoryProvider(features),
-                Style = null
+                Style = style
             };
+            return custom;
         }
-        
-        public IFeature CreateUserFeature(User user, MapView mv)
+
+        //metodo che crea layer con poligono custom
+        public static ILayer CreatePoligonoLayer(string name, Coordinate[] punti, Style style)
         {
-            var UserStyle = user.UserIcon;
+            return CreateCustomLayer(name, CreaPoligono(punti).ToFeatures(), style);
+        }
 
-            var feature = new PointFeature(user.UserPin.Position.ToMapsui());
 
-            feature.Styles.Add(PositionDot());
+        //crea una lista di poligoni, l'ultima e la prima coordinata devono essere uguali
+        public static List<Polygon> CreaPoligono(Coordinate[] punti)
+        {
+            var result = new List<Polygon>();
 
-            feature.Styles.Add(new LabelStyle
-            {
-                Text = user.UserID,
-                HorizontalAlignment = LabelStyle.HorizontalAlignmentEnum.Center,
-                VerticalAlignment = LabelStyle.VerticalAlignmentEnum.Top,
-                
-            });
+            var poly1 = new NetTopologySuite.Geometries.Polygon(new LinearRing(punti));
 
-            features.Add(feature);
-            if (userlayer == null)
-                CreateLayer();
-            else
-            {
-                userlayer.DataHasChanged();
-                mv.Refresh();
-            }
+            result.Add(poly1);
 
-            return feature;
+            return result;
         }
 
         public static IStyle PositionDot()
@@ -82,7 +71,7 @@ namespace ProjApp.MapEl
 
         public static SymbolStyle CreateSvgStyle(string embeddedResourcePath, double scale)
         {
-            var bitmapId = typeof(CustomLayer).LoadSvgId(embeddedResourcePath);
+            var bitmapId = typeof(CustomLayerExtensions).LoadSvgId(embeddedResourcePath);
             return new SymbolStyle { BitmapId = bitmapId, SymbolScale = scale, SymbolOffset = new RelativeOffset(0.0, 0.0) };
         }
         

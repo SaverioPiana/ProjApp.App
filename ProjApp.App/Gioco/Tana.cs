@@ -67,7 +67,7 @@ namespace ProjApp.Gioco
         {
             IFeature feature = new PointFeature(position.ToMapsui());
 
-            feature.Styles.Add(CustomLayer.CreateBitmapStyle("tanaicon.png", 0.55F, new RelativeOffset(0.0, 0.0)));
+            feature.Styles.Add(CustomLayerExtensions.CreateBitmapStyle("tanaicon.png", 0.55F, new RelativeOffset(0.0, 0.0)));
 
             tanalayer.Add(feature);
 
