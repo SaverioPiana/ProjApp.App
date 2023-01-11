@@ -21,7 +21,7 @@ using Position = Mapsui.UI.Maui.Position;
 
 namespace ProjApp.Gioco
 {
-    internal class Partita
+    public class Partita
     {
         private IList<User> players;
         private string cod_partita;
@@ -30,20 +30,17 @@ namespace ProjApp.Gioco
 
         //temp
         private int tap_counter = 0;
-        AreaGiocabile area = new();
-        Tana tana;
+        public AreaGiocabile area = new();
+        public Tana tana;
         //
 
 
-        public IList<User> Players { get; set; }
+        public static IList<User> Players { get; set; }
         public bool GiocoInCorso { get; set; }
         public string Cod_partita { get { return cod_partita; } set { cod_partita = value; } }
 
-        private readonly HubConnection _connection;
-
-        public Partita(HubConnection con)
+        public Partita()
         {
-            _connection = con;
             players = new List<User>();
             cod_partita = "SASSO";
         }
@@ -51,7 +48,8 @@ namespace ProjApp.Gioco
         public void CreateLobby()
         {
             MyUser.isAdmin = true;
-            _connection.InvokeAsync("CreateLobby", arg1: cod_partita);
+
+            Connessione.con.InvokeAsync("CreateLobby", arg1: cod_partita);
             this.JoinLobby(cod_partita);
             Console.WriteLine($"Lobby Creata con codice {cod_partita}");
 
@@ -59,8 +57,9 @@ namespace ProjApp.Gioco
 
         public void JoinLobby(string lid)
         {
-            _connection.InvokeAsync("JoinLobby", lid);
+            Connessione.con.InvokeAsync("JoinLobby", lid);
             MyUser.currPartita = lid;
+            cod_partita = lid;
             Task.Run(() => isGameStarted());
             Task.Run(() => MyUser.inviaPosSignalR());
 
@@ -73,12 +72,12 @@ namespace ProjApp.Gioco
 
         public void LeaveLobby()
         {
-            _connection.InvokeAsync("LeaveLobby", MyUser.currPartita);
+            Connessione.con.InvokeAsync("LeaveLobby", MyUser.currPartita);
             MyUser.isAdmin = false;
         }
         public void StartGame()
         {
-            _connection.InvokeAsync("StartGame", arg1: cod_partita);
+            Connessione.con.InvokeAsync("StartGame", arg1: cod_partita);
             
         }
 

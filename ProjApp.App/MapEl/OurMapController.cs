@@ -112,7 +112,7 @@ namespace ProjApp.MapEl
             //PROVA//
             Task.Run(() =>
             {
-                Partita part = new(Connessione.con);
+                Partita part = new();
                 creaPartitaEGioca(part);
             });
             ////////
@@ -143,19 +143,39 @@ namespace ProjApp.MapEl
                         {
                             trovato = true;
                             Interpolate(p, position); //animazione piu fluida
+
+                            //aggiorno lo user nella lista della partita
+                            //ma che sto facendo AIUTO!
+                            User alreadyIn = Partita.Players.Where((x) =>
+                            x.UserID.Equals(p.Label)).First();
+
+                            alreadyIn.Position = new(position.Latitude, position.Longitude);
+                            alreadyIn.IsCercatore = user.IsCercatore;
+
                         }
                     }
                     //altrimenti ne creo uno nuovo (di pin)
                     if (!trovato)
                     {
-                        mapView.Pins.Add(new Pin(mapView)
-                            {
-                                Label = user.UserID,
-                                Position = position,
-                                Type = PinType.Icon,
-                                Icon = user.UserIcon,
-                                Scale = 0.4F
-                            });
+                        Pin userPin = new Pin(mapView)
+                        {
+                            Label = user.UserID,
+                            Position = position,
+                            Type = PinType.Icon,
+                            Icon = user.UserIcon,
+                            Scale = 0.4F
+                        };
+                        mapView.Pins.Add(userPin);
+
+                        //creo loggetto user e lo aggiungo alla lista dei players nella partita
+
+                        User justReceived = new(user.Nickname, user.UserID, new(position.Latitude, position.Longitude))
+                        {
+                            UserPin = userPin
+                        };
+
+                        Partita.Players.Add(justReceived);
+
                     }
                 }
             });

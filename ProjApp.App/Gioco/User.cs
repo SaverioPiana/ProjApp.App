@@ -64,11 +64,11 @@ namespace ProjApp.Gioco
         [JsonInclude]
         public byte[] UserIcon = OurMapController.ReadResource(icone.ToArray()[new Random().Next(0, 3)]);
 
-        public User(string nickname, string userID, Location posizione, MapView mv)
+        public User(string nickname, string userID, Location posizione)
         {
             Nickname = nickname;
             UserID = userID;
-            UserPin = new Pin(mv)
+            UserPin = new Pin(OurMapController.mapView)
             {
                 Label = userID,
                 Position = new Position(posizione.Latitude, posizione.Longitude),
