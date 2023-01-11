@@ -25,10 +25,10 @@ namespace ProjApp.MapEl.GPS
 
 
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
-        public static void BuildMyUser(MapView mv)
+        public static void BuildMyUser()
         {
             Location loc = RetrieveLocFromFile("lastSavedPosition.txt");
-            user = new("Nickname", DeviceInfo.Name, loc, mv);
+            user = new("Nickname", DeviceInfo.Name, loc);
         }
 
         public static async Task Get_Position()
