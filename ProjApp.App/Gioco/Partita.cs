@@ -25,7 +25,7 @@ namespace ProjApp.Gioco
     public class Partita
     {
         private string cod_partita;
-        private GameLogic gameLogic = new();
+        
 
 
         //temp
@@ -68,7 +68,7 @@ namespace ProjApp.Gioco
             if (MyUser.isAdmin) { 
             OurMapController.mapView.SingleTap += creaPin;
             //event subscription
-            gameLogic.UsersOutside += onUserOutside;
+            GameLogic.UsersOutside += onUserOutside;
                }
             else Task.Run(() => riceviOggettiDiGioco());
                 
@@ -123,7 +123,7 @@ namespace ProjApp.Gioco
                     break;
                 case 6:
                     area.creaArea();
-                    gameLogic.whoOutsideTheArea();
+                    GameLogic.whoOutsideTheArea();
                     break;
                 case 7:
                     this.tana = new(worldPosition);

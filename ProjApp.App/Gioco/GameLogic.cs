@@ -10,12 +10,12 @@ using Location = Microsoft.Maui.Devices.Sensors.Location;
 
 namespace ProjApp.Gioco
 {
-    public class GameLogic
+    public static class GameLogic
     {
         //dichiarazione evento
-        public event EventHandler<List<User>> UsersOutside;
+        public static event EventHandler<List<User>> UsersOutside;
 
-        public void whoOutsideTheArea()
+        public static void whoOutsideTheArea()
         {
             List<Coordinate> bordi = MyUser.currPartita.area.bordi;
             bordi.Remove(bordi.First());
@@ -34,13 +34,13 @@ namespace ProjApp.Gioco
                 OnUserOutside(UO);
             }
         }
-         public virtual void OnUserOutside(List<User> e)
+         public static void OnUserOutside(List<User> e)
         {
-            UsersOutside?.Invoke(this, e);
+            UsersOutside?.Invoke(new(), e);
         }
 
         // uso di "Ray Casting Method" , chat GPT in aiuto
-        public bool IsInsideTheArea(List<Coordinate> bordi, Location point)
+        private static bool IsInsideTheArea(List<Coordinate> bordi, Location point)
         {
             int i, j;
             bool res = false;
