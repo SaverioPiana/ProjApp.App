@@ -23,25 +23,24 @@ namespace ProjApp.Gioco
 {
     public class Partita
     {
-        private IList<User> players;
         private string cod_partita;
-        private bool giocoInCorso = false;
+
 
 
         //temp
         private int tap_counter = 0;
-        public AreaGiocabile area = new();
         public Tana tana;
         //
 
-
-        public static IList<User> Players { get; set; }
-        public bool GiocoInCorso { get; set; }
+        //per ora li ho messi statici per facilitare il tutto
+        public IList<User> Players { get ; set; }
+        public AreaGiocabile area { get; set; }  
+        public static bool GiocoInCorso { get; set; }
         public string Cod_partita { get { return cod_partita; } set { cod_partita = value; } }
 
         public Partita()
         {
-            players = new List<User>();
+            area = new();
             cod_partita = "SASSO";
         }
 
@@ -50,7 +49,7 @@ namespace ProjApp.Gioco
             MyUser.isAdmin = true;
 
             Connessione.con.InvokeAsync("CreateLobby", arg1: cod_partita);
-            this.JoinLobby(cod_partita);
+            this.JoinLobby(Cod_partita);
             Console.WriteLine($"Lobby Creata con codice {cod_partita}");
 
         }
@@ -58,22 +57,26 @@ namespace ProjApp.Gioco
         public void JoinLobby(string lid)
         {
             Connessione.con.InvokeAsync("JoinLobby", lid);
-            MyUser.currPartita = lid;
-            cod_partita = lid;
+            Cod_partita = lid;
+            MyUser.AddToCurrPartita();
             Task.Run(() => isGameStarted());
             Task.Run(() => MyUser.inviaPosSignalR());
-
+            
             //creazione area di gioco
-            if (MyUser.isAdmin)
-                OurMapController.mapView.SingleTap += creaPin;
+            if (MyUser.isAdmin) { 
+            OurMapController.mapView.SingleTap += creaPin;
+            //event subscription
+            GameLogic.UsersOutside += onUserOutside;
+               }
             else Task.Run(() => riceviOggettiDiGioco());
                 
         }
 
         public void LeaveLobby()
         {
-            Connessione.con.InvokeAsync("LeaveLobby", MyUser.currPartita);
+            Connessione.con.InvokeAsync("LeaveLobby", MyUser.currPartita.Cod_partita);
             MyUser.isAdmin = false;
+            
         }
         public void StartGame()
         {
@@ -95,8 +98,15 @@ namespace ProjApp.Gioco
                 }
             });
         }
-
-        
+        //event handler
+        private void onUserOutside(object sender, List<User> UO)
+        {
+            tap_counter = 0;
+            area = new();
+            StringBuilder s = new();
+            UO.ForEach(u => s.Append(", " + u.UserID));
+            Console.WriteLine($"{s} sono fuori dall' area");
+        }
         private void creaPin(object sender, Mapsui.UI.TappedEventArgs e)
         {
             tap_counter++;
@@ -108,6 +118,7 @@ namespace ProjApp.Gioco
                     break;
                 case 6:
                     area.creaArea();
+                    GameLogic.whoOutsideTheArea();
                     break;
                 case 7:
                     this.tana = new(worldPosition);
@@ -149,7 +160,7 @@ namespace ProjApp.Gioco
                 });
 
             Connessione.con.InvokeAsync("InviaOggettiDiGioco", 
-                arg1: MyUser.currPartita, 
+                arg1: MyUser.currPartita.Cod_partita, 
                 arg2: jcord, 
                 arg3: jtana);
         }

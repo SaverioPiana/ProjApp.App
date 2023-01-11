@@ -15,7 +15,7 @@ namespace ProjApp.MapEl.GPS
         private static CancellationTokenSource _cancelTokenSource;
         private static bool _isCheckingLocation;
         public static User user;
-        public static string currPartita;
+        public static Partita currPartita = new();
         public static bool isAdmin = false;
 
 
@@ -29,8 +29,13 @@ namespace ProjApp.MapEl.GPS
         {
             Location loc = RetrieveLocFromFile("lastSavedPosition.txt");
             user = new("Nickname", DeviceInfo.Name, loc);
+            
         }
 
+        public static void AddToCurrPartita()
+        {
+            //currPartita.Players.Add(user);
+        }
         public static async Task Get_Position()
         {
             try
@@ -149,7 +154,7 @@ namespace ProjApp.MapEl.GPS
                     await Connessione.con.InvokeAsync("SendPosition",
                           arg1: jsonUser,
                           //Codice lobby
-                          arg2: currPartita);
+                          arg2: currPartita.Cod_partita);
                 }
                 await Task.Delay(SEND_POS_DELAY);
             }

@@ -82,7 +82,7 @@ namespace ProjApp.MapEl
 
         public void MapInitializer()
         {
-            MyUser.BuildMyUser(mapView);
+            MyUser.BuildMyUser();
 
             MPoint initpos = new MPoint(MyUser.user.Position.Longitude,
                 MyUser.user.Position.Latitude);
@@ -112,17 +112,16 @@ namespace ProjApp.MapEl
             //PROVA//
             Task.Run(() =>
             {
-                Partita part = new();
-                creaPartitaEGioca(part);
+                creaPartitaEGioca();
             });
             ////////
         }
 
 
-        private async void creaPartitaEGioca(Partita p)
+        private async void creaPartitaEGioca()
         {
             await Task.Delay(7000);
-            p.CreateLobby();
+            MyUser.currPartita.CreateLobby();
         }
 
         
@@ -146,7 +145,7 @@ namespace ProjApp.MapEl
 
                             //aggiorno lo user nella lista della partita
                             //ma che sto facendo AIUTO!
-                            User alreadyIn = Partita.Players.Where((x) =>
+                            User alreadyIn = MyUser.currPartita.Players.Where((x) =>
                             x.UserID.Equals(p.Label)).First();
 
                             alreadyIn.Position = new(position.Latitude, position.Longitude);
@@ -174,7 +173,7 @@ namespace ProjApp.MapEl
                             UserPin = userPin
                         };
 
-                        Partita.Players.Add(justReceived);
+                        MyUser.currPartita.Players.Add(justReceived);
 
                     }
                 }
