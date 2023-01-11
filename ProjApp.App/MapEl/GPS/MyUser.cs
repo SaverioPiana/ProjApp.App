@@ -32,9 +32,9 @@ namespace ProjApp.MapEl.GPS
             
         }
 
-        public static void AddToCurrPartita()
+        public static void AddToCurrPartita(User u)
         {
-            //currPartita.Players.Add(user);
+            currPartita.Players.Add(u);
         }
         public static async Task Get_Position()
         {

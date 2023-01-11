@@ -10,24 +10,37 @@ using Location = Microsoft.Maui.Devices.Sensors.Location;
 
 namespace ProjApp.Gioco
 {
-    public static class GameLogic
+    public class GameLogic
     {
         //dichiarazione evento
-        public static event EventHandler<List<User>> UsersOutside;
+        public event EventHandler<List<User>> UsersOutside;
 
-        public static void whoOutsideTheArea()
+        public void whoOutsideTheArea()
         {
+            List<Coordinate> bordi = MyUser.currPartita.area.bordi;
+            bordi.Remove(bordi.First());
             //ma quante funz su liste tipo PF WOW!(ci sta pure Any che e' tipo exists)
-            List<User> UO = (List<User>)MyUser.currPartita.Players.Where((x) => IsOutsideTheArea(MyUser.currPartita.area.bordi, x.Position));
-            
-            if(UO.Count > 0)
+            //List<User> UO = (List<User>)MyUser.currPartita.Players.Where( x => IsOutsideTheArea(bordi, x.Position));
+            List<User> UO = new List<User>();
+            foreach (User p in MyUser.currPartita.Players)
+            {
+                if (!IsInsideTheArea(bordi, p.Position))
+                    UO.Add(p);
+            }
+
+            if (UO.Count > 0)
+            {
                 //evento
-            UsersOutside?.Invoke(new() , UO );
+                OnUserOutside(UO);
+            }
+        }
+         public virtual void OnUserOutside(List<User> e)
+        {
+            UsersOutside?.Invoke(this, e);
         }
 
-
         // uso di "Ray Casting Method" , chat GPT in aiuto
-        public static bool IsOutsideTheArea(List<Coordinate> bordi, Location point)
+        public bool IsInsideTheArea(List<Coordinate> bordi, Location point)
         {
             int i, j;
             bool res = false;

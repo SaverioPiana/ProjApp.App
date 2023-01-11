@@ -4,6 +4,7 @@ using Mapsui.Projections;
 using Mapsui.UI;
 using Mapsui.UI.Maui;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Primitives;
 using NetTopologySuite.Geometries;
 using ProjApp.MapEl;
 using ProjApp.MapEl.GPS;
@@ -24,7 +25,7 @@ namespace ProjApp.Gioco
     public class Partita
     {
         private string cod_partita;
-
+        private GameLogic gameLogic = new();
 
 
         //temp
@@ -35,12 +36,13 @@ namespace ProjApp.Gioco
         //per ora li ho messi statici per facilitare il tutto
         public IList<User> Players { get ; set; }
         public AreaGiocabile area { get; set; }  
-        public static bool GiocoInCorso { get; set; }
+        
         public string Cod_partita { get { return cod_partita; } set { cod_partita = value; } }
 
         public Partita()
         {
             area = new();
+            Players = new List<User>();
             cod_partita = "SASSO";
         }
 
@@ -58,7 +60,7 @@ namespace ProjApp.Gioco
         {
             Connessione.con.InvokeAsync("JoinLobby", lid);
             Cod_partita = lid;
-            MyUser.AddToCurrPartita();
+            MyUser.AddToCurrPartita(MyUser.user);
             Task.Run(() => isGameStarted());
             Task.Run(() => MyUser.inviaPosSignalR());
             
@@ -66,7 +68,7 @@ namespace ProjApp.Gioco
             if (MyUser.isAdmin) { 
             OurMapController.mapView.SingleTap += creaPin;
             //event subscription
-            GameLogic.UsersOutside += onUserOutside;
+            gameLogic.UsersOutside += onUserOutside;
                }
             else Task.Run(() => riceviOggettiDiGioco());
                 
@@ -103,8 +105,11 @@ namespace ProjApp.Gioco
         {
             tap_counter = 0;
             area = new();
+            OurMapController.mapView.Map.Layers.Remove(
+                OurMapController.mapView.Map.Layers.Single(x => x.Name.Equals( "AreaDiGioco"))
+                );
             StringBuilder s = new();
-            UO.ForEach(u => s.Append(", " + u.UserID));
+            UO.ForEach(u => s.Append(u.UserID + ", "));
             Console.WriteLine($"{s} sono fuori dall' area");
         }
         private void creaPin(object sender, Mapsui.UI.TappedEventArgs e)
@@ -118,7 +123,7 @@ namespace ProjApp.Gioco
                     break;
                 case 6:
                     area.creaArea();
-                    GameLogic.whoOutsideTheArea();
+                    gameLogic.whoOutsideTheArea();
                     break;
                 case 7:
                     this.tana = new(worldPosition);
