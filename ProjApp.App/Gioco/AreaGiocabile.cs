@@ -17,6 +17,7 @@ namespace ProjApp.Gioco
 {
     public class AreaGiocabile
     {
+        public readonly static string NOME_LAYER_AREA = "Area di Gioco";
         public List<NetTopologySuite.Geometries.Coordinate> bordi;
         private Mapsui.Styles.Style stileArea = new VectorStyle
         {
@@ -65,7 +66,7 @@ namespace ProjApp.Gioco
 
         public void drawArea(Coordinate[] c)
         {
-            OurMapController.mapView.Map.Layers.Add(CustomLayerExtensions.CreatePoligonoLayer("AreaDiGioco", c, stileArea));
+            OurMapController.mapView.Map.Layers.Add(CustomLayerExtensions.CreatePoligonoLayer(NOME_LAYER_AREA, c, stileArea));
         }
 
         public void drawArea(SerializableCoordinate[] c)

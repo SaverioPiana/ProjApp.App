@@ -106,7 +106,7 @@ namespace ProjApp.Gioco
             tap_counter = 0;
             area = new();
             OurMapController.mapView.Map.Layers.Remove(
-                OurMapController.mapView.Map.Layers.Single(x => x.Name.Equals( "AreaDiGioco"))
+                OurMapController.mapView.Map.Layers.Single(x => x.Name.Equals( AreaGiocabile.NOME_LAYER_AREA ))
                 );
             StringBuilder s = new();
             UO.ForEach(u => s.Append(u.UserID + ", "));
