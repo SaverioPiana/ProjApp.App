@@ -127,7 +127,12 @@ namespace ProjApp.Gioco
                     break;
                 case 7:
                     this.tana = new(worldPosition);
-                    inviaOggettiDiGioco();
+                    if (GameLogic.IsInsideTheArea(area.bordi, worldPosition))
+                    {
+                        tana.drawArea();
+                        inviaOggettiDiGioco();
+                    }
+                    else tap_counter--;
                     break;
             };
  

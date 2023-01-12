@@ -8,6 +8,7 @@ using Mapsui.Projections;
 using Mapsui.Styles;
 using Mapsui.UI.Maui;
 using Mapsui.UI.Objects;
+using NetTopologySuite.Geometries;
 using ProjApp.MapEl;
 using ProjApp.MapEl.Serializable;
 using Color = Microsoft.Maui.Graphics.Color;
@@ -22,17 +23,16 @@ namespace ProjApp.Gioco
         public Position position;
         private WritableLayer tanalayer;
         private WritableLayer circleLayer;
+        private Geometry cerchio; 
         private const double RADIUS_TANA = 50;
+
+        public Geometry Cerchio { get { return cerchio; } }
+
 
         public Tana(MPoint p)
         {
             MPoint punto = new(SphericalMercator.ToLonLat(p));
-            position = new(punto.Y, punto.X);
-
-            CreaLayersTana();
-
-            OurMapController.mapView.Map.Layers.Add(circleLayer);
-            OurMapController.mapView.Map.Layers.Add(tanalayer);
+            position = new(punto.Y, punto.X);  
         }
 
         //questo costruttore lo usiamo quando creiamo la tana da server
@@ -41,13 +41,14 @@ namespace ProjApp.Gioco
             //qua "c" ci arriva gia in lat lon perche l'admin la crea col
             //costruttore sopra che gia la converte in lat lon
             position = new(c.Y, c.X);
+        }
 
+        public void drawArea()
+        {
             CreaLayersTana();
-
             OurMapController.mapView.Map.Layers.Add(circleLayer);
             OurMapController.mapView.Map.Layers.Add(tanalayer);
         }
-
         public void CreaLayersTana()
         {
             tanalayer = new WritableLayer()
@@ -83,6 +84,8 @@ namespace ProjApp.Gioco
             };
 
             circleLayer.Add(circle.Feature);
+
+            cerchio = circle.Feature.Geometry;
         }
     }
 }
