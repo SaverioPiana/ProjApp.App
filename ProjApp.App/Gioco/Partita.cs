@@ -131,6 +131,8 @@ namespace ProjApp.Gioco
                     {
                         tana.drawArea();
                         inviaOggettiDiGioco();
+                        Task.Delay(2000).Wait();
+                        StartGame();
                     }
                     else tap_counter--;
                     break;
