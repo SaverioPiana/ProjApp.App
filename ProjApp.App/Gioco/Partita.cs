@@ -82,6 +82,7 @@ namespace ProjApp.Gioco
         }
         public void StartGame()
         {
+
             Connessione.con.InvokeAsync("StartGame", arg1: cod_partita);
             
         }
@@ -131,7 +132,7 @@ namespace ProjApp.Gioco
                     {
                         tana.drawArea();
                         inviaOggettiDiGioco();
-                        Task.Delay(2000).Wait();
+                        
                         StartGame();
                     }
                     else tap_counter--;
