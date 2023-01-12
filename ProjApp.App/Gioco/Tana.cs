@@ -41,6 +41,8 @@ namespace ProjApp.Gioco
             //qua "c" ci arriva gia in lat lon perche l'admin la crea col
             //costruttore sopra che gia la converte in lat lon
             position = new(c.Y, c.X);
+
+            drawArea();
         }
 
         public void drawArea()
