@@ -95,7 +95,6 @@ namespace ProjApp.MapEl
             mapView.IsZoomButtonVisible = false;
             mapView.MyLocationFollow = false;
 
-            mapView.Pins.Add(MyUser.user.UserPin);
             mapView.Map.Home = n => n.NavigateTo(center:
                                       SphericalMercator.FromLonLat(initpos),
                                       STARTING_RES);
@@ -211,6 +210,7 @@ namespace ProjApp.MapEl
                     mapView.Navigator.FlyTo(SphericalMercator.FromLonLat(
                         new MPoint(MyUser.user.Position.Longitude,
                                     MyUser.user.Position.Latitude)), STARTING_RES, 3000);
+                    mapView.Pins.Add(MyUser.user.UserPin);
                     firstupdate = false;
                     mapView.IsMyLocationButtonVisible = true;
                 }
