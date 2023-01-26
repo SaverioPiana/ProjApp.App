@@ -3,11 +3,22 @@
     x:Class="ProjApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:ProjApp.Pages"
     xmlns:local="clr-namespace:ProjApp"
     Shell.FlyoutBehavior="Disabled">
+    <TabBar>
+        <Tab>
+            <ShellContent ContentTemplate= "{DataTemplate pages:Profile}" Title="Profile" />
+            <ShellContent ContentTemplate= "{DataTemplate pages:Game}" Title="Game" />
+            <ShellContent ContentTemplate= "{DataTemplate pages:Settings}" Title="Settings" />
+        </Tab>
+    </TabBar>
 
-    <ShellContent
+
+
+
+    <!--<ShellContent
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Route="MainPage" />-->
 
 </Shell>
