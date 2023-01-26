@@ -1,4 +1,5 @@
-﻿using Mapsui;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Mapsui;
 using Mapsui.Extensions;
 using Mapsui.Layers;
 using Mapsui.Projections;
@@ -7,11 +8,20 @@ using Microsoft.AspNetCore.SignalR.Client;
 using ProjApp.Gioco;
 using ProjApp.MapEl;
 using System.Collections.ObjectModel;
+using static ProjApp.MainActivity;
 
 namespace ProjApp.Pages;
 
 public  partial class Game : ContentPage
 {
+    //serve ad entrare in fullscreen
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar"));
+    }
+
+
     public Game()
     {
         InitializeComponent();

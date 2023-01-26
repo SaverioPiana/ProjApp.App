@@ -45,7 +45,6 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -64,7 +63,10 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\appiconprova.svg" />
+	  <None Remove="Resources\Images\profile.png" />
 	  <None Remove="Resources\Images\reddot.png" />
+	  <None Remove="Resources\Images\settings.png" />
+	  <None Remove="Resources\Images\tanabar.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -80,6 +82,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
 	  <PackageReference Include="Mapsui.Maui" Version="4.0.0-beta.5" />
 	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.0" />
 	</ItemGroup>
