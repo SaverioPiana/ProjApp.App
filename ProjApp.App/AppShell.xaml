@@ -7,10 +7,15 @@
     xmlns:local="clr-namespace:ProjApp"
     Shell.FlyoutBehavior="Disabled">
     <TabBar>
-        <Tab>
-            <ShellContent ContentTemplate= "{DataTemplate pages:Profile}" Title="Profile" />
-            <ShellContent ContentTemplate= "{DataTemplate pages:Game}" Title="Game" />
-            <ShellContent ContentTemplate= "{DataTemplate pages:Settings}" Title="Settings" />
+        <Tab Title="Profile">
+            
+            <ShellContent ContentTemplate= "{DataTemplate pages:Profile}" />
+        </Tab>
+        <Tab Title="Game">
+            <ShellContent ContentTemplate= "{DataTemplate pages:Game}" />
+        </Tab>
+        <Tab Title="Settings">
+            <ShellContent ContentTemplate= "{DataTemplate pages:Settings}" />
         </Tab>
     </TabBar>
 
