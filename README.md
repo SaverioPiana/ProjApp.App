@@ -2,10 +2,32 @@
 
 Progetto in MAUI per esame di MobileComputing presso RomaTre
 
--hub di signalR(fatto) -> poi bisognera' capire come creare un modo di fare lobby private
+To Do:
 
-- problema con posizione gps -> capire come funge (ok , quasi)
+- problema con posizione gps -> capire come funge (fatto)
 
-- capire cos'e mapview, come funge, come modificarlo a nostra discrezione (ha stranamente funzionato molto a caso)
+- Hub di signalR(fatto) -> poi bisognera' capire come creare un modo di fare lobby private(fatto)
 
-- capire come funzionano i layers della mappa e come aggiungere dei punti/pins personalizzati
+- capire cos'e mapview, come funge, come modificarlo a nostra discrezione (ha stranamente funzionato molto a caso)(fatto)
+
+- capire come funzionano i layers della mappa e come aggiungere dei punti/pins personalizzati(fatto)
+
+--------------------------------------
+
+- UI bella pulita -> da fare assolutmente alla svelta
+
+- logiche di gioco(non molte) -> da fare quando avremo almeno qualche bottone
+
+- DARE UN NOME ALL'APP
+
+- creare un icona e spash per lapp
+
+Miglioramenti/Problemini:
+
+- forse bisognerebbe interpolare il myuserpin, va un po a scatti
+
+- togliere i task delay 
+
+- vediamo se aggiungere un tema musicale per il menu
+
+- vedere se si possono fare temi non hard coded
