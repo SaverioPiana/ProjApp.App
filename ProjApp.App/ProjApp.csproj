@@ -11,7 +11,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>ProjApp</ApplicationTitle>
+		<ApplicationTitle>NascondApp</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.projapp</ApplicationId>
@@ -29,10 +29,17 @@
 		
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
+	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
+	  <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
-
+		<MauiIcon Include="Resources\AppIcon\appiconprova.svg" BaseSize="128,128" />		
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
@@ -48,12 +55,39 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Images\pin_icon.png" />
+	  <MauiImage Remove="Resources\Images\green_pinicon.png" />
+	  <MauiImage Remove="Resources\Images\reddot.png" />
+	  <MauiImage Remove="Resources\Images\red_pinicon.png" />
+	  <MauiImage Remove="Resources\Images\tanaicon.png" />
+	  <MauiImage Remove="Resources\Images\yellow_pinicon.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\AppIcon\appiconprova.svg" />
+	  <None Remove="Resources\Images\reddot.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Images\green_pinicon.png" />
+	  <EmbeddedResource Include="Resources\Images\red_pinicon.png" />
+	  <EmbeddedResource Include="Resources\Images\yellow_pinicon.png" />
+	  <EmbeddedResource Include="Resources\Images\reddot.png" />
+	  <EmbeddedResource Include="Resources\Images\tanaicon.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiIcon Include="Resources\AppIcon\appiconprova.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="Mapsui.Maui" Version="4.0.0-beta.5" />
 	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.0" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Resources\Settings\" />
+	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionProjAppHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarProjAppHideInfoBar="True" /></VisualStudio></ProjectExtensions>
 
 </Project>
