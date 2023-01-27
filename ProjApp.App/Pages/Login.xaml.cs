@@ -1,4 +1,9 @@
 using CommunityToolkit.Mvvm.Messaging;
+using Google.Apis.Auth.OAuth2.Flows;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Util.Store;
+using ProjApp.Gioco;
+using ProjApp.MapEl.GPS;
 #if ANDROID
 using static ProjApp.MainActivity;
 #endif
@@ -17,6 +22,18 @@ public partial class Login : ContentPage
     #endif  
     public Login()
 	{
-		InitializeComponent();
+
+
+        InitializeComponent();
+        //spostato qua da fixare
+        MyUser.BuildMyUser();
 	}
+
+
+    private async void google_auth()
+    {
+        
+    }
+
+
 }

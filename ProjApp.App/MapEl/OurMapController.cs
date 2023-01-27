@@ -82,7 +82,6 @@ namespace ProjApp.MapEl
 
         public void MapInitializer()
         {
-            MyUser.BuildMyUser();
 
             MPoint initpos = new MPoint(MyUser.user.Position.Longitude,
                 MyUser.user.Position.Latitude);
