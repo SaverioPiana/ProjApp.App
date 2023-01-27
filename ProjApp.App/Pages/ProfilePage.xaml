@@ -40,7 +40,7 @@
 
         <Frame
             BorderColor="MediumSlateBlue">
-            <Label Text="Amici"
+            <Label Text="Giocatori Recenti:"
                    FontSize="24"/>
 
             
