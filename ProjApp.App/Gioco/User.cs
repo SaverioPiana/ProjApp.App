@@ -7,12 +7,12 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using Position = Mapsui.UI.Maui.Position;
-using Java.Util;
 using Random = System.Random;
 using NetTopologySuite.Triangulate;
 using System.Globalization;
+#if ANDROID
 using Java.Lang;
-
+#endif
 namespace ProjApp.Gioco
 {
     public class User

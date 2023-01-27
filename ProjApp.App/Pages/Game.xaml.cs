@@ -8,18 +8,23 @@ using Microsoft.AspNetCore.SignalR.Client;
 using ProjApp.Gioco;
 using ProjApp.MapEl;
 using System.Collections.ObjectModel;
+#if ANDROID
 using static ProjApp.MainActivity;
+#endif
 
 namespace ProjApp.Pages;
 
 public  partial class Game : ContentPage
 {
-    //serve ad entrare in fullscreen
+    //serve ad entrare in fullscreen e mette la status bar trasparent
+    #if ANDROID
     protected override void OnAppearing()
     {
         base.OnAppearing();
         WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar"));
+        
     }
+    #endif
 
 
     public Game()
@@ -43,6 +48,7 @@ public  partial class Game : ContentPage
 
         new OurMapController().MapInitializer();
         Content = OurMapController.mapView;
+        
     }
 
     //forse va messa una condizione in modo tale che non runni sempre all avvio, tipo salvarci un bool su un file boh

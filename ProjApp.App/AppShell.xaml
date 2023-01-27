@@ -5,25 +5,21 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:ProjApp.Pages"
     xmlns:local="clr-namespace:ProjApp"
-    Shell.FlyoutBehavior="Disabled">
-    <TabBar>
-        <Tab Title="Profile" Icon="profile.png">
-            
-            <ShellContent ContentTemplate= "{DataTemplate pages:Profile}" />
-        </Tab>
-        <Tab Title="Game" Icon="tanabar.png">
-            <ShellContent ContentTemplate= "{DataTemplate pages:Game}" />
-        </Tab>
-        <Tab Title="Settings" Icon="settings.png">
-            <ShellContent ContentTemplate= "{DataTemplate pages:Settings}" />
-        </Tab>
-    </TabBar>
+    Shell.FlyoutBehavior="Disabled"
+    BackgroundColor="Transparent">
+
+    <TabBar />
+    <Tab Title="Profile" Icon="profile.png">
+        <ShellContent ContentTemplate="{DataTemplate pages:Profile}" />
+    </Tab>
+    <Tab Title="Game" Icon="tanabar.png">
+        <ShellContent ContentTemplate= "{DataTemplate pages:Game}" />
+    </Tab>
+    <Tab Title="Settings" Icon="settings.png">
+        <ShellContent ContentTemplate= "{DataTemplate pages:Settings}" />
+    </Tab>
 
 
 
-
-    <!--<ShellContent
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />-->
 
 </Shell>
