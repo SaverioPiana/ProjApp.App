@@ -5,7 +5,7 @@
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:StartPageViewModel"
 
-             Title="StartPage">
+             Title="">
 
     <VerticalStackLayout 
             Spacing="10"
@@ -13,27 +13,41 @@
             VerticalOptions="Start"
             HorizontalOptions="Center">
 
+        <Label
+            Margin="20"
+            Text="Per iniziare una partita, &#10;hai bisogno di una lobby. &#10;&#10; Per creare una lobby:"
+            FontSize="24">
+
+        </Label>
 
         <Button
-            Text="Navigate to Map"
+            HeightRequest="50"
+            WidthRequest="50"
+                ></Button>
+
+        <Label
+            Margin="20"
+            Text="Per unirti ad una lobby:"
+            FontSize="24">
+        </Label>
+
+        <Button
+            HeightRequest="50"
+            WidthRequest="50"
+                ></Button>
+
+
+        
+
+        
+        
+        <Button
+            Text="Avvia partita!"
             Margin="15"
             HeightRequest="50"
             WidthRequest="200"
+            VerticalOptions="End"
             Command="{Binding NavigateToMainPageCommand}"/>
-
-        <Button
-            Text="Navigate to Profile"
-            Margin="15"
-            HeightRequest="50"
-            WidthRequest="200"
-            Command="{Binding NavigateToProfileCommand}"/>
-
-        <Button
-            Text="Navigate to Settings"
-            Margin="15"
-            HeightRequest="50"
-            WidthRequest="200"
-            Command="{Binding NavigateToSettingsCommand}"/>
 
 
     </VerticalStackLayout>

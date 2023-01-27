@@ -38,5 +38,10 @@ public  partial class MainPage : ContentPage
         if (status == PermissionStatus.Denied) //chiamiamo Geolocation perche fa la richiesta del gps 
              await Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Lowest));
     }
+
+    protected override bool OnBackButtonPressed()
+    {
+        return true;
+    }
 }
 

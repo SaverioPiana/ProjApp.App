@@ -4,16 +4,30 @@
              x:Class="ProjApp.Settings"
              Title="Settings">
     
-    <VerticalStackLayout>
+    <VerticalStackLayout
+        Margin="20">
         
         
         <Label 
-            Text="This is the Settings Page"
-            VerticalOptions="Center" 
-            HorizontalOptions="Start" 
-            Margin="10"
+            Text="Impostazioni&#10;"
+            FontSize="36"
+            HorizontalOptions="Center" 
+            
             />
-        
+
+        <Label 
+            Text="Theme:&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;"
+            FontSize="24"
+            Margin="10"
+             />
+
+        <Button
+            Text="Disconnetti"
+            Margin="15"
+            HeightRequest="50"
+            WidthRequest="200"
+            VerticalOptions="End"/>
+
     </VerticalStackLayout>
     
 </ContentPage>
