@@ -24,12 +24,11 @@ namespace ServerS
         //lobbies expiring in 10h
         private async void isExpired()
         {
-            while((DateTime.Now.Ticks - this.lastTime) < TicksPerHour * 10)
+            while((DateTime.Now.Ticks - this.lastTime.Ticks) < TicksPerHour * 10)
             {
-                Task.Delay(HtoMs * 5)
+                Task.Delay(HtoMs * 5).Wait();
             }
             LobbyHub.lobbies.Remove(this.Id);  
-            LobbyHub.Se
         }
     }
 

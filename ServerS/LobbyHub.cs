@@ -16,7 +16,7 @@ namespace ServerS
 
         }
         
-        public async void CreateLobby(string id)
+        public void CreateLobby(string id)
         {
             // create a new lobby
             var lobby = new Lobby(id);
