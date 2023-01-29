@@ -7,7 +7,7 @@ namespace ServerS
 {
     public class LobbyHub : Hub
     {
-        private static Dictionary<string, Lobby> lobbies = new Dictionary<string, Lobby>();
+        public static Dictionary<string, Lobby> lobbies = new Dictionary<string, Lobby>();
         public async Task SendPosition(string user, string lobbid)
         {
             await Clients.OthersInGroup(lobbid).SendAsync("PositionReceived", user);
@@ -16,7 +16,7 @@ namespace ServerS
 
         }
         
-        public void CreateLobby(string id)
+        public async void CreateLobby(string id)
         {
             // create a new lobby
             var lobby = new Lobby(id);
