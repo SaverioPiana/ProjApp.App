@@ -2,6 +2,7 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Controls;
 
 namespace ProjApp.ViewModel
 {
@@ -18,6 +19,13 @@ namespace ProjApp.ViewModel
 
         [RelayCommand]
         Task NavigateToSettings() => Shell.Current.GoToAsync(nameof(Settings));
+
+        [RelayCommand]
+        async Task JoinLobby()
+        {
+            string result = await Application.Current.MainPage.DisplayPromptAsync("Join Lobby", "Lobby id?");
+
+        }
 
     }
 }
