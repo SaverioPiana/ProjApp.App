@@ -94,6 +94,7 @@ namespace ProjApp.Gioco
                 if (isCacciatore)
                 {
                     Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
+                    MyUser.user.IsCercatore = true;
                 }
                 else
                 {
