@@ -18,12 +18,16 @@ public static class MauiProgram
                 fonts.AddFont("comici.ttf", "ComicSansRegular");
             });
 
-		builder.Services.AddTransient<StartPageViewModel>();
-        builder.Services.AddTransient<StartPage>();
-        builder.Services.AddTransient<MainViewModel>();
-        builder.Services.AddTransient<MainPage>();
-        builder.Services.AddTransient<ProfilePageViewModel>();
-        builder.Services.AddTransient<ProfilePage>();
+		builder.Services.AddSingleton<StartPageViewModel>();
+        builder.Services.AddSingleton<StartPage>();
+        builder.Services.AddSingleton<MainViewModel>();
+        builder.Services.AddSingleton<MainPage>();
+        builder.Services.AddSingleton<ProfilePageViewModel>();
+        builder.Services.AddSingleton<ProfilePage>();
+        builder.Services.AddTransient<LoginPageViewModel>();
+        builder.Services.AddTransient<LoginPage>();
+        builder.Services.AddSingleton<SettingsPageViewModel>();
+        builder.Services.AddSingleton<Settings>();
 
         return builder.Build();
 	}

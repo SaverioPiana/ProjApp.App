@@ -16,6 +16,8 @@ namespace ProjApp.ViewModel
         [ObservableProperty] private string _username;
         [ObservableProperty] public string _password;
 
+
+
         [RelayCommand]
         Task NavigateToStartPage() => Shell.Current.GoToAsync(nameof(StartPage));
 
