@@ -20,6 +20,10 @@
 
         </Label>
 
+        <Button
+            HeightRequest="50"
+            WidthRequest="50"
+                ></Button>
 
         <Label
             Margin="20"
@@ -27,27 +31,16 @@
             FontSize="24">
         </Label>
 
-        <Grid Padding="10" RowSpacing="30" ColumnSpacing="30" HorizontalOptions="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width= "Auto"/>
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Button
-                Grid.Column="0"
-                Text="Create Lobby"/>
-            <Button
-                Grid.Column="1"
-                Text="Join Lobby"
-                Command="{Binding JoinLobbyCommand}"/>
-        </Grid>
-      
+        <Button
+            HeightRequest="50"
+            WidthRequest="50"
+                ></Button>
 
 
+        
 
-
+        
+        
         <Button
             Text="Avvia partita!"
             Margin="15"

@@ -41,8 +41,7 @@
         <Frame
             BorderColor="MediumSlateBlue">
             <Label Text="Giocatori Recenti:"
-                   FontSize="24"
-                   Style="{StaticResource LabelInsideFrame}"/>
+                   FontSize="24"/>
 
             
         </Frame>
