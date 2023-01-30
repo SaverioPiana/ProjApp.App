@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjApp.LoginPage"
+             xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
+             x:DataType="viewmodel:LoginPageViewModel"
+             
+             Title="LoginPage">
+    
+    <VerticalStackLayout>
+        <Label 
+            Text="Benvenuto! &#10;Sign in to continue:"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            Margin="20 "
+            Padding="20"/>
+
+        <Entry
+            Text="{Binding Username}"
+            x:Name="Username"
+            Placeholder="Username"
+            TextColor="Black"
+            FontAttributes="Bold"
+            Margin="10"
+            
+             />
+
+        <Entry 
+            Text="{Binding Password}"
+            x:Name="Password"
+            Placeholder="Password"
+            TextColor="Black"
+            FontAttributes="Bold"
+            Margin="10"
+             />
+
+        <Button
+            Text="SiGN IN"
+            Command="{Binding NavigateToStartPageCommand}"
+            BackgroundColor="#9051F6"
+            Margin="15"
+            HeightRequest="50"
+            WidthRequest="200"
+            VerticalOptions="End"/>
+
+
+    </VerticalStackLayout>
+    
+    
+</ContentPage>

@@ -8,10 +8,6 @@ namespace ProjApp.ViewModel
 
         public ProfilePageViewModel() { }
 
-        [RelayCommand]
-        Task NavigateBack() => Shell.Current.GoToAsync("..");
-
-
 
     }
 }

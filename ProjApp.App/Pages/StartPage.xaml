@@ -5,7 +5,7 @@
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:StartPageViewModel"
 
-             Title="">
+             Title="StartPage">
 
     <VerticalStackLayout 
             Spacing="10"
@@ -43,6 +43,7 @@
         
         <Button
             Text="Avvia partita!"
+            BackgroundColor="#9051F6"
             Margin="15"
             HeightRequest="50"
             WidthRequest="200"
