@@ -19,7 +19,7 @@ namespace ServerS
         {
             lastTime = DateTime.Now;
             Id = id;
-            this.isExpired();
+            Task.Run(isExpired);
         }
         //lobbies expiring in 10h
         private async void isExpired()

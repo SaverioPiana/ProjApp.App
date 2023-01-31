@@ -104,15 +104,12 @@ namespace ProjApp.MapEl
 
         private void RestInitializer() {
 
-            Task.Run(() => Update_MyPosition_ALWAYS());
+            Task.Run(Update_MyPosition_ALWAYS);
 
-            Task.Run(() => aggiungiAltriGiocatoriAllaMappa());
+            Task.Run(aggiungiAltriGiocatoriAllaMappa);
 
             //PROVA//
-            Task.Run(() =>
-            {
-                creaPartitaEGioca();
-            });
+            Task.Run(creaPartitaEGioca);
             ////////
         }
 

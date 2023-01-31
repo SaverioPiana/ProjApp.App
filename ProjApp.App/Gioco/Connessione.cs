@@ -21,7 +21,7 @@ namespace ProjApp.Gioco
                 .WithAutomaticReconnect()
                 .Build();
 
-            Task.Run(() => this.serverMessages());
+            Task.Run(this.serverMessages);
 
         }
 

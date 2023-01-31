@@ -68,39 +68,7 @@ namespace ProjApp.Gioco
             return area.Contains(polygon2); 
         }
 
-        //var intersections = 0;
-
-        //for (int i = 0; i < bordi.Count-1; i++)
-        //{
-        //    var vertex1 = bordi[i];
-        //    var vertex2 = bordi[i + 1];
-
-        //    if (vertex1.Y > point.Latitude != vertex2.Y > point.Latitude &&
-        //        point.Longitude < (vertex2.X - vertex1.X) * (point.Latitude - vertex1.Y) / (vertex2.Y - vertex1.Y) + vertex1.X)
-        //    {
-        //        intersections++;
-        //    }
-        //}
-
-        //return intersections % 2 == 1;
-
-        // res = false
-        //for (i = 0, j = nvert - 1; i < nvert; j = i++)
-        //{
-        //    if (((bordi[i].Y > point.Latitude) != (bordi[j].Y > point.Latitude)) &&
-        // (point.Longitude < (bordi[j].X - bordi[i].X) * (point.Latitude - bordi[i].Y) / (bordi[j].Y - bordi[i].Y) + bordi[i].X))
-
-        //        //The function works by casting a horizontal ray from the point being tested to the right,
-        //        //and then counting the number of times this ray intersects with the edges of the polygon.
-        //        //If the number of intersections is odd, then the point is inside the polygon;
-        //        //if the number of intersections is even, then the point is outside the polygon.
-
-        //        //DA VEDERE (perche aggiungo il primo elemento all fine in creaArea di AreaGiocabile
-        //        //=> The function does assume that the vertex is ordered and that the last vertex is connected to the first one
-        //        res = !res;
-        //}
-        //return res;
-
+       
 
 
     }
