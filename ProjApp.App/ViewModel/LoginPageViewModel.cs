@@ -142,6 +142,7 @@ namespace ProjApp.ViewModel
             }
         }
 
+        [Obsolete]
         private async Task ShowOkMessage(string title, string message)
         {
 
