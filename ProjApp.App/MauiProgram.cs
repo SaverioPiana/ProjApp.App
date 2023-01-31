@@ -1,4 +1,5 @@
-﻿using SkiaSharp.Views.Maui.Controls.Hosting;
+﻿using ProjApp.ViewModel;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace ProjApp;
 
@@ -14,8 +15,20 @@ public static class MauiProgram
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-			});
+                fonts.AddFont("comici.ttf", "ComicSansRegular");
+            });
 
-		return builder.Build();
+		builder.Services.AddSingleton<StartPageViewModel>();
+        builder.Services.AddSingleton<StartPage>();
+        builder.Services.AddSingleton<MainViewModel>();
+        builder.Services.AddSingleton<MainPage>();
+        builder.Services.AddSingleton<ProfilePageViewModel>();
+        builder.Services.AddSingleton<ProfilePage>();
+        builder.Services.AddTransient<LoginPageViewModel>();
+        builder.Services.AddTransient<LoginPage>();
+        builder.Services.AddSingleton<SettingsPageViewModel>();
+        builder.Services.AddSingleton<Settings>();
+
+        return builder.Build();
 	}
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjApp.StartPage"
+             xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
+             x:DataType="viewmodel:StartPageViewModel"
+
+             Title="StartPage">
+
+    <VerticalStackLayout 
+            Spacing="10"
+            Padding="30,0"
+            VerticalOptions="Start"
+            HorizontalOptions="Center">
+
+        <Label
+            Margin="20"
+            Text="Per iniziare una partita, &#10;hai bisogno di una lobby. &#10;&#10; Per creare una lobby:"
+            FontSize="24">
+
+        </Label>
+
+        <Button
+            HeightRequest="50"
+            WidthRequest="50"
+                ></Button>
+
+        <Label
+            Margin="20"
+            Text="Per unirti ad una lobby:"
+            FontSize="24">
+        </Label>
+
+        <Button
+            HeightRequest="50"
+            WidthRequest="50"
+                ></Button>
+
+
+        
+
+        
+        
+        <Button
+            Text="Avvia partita!"
+            BackgroundColor="#9051F6"
+            Margin="15"
+            HeightRequest="50"
+            WidthRequest="200"
+            VerticalOptions="End"
+            Command="{Binding NavigateToMainPageCommand}"/>
+
+
+    </VerticalStackLayout>
+    
+</ContentPage>

@@ -1,4 +1,5 @@
-﻿using Mapsui;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Mapsui;
 using Mapsui.Extensions;
 using Mapsui.Layers;
 using Mapsui.Projections;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using ProjApp.Gioco;
 using ProjApp.MapEl;
 using System.Collections.ObjectModel;
+using static ProjApp.MainActivity;
 
 namespace ProjApp;
 
@@ -43,5 +45,18 @@ public  partial class MainPage : ContentPage
         if (status == PermissionStatus.Denied) //chiamiamo Geolocation perche fa la richiesta del gps 
              await Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Lowest));
     }
+
+    protected override bool OnBackButtonPressed()
+    {
+        return true;
+    }
+
+    #if ANDROID
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar"));
+    }
+    #endif
 }
 
