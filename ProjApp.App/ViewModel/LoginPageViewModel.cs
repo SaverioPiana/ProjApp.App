@@ -18,28 +18,34 @@ namespace ProjApp.ViewModel
         [ObservableProperty] public string _password;
         private bool succesfullLogin = true; ////////per ora true semrpe
 
-        
+
 
         [RelayCommand]
         Task NavigateToStartPage() {
-            if(succesfullLogin) {
-                string retrievedNick = MyUser.RetrieveNickFromFile(MyUser.NICK_FILENAME);
-                if (retrievedNick.Equals(""))
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (succesfullLogin)
                 {
-                    string nick = Application.Current.MainPage.DisplayPromptAsync("Come ti chiami?",
-                        "Inserisci il nome che gli altri utenti visualizzeranno", "Conferma", "Annulla", "Nickname", 15).Result;
-                    MyUser.SaveLastNickOnFile(nick);
-                    MyUser.nick = nick;
-                }
-                else
-                {
-                    MyUser.nick = retrievedNick;
-                }
+                    string retrievedNick = MyUser.RetrieveNickFromFile(MyUser.NICK_FILENAME);
+                    if (retrievedNick.Equals(""))
+                    {
+                        string nick = "";
+                        //string nick = Application.Current.MainPage.DisplayPromptAsync("Come ti chiami?",
+                         //   "Inserisci il nome che gli altri utenti visualizzeranno", "Conferma", "Annulla",
+                           // "Nickname", 15).Result;
+                        MyUser.SaveLastNickOnFile(nick);
+                        MyUser.nick = nick;
+                    }
+                    else
+                    {
+                        MyUser.nick = retrievedNick;
+                    }
 
-                MyUser.BuildMyUser(Username); //username sarebbe l'ID
-                Application.Current.MainPage = new AppShell();
-                Shell.Current.GoToAsync(nameof(ProfilePage));
-            }
+                    MyUser.BuildMyUser(Username); //username sarebbe l'ID
+                    Application.Current.MainPage = new AppShell();
+                    Shell.Current.GoToAsync(nameof(ProfilePage));
+                }
+            });
             return Task.CompletedTask;
         }
 

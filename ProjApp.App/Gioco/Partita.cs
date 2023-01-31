@@ -39,6 +39,8 @@ namespace ProjApp.Gioco
         {
             area = new();
             Players = new List<User>();
+            Connessione.con.On("InvalidID", InvalidID);
+            Connessione.con.On<string>("JoinLobby", (lid) => JoinLobby(lid));
         }
 
         public void CreateLobby()
@@ -47,40 +49,44 @@ namespace ProjApp.Gioco
             cod_partita = CreateCode();
 
             Connessione.con.InvokeAsync("CreateLobby", arg1: cod_partita);
-            this.JoinLobby(Cod_partita);
+            this.IfCheckThenJoin(Cod_partita);
             Console.WriteLine($"Lobby Creata con codice {cod_partita}");
 
         }
 
         public void JoinLobby(string lid)
         {
-            try
+            Connessione.con.InvokeAsync("JoinLobby", lid);
+            //joino la lobby con quell'id
+            Cod_partita = lid;
+            MyUser.AddToCurrPartita(MyUser.user);
+            Task.Run(isGameStarted);
+            Task.Run(MyUser.inviaPosSignalR);
+
+            //se sei l'admin crei l'area
+            if (MyUser.isAdmin)
             {
-                Connessione.con.InvokeAsync("JoinLobby", lid);
-                Cod_partita = lid;
-                MyUser.AddToCurrPartita(MyUser.user);
-                Task.Run(isGameStarted);
-                Task.Run(MyUser.inviaPosSignalR);
-
-                //creazione area di gioco
-                if (MyUser.isAdmin)
-                {
-                    OurMapController.mapView.SingleTap += creaPin;
-                    //event subscription
-                    GameLogic.UsersOutside += onUserOutside;
-                }
-                else Task.Run(riceviOggettiDiGioco);
+                OurMapController.mapView.SingleTap += creaPin;
+                //event subscription
+                GameLogic.UsersOutside += onUserOutside;
             }
-            catch (LobbyNotFoundException lnfe) {
-                Application.Current.MainPage.DisplayAlert("Ops...", "Pare proprio non esista una partita con quell'ID","OK");
-            }
-
+            //senno' ricevi gli oggetti di gioco
+            else Task.Run(riceviOggettiDiGioco);
         }
 
-        public void LobbyExists(bool exists)
+        [Obsolete]
+        public void InvalidID() {
+            //se il codice non e' valido notifico l'utente
+            Device.BeginInvokeOnMainThread(()=>
+            Application.Current.MainPage.DisplayAlert("Ops...", 
+                "Pare proprio non esista una partita con quell'ID", "OK")
+            );
+        }
+
+        public void IfCheckThenJoin(string lid)
         {
-            if (!exists) { throw new LobbyNotFoundException("non c e una lobby con quel codice"); }
-            else return;
+            //controllo sul server se la lobby esiste
+            Connessione.con.InvokeAsync("IfCheckThenJoin", lid);
         }
 
         public void LeaveLobby()

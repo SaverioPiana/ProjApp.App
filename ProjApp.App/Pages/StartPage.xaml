@@ -45,15 +45,20 @@
                 Command="{Binding JoinLobbyCommand}"/>
         </Grid>
 
-
+        <Label
+            Margin = "30"
+            Text="{Binding Testoecodicepartita}"
+            FontSize="24"
+            IsVisible="{Binding IsCodiceVisible}">
+        </Label>
 
 
 
         <Button
             Text="Avvia partita!"
-            Margin="15"
+            Margin="20"
             HeightRequest="50"
-            WidthRequest="200"
+            WidthRequest="180"
             VerticalOptions="End"
             Command="{Binding NavigateToMainPageCommand}"/>
 

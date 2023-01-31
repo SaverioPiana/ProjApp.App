@@ -12,23 +12,31 @@ namespace ProjApp.ViewModel
 
         public StartPageViewModel(){}
 
+        [ObservableProperty] string testoecodicepartita;
+        [ObservableProperty] bool isCodiceVisible = false;
+
         [RelayCommand]
         Task NavigateToMainPage() => Shell.Current.GoToAsync(nameof(MainPage));
         
         [RelayCommand]
         async Task JoinLobby()
         {
+            //faccio inserire il codice all'utente
             string result = await Application.Current.MainPage.DisplayPromptAsync("Join Lobby", "Inserisci il codice della Lobby","Conferma","Annulla","ID");
-            MyUser.currPartita.JoinLobby(result);
+            MyUser.currPartita.IfCheckThenJoin(result);
         }
 
         [RelayCommand]
         async Task CreateLobby()
         {
+            //NON CE ERROR HANDLING QUI
             MyUser.currPartita.CreateLobby();
             string codice = MyUser.currPartita.Cod_partita;
+            IsCodiceVisible = true;
+            Testoecodicepartita = "Codice partita: " + codice;
+            //notifica per l'utente
             await Application.Current.MainPage.DisplayAlert("Partita creata", 
-                $"Questo e' il codice della partita,\ninvialo agli altri giocatori : {codice}", "Conferma");
+                $"Copia il codice della partita e\ninvialo agli altri giocatori", "Capito");
         }
 
     }
