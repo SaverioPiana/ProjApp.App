@@ -51,6 +51,12 @@
         ContentTemplate="{DataTemplate local:LoginPage}"
         Route="LoginPage"
         />
-    
-    
+
+    <ShellContent
+        Title=""
+        ContentTemplate="{DataTemplate local:LobbyPage}"
+        Route="LobbyPage"
+        />
+
+
 </Shell>

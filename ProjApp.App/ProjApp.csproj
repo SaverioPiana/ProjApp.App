@@ -86,6 +86,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\LobbyPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -102,6 +105,12 @@
 
 	<ItemGroup>
 	  <Folder Include="Resources\Settings\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Pages\LobbyPage.xaml.cs">
+	    <DependentUpon>LobbyPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionProjAppHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarProjAppHideInfoBar="True" /></VisualStudio></ProjectExtensions>

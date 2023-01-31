@@ -47,7 +47,7 @@
 
         <Label
             Margin = "30"
-            Text="{Binding Testoecodicepartita}"
+            Text="{Binding Codice, StringFormat='Codice partita: {0}'}"
             FontSize="24"
             IsVisible="{Binding IsCodiceVisible}">
         </Label>
