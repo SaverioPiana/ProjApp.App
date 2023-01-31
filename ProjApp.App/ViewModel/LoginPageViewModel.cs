@@ -26,7 +26,8 @@ namespace ProjApp.ViewModel
             }
         }
 
-        public LoginPageViewModel() {
+        public LoginPageViewModel()
+        {
             _ = Login();
         }
 
@@ -34,22 +35,25 @@ namespace ProjApp.ViewModel
         [ObservableProperty] public string _password;
         private bool succesfullLogin = true; ////////per ora true semrpe
 
-        
+
 
         [RelayCommand]
-        Task NavigateToStartPage() {
-            if(succesfullLogin) {
+        Task NavigateToStartPage()
+        {
+            if (succesfullLogin)
+            {
                 Application.Current.MainPage = new AppShell();
                 Shell.Current.GoToAsync(nameof(ProfilePage));
             }
             return Task.CompletedTask;
         }
         [RelayCommand]
-        async Task OnLoginButtonClicked()
+        async Task LoginButtonClicked()
         {
             await Login().ConfigureAwait(false);
+
         }
-      
+
         private async Task Login()
         {
             try
@@ -83,8 +87,8 @@ namespace ProjApp.ViewModel
                 await ShowOkMessage("Exception in AcquireTokenSilentAsync", ex.Message).ConfigureAwait(false);
             }
         }
-        
-        private async void OnLogoutButtonClicked(object sender, EventArgs e)
+        [RelayCommand]
+        async void LogoutButtonClicked()
         {
             // Log out.
             _ = await PCAWrapper.Instance.SignOutAsync().ContinueWith(async (t) =>
@@ -93,6 +97,7 @@ namespace ProjApp.ViewModel
                 IsLoggedIn = false;
                 _accessToken = string.Empty;
             }).ConfigureAwait(false);
+
         }
 
         private async void OnGetWeatherForecastButtonClicked(object sender, EventArgs e)
@@ -137,16 +142,17 @@ namespace ProjApp.ViewModel
             }
         }
 
-        private Task ShowOkMessage(string title, string message)
+        private async Task ShowOkMessage(string title, string message)
         {
-   
-            Application.Current.MainPage.DisplayAlert(title, message, "OK").ConfigureAwait(false);
-           
-            return Task.CompletedTask;
+
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await Application.Current.MainPage.DisplayAlert(title, message, "OK");
+            });
+
+
+
+
         }
-
-
-
-
-    };
+    }
 }
