@@ -2,13 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
-using MsalAuthInMaui;
-using MsalAuthInMaui.MsalClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ProjApp.MsalClient;
 
 namespace ProjApp.ViewModel
 {
@@ -16,7 +10,7 @@ namespace ProjApp.ViewModel
     {
         private string _accessToken = string.Empty;
         private PCAWrapper _pcaWrapper;
-       // private PCASocialWrapper _pcaSocialWrapper;
+        private PCASocialWrapper _pcaSocialWrapper;
         private IConfiguration _configuration;
 
         bool _isLoggedIn = false;
@@ -35,7 +29,7 @@ namespace ProjApp.ViewModel
         {
             _configuration = configuration;
             _pcaWrapper = new PCAWrapper(_configuration);
-            //_pcaSocialWrapper = new PCASocialWrapper(_configuration);
+            _pcaSocialWrapper = new PCASocialWrapper(_configuration);
 
             _ = Login(_pcaWrapper);
         }
@@ -57,10 +51,15 @@ namespace ProjApp.ViewModel
             return Task.CompletedTask;
         }
         [RelayCommand]
-        async Task LoginButtonClicked()
+        async void LoginButtonClicked()
         {
             await Login(_pcaWrapper).ConfigureAwait(false);
 
+        }
+        [RelayCommand]
+        async void LoginWithTwitterButtonClicked()
+        {
+            await Login(_pcaSocialWrapper).ConfigureAwait(false);
         }
 
         private async Task Login(IPCAWrapper pcaWrapper)
@@ -110,7 +109,7 @@ namespace ProjApp.ViewModel
             await _pcaWrapper.SignOutAsync().ConfigureAwait(false);
 
             // Log out from Social.
-            // await _pcaSocialWrapper.SignOutAsync().ConfigureAwait(false);
+            await _pcaSocialWrapper.SignOutAsync().ConfigureAwait(false);
 
             await ShowOkMessage("Signed Out", "Sign out complete.").ConfigureAwait(false);
             IsLoggedIn = false;
@@ -118,7 +117,7 @@ namespace ProjApp.ViewModel
 
         }
         [RelayCommand]
-        async private void OnGetWeatherForecastButtonClicked()
+        async private void GetWeatherForecastButtonClicked()
         {
             // Call the Secure Web API to get the weatherforecast data.
             var weatherForecastData = await CallSecureWebApi(_accessToken).ConfigureAwait(false);

@@ -46,7 +46,7 @@
             <Button x:Name="LoginButton"
                         Text="Log in"
                         SemanticProperties.Hint="Log in"
-                        Command="{Binding LoginButtonClickedCommand}"
+                        Command="{Binding }"
                         HorizontalOptions="Center"
                         Margin="8,0,8,0" />
 

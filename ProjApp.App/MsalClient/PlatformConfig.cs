@@ -1,5 +1,5 @@
 ﻿
-namespace MsalAuthInMaui.MsalClient
+namespace ProjApp.MsalClient
 {
     /// <summary>
     /// Platform specific configuration.

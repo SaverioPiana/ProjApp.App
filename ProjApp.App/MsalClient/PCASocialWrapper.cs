@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
-using MsalAuthInMaui;
+
 
 namespace ProjApp.MsalClient
 {
     /// <summary>
     /// This is a wrapper for PCA. It is singleton and can be utilized by both application and the MAM callback
     /// </summary>
-    public class PCAWrapper : IPCAWrapper
+    public class PCASocialWrapper : IPCAWrapper
     {
         private IConfiguration _configuration;
         private static Sttings _settings { get; set; }
@@ -18,15 +18,16 @@ namespace ProjApp.MsalClient
         public string[] Scopes { get; set; }
 
         // public constructor
-        public PCAWrapper(IConfiguration configuration)
+        public PCASocialWrapper(IConfiguration configuration)
         {
             _configuration = configuration;
             _settings = _configuration.GetRequiredSection("Settings").Get<Sttings>();
-            Scopes = _settings.Scopes.ToStringArray();
+            Scopes = _settings.ScopesForTwitter.ToStringArray();
 
             // Create PCA once. Make sure that all the config parameters below are passed
             PCA = PublicClientApplicationBuilder
-                                        .Create(_settings.ClientId)
+                                        .Create(_settings.ClientIdForTwitter)
+                                        .WithB2CAuthority(_settings.AuthorityForTwitter)
                                         .WithRedirectUri(PlatformConfig.Instance.RedirectUri)
                                         .WithIosKeychainSecurityGroup("com.microsoft.adalcache")
                                         .Build();
@@ -40,6 +41,22 @@ namespace ProjApp.MsalClient
         public async Task<AuthenticationResult> AcquireTokenSilentAsync(string[] scopes)
         {
             var accts = await PCA.GetAccountsAsync().ConfigureAwait(false);
+            var acct = accts.FirstOrDefault();
+
+            var authResult = await PCA.AcquireTokenSilent(scopes, acct)
+                                        .ExecuteAsync().ConfigureAwait(false);
+            return authResult;
+
+        }
+
+        /// <summary>
+        /// Perform the interactive acquisition of the token for the given scope
+        /// </summary>
+        /// <param name="scopes">desired scopes</param>
+        /// <returns></returns>
+        public async Task<AuthenticationResult> AcquireTokenSilentAsync(string[] scopes)
+        {
+            var accts = await PCA.GetAccountsAsync(_settings.PolicySignUpSignInForTwitter).ConfigureAwait(false);
             var acct = accts.FirstOrDefault();
 
             var authResult = await PCA.AcquireTokenSilent(scopes, acct)
@@ -72,9 +89,12 @@ namespace ProjApp.MsalClient
             systemWebViewOptions.iOSHidePrivacyPrompt = true;
 #endif
 
+            var accounts = await PCA.GetAccountsAsync(_settings.PolicySignUpSignInForTwitter).ConfigureAwait(false); ;
+            var acct = accounts.FirstOrDefault();
+
             return await PCA.AcquireTokenInteractive(scopes)
-                                    .WithAuthority(_settings.Authority)
-                                    .WithTenantId(_settings.TenantId)
+                                    .WithB2CAuthority(_settings.AuthorityForTwitter)
+                                    .WithAccount(accounts.FirstOrDefault())
                                     .WithParentActivityOrWindow(PlatformConfig.Instance.ParentWindow)
                                     .WithUseEmbeddedWebView(true)
                                     .ExecuteAsync()

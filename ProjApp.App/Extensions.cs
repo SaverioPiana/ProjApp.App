@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
-using ProjApp;
 using System.Text;
 
-namespace MsalAuthInMaui
+namespace ProjApp
 {
     public static class Extensions
     {

@@ -7,7 +7,7 @@ using Android.Views;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.Identity.Client;
-using MsalAuthInMaui.MsalClient;
+using ProjApp.MsalClient;
 
 namespace ProjApp;
 

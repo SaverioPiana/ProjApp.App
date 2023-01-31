@@ -1,6 +1,6 @@
 ﻿using Microsoft.Identity.Client;
 
-namespace MsalAuthInMaui
+namespace ProjApp.MsalClient
 {
     public interface IPCAWrapper
     {
