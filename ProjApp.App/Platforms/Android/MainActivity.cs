@@ -14,7 +14,8 @@ namespace ProjApp;
 [Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
 public class MainActivity : MauiAppCompatActivity
 {
-    private const string AndroidRedirectURI = $"msauth://com.companyname.projapp/snaHlgr4autPsfVDSBVaLpQXnqU=";
+    //private const string AndroidRedirectURI = $"msauth://com.companyname.projapp/snaHlgr4autPsfVDSBVaLpQXnqU=";
+    private const string AndroidRedirectURI = $"msauth://com.companyname.nascondapp/B64377998E6E41DAA82BEE84EC2C7740";
     public class FullScreenMessage : ValueChangedMessage<object>
     {
         public FullScreenMessage(object r) : base(r)
