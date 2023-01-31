@@ -49,16 +49,16 @@
             <Button x:Name="LoginButton"
                         Text="Log in"
                         SemanticProperties.Hint="Log in"
-                        Clicked="OnLoginButtonClicked"
+                        Clicked="{Binding OnLoginButtonClickedCommand}"
                         HorizontalOptions="Center"
                         Margin="8,0,8,0" />
 
-            <Button x:Name="LogoutButton"
+            <!--<Button x:Name="LogoutButton"
                         Text="Log out"
                         SemanticProperties.Hint="Log out"
-                        Clicked="OnLogoutButtonClicked"
+                        Clicked="{Binding LoginButtonClickedCommand}"
                         HorizontalOptions="Center"
-                        Margin="8,0,8,0" />
+                        Margin="8,0,8,0" />-->
         </HorizontalStackLayout>
 
 
