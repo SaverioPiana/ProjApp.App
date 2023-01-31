@@ -43,6 +43,23 @@
             HeightRequest="50"
             WidthRequest="200"
             VerticalOptions="End"/>
+        
+        <HorizontalStackLayout 
+                HorizontalOptions="Center">
+            <Button x:Name="LoginButton"
+                        Text="Log in"
+                        SemanticProperties.Hint="Log in"
+                        Clicked="OnLoginButtonClicked"
+                        HorizontalOptions="Center"
+                        Margin="8,0,8,0" />
+
+            <Button x:Name="LogoutButton"
+                        Text="Log out"
+                        SemanticProperties.Hint="Log out"
+                        Clicked="OnLogoutButtonClicked"
+                        HorizontalOptions="Center"
+                        Margin="8,0,8,0" />
+        </HorizontalStackLayout>
 
 
     </VerticalStackLayout>
