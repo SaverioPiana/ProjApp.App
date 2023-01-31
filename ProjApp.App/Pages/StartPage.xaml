@@ -37,7 +37,8 @@
             </Grid.ColumnDefinitions>
             <Button
                 Grid.Column="0"
-                Text="Create Lobby"/>
+                Text="Create Lobby"
+                Command="{Binding CreateLobbyCommand}"/>
             <Button
                 Grid.Column="1"
                 Text="Join Lobby"

@@ -28,18 +28,24 @@ namespace ServerS
         public async Task JoinLobby(string lobbyId)
         {
             // find the lobby with the specified ID
-            var lobby = lobbies[lobbyId];
+            if(lobbies.ContainsKey(lobbyId))
+            {
+                var lobby = lobbies[lobbyId];
+                // add the client to the list of connected clients for the lobby
+                string clientId = Context.ConnectionId;
+                lobby.ConnectedClients.Add(clientId);
 
-            // add the client to the list of connected clients for the lobby
-            string clientId = Context.ConnectionId;
-            lobby.ConnectedClients.Add(clientId);
+                await Groups.AddToGroupAsync(clientId, lobbyId);
 
-            await Groups.AddToGroupAsync(clientId, lobbyId);
-
-            string mess = $"{clientId} joined {lobbyId}";
-            await Clients.Caller.SendAsync("ServerMessage", "SEI TU --->");
-            await Clients.All.SendAsync("ServerMessage", mess);
-
+                string mess = $"{clientId} joined {lobbyId}";
+                await Clients.Caller.SendAsync("ServerMessage", "SEI TU --->");
+                await Clients.All.SendAsync("ServerMessage", mess);
+            }
+            else
+            {
+                await Clients.Caller.SendAsync("LobbyExists", false);
+                return;
+            }
         }
         public async Task InviaOggettiDiGioco(string lobbyId, string area , string tana)
         {

@@ -82,8 +82,6 @@ namespace ProjApp.MapEl
 
         public void MapInitializer()
         {
-            MyUser.BuildMyUser();
-
             MPoint initpos = new MPoint(MyUser.user.Position.Longitude,
                 MyUser.user.Position.Latitude);
             mapView.MyLocationLayer.UpdateMyLocation(initpos.ToMaui());
@@ -109,15 +107,8 @@ namespace ProjApp.MapEl
             Task.Run(aggiungiAltriGiocatoriAllaMappa);
 
             //PROVA//
-            Task.Run(creaPartitaEGioca);
+            //Task.Run(creaPartitaEGioca);
             ////////
-        }
-
-
-        private async void creaPartitaEGioca()
-        {
-            await Task.Delay(7000);
-            MyUser.currPartita.CreateLobby();
         }
 
         

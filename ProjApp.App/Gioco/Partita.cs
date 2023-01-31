@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -26,14 +27,9 @@ namespace ProjApp.Gioco
     {
         private string cod_partita;
         
-
-
-        //temp
         private int tap_counter = 0;
         public Tana tana;
-        //
-
-        //per ora li ho messi statici per facilitare il tutto
+        
         public IList<User> Players { get ; set; }
         public AreaGiocabile area { get; set; }  
         
@@ -43,12 +39,12 @@ namespace ProjApp.Gioco
         {
             area = new();
             Players = new List<User>();
-            cod_partita = "SASSO";
         }
 
         public void CreateLobby()
         {
             MyUser.isAdmin = true;
+            cod_partita = CreateCode();
 
             Connessione.con.InvokeAsync("CreateLobby", arg1: cod_partita);
             this.JoinLobby(Cod_partita);
@@ -58,20 +54,33 @@ namespace ProjApp.Gioco
 
         public void JoinLobby(string lid)
         {
-            Connessione.con.InvokeAsync("JoinLobby", lid);
-            Cod_partita = lid;
-            MyUser.AddToCurrPartita(MyUser.user);
-            Task.Run(() => isGameStarted());
-            Task.Run(() => MyUser.inviaPosSignalR());
-            
-            //creazione area di gioco
-            if (MyUser.isAdmin) { 
-            OurMapController.mapView.SingleTap += creaPin;
-            //event subscription
-            GameLogic.UsersOutside += onUserOutside;
-               }
-            else Task.Run(() => riceviOggettiDiGioco());
-                
+            try
+            {
+                Connessione.con.InvokeAsync("JoinLobby", lid);
+                Cod_partita = lid;
+                MyUser.AddToCurrPartita(MyUser.user);
+                Task.Run(isGameStarted);
+                Task.Run(MyUser.inviaPosSignalR);
+
+                //creazione area di gioco
+                if (MyUser.isAdmin)
+                {
+                    OurMapController.mapView.SingleTap += creaPin;
+                    //event subscription
+                    GameLogic.UsersOutside += onUserOutside;
+                }
+                else Task.Run(riceviOggettiDiGioco);
+            }
+            catch (LobbyNotFoundException lnfe) {
+                Application.Current.MainPage.DisplayAlert("Ops...", "Pare proprio non esista una partita con quell'ID","OK");
+            }
+
+        }
+
+        public void LobbyExists(bool exists)
+        {
+            if (!exists) { throw new LobbyNotFoundException("non c e una lobby con quel codice"); }
+            else return;
         }
 
         public void LeaveLobby()
