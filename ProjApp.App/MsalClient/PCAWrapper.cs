@@ -1,33 +1,34 @@
-﻿
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
+using MsalAuthInMaui.MsalClient;
+using ProjApp;
+using static System.Formats.Asn1.AsnWriter;
 
-namespace MsalAuthInMaui.MsalClient
+namespace MsalAuthInMaui
 {
     /// <summary>
     /// This is a wrapper for PCA. It is singleton and can be utilized by both application and the MAM callback
     /// </summary>
-    public class PCAWrapper
+    public class PCAWrapper : IPCAWrapper
     {
-        /// <summary>
-        /// This is the singleton used by consumers
-        /// </summary>
-        public static PCAWrapper Instance { get; private set; } = new PCAWrapper();
+        private IConfiguration _configuration;
+        private static Sttings _settings { get; set; }
 
         internal IPublicClientApplication PCA { get; }
 
         internal bool UseEmbedded { get; set; } = false;
+        public string[] Scopes { get; set; }
 
-        internal const string Authority = "https://login.microsoftonline.com/952b33b9-99b2-405f-b80c-b9202ff19446";
-        internal const string ClientId = "479dcae7-94b7-4430-a3ff-b5c1cd6ec338";
-        internal const string TenantId = "952b33b9-99b2-405f-b80c-b9202ff19446";
-        public static string[] Scopes = { "api://479dcae7-94b7-4430-a3ff-b5c1cd6ec338/access_as_user" };
-
-        // private constructor for singleton
-        private PCAWrapper()
+        // public constructor
+        public PCAWrapper(IConfiguration configuration)
         {
+            _configuration = configuration;
+            _settings = _configuration.GetRequiredSection("Settings").Get<Sttings>();
+            Scopes = _settings.Scopes.ToStringArray();
+
             // Create PCA once. Make sure that all the config parameters below are passed
             PCA = PublicClientApplicationBuilder
-                                        .Create(ClientId)
+                                        .Create(_settings.ClientId)
                                         .WithRedirectUri(PlatformConfig.Instance.RedirectUri)
                                         .WithIosKeychainSecurityGroup("com.microsoft.adalcache")
                                         .Build();
@@ -54,9 +55,9 @@ namespace MsalAuthInMaui.MsalClient
         /// </summary>
         /// <param name="scopes">desired scopes</param>
         /// <returns></returns>
-        internal async Task<AuthenticationResult> AcquireTokenInteractiveAsync(string[] scopes)
+        public async Task<AuthenticationResult> AcquireTokenInteractiveAsync(string[] scopes)
         {
-            SystemWebViewOptions systemWebViewOptions = new SystemWebViewOptions();
+            var systemWebViewOptions = new SystemWebViewOptions();
 #if IOS
             // embedded view is not supported on Android
             if (UseEmbedded)
@@ -74,8 +75,8 @@ namespace MsalAuthInMaui.MsalClient
 #endif
 
             return await PCA.AcquireTokenInteractive(scopes)
-                                    .WithAuthority(Authority)
-                                    .WithTenantId(TenantId)
+                                    .WithAuthority(_settings.Authority)
+                                    .WithTenantId(_settings.TenantId)
                                     .WithParentActivityOrWindow(PlatformConfig.Instance.ParentWindow)
                                     .WithUseEmbeddedWebView(true)
                                     .ExecuteAsync()
@@ -87,7 +88,7 @@ namespace MsalAuthInMaui.MsalClient
         /// the token.
         /// </summary>
         /// <returns></returns>
-        internal async Task SignOutAsync()
+        public async Task SignOutAsync()
         {
             var accounts = await PCA.GetAccountsAsync().ConfigureAwait(false);
             foreach (var acct in accounts)
