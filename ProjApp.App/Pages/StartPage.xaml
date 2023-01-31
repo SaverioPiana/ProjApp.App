@@ -5,7 +5,7 @@
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:StartPageViewModel"
 
-             Title="StartPage">
+             Title="">
 
     <VerticalStackLayout 
             Spacing="10"
@@ -20,10 +20,6 @@
 
         </Label>
 
-        <Button
-            HeightRequest="50"
-            WidthRequest="50"
-                ></Button>
 
         <Label
             Margin="20"
@@ -31,19 +27,29 @@
             FontSize="24">
         </Label>
 
-        <Button
-            HeightRequest="50"
-            WidthRequest="50"
-                ></Button>
+        <Grid Padding="10" RowSpacing="30" ColumnSpacing="30" HorizontalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width= "Auto"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Column="0"
+                Text="Create Lobby"/>
+            <Button
+                Grid.Column="1"
+                Text="Join Lobby"
+                Command="{Binding JoinLobbyCommand}"/>
+        </Grid>
 
 
-        
 
-        
-        
+
+
         <Button
             Text="Avvia partita!"
-            BackgroundColor="#9051F6"
             Margin="15"
             HeightRequest="50"
             WidthRequest="200"
@@ -52,5 +58,5 @@
 
 
     </VerticalStackLayout>
-    
+
 </ContentPage>
