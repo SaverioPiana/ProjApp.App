@@ -6,10 +6,10 @@ namespace ProjApp;
 
 public partial class App : Application
 {
-    public App()
+    public App(LoginPage page)
     {
         InitializeComponent();
 
-        MainPage = new LoginPage(new ViewModel.LoginPageViewModel());
+        MainPage = page;
     }
 }

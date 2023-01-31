@@ -99,54 +99,54 @@ namespace ProjApp.ViewModel
             }).ConfigureAwait(false);
 
         }
+        //[RelayCommand]
+        //private async void OnGetWeatherForecastButtonClicked()
+        //{
+        //    // Call the Secure Web API to get the weatherforecast data.
+        //    var weatherForecastData = await CallSecureWebApi(_accessToken).ConfigureAwait(false);
 
-        private async void OnGetWeatherForecastButtonClicked(object sender, EventArgs e)
-        {
-            // Call the Secure Web API to get the weatherforecast data.
-            var weatherForecastData = await CallSecureWebApi(_accessToken).ConfigureAwait(false);
+        //    // Show the data.
+        //    if (weatherForecastData != string.Empty)
+        //        await ShowOkMessage("WeatherForecast data", weatherForecastData).ConfigureAwait(false);
+        //}
 
-            // Show the data.
-            if (weatherForecastData != string.Empty)
-                await ShowOkMessage("WeatherForecast data", weatherForecastData).ConfigureAwait(false);
-        }
+        //// Call the Secure Web API.
+        //private static async Task<string> CallSecureWebApi(string accessToken)
+        //{
+        //    if (accessToken == string.Empty)
+        //        return string.Empty;
 
-        // Call the Secure Web API.
-        private static async Task<string> CallSecureWebApi(string accessToken)
-        {
-            if (accessToken == string.Empty)
-                return string.Empty;
+        //    try
+        //    {
+        //        // Get the weather forecast data from the Secure Web API.
+        //        var client = new HttpClient();
 
-            try
-            {
-                // Get the weather forecast data from the Secure Web API.
-                var client = new HttpClient();
+        //        // Create the request.
+        //        var message = new HttpRequestMessage(HttpMethod.Get, "https://msalsecurewebapi.azurewebsites.net/weatherforecast");
 
-                // Create the request.
-                var message = new HttpRequestMessage(HttpMethod.Get, "https://msalsecurewebapi.azurewebsites.net/weatherforecast");
+        //        // Add the Authorization Bearer header.
+        //        message.Headers.Add("Authorization", $"Bearer {accessToken}");
 
-                // Add the Authorization Bearer header.
-                message.Headers.Add("Authorization", $"Bearer {accessToken}");
+        //        // Send the request.
+        //        var response = await client.SendAsync(message).ConfigureAwait(false);
 
-                // Send the request.
-                var response = await client.SendAsync(message).ConfigureAwait(false);
+        //        // Get the response.
+        //        var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                // Get the response.
-                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        //        // Return the response.
+        //        return responseString;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ex.ToString();
+        //    }
+        //}
 
-                // Return the response.
-                return responseString;
-            }
-            catch (Exception ex)
-            {
-                return ex.ToString();
-            }
-        }
-
-        [Obsolete]
+        
         private async Task ShowOkMessage(string title, string message)
         {
-
-            Device.BeginInvokeOnMainThread(async () =>
+            
+            MainThread.BeginInvokeOnMainThread(async () =>
             {
                 await Application.Current.MainPage.DisplayAlert(title, message, "OK");
             });

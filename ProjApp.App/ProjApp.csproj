@@ -63,11 +63,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="appsettings.json" />
 	  <None Remove="Resources\AppIcon\appiconprova.svg" />
 	  <None Remove="Resources\Images\reddot.png" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="appsettings.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
 	  <EmbeddedResource Include="Resources\Images\green_pinicon.png" />
 	  <EmbeddedResource Include="Resources\Images\red_pinicon.png" />
 	  <EmbeddedResource Include="Resources\Images\yellow_pinicon.png" />
@@ -83,7 +87,10 @@
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
 	  <PackageReference Include="Mapsui.Maui" Version="4.0.0-beta.5" />
 	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.2" />
+	  <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.2" />
+	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
 	  <PackageReference Include="Microsoft.Identity.Client" Version="4.49.1" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>

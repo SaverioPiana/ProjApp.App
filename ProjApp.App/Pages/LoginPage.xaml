@@ -10,39 +10,36 @@
     
     <VerticalStackLayout>
         <Label 
-            Text="Benvenuto! &#10;Sign in to continue:"
+            Text="Benvenuto!"
             VerticalOptions="Center" 
             HorizontalOptions="Center"
             Margin="20 "
-            Padding="20"/>
+            Padding="2"/>
+        <Label 
+            Text="Inserisci il tuo nickname e fai il login"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            Margin="10 "
+            Padding="10"/>
 
         <Entry
             Text="{Binding Username}"
-            x:Name="Username"
-            Placeholder="Username"
-            TextColor="Black"
+            x:Name="Nickname"
+            Placeholder="Nickname"
             FontAttributes="Bold"
-            Margin="10"
+            Margin="20"
             
              />
 
-        <Entry 
+        <!--<Entry 
             Text="{Binding Password}"
             x:Name="Password"
             Placeholder="Password"
             TextColor="Black"
             FontAttributes="Bold"
             Margin="10"
-             />
+             />-->
 
-        <Button
-            Text="SiGN IN"
-            Command="{Binding NavigateToStartPageCommand}"
-            BackgroundColor="#9051F6"
-            Margin="15"
-            HeightRequest="50"
-            WidthRequest="200"
-            VerticalOptions="End"/>
         
         <HorizontalStackLayout 
                 HorizontalOptions="Center">
@@ -61,6 +58,20 @@
                         Margin="8,0,8,0" />
             
         </HorizontalStackLayout>
+        <Button
+            Text="Continua"
+            Command="{Binding NavigateToStartPageCommand}"
+            Margin="15"
+            HeightRequest="50"
+            WidthRequest="200"
+            VerticalOptions="End"
+            IsEnabled="{Binding IsLoggedIn}"/>
+        <!--<Button x:Name="GetWeatherForecastButton"
+                    Text="Get Weather Forecast"
+                    SemanticProperties.Hint="Get weather forecast data"
+                    Command="{Binding GetWeatherForecastButtonClickedCommand}"
+                    HorizontalOptions="Center"
+                    IsEnabled="{Binding IsLoggedIn}"/>-->
 
 
     </VerticalStackLayout>
