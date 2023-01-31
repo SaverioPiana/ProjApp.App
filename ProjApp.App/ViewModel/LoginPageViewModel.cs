@@ -15,13 +15,18 @@ namespace ProjApp.ViewModel
 
         [ObservableProperty] private string _username;
         [ObservableProperty] public string _password;
+        private bool succesfullLogin = true; ////////per ora true semrpe
 
-
+        
 
         [RelayCommand]
-        Task NavigateToStartPage() => Shell.Current.GoToAsync(nameof(StartPage));
+        Task NavigateToStartPage() {
+            if(succesfullLogin) {
+                Application.Current.MainPage = new AppShell();
+                Shell.Current.GoToAsync(nameof(ProfilePage));
+            }
+            return Task.CompletedTask;
+        }
 
-
-
-    }
+    };
 }

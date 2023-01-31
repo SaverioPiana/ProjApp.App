@@ -4,6 +4,7 @@
              x:Class="ProjApp.LoginPage"
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:LoginPageViewModel"
+             Shell.TabBarIsVisible="False"
              
              Title="LoginPage">
     
