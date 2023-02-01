@@ -10,22 +10,46 @@
              >
     
     
-    <VerticalStackLayout
-        Margin="20">
-        
-        
-        <Label 
-            Text="Impostazioni&#10;"
-            FontSize="36"
-            HorizontalOptions="Center" 
+    <StackLayout Orientation="Vertical"  Spacing="25">
+
+        <Rectangle
+            Margin="0"
+            Fill="#9051F6"
+            WidthRequest="400"
+            HeightRequest="25"
+            HorizontalOptions="Start"
             
             />
 
+
         <Label 
-            Text="Theme;"
-            FontSize="24"
-            Margin="10"
+            Text="Impostazioni&#10;"
+            FontSize="36"
+            HorizontalOptions="Center"
+            VerticalOptions="Start"
+            />
+
+
+        <StackLayout Orientation="Horizontal" Spacing="250" HorizontalOptions="Center">
+
+
+            <Label Text=" Tema "
+                       FontSize="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start"
              />
+
+
+            <Switch
+                IsToggled="False"
+                VerticalOptions="End"
+                OnColor="#5BAFEC"
+                ThumbColor="#9051F6"
+             />
+
+
+        </StackLayout>
+
 
         <Button
             Text="Disconnetti"
@@ -33,8 +57,14 @@
             Margin="15"
             HeightRequest="50"
             WidthRequest="200"
-            VerticalOptions="End"/>
+            BackgroundColor="#9051F6"
+            VerticalOptions="End"
+            HorizontalOptions="Center"
+            />
 
-    </VerticalStackLayout>
+    </StackLayout>
+        
+        
+    
     
 </ContentPage>

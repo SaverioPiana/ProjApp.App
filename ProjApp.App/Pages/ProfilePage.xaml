@@ -9,28 +9,39 @@
              Title="ProfilePage">
     
     
-    <StackLayout Orientation="Vertical" Margin="20" Spacing="15">
+    <StackLayout Orientation="Vertical" Spacing="15">
+
+        <Rectangle
+            Margin="0"
+            Fill="#9051F6"
+            WidthRequest="400"
+            HeightRequest="25"
+            HorizontalOptions="Start"
+            
+            />
 
         <Label 
-                Text="Profilo&#10;"
+                Text="Profilo"
                 FontSize="36"
                 HorizontalOptions="Center"
              />
 
 
-        <Frame  Padding="10" BorderColor="#9051F6"
+        <Border  Padding="5" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Margin="20"
                >
             <StackLayout Orientation="Horizontal" Spacing="15">
                 
                 
-                <Label Text="Nickname: "
-                       FontSize="20"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Start"/>
+                <Label 
+                    Text="  Nickname: "
+                    FontSize="20"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                       
+                    />
                 
                 
                 <Entry
-                    
                     x:Name="Nickname"
                     Placeholder="Inserisci nickname        "
                     TextColor="Black"
@@ -39,32 +50,33 @@
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
             
-             />
+                    />
                 
             </StackLayout>
             
-        </Frame>
+        </Border>
 
 
         <Label 
             
             Text="Max Score:"
             FontSize="20"
-
+            Margin="20"
              />
 
         <Label 
             Text="Total Score:&#10;"
             FontSize="20"
+            Margin="20"
             />
 
 
-        <Frame  Padding="10" BorderColor="#9051F6"
+        <Border  Padding="5" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Margin="20"
                >
             <StackLayout Orientation="Vertical" Spacing="15">
 
 
-                <Label Text="Giocatori recenti:"
+                <Label Text="  Giocatori recenti:"
                        FontSize="20"
                        VerticalOptions="Center"
                        HorizontalOptions="Start"/>
@@ -76,7 +88,7 @@
 
             </StackLayout>
 
-        </Frame>
+        </Border>
 
 
 

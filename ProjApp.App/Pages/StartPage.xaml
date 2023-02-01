@@ -7,40 +7,94 @@
 
              Title="StartPage">
 
-    <VerticalStackLayout 
-            Spacing="10"
-            Padding="30,0"
-            VerticalOptions="Start"
-            HorizontalOptions="Center">
+    <StackLayout Orientation="Vertical" Spacing="10" >
+
+        <Rectangle
+            Margin="0"
+            Fill="#9051F6"
+            WidthRequest="400"
+            HeightRequest="25"
+            HorizontalOptions="Start"
+            
+            />
 
         <Label
-            Margin="20"
-            Text="Per iniziare una partita, &#10;hai bisogno di una lobby. &#10;&#10; Per creare una lobby:"
-            FontSize="24">
-
-        </Label>
-
-        <Button
-            HeightRequest="50"
-            WidthRequest="50"
-                ></Button>
-
+            Text="Ciao, USERNAME"
+            FontAttributes="Bold"
+            FontSize="24"
+            Margin="10"
+            />
         <Label
-            Margin="20"
-            Text="Per unirti ad una lobby:"
-            FontSize="24">
-        </Label>
+            Text="Per giocare avrai bisogno di una lobby, e amici :) "
+            FontSize="20"
+            Margin="10"
+            />
 
-        <Button
-            HeightRequest="50"
-            WidthRequest="50"
-                ></Button>
+        <StackLayout Orientation="Horizontal" Spacing="130">
 
 
-        
+            <Label 
+                Text="Per creare una lobby:   "
+                Margin="10"
+                FontSize="20"
+                VerticalOptions="Center"
+                HorizontalOptions="Start"
+             />
 
-        
-        
+            <Button
+                ImageSource="plus_icon.png"
+                HeightRequest="40"
+                WidthRequest="40"
+                VerticalOptions="End"
+                BackgroundColor="Transparent"
+               />
+
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal" Spacing="7">
+
+
+            <Label 
+                Text="Per unirti ad una lobby con codice:   "
+                Margin="10"
+                FontSize="20"
+                VerticalOptions="Center"
+                HorizontalOptions="Start"
+             />
+
+            <Entry
+                x:Name="CodiceLobby"
+                Placeholder="CODICE"
+                TextColor="Black"
+                Keyboard="Numeric"
+                FontAttributes="Bold"
+                Margin="20"
+                HorizontalOptions="Center"
+             />
+
+        </StackLayout>
+
+        <Border  Padding="5" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Margin="20"
+               >
+            <StackLayout Orientation="Vertical" Spacing="15">
+
+
+                <Label Text="  Informazioni Lobby:"
+                       FontSize="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start"/>
+
+
+
+
+
+
+            </StackLayout>
+
+        </Border>
+
+
+
         <Button
             Text="Avvia partita!"
             BackgroundColor="#9051F6"
@@ -51,6 +105,6 @@
             Command="{Binding NavigateToMainPageCommand}"/>
 
 
-    </VerticalStackLayout>
+    </StackLayout>
     
 </ContentPage>
