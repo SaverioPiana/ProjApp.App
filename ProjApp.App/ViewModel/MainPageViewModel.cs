@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 namespace ProjApp.ViewModel
 {
     public partial class MainPageViewModel : ObservableObject
-    {
+    { 
 
         public MainPageViewModel(){}
 
