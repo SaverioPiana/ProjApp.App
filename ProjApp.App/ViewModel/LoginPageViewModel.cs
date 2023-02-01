@@ -15,8 +15,8 @@ namespace ProjApp.ViewModel
 
         public LoginPageViewModel() { }
 
-        [ObservableProperty] private string _username;
-        [ObservableProperty] public string _password;
+        [ObservableProperty] public string username;
+        [ObservableProperty] public string password;
         private bool succesfullLogin = true; ////////per ora true semrpe
 
 
@@ -25,14 +25,15 @@ namespace ProjApp.ViewModel
         Task NavigateToStartPage() {
             if (succesfullLogin)
             {
-                MyUser.BuildMyUser(Username); //username sarebbe l'ID
+                MainThread.BeginInvokeOnMainThread(SetNick);
+                
                 Application.Current.MainPage = new AppShell();
                 Shell.Current.GoToAsync(nameof(MainPage));  
             }
             return Task.CompletedTask;
         }
 
-        public static async Task  SetNick()
+        public async void SetNick()
         {
             if (MainThread.IsMainThread)
             {
@@ -54,6 +55,9 @@ namespace ProjApp.ViewModel
                 }
             }
             else Console.WriteLine("///////////////////NON STAI CHIAMANDO QUESTA SETNICK() DAL MAIN THREAD!!!!");
+            
+            MyUser.BuildMyUser(Username); //username sarebbe l'ID
         }
+
     };
 }

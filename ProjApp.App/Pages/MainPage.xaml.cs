@@ -13,8 +13,6 @@ public partial class MainPage : ContentPage
 		InitializeComponent();
 
 		BindingContext= viewModel;
-
-		MainThread.BeginInvokeOnMainThread(LoginPageViewModel.SetNick);
 	}
 
 #if ANDROID

@@ -5,7 +5,7 @@
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:MainPageViewModel"
 
-             Title="">
+             Title="MainPage">
 
     <VerticalStackLayout 
             Spacing="10"
