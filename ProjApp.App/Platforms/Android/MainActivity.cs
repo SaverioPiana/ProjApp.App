@@ -27,9 +27,6 @@ public class MainActivity : MauiAppCompatActivity
     {
         base.OnCreate(savedInstanceState);
 
-        // Configure platform specific parameters
-        PlatformConfig.Instance.RedirectUri = AndroidRedirectURI;
-        PlatformConfig.Instance.ParentWindow = this;
 
         WeakReferenceMessenger.Default.Register<FullScreenMessage>(this, (r, m) =>
         {
@@ -42,6 +39,9 @@ public class MainActivity : MauiAppCompatActivity
                 wicController.Hide(WindowInsets.Type.NavigationBars());
             }
         });
+        // Configure platform specific parameters
+        PlatformConfig.Instance.RedirectUri = AndroidRedirectURI;
+        PlatformConfig.Instance.ParentWindow = this;
     }
 
     /// <summary>

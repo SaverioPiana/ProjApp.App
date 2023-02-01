@@ -11,7 +11,7 @@ namespace ProjApp.MsalClient
     {
         private IConfiguration _configuration;
         private static Sttings _settings { get; set; }
-
+        private const string AndroidRedirectURI = $"msauth://com.companyname.nascondapp/B64377998E6E41DAA82BEE84EC2C7740";
         internal IPublicClientApplication PCA { get; }
 
         internal bool UseEmbedded { get; set; } = false;
@@ -23,12 +23,13 @@ namespace ProjApp.MsalClient
             _configuration = configuration;
             _settings = _configuration.GetRequiredSection("Settings").Get<Sttings>();
             Scopes = _settings.ScopesForTwitter.ToStringArray();
+            
 
-            // Create PCA once. Make sure that all the config parameters below are passed
-            PCA = PublicClientApplicationBuilder
+        // Create PCA once. Make sure that all the config parameters below are passed
+        PCA = PublicClientApplicationBuilder
                                         .Create(_settings.ClientIdForTwitter)
                                         .WithB2CAuthority(_settings.AuthorityForTwitter)
-                                        .WithRedirectUri(PlatformConfig.Instance.RedirectUri)
+                                        .WithRedirectUri(AndroidRedirectURI)
                                         .WithIosKeychainSecurityGroup("com.microsoft.adalcache")
                                         .Build();
         }

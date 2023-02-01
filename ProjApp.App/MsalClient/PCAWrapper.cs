@@ -11,6 +11,7 @@ namespace ProjApp.MsalClient
     {
         private IConfiguration _configuration;
         private static Sttings _settings { get; set; }
+        private const string AndroidRedirectURI = $"msauth://com.companyname.nascondapp/B64377998E6E41DAA82BEE84EC2C7740";
 
         internal IPublicClientApplication PCA { get; }
 
@@ -27,7 +28,7 @@ namespace ProjApp.MsalClient
             // Create PCA once. Make sure that all the config parameters below are passed
             PCA = PublicClientApplicationBuilder
                                         .Create(_settings.ClientId)
-                                        .WithRedirectUri(PlatformConfig.Instance.RedirectUri)
+                                        .WithRedirectUri(AndroidRedirectURI)
                                         .WithIosKeychainSecurityGroup("com.microsoft.adalcache")
                                         .Build();
         }
@@ -71,14 +72,19 @@ namespace ProjApp.MsalClient
             // Hide the privacy prompt in iOS
             systemWebViewOptions.iOSHidePrivacyPrompt = true;
 #endif
-
-             return await PCA.AcquireTokenInteractive(scopes)
-                                    .WithAuthority(_settings.Authority)
-                                    .WithTenantId(_settings.TenantId)
-                                    .WithParentActivityOrWindow(PlatformConfig.Instance.ParentWindow)
-                                    .WithUseEmbeddedWebView(true)
-                                    .ExecuteAsync()
-                                    .ConfigureAwait(false);
+            try
+            {
+                var x = await PCA.AcquireTokenInteractive(scopes)
+                                       .WithAuthority(_settings.Authority)
+                                       .WithTenantId(_settings.TenantId)
+                                       .WithParentActivityOrWindow(PlatformConfig.Instance.ParentWindow)
+                                       .WithUseEmbeddedWebView(true)
+                                       .ExecuteAsync()
+                                       .ConfigureAwait(false);
+            return x;
+            }catch(Exception ex) {
+                return null;
+            };
         }
 
         /// <summary>

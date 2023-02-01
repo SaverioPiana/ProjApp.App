@@ -91,7 +91,7 @@ namespace ProjApp.ViewModel
                     // Display Access Token from AcquireTokenInteractiveAsync call.
                     await ShowOkMessage("Access Token from AcquireTokenInteractiveAsync call", _accessToken).ConfigureAwait(false);
                 }
-                catch
+                catch(Exception ex)
                 {
                     // Ignore.
                 }
