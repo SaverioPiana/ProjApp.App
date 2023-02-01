@@ -20,8 +20,6 @@ namespace ProjApp.MapEl.GPS
         public static string NICK_FILENAME = "playerNick.txt";
         public static string nick = "";
 
-        public string Nick { get { return nick; } set { nick = value; } }
-
 
         //SignalR Parametri
         public readonly static int SEND_POS_DELAY = 3000;
@@ -33,6 +31,12 @@ namespace ProjApp.MapEl.GPS
         {
             Location loc = RetrieveLocFromFile("lastSavedPosition.txt");
             user = new(nick, ID, loc);
+        }
+
+        public static void ChangeNick(string newnick) 
+        { 
+            nick= newnick;
+            MyUser.user.Nickname=nick;
         }
 
         public static void AddToCurrPartita(User u)
@@ -159,8 +163,7 @@ namespace ProjApp.MapEl.GPS
             {
                 string nick;
                 string path = System.IO.Path.Combine(FileSystem.Current.AppDataDirectory, filename);
-                //se non esiste il file lo creo
-                File.Delete(path);  
+                //se non esiste il file lo creo  
                 if (!File.Exists(path))
                 {
                     using StreamWriter streamWriter = new StreamWriter(path);

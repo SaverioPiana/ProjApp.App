@@ -5,51 +5,38 @@
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:ProfilePageViewModel"
              Title="ProfilePage">
+    
     <VerticalStackLayout 
         Margin="20">
-
-
 
         <Label 
             Text="Profilo&#10;"
             FontSize="36"
             HorizontalOptions="Center"
-
-
-
-             />
+            />
 
         <Label 
             Text="NickName:&#10;"
             FontSize="24"
-
-             />
+            />
 
         <Label 
             Text="Max Score:"
             FontSize="24"
-
-             />
+            />
 
         <Label 
             Text="Total Score:&#10;&#10;"
             FontSize="24"
-
-             />
-
+            />
 
         <Frame
             BorderColor="MediumSlateBlue">
             <Label Text="Giocatori Recenti:"
                    FontSize="24"
                    Style="{StaticResource LabelInsideFrame}"/>
-
-
         </Frame>
-
-
-
-
+        
     </VerticalStackLayout>
 
 </ContentPage>

@@ -7,10 +7,10 @@ using ProjApp.Gioco;
 
 namespace ProjApp.ViewModel
 {
-    public partial class StartPageViewModel : ObservableObject
+    public partial class MainPageViewModel : ObservableObject
     {
 
-        public StartPageViewModel(){}
+        public MainPageViewModel(){}
 
         [ObservableProperty] string codice;
         [ObservableProperty] bool isCodiceVisible = false;
@@ -37,7 +37,7 @@ namespace ProjApp.ViewModel
             IsCodiceVisible = true;
             IsAdmin = true;
             //vado nella pagina Lobby
-            Shell.Current.GoToAsync($"../{nameof(LobbyPage)}");
+            await Shell.Current.GoToAsync($"../{nameof(LobbyPage)}");
         }
     }
 }

@@ -7,6 +7,7 @@
     
     Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False"
+    CurrentItem="{x:Reference mainpage}"
     >
 
     
@@ -18,23 +19,22 @@
             ContentTemplate="{DataTemplate local:ProfilePage}"
             Route= "ProfilePage"
             Icon="profileicon.svg"
-            
-            
             />
         
         
         <ShellContent 
+            x:Name="mainpage"
             Title=""
-            ContentTemplate="{DataTemplate local:StartPage}"
-            Route= "StartPage" 
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route= "MainPage" 
             Icon="play_icon.svg"
             />
 
 
         <ShellContent
             Title=""
-            ContentTemplate="{DataTemplate local:Settings}"
-            Route= "Settings"
+            ContentTemplate="{DataTemplate local:SettingsPage}"
+            Route= "SettingsPage"
             Icon="settings_icon.svg"
             />
 
@@ -42,8 +42,8 @@
     
     <ShellContent
         Title=""
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route= "MainPage" 
+        ContentTemplate="{DataTemplate local:MatchPage}"
+        Route= "MatchPage" 
         />
     
     <ShellContent

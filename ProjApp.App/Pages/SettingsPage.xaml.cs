@@ -4,11 +4,11 @@ using static ProjApp.MainActivity;
 
 namespace ProjApp;
 
-public partial class Settings : ContentPage{
+public partial class SettingsPage : ContentPage{
 
-    public Settings() { }
+    public SettingsPage() { }
 
-	public Settings(SettingsPageViewModel viewModel)
+	public SettingsPage(SettingsPageViewModel viewModel)
 	{
         InitializeComponent();
         BindingContext = viewModel;

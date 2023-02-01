@@ -22,32 +22,37 @@ namespace ProjApp.ViewModel
 
         [RelayCommand]
         Task NavigateToStartPage() {
-            MainThread.BeginInvokeOnMainThread(() =>
+            if (succesfullLogin)
             {
-                if (succesfullLogin)
-                {
-                    string retrievedNick = MyUser.RetrieveNickFromFile(MyUser.NICK_FILENAME);
-                    if (retrievedNick.Equals(""))
-                    {
-                        string nick = "";
-                        //string nick = Application.Current.MainPage.DisplayPromptAsync("Come ti chiami?",
-                         //   "Inserisci il nome che gli altri utenti visualizzeranno", "Conferma", "Annulla",
-                           // "Nickname", 15).Result;
-                        MyUser.SaveLastNickOnFile(nick);
-                        MyUser.nick = nick;
-                    }
-                    else
-                    {
-                        MyUser.nick = retrievedNick;
-                    }
-
-                    MyUser.BuildMyUser(Username); //username sarebbe l'ID
-                    Application.Current.MainPage = new AppShell();
-                    Shell.Current.GoToAsync(nameof(ProfilePage));
-                }
-            });
+                MyUser.BuildMyUser(Username); //username sarebbe l'ID
+                Application.Current.MainPage = new AppShell();
+                Shell.Current.GoToAsync(nameof(MainPage));  
+            }
             return Task.CompletedTask;
         }
 
+        public static void SetNick()
+        {
+            if (MainThread.IsMainThread)
+            {
+                string retrievedNick = MyUser.RetrieveNickFromFile(MyUser.NICK_FILENAME);
+                if (retrievedNick.Equals(""))
+                {
+                    string newnick;
+
+                    newnick = Application.Current.MainPage.DisplayPromptAsync("Come ti chiami?",
+                    "Inserisci il nome che gli altri utenti visualizzeranno", "Conferma", "Annulla",
+                    "Nickname", 15).Result;
+
+                    MyUser.SaveLastNickOnFile(newnick);
+                    MyUser.nick = newnick;
+                }
+                else
+                {
+                    MyUser.nick = retrievedNick;
+                }
+            }
+            else Console.WriteLine("///////////////////NON STAI CHIAMANDO QUESTA SETNICK() DAL MAIN THREAD!!!!");
+        }
     };
 }

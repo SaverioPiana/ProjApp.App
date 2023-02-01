@@ -10,7 +10,7 @@
     
     <VerticalStackLayout>
         <Label 
-            Text="Benvenuto! &#10;Sign in to continue:"
+            Text="Benvenuto! Accedi per continuare:"
             VerticalOptions="Center" 
             HorizontalOptions="Center"
             Margin="20 "
@@ -20,7 +20,7 @@
             Text="{Binding Username}"
             x:Name="Username"
             Placeholder="Username"
-            TextColor="Black"
+            TextColor="Fuchsia"
             FontAttributes="Bold"
             Margin="10"
             
@@ -30,7 +30,7 @@
             Text="{Binding Password}"
             x:Name="Password"
             Placeholder="Password"
-            TextColor="Black"
+            TextColor="Fuchsia"
             FontAttributes="Bold"
             Margin="10"
              />
