@@ -17,7 +17,7 @@
             Title=""
             ContentTemplate="{DataTemplate local:ProfilePage}"
             Route= "ProfilePage"
-            Icon="profileicon.svg"
+            Icon="profile_icon.png"
             
             
             />
@@ -27,7 +27,7 @@
             Title=""
             ContentTemplate="{DataTemplate local:StartPage}"
             Route= "StartPage" 
-            Icon="play_icon.svg"
+            Icon="play_icon.png"
             />
 
 
@@ -35,7 +35,7 @@
             Title=""
             ContentTemplate="{DataTemplate local:Settings}"
             Route= "Settings"
-            Icon="settings_icon.svg"
+            Icon="settings_icon.png"
             />
 
     </TabBar>

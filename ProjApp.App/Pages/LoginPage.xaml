@@ -9,40 +9,78 @@
              Title="LoginPage">
     
     <VerticalStackLayout>
+
+        <Rectangle
+            Margin="0"
+            Fill="#5BAFEC"
+            WidthRequest="400"
+            HeightRequest="25"
+            HorizontalOptions="Start"
+            
+            />
+
+
         <Label 
-            Text="Benvenuto! &#10;Sign in to continue:"
+            Text="&#10;Benvenuto!"
+            FontSize="45"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            Margin="20"
+            Padding="20"/>
+
+        <Image
+            Source="profile_icon_azz.png"
+            HorizontalOptions="Center"
+            WidthRequest="80"
+            HeightRequest="80"
+            
+            Margin="0"
+            
+            
+            />
+
+        <Label 
+            Text="Sign in to continue"
+            FontSize="25"
             VerticalOptions="Center" 
             HorizontalOptions="Center"
             Margin="20 "
-            Padding="20"/>
+            />
 
         <Entry
             Text="{Binding Username}"
             x:Name="Username"
-            Placeholder="Username"
+            Placeholder="Username                                             "
             TextColor="Black"
             FontAttributes="Bold"
-            Margin="10"
+            Margin="20"
+            
+            HorizontalOptions="Center"
             
              />
 
         <Entry 
             Text="{Binding Password}"
+            IsPassword="True"
             x:Name="Password"
-            Placeholder="Password"
+            Placeholder="Password                                             "
             TextColor="Black"
             FontAttributes="Bold"
             Margin="10"
+            HorizontalOptions="Center"
+
              />
 
         <Button
             Text="SiGN IN"
             Command="{Binding NavigateToStartPageCommand}"
-            BackgroundColor="#9051F6"
+            BackgroundColor="#5BAFEC"
             Margin="15"
             HeightRequest="50"
             WidthRequest="200"
             VerticalOptions="End"/>
+            
+           
 
 
     </VerticalStackLayout>

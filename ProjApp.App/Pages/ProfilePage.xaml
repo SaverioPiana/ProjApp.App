@@ -9,8 +9,7 @@
              Title="ProfilePage">
     
     
-    <VerticalStackLayout 
-        Margin="20">
+    <VerticalStackLayout Margin="20">
         
         
         
