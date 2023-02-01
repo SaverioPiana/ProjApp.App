@@ -115,6 +115,7 @@ namespace ProjApp.ViewModel
             IsLoggedIn = false;
             _accessToken = string.Empty;
 
+
         }
         [RelayCommand]
         async private void GetWeatherForecastButtonClicked()
