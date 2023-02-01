@@ -65,6 +65,7 @@
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\appiconprova.svg" />
 	  <None Remove="Resources\Images\reddot.png" />
+	  <None Remove="Resources\Raw\Shrek.txt" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -54,7 +54,6 @@
             TextColor="Black"
             FontAttributes="Bold"
             Margin="20"
-            
             HorizontalOptions="Center"
             
              />

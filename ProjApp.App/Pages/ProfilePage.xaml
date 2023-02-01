@@ -9,49 +9,79 @@
              Title="ProfilePage">
     
     
-    <VerticalStackLayout Margin="20">
-        
-        
-        
+    <StackLayout Orientation="Vertical" Margin="20" Spacing="15">
+
         <Label 
-            Text="Profilo&#10;"
-            FontSize="36"
-            HorizontalOptions="Center"
-            
-            
-            
+                Text="Profilo&#10;"
+                FontSize="36"
+                HorizontalOptions="Center"
              />
 
-        <Label 
-            Text="NickName:&#10;"
-            FontSize="24"
 
+        <Frame  Padding="10" BorderColor="#9051F6"
+               >
+            <StackLayout Orientation="Horizontal" Spacing="15">
+                
+                
+                <Label Text="Nickname: "
+                       FontSize="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start"/>
+                
+                
+                <Entry
+                    
+                    x:Name="Nickname"
+                    Placeholder="Inserisci nickname        "
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    Margin="0"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+            
              />
+                
+            </StackLayout>
+            
+        </Frame>
+
 
         <Label 
+            
             Text="Max Score:"
-            FontSize="24"
+            FontSize="20"
 
              />
 
         <Label 
-            Text="Total Score:&#10;&#10;"
-            FontSize="24"
+            Text="Total Score:&#10;"
+            FontSize="20"
+            />
 
-             />
+
+        <Frame  Padding="10" BorderColor="#9051F6"
+               >
+            <StackLayout Orientation="Vertical" Spacing="15">
 
 
-        <Frame
-            BorderColor="MediumSlateBlue">
-            <Label Text="Giocatori Recenti:"
-                   FontSize="24"/>
+                <Label Text="Giocatori recenti:"
+                       FontSize="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start"/>
 
-            
+                
+                
+
+
+
+            </StackLayout>
+
         </Frame>
 
 
 
 
-    </VerticalStackLayout>
+
+    </StackLayout>
     
 </ContentPage>
