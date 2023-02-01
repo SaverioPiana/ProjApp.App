@@ -64,7 +64,10 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\appiconprova.svg" />
+	  <None Remove="Resources\Images\playicon_by_ayub_irawan.png" />
+	  <None Remove="Resources\Images\profileicon.png" />
 	  <None Remove="Resources\Images\reddot.png" />
+	  <None Remove="Resources\Images\settingsicon.png" />
 	</ItemGroup>
 
 	<ItemGroup>

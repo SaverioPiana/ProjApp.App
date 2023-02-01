@@ -7,35 +7,36 @@
     
     Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False"
+    Shell.TabBarIsVisible="True"
     CurrentItem="{x:Reference mainpage}"
     >
 
     
 
-    <TabBar>
+    <TabBar >
         
         <ShellContent
-            Title=""
+            Title="Profilo"
             ContentTemplate="{DataTemplate local:ProfilePage}"
             Route= "ProfilePage"
-            Icon="profileicon.svg"
+            Icon="profileicon.png"
             />
         
         
         <ShellContent 
             x:Name="mainpage"
-            Title=""
+            Title="Play"
             ContentTemplate="{DataTemplate local:MainPage}"
             Route= "MainPage" 
-            Icon="play_icon.svg"
+            Icon="playicon_by_ayub_irawan.png"
             />
 
 
         <ShellContent
-            Title=""
+            Title="Impostazioni"
             ContentTemplate="{DataTemplate local:SettingsPage}"
             Route= "SettingsPage"
-            Icon="settings_icon.svg"
+            Icon="settingsicon.png"
             />
 
     </TabBar>
