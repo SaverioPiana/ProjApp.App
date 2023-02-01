@@ -54,22 +54,6 @@ namespace ProjApp.MsalClient
         /// </summary>
         /// <param name="scopes">desired scopes</param>
         /// <returns></returns>
-        public async Task<AuthenticationResult> AcquireTokenSilentAsync(string[] scopes)
-        {
-            var accts = await PCA.GetAccountsAsync(_settings.PolicySignUpSignInForTwitter).ConfigureAwait(false);
-            var acct = accts.FirstOrDefault();
-
-            var authResult = await PCA.AcquireTokenSilent(scopes, acct)
-                                        .ExecuteAsync().ConfigureAwait(false);
-            return authResult;
-
-        }
-
-        /// <summary>
-        /// Perform the interactive acquisition of the token for the given scope
-        /// </summary>
-        /// <param name="scopes">desired scopes</param>
-        /// <returns></returns>
         public async Task<AuthenticationResult> AcquireTokenInteractiveAsync(string[] scopes)
         {
             var systemWebViewOptions = new SystemWebViewOptions();
@@ -89,16 +73,14 @@ namespace ProjApp.MsalClient
             systemWebViewOptions.iOSHidePrivacyPrompt = true;
 #endif
 
-            var accounts = await PCA.GetAccountsAsync(_settings.PolicySignUpSignInForTwitter).ConfigureAwait(false); ;
-            var acct = accounts.FirstOrDefault();
-
-            return await PCA.AcquireTokenInteractive(scopes)
-                                    .WithB2CAuthority(_settings.AuthorityForTwitter)
-                                    .WithAccount(accounts.FirstOrDefault())
+            var x =  await PCA.AcquireTokenInteractive(scopes)
+                                    .WithAuthority(_settings.Authority)
+                                    .WithTenantId(_settings.TenantId)
                                     .WithParentActivityOrWindow(PlatformConfig.Instance.ParentWindow)
                                     .WithUseEmbeddedWebView(true)
                                     .ExecuteAsync()
                                     .ConfigureAwait(false);
+            return x;
         }
 
         /// <summary>

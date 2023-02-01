@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
-using MsalAuthInMaui;
+
 
 namespace ProjApp.MsalClient
 {
@@ -72,7 +72,7 @@ namespace ProjApp.MsalClient
             systemWebViewOptions.iOSHidePrivacyPrompt = true;
 #endif
 
-            return await PCA.AcquireTokenInteractive(scopes)
+             return await PCA.AcquireTokenInteractive(scopes)
                                     .WithAuthority(_settings.Authority)
                                     .WithTenantId(_settings.TenantId)
                                     .WithParentActivityOrWindow(PlatformConfig.Instance.ParentWindow)

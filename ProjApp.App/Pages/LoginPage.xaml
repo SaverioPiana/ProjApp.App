@@ -40,41 +40,45 @@
             Margin="10"
              />-->
 
-        
         <HorizontalStackLayout 
-                HorizontalOptions="Center">
+				HorizontalOptions="Center">
             <Button x:Name="LoginButton"
-                        Text="Log in"
-                        SemanticProperties.Hint="Log in"
-                        Command="{Binding }"
-                        HorizontalOptions="Center"
-                        Margin="8,0,8,0" />
+						Text="Log in (MS)"
+						SemanticProperties.Hint="Log in"
+						Command="{Binding LoginButtonClickedCommand}"
+						HorizontalOptions="Center"
+						Margin="8,0,8,0" />
 
-            <Button x:Name="LogoutButton"
-                        Text="Log out"
-                        SemanticProperties.Hint="Log out"
-                        Command="{Binding LogoutButtonClickedCommand}"
-                        HorizontalOptions="Center"
-                        Margin="8,0,8,0" />
-            
+        <Button x:Name="LogoutButton"
+						Text="Log out"
+						SemanticProperties.Hint="Log out"
+						Command="{Binding LogoutButtonClickedCommand}"
+						HorizontalOptions="Center"
+						Margin="8,0,8,0" />
         </HorizontalStackLayout>
-        <Button
-            Text="Continua"
-            Command="{Binding NavigateToStartPageCommand}"
-            Margin="15"
-            HeightRequest="50"
-            WidthRequest="200"
-            VerticalOptions="End"
-            IsEnabled="{Binding IsLoggedIn}"/>
-        <!--<Button x:Name="GetWeatherForecastButton"
-                    Text="Get Weather Forecast"
-                    SemanticProperties.Hint="Get weather forecast data"
-                    Command="{Binding GetWeatherForecastButtonClickedCommand}"
-                    HorizontalOptions="Center"
-                    IsEnabled="{Binding IsLoggedIn}"/>-->
 
 
+        <Label Text="Login with your social account"
+				   SemanticProperties.HeadingLevel="Level1"
+				   FontSize="18"
+				   HorizontalOptions="Center" />
+
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <Button x:Name="LoginWithTwitterButton"
+						Text="Login (Social)"
+						SemanticProperties.Hint="Log in with Twitter"
+						Command="{Binding LoginWithTwitterButtonClickedCommand}"
+						HorizontalOptions="Center"
+						Margin="8,0,8,0" />
+        </HorizontalStackLayout>
+
+        <Button x:Name="GetWeatherForecastButton"
+					Text="Get Weather Forecast"
+					SemanticProperties.Hint="Get weather forecast data"
+					Command="{Binding GetWeatherForecastButtonClickedCommand}"
+					HorizontalOptions="Center"
+					IsEnabled="{Binding IsLoggedIn}"/>
     </VerticalStackLayout>
-    
+
     
 </ContentPage>

@@ -162,14 +162,14 @@ namespace ProjApp.ViewModel
         }
 
 
-        private async Task ShowOkMessage(string title, string message)
+        private Task ShowOkMessage(string title, string message)
         {
             
             MainThread.BeginInvokeOnMainThread(async () =>
             {
                 await Application.Current.MainPage.DisplayAlert(title, message, "OK");
             });
-
+            return Task.CompletedTask;
 
 
 
