@@ -14,7 +14,7 @@ namespace ProjApp.ViewModel
 
         [ObservableProperty] string codice;
         [ObservableProperty] bool isCodiceVisible = false;
-        [ObservableProperty] bool isAdmin = false;
+        [ObservableProperty] bool youAdmin = false;
 
         [RelayCommand]
         Task NavigateToMainPage() => Shell.Current.GoToAsync(nameof(MainPage));
@@ -25,7 +25,7 @@ namespace ProjApp.ViewModel
             //faccio inserire il codice all'utente
             string result = await Application.Current.MainPage.DisplayPromptAsync("Join Lobby", "Inserisci il codice della Lobby","Conferma","Annulla","ID");
             MyUser.currPartita.IfCheckThenJoin(result);
-            if(IsAdmin) IsAdmin = false;
+            if(youAdmin) youAdmin = false;
         }
 
         [RelayCommand]
@@ -35,7 +35,7 @@ namespace ProjApp.ViewModel
             MyUser.currPartita.CreateLobby();
             Codice = MyUser.currPartita.Cod_partita;
             IsCodiceVisible = true;
-            IsAdmin = true;
+            youAdmin = true;
             //vado nella pagina Lobby
             await Shell.Current.GoToAsync($"../{nameof(LobbyPage)}");
         }

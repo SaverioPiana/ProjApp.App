@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Android.OS;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ProjApp.MapEl.GPS;
 using System;
@@ -31,7 +32,7 @@ namespace ProjApp.ViewModel
             return Task.CompletedTask;
         }
 
-        public static void SetNick()
+        public static async Task  SetNick()
         {
             if (MainThread.IsMainThread)
             {
@@ -40,9 +41,9 @@ namespace ProjApp.ViewModel
                 {
                     string newnick;
 
-                    newnick = Application.Current.MainPage.DisplayPromptAsync("Come ti chiami?",
+                    newnick = await Application.Current.MainPage.DisplayPromptAsync("Come ti chiami?",
                     "Inserisci il nome che gli altri utenti visualizzeranno", "Conferma", "Annulla",
-                    "Nickname", 15).Result;
+                    "Nickname");
 
                     MyUser.SaveLastNickOnFile(newnick);
                     MyUser.nick = newnick;
