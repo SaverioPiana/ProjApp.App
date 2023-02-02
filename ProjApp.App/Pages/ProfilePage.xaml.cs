@@ -4,9 +4,9 @@ using static ProjApp.MainActivity;
 
 namespace ProjApp;
 
-public partial class ProfilePage : ContentPage
+ public partial class ProfilePage : ContentPage
 {
-	public ProfilePage(ProfilePageViewModel viewModel)
+	public  ProfilePage(ProfilePageViewModel viewModel)
 	{
 		InitializeComponent();
         BindingContext = viewModel;

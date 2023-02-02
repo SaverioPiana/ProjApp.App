@@ -1,4 +1,5 @@
-﻿using ProjApp.ViewModel;
+﻿using ProjApp.Services;
+using ProjApp.ViewModel;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace ProjApp;
@@ -17,6 +18,11 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 fonts.AddFont("comici.ttf", "ComicSansRegular");
             });
+
+
+        builder.Services.AddSingleton<BaseViewModel>();
+        builder.Services.AddSingleton<GiocatoriService>();
+        
         builder.Services.AddSingleton<SettingsPageViewModel>();
         builder.Services.AddSingleton<Settings>();
 		builder.Services.AddSingleton<StartPageViewModel>();
