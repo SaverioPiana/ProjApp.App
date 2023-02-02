@@ -9,9 +9,9 @@ namespace ProjApp.ViewModel
 
         public ProfilePageViewModel() { }
 
-        [ObservableProperty] private string nick = MyUser.nick;
-        [ObservableProperty] private int maxScore = 0;
-        [ObservableProperty] private int totalScore = 0;
+        [RelayCommand]
+        Task NavigateToSettingsPage() => Shell.Current.GoToAsync(nameof(SettingsPage));
+
 
     }
 }

@@ -10,21 +10,68 @@
              >
     
     
-    <VerticalStackLayout
-        Margin="20">
-        
-        
-        <Label 
-            Text="Impostazioni&#10;"
-            FontSize="36"
-            HorizontalOptions="Center" 
+    <StackLayout Orientation="Vertical"  Spacing="25">
+
+        <Rectangle
+            Margin="0"
+            Fill="#9051F6"
+            WidthRequest="400"
+            HeightRequest="25"
+            HorizontalOptions="Start"
+            
             />
 
-        <Label 
-            Text="Theme;"
-            FontSize="24"
-            Margin="10"
+
+        <StackLayout Orientation="Horizontal" Spacing="24">
+
+
+            <Button
+            
+            Command="{Binding NavigateToProfilePageCommand}"
+            BackgroundColor="#9051F6"
+            ImageSource="back_arrow_icon.png"
+            Margin="15"
+            CornerRadius="12"
+            HeightRequest="35"
+            WidthRequest="35"
+            VerticalOptions="Start"
+             />
+            
+            <Label 
+            Text="Impostazioni&#10;"
+            FontSize="36"
+            Margin="20"
+            HorizontalOptions="Center"
+            VerticalOptions="End"
+                
             />
+
+            
+            
+        </StackLayout>
+
+        
+
+        <StackLayout Orientation="Horizontal" Spacing="250" HorizontalOptions="Center">
+
+
+            <Label Text=" Tema "
+                       FontSize="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start"
+             />
+
+
+            <Switch
+                IsToggled="False"
+                VerticalOptions="End"
+                OnColor="#5BAFEC"
+                ThumbColor="#9051F6"
+             />
+
+
+        </StackLayout>
+
 
         <Button
             Text="Disconnetti"
@@ -32,8 +79,15 @@
             Margin="15"
             HeightRequest="50"
             WidthRequest="200"
-            VerticalOptions="End"/>
+            BackgroundColor="#9051F6"
+            VerticalOptions="End"
+            HorizontalOptions="Center"
+            />
 
+    </StackLayout>
+        
+        
+    
     </VerticalStackLayout>
     
 </ContentPage>

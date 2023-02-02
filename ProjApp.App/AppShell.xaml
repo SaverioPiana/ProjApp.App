@@ -15,7 +15,9 @@
             Title="Profilo"
             ContentTemplate="{DataTemplate local:ProfilePage}"
             Route= "ProfilePage"
-            Icon="profileicon.png"
+            Icon="profile_icon.png"
+            
+            
             />
         
         
@@ -23,7 +25,7 @@
             Title="Play"
             ContentTemplate="{DataTemplate local:StartPage}"
             Route= "StartPage" 
-            Icon="playicon_by_ayub_irawan.png"
+            Icon="play_icon.png"
             />
 
 
@@ -33,13 +35,12 @@
             Route= "SettingsPage"
             Icon="settingsicon.png"
             />
-
-    </TabBar>
+    
     
     <ShellContent
         Title=""
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route= "MainPage/MatchPage" 
+        Route= "MainPage" 
         />
     
     <ShellContent
@@ -47,12 +48,6 @@
         ContentTemplate="{DataTemplate local:LoginPage}"
         Route="LoginPage"
         />
-
-    <ShellContent
-        Title="Lobby"
-        ContentTemplate="{DataTemplate local:LobbyPage}"
-        Route="MainPage/LobbyPage"
-        />
-
-
+    
+    
 </Shell>

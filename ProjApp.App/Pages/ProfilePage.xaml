@@ -6,37 +6,111 @@
              x:DataType="viewmodel:ProfilePageViewModel"
              Title="ProfilePage">
     
-    <VerticalStackLayout 
-        Margin="20">
+    
+    <StackLayout Orientation="Vertical" Spacing="15">
 
-        <Label 
-            Text="Profilo&#10;"
-            FontSize="36"
-            HorizontalOptions="Center"
-            />
+        <Rectangle
+            Margin="0"
+            Fill="#9051F6"
+            WidthRequest="400"
+            HeightRequest="25"
+            HorizontalOptions="Start"
+            
+         />
 
-        <Label 
-            Text="{Binding Nick, StringFormat = Nickname: {0}}"
-            FontSize="24"
-            />
+        <StackLayout Orientation="Horizontal" Spacing="165" > 
+            
+            <Label 
+                Text="Profilo"
+                Margin="20"
+                FontSize="36"
+                VerticalOptions="Center"
+             />
 
-        <Label 
-            Text="{Binding MaxScore, StringFormat = MaxScore: {0}}"
-            FontSize="24"
-            />
+            <Button
+            
+            Command="{Binding NavigateToSettingsPageCommand}"
+            BackgroundColor="#9051F6"
+            ImageSource="settings_icon.png"
+            Margin="15"
+            CornerRadius="20"
+            HeightRequest="50"
+            WidthRequest="50"
+            VerticalOptions="End"
+             />
+            
+        </StackLayout>
 
-        <Label 
-            Text="{Binding TotalScore, StringFormat = TotalScore: {0}}"
-            FontSize="24"
-            />
-
-        <Frame
-            BorderColor="MediumSlateBlue">
-            <Label Text="Giocatori Recenti:"
-                   FontSize="24"
-                   Style="{StaticResource LabelInsideFrame}"/>
-        </Frame>
         
-    </VerticalStackLayout>
 
+
+        <Border  Padding="5" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Margin="20"
+               >
+            <StackLayout Orientation="Horizontal" Spacing="15">
+                
+                
+                <Label 
+                    Text="  Nickname: "
+                    FontSize="20"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                       
+                    />
+                
+                
+                <Entry
+                    x:Name="Nickname"
+                    Placeholder="Inserisci nickname        "
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    Margin="0"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+            
+                    />
+                
+            </StackLayout>
+            
+        </Border>
+
+
+        <Label 
+            
+            Text="Max Score:"
+            FontSize="20"
+            Margin="20"
+             />
+
+        <Label 
+            Text="Total Score:&#10;"
+            FontSize="20"
+            Margin="20"
+            />
+
+
+        <Border  Padding="5" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Margin="20"
+               >
+            <StackLayout Orientation="Vertical" Spacing="15">
+
+
+                <Label Text="  Giocatori recenti:"
+                       FontSize="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start"/>
+
+                
+                
+
+
+
+            </StackLayout>
+
+        </Border>
+
+
+
+
+
+    </StackLayout>
+    
 </ContentPage>
