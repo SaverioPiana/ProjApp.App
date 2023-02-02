@@ -9,6 +9,9 @@ namespace ProjApp.ViewModel
 
         public ProfilePageViewModel() { }
 
+        [ObservableProperty]
+        private string nick = MyUser.nick;
+
         [RelayCommand]
         Task NavigateToSettingsPage() => Shell.Current.GoToAsync(nameof(SettingsPage));
 

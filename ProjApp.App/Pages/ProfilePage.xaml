@@ -47,28 +47,14 @@
         <Border  Padding="5" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Margin="20"
                >
             <StackLayout Orientation="Horizontal" Spacing="15">
-                
-                
+
                 <Label 
-                    Text="  Nickname: "
+                    Text="{Binding Nick, StringFormat='Nickname: {0}'}"
                     FontSize="20"
                     VerticalOptions="Center"
-                    HorizontalOptions="Start"
-                       
+                    HorizontalOptions="Start"  
                     />
-                
-                
-                <Entry
-                    x:Name="Nickname"
-                    Placeholder="Inserisci nickname        "
-                    TextColor="Black"
-                    FontAttributes="Bold"
-                    Margin="0"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Center"
-            
-                    />
-                
+
             </StackLayout>
             
         </Border>

@@ -78,16 +78,10 @@
                >
             <StackLayout Orientation="Vertical" Spacing="15">
 
-
                 <Label Text="  Informazioni Lobby:"
                        FontSize="20"
                        VerticalOptions="Center"
                        HorizontalOptions="Start"/>
-
-
-
-
-
 
             </StackLayout>
 

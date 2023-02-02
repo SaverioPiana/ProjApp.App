@@ -54,7 +54,7 @@ namespace ProjApp.ViewModel
             }
             else Console.WriteLine("///////////////////NON STAI CHIAMANDO QUESTA SETNICK() DAL MAIN THREAD!!!!");
             
-            MyUser.BuildMyUser(Username); //username sarebbe l'ID
+            MyUser.BuildMyUser(Username); //username sarebbe l'ID/mail
         }
 
     };
