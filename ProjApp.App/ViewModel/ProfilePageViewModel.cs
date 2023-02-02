@@ -8,6 +8,9 @@ namespace ProjApp.ViewModel
 
         public ProfilePageViewModel() { }
 
+        [RelayCommand]
+        Task NavigateToSettingsPage() => Shell.Current.GoToAsync(nameof(Settings));
+
 
     }
 }
