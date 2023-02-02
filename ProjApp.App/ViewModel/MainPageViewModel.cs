@@ -37,7 +37,7 @@ namespace ProjApp.ViewModel
             IsCodiceVisible = true;
             IsAdmin = true;
             //vado nella pagina Lobby
-            await Shell.Current.GoToAsync($"///{nameof(MainPage)}/{nameof(LobbyPage)}?codice={Codice}");
+            await Shell.Current.GoToAsync($"{nameof(MainPage)}/{nameof(LobbyPage)}?codice={Codice}");
         }
     }
 }

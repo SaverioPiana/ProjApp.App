@@ -10,9 +10,7 @@
     Shell.TabBarIsVisible="True"
     CurrentItem="{x:Reference mainpage}"
     >
-
     
-
     <TabBar >
         
         <ShellContent
