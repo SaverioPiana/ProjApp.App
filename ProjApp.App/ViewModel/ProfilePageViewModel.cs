@@ -53,9 +53,6 @@ namespace ProjApp.ViewModel
         }
 
 
-        [RelayCommand]
-        Task NavigateToSettingsPage() => Shell.Current.GoToAsync(nameof(Settings));
-
 
     }
 }

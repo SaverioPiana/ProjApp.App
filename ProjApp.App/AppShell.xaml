@@ -30,17 +30,15 @@
             Icon="play_icon.png"
             />
 
-    </TabBar>
 
-        
-
-    <ShellContent
+        <ShellContent
             Title=""
             ContentTemplate="{DataTemplate local:Settings}"
             Route= "Settings"
             Icon="settings_icon.png"
             />
-    
+
+    </TabBar>
     
     <ShellContent
         Title=""

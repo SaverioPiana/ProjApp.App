@@ -19,12 +19,6 @@ public static class MauiProgram
                 fonts.AddFont("comici.ttf", "ComicSansRegular");
             });
 
-
-        builder.Services.AddSingleton<BaseViewModel>();
-        builder.Services.AddSingleton<GiocatoriService>();
-        
-        builder.Services.AddSingleton<SettingsPageViewModel>();
-        builder.Services.AddSingleton<Settings>();
 		builder.Services.AddSingleton<StartPageViewModel>();
         builder.Services.AddSingleton<StartPage>();
         builder.Services.AddSingleton<MainViewModel>();
@@ -33,7 +27,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<ProfilePage>();
         builder.Services.AddTransient<LoginPageViewModel>();
         builder.Services.AddTransient<LoginPage>();
-        
+        builder.Services.AddSingleton<SettingsPageViewModel>();
+        builder.Services.AddSingleton<Settings>();
 
         return builder.Build();
 	}

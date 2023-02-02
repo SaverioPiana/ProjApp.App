@@ -18,32 +18,13 @@
             HeightRequest="25"
             HorizontalOptions="Start"
             
-         />
+            />
 
-        <StackLayout Orientation="Horizontal" Spacing="165" > 
-            
-            <Label 
+        <Label 
                 Text="Profilo"
-                Margin="20"
                 FontSize="36"
-                VerticalOptions="Center"
+                HorizontalOptions="Center"
              />
-
-            <Button
-            
-            Command="{Binding NavigateToSettingsPageCommand}"
-            BackgroundColor="#9051F6"
-            ImageSource="settings_icon.png"
-            Margin="15"
-            CornerRadius="20"
-            HeightRequest="50"
-            WidthRequest="50"
-            VerticalOptions="End"
-             />
-            
-        </StackLayout>
-
-        
 
 
         <Border  Padding="5" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Margin="20"

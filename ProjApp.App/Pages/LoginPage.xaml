@@ -23,7 +23,6 @@
         <Label 
             Text="&#10;Benvenuto!"
             FontSize="45"
-            FontAttributes="Bold"
             VerticalOptions="Center" 
             HorizontalOptions="Center"
             Margin="20"

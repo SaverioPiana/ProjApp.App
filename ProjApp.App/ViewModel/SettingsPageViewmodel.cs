@@ -18,8 +18,7 @@ namespace ProjApp.ViewModel
         [RelayCommand]
         Task NavigateToLoginPage() => Shell.Current.GoToAsync(nameof(LoginPage));
 
-        [RelayCommand]
-        Task NavigateToProfilePage() => Shell.Current.GoToAsync("..");
+
 
     }
 }

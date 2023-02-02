@@ -22,35 +22,13 @@
             />
 
 
-        <StackLayout Orientation="Horizontal" Spacing="24">
-
-
-            <Button
-            
-            Command="{Binding NavigateToProfilePageCommand}"
-            BackgroundColor="#9051F6"
-            ImageSource="back_arrow_icon.png"
-            Margin="15"
-            CornerRadius="12"
-            HeightRequest="35"
-            WidthRequest="35"
-            VerticalOptions="Start"
-             />
-            
-            <Label 
+        <Label 
             Text="Impostazioni&#10;"
             FontSize="36"
-            Margin="20"
             HorizontalOptions="Center"
-            VerticalOptions="End"
-                
+            VerticalOptions="Start"
             />
 
-            
-            
-        </StackLayout>
-
-        
 
         <StackLayout Orientation="Horizontal" Spacing="250" HorizontalOptions="Center">
 
