@@ -36,7 +36,7 @@
 
     <ShellContent
             Title=""
-            ContentTemplate="{DataTemplate local:Settings}"
+            ContentTemplate="{DataTemplate local:SettingsPage}"
             Route= "Settings"
             Icon="settings_icon.png"
             />

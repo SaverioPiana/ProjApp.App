@@ -18,7 +18,7 @@ public static class MauiProgram
                 fonts.AddFont("comici.ttf", "ComicSansRegular");
             });
         builder.Services.AddSingleton<SettingsPageViewModel>();
-        builder.Services.AddSingleton<Settings>();
+        builder.Services.AddSingleton<SettingsPage>();
 		builder.Services.AddSingleton<StartPageViewModel>();
         builder.Services.AddSingleton<StartPage>();
         builder.Services.AddSingleton<MainViewModel>();
