@@ -20,10 +20,6 @@
 
         </Label>
 
-        <Button
-            HeightRequest="50"
-            WidthRequest="50"
-                ></Button>
 
         <Label
             Margin="20"
@@ -31,26 +27,42 @@
             FontSize="24">
         </Label>
 
-        <Button
-            HeightRequest="50"
-            WidthRequest="50"
-                ></Button>
+        <Grid Padding="10" RowSpacing="30" ColumnSpacing="30" HorizontalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width= "Auto"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Column="0"
+                Text="Create Lobby"
+                Command="{Binding CreateLobbyCommand}"/>
+            <Button
+                Grid.Column="1"
+                Text="Join Lobby"
+                Command="{Binding JoinLobbyCommand}"/>
+        </Grid>
+
+        <Label
+            Margin = "30"
+            Text="{Binding Codice, StringFormat='Codice partita: {0}'}"
+            FontSize="24"
+            IsVisible="{Binding IsCodiceVisible}">
+        </Label>
 
 
-        
 
-        
-        
         <Button
             Text="Avvia partita!"
-            BackgroundColor="#9051F6"
-            Margin="15"
+            Margin="20"
             HeightRequest="50"
-            WidthRequest="200"
+            WidthRequest="180"
             VerticalOptions="End"
             Command="{Binding NavigateToMainPageCommand}"/>
 
 
     </VerticalStackLayout>
-    
+
 </ContentPage>

@@ -17,6 +17,8 @@ namespace ProjApp.MapEl.GPS
         public static User user;
         public static Partita currPartita = new();
         public static bool isAdmin = false;
+        public static string NICK_FILENAME = "playerNick.txt";
+        public static string nick = "";
 
 
         //SignalR Parametri
@@ -25,11 +27,16 @@ namespace ProjApp.MapEl.GPS
 
 
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
-        public static void BuildMyUser()
+        public static void BuildMyUser(string ID)
         {
             Location loc = RetrieveLocFromFile("lastSavedPosition.txt");
-            user = new("Nickname", DeviceInfo.Name, loc);
-            
+            user = new(nick, ID, loc);
+        }
+
+        public static void ChangeNick(string newnick) 
+        { 
+            nick= newnick;
+            MyUser.user.Nickname=nick;
         }
 
         public static void AddToCurrPartita(User u)
@@ -134,6 +141,46 @@ namespace ProjApp.MapEl.GPS
             {
                 Console.WriteLine("/////////////////////Qualcosa e andato storto col file zi//////////////////");
                 return new(0,0);
+            }
+        }
+        public static async void SaveLastNickOnFile(string nick)
+        {
+            try
+            {
+                string targetFileName = "playerNick.txt";
+                string path = System.IO.Path.Combine(FileSystem.Current.AppDataDirectory, targetFileName);
+                using StreamWriter streamWriter = new StreamWriter(path, false);
+                await streamWriter.WriteAsync(nick);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Qualcosa e andato storto col file zi");
+            }
+        }
+        public static string RetrieveNickFromFile(string filename)
+        {
+            try
+            {
+                string nick;
+                string path = System.IO.Path.Combine(FileSystem.Current.AppDataDirectory, filename);
+                //se non esiste il file lo creo  
+                if (!File.Exists(path))
+                {
+                    using StreamWriter streamWriter = new StreamWriter(path);
+                    return "";
+                }
+                //poi lo leggo
+                using (StreamReader sr = File.OpenText(path))
+                {
+                    nick = sr.ReadToEnd();
+                    if (nick == null) nick = "";
+                    return nick;
+                };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("/////////////////////Qualcosa e andato storto col file zi//////////////////");
+                return "";
             }
         }
 

@@ -92,7 +92,7 @@
 	  <MauiXaml Update="Pages\ProfilePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Settings.xaml">
+	  <MauiXaml Update="Pages\SettingsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\StartPage.xaml">
@@ -102,6 +102,18 @@
 
 	<ItemGroup>
 	  <Folder Include="Resources\Settings\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Pages\MainPage.xaml.cs">
+	    <DependentUpon>MainPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\SettingsPage.xaml.cs">
+	    <DependentUpon>SettingsPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\StartPage.xaml.cs">
+	    <DependentUpon>StartPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionProjAppHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarProjAppHideInfoBar="True" /></VisualStudio></ProjectExtensions>

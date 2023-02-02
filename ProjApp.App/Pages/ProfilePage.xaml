@@ -2,57 +2,41 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProjApp.ProfilePage"
-             
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:ProfilePageViewModel"
-             
              Title="ProfilePage">
-    
     
     <VerticalStackLayout 
         Margin="20">
-        
-        
-        
+
         <Label 
             Text="Profilo&#10;"
             FontSize="36"
             HorizontalOptions="Center"
-            
-            
-            
-             />
+            />
 
         <Label 
-            Text="NickName:&#10;"
+            Text="{Binding Nick, StringFormat = Nickname: {0}}"
             FontSize="24"
-
-             />
+            />
 
         <Label 
-            Text="Max Score:"
+            Text="{Binding MaxScore, StringFormat = MaxScore: {0}}"
             FontSize="24"
-
-             />
+            />
 
         <Label 
-            Text="Total Score:&#10;&#10;"
+            Text="{Binding TotalScore, StringFormat = TotalScore: {0}}"
             FontSize="24"
-
-             />
-
+            />
 
         <Frame
             BorderColor="MediumSlateBlue">
             <Label Text="Giocatori Recenti:"
-                   FontSize="24"/>
-
-            
+                   FontSize="24"
+                   Style="{StaticResource LabelInsideFrame}"/>
         </Frame>
-
-
-
-
+        
     </VerticalStackLayout>
-    
+
 </ContentPage>

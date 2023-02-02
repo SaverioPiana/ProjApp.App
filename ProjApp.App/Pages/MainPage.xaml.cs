@@ -24,15 +24,6 @@ public  partial class MainPage : ContentPage
             CheckANDSetPermission();
         });
 
-        //Signalr
-        Connessione c = new();
-
-        Task.Run(() =>
-        {
-            Dispatcher.Dispatch(async () =>
-            await Connessione.con.StartAsync());
-        });
-
         new OurMapController().MapInitializer();
         Content = OurMapController.mapView;
     }

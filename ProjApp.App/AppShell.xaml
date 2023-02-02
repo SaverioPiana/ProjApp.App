@@ -8,34 +8,30 @@
     Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False"
     >
-
     
-
-    <TabBar>
+    <TabBar >
         
         <ShellContent
-            Title=""
+            Title="Profilo"
             ContentTemplate="{DataTemplate local:ProfilePage}"
             Route= "ProfilePage"
-            Icon="profileicon.svg"
-            
-            
+            Icon="profileicon.png"
             />
         
         
         <ShellContent 
-            Title=""
+            Title="Play"
             ContentTemplate="{DataTemplate local:StartPage}"
             Route= "StartPage" 
-            Icon="play_icon.svg"
+            Icon="playicon_by_ayub_irawan.png"
             />
 
 
         <ShellContent
-            Title=""
-            ContentTemplate="{DataTemplate local:Settings}"
-            Route= "Settings"
-            Icon="settings_icon.svg"
+            Title="Impostazioni"
+            ContentTemplate="{DataTemplate local:SettingsPage}"
+            Route= "SettingsPage"
+            Icon="settingsicon.png"
             />
 
     </TabBar>
@@ -43,14 +39,20 @@
     <ShellContent
         Title=""
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route= "MainPage" 
+        Route= "MainPage/MatchPage" 
         />
     
     <ShellContent
-        Title=""
+        Title="Login"
         ContentTemplate="{DataTemplate local:LoginPage}"
         Route="LoginPage"
         />
-    
-    
+
+    <ShellContent
+        Title="Lobby"
+        ContentTemplate="{DataTemplate local:LobbyPage}"
+        Route="MainPage/LobbyPage"
+        />
+
+
 </Shell>

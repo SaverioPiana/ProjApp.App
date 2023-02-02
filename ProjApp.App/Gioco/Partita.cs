@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -26,14 +27,9 @@ namespace ProjApp.Gioco
     {
         private string cod_partita;
         
-
-
-        //temp
         private int tap_counter = 0;
         public Tana tana;
-        //
-
-        //per ora li ho messi statici per facilitare il tutto
+        
         public IList<User> Players { get ; set; }
         public AreaGiocabile area { get; set; }  
         
@@ -43,15 +39,17 @@ namespace ProjApp.Gioco
         {
             area = new();
             Players = new List<User>();
-            cod_partita = "SASSO";
+            Connessione.con.On("InvalidID", InvalidID);
+            Connessione.con.On<string>("JoinLobby", (lid) => JoinLobby(lid));
         }
 
         public void CreateLobby()
         {
             MyUser.isAdmin = true;
+            cod_partita = CreateCode();
 
             Connessione.con.InvokeAsync("CreateLobby", arg1: cod_partita);
-            this.JoinLobby(Cod_partita);
+            this.IfCheckThenJoin(Cod_partita);
             Console.WriteLine($"Lobby Creata con codice {cod_partita}");
 
         }
@@ -59,19 +57,39 @@ namespace ProjApp.Gioco
         public void JoinLobby(string lid)
         {
             Connessione.con.InvokeAsync("JoinLobby", lid);
+            //joino la lobby con quell'id
             Cod_partita = lid;
             MyUser.AddToCurrPartita(MyUser.user);
-            Task.Run(() => isGameStarted());
-            Task.Run(() => MyUser.inviaPosSignalR());
-            
-            //creazione area di gioco
-            if (MyUser.isAdmin) { 
-            OurMapController.mapView.SingleTap += creaPin;
-            //event subscription
-            GameLogic.UsersOutside += onUserOutside;
-               }
-            else Task.Run(() => riceviOggettiDiGioco());
-                
+            Task.Run(isGameStarted);
+            Task.Run(MyUser.inviaPosSignalR);
+
+            //se sei l'admin crei l'area
+            if (MyUser.isAdmin)
+            {
+                OurMapController.mapView.SingleTap += creaPin;
+                //event subscription
+                GameLogic.UsersOutside += onUserOutside;
+            }
+            //senno' ricevi gli oggetti di gioco
+            else Task.Run(riceviOggettiDiGioco);
+
+            //vado alla lobby page
+            Shell.Current.GoToAsync(nameof(LobbyPage));
+        }
+
+        [Obsolete]
+        public void InvalidID() {
+            //se il codice non e' valido notifico l'utente
+            Device.BeginInvokeOnMainThread(()=>
+            Application.Current.MainPage.DisplayAlert("Ops...", 
+                "Pare proprio non esista una partita con quell'ID", "OK")
+            );
+        }
+
+        public void IfCheckThenJoin(string lid)
+        {
+            //controllo sul server se la lobby esiste
+            Connessione.con.InvokeAsync("IfCheckThenJoin", lid);
         }
 
         public void LeaveLobby()
