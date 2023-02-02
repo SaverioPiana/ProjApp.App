@@ -64,10 +64,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\appiconprova.svg" />
-	  <None Remove="Resources\Images\playicon_by_ayub_irawan.png" />
-	  <None Remove="Resources\Images\profileicon.png" />
 	  <None Remove="Resources\Images\reddot.png" />
-	  <None Remove="Resources\Images\settingsicon.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -89,9 +86,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\LobbyPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Pages\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -101,7 +95,7 @@
 	  <MauiXaml Update="Pages\SettingsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\MainPage.xaml">
+	  <MauiXaml Update="Pages\StartPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
@@ -111,17 +105,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Pages\LobbyPage.xaml.cs">
-	    <DependentUpon>LobbyPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\MatchPage.xaml.cs">
-	    <DependentUpon>MatchPage.xaml</DependentUpon>
+	  <Compile Update="Pages\MainPage.xaml.cs">
+	    <DependentUpon>MainPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Pages\SettingsPage.xaml.cs">
 	    <DependentUpon>SettingsPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Pages\MainPage.xaml.cs">
-	    <DependentUpon>MainPage.xaml</DependentUpon>
+	  <Compile Update="Pages\StartPage.xaml.cs">
+	    <DependentUpon>StartPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 

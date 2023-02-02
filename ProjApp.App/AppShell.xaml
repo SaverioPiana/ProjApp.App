@@ -7,8 +7,6 @@
     
     Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False"
-    Shell.TabBarIsVisible="True"
-    CurrentItem="{x:Reference mainpage}"
     >
     
     <TabBar >
@@ -22,10 +20,9 @@
         
         
         <ShellContent 
-            x:Name="mainpage"
             Title="Play"
-            ContentTemplate="{DataTemplate local:MainPage}"
-            Route= "MainPage" 
+            ContentTemplate="{DataTemplate local:StartPage}"
+            Route= "StartPage" 
             Icon="playicon_by_ayub_irawan.png"
             />
 
@@ -41,7 +38,7 @@
     
     <ShellContent
         Title=""
-        ContentTemplate="{DataTemplate local:MatchPage}"
+        ContentTemplate="{DataTemplate local:MainPage}"
         Route= "MainPage/MatchPage" 
         />
     
