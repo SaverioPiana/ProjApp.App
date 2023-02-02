@@ -44,19 +44,19 @@
     <ShellContent
         Title=""
         ContentTemplate="{DataTemplate local:MatchPage}"
-        Route= "MatchPage" 
+        Route= "MainPage/MatchPage" 
         />
     
     <ShellContent
-        Title=""
+        Title="Login"
         ContentTemplate="{DataTemplate local:LoginPage}"
         Route="LoginPage"
         />
 
     <ShellContent
-        Title=""
+        Title="Lobby"
         ContentTemplate="{DataTemplate local:LobbyPage}"
-        Route="LobbyPage"
+        Route="MainPage/LobbyPage"
         />
 
 

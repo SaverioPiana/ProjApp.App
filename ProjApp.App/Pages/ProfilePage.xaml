@@ -16,17 +16,17 @@
             />
 
         <Label 
-            Text="NickName:&#10;"
+            Text="{Binding Nick, StringFormat = Nickname: {0}}"
             FontSize="24"
             />
 
         <Label 
-            Text="Max Score:"
+            Text="{Binding MaxScore, StringFormat = MaxScore: {0}}"
             FontSize="24"
             />
 
         <Label 
-            Text="Total Score:&#10;&#10;"
+            Text="{Binding TotalScore, StringFormat = TotalScore: {0}}"
             FontSize="24"
             />
 

@@ -1,7 +1,4 @@
-﻿using Microsoft.Maui.Controls;
-using ProjApp.MapEl.GPS;
-using Microsoft.AspNetCore.SignalR.Client;
-using ProjApp.Gioco;
+﻿using ProjApp.MapEl.GPS;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -12,15 +9,18 @@ namespace ProjApp.ViewModel
 
         public MainPageViewModel(){}
 
-        [ObservableProperty] string codice;
-        [ObservableProperty] bool isCodiceVisible = false;
-        [ObservableProperty] bool isAdmin = false;
+        [ObservableProperty] 
+        string codice;
+        [ObservableProperty] 
+        bool isCodiceVisible = false;
+        [ObservableProperty] 
+        bool isAdmin = false;
 
         [RelayCommand]
-        Task NavigateToMainPage() => Shell.Current.GoToAsync(nameof(MainPage));
+        Task NavigateToMatchPage() => Shell.Current.GoToAsync(nameof(MatchPage));
         
         [RelayCommand]
-        async Task JoinLobby()
+        public async Task JoinLobby()
         {
             //faccio inserire il codice all'utente
             string result = await Application.Current.MainPage.DisplayPromptAsync("Join Lobby", "Inserisci il codice della Lobby","Conferma","Annulla","ID");
@@ -29,7 +29,7 @@ namespace ProjApp.ViewModel
         }
 
         [RelayCommand]
-        async Task CreateLobby()
+        public async Task CreateLobby()
         {
             //NON CE ERROR HANDLING QUI
             MyUser.currPartita.CreateLobby();
@@ -37,7 +37,7 @@ namespace ProjApp.ViewModel
             IsCodiceVisible = true;
             IsAdmin = true;
             //vado nella pagina Lobby
-            await Shell.Current.GoToAsync($"{nameof(LobbyPage)}?parameterToPassBack={Codice}");
+            await Shell.Current.GoToAsync($"///{nameof(MainPage)}/{nameof(LobbyPage)}?codice={Codice}");
         }
     }
 }

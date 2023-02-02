@@ -60,7 +60,7 @@
             HeightRequest="50"
             WidthRequest="180"
             VerticalOptions="End"
-            Command="{Binding NavigateToMainPageCommand}"/>
+            Command="{Binding NavigateToMatchPageCommand}"/>
 
 
     </VerticalStackLayout>

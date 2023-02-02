@@ -28,7 +28,7 @@ namespace ProjApp.ViewModel
                 MainThread.BeginInvokeOnMainThread(SetNick);
                 
                 Application.Current.MainPage = new AppShell();
-                Shell.Current.GoToAsync(nameof(MainPage));  
+                Shell.Current.GoToAsync($"///{nameof(MainPage)}");  
             }
             return Task.CompletedTask;
         }
