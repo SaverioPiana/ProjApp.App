@@ -37,6 +37,8 @@ namespace ProjApp.MapEl.GPS
         { 
             nick= newnick;
             MyUser.user.Nickname=nick;
+            SaveLastNickOnFile(newnick);
+
         }
 
         public static void AddToCurrPartita(User u)

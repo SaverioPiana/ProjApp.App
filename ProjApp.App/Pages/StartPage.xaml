@@ -42,6 +42,7 @@
              />
 
             <Button
+                Command="{Binding CreateLobbyCommand}"
                 ImageSource="plus_icon.png"
                 HeightRequest="40"
                 WidthRequest="40"
@@ -66,7 +67,7 @@
                 x:Name="CodiceLobby"
                 Placeholder="CODICE"
                 TextColor="Black"
-                Keyboard="Numeric"
+                
                 FontAttributes="Bold"
                 Margin="20"
                 HorizontalOptions="Center"
