@@ -9,7 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ProjApp.ViewModel
 {
-    public class  MatchPageViewModel : ObservableObject
+    public class  MainPageViewModel : ObservableObject
 
     {
       

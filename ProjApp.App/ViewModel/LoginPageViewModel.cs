@@ -1,5 +1,4 @@
-﻿using Android.OS;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ProjApp.MapEl.GPS;
 using System;
@@ -28,7 +27,6 @@ namespace ProjApp.ViewModel
                 MainThread.BeginInvokeOnMainThread(SetNick);
                 
                 Application.Current.MainPage = new AppShell();
-                Shell.Current.GoToAsync($"///{nameof(MainPage)}");  
             }
             return Task.CompletedTask;
         }

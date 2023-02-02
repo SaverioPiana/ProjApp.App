@@ -8,8 +8,8 @@
              
              Title="SettingsPage"
              >
-    
-    
+
+
     <StackLayout Orientation="Vertical"  Spacing="25">
 
         <Rectangle
@@ -26,31 +26,30 @@
 
 
             <Button
-            
-            Command="{Binding NavigateToProfilePageCommand}"
-            BackgroundColor="#9051F6"
-            ImageSource="back_arrow_icon.png"
-            Margin="15"
-            CornerRadius="12"
-            HeightRequest="35"
-            WidthRequest="35"
-            VerticalOptions="Start"
+                Command="{Binding NavigateToProfilePageCommand}"
+                BackgroundColor="#9051F6"
+                ImageSource="back_arrow_icon.png"
+                Margin="15"
+                CornerRadius="12"
+                HeightRequest="35"
+                WidthRequest="35"
+                VerticalOptions="Start"
              />
-            
+
             <Label 
-            Text="Impostazioni&#10;"
-            FontSize="36"
-            Margin="20"
-            HorizontalOptions="Center"
-            VerticalOptions="End"
+                Text="Impostazioni&#10;"
+                FontSize="36"
+                Margin="20"
+                HorizontalOptions="Center"
+                VerticalOptions="End"
                 
             />
 
-            
-            
+
+
         </StackLayout>
 
-        
+
 
         <StackLayout Orientation="Horizontal" Spacing="250" HorizontalOptions="Center">
 
@@ -69,9 +68,7 @@
                 ThumbColor="#9051F6"
              />
 
-
         </StackLayout>
-
 
         <Button
             Text="Disconnetti"
@@ -85,9 +82,5 @@
             />
 
     </StackLayout>
-        
-        
-    
-    </VerticalStackLayout>
     
 </ContentPage>

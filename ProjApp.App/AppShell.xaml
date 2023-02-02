@@ -8,18 +8,15 @@
     Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False"
     >
-    
-    <TabBar >
+
+    <TabBar>
         
         <ShellContent
             Title="Profilo"
             ContentTemplate="{DataTemplate local:ProfilePage}"
             Route= "ProfilePage"
             Icon="profile_icon.png"
-            
-            
             />
-        
         
         <ShellContent 
             Title="Play"
@@ -28,26 +25,25 @@
             Icon="play_icon.png"
             />
 
+    </TabBar>
 
-        <ShellContent
-            Title="Impostazioni"
-            ContentTemplate="{DataTemplate local:SettingsPage}"
-            Route= "SettingsPage"
-            Icon="settingsicon.png"
-            />
-    
-    
+    <ShellContent
+        Title="Impostazioni"
+        ContentTemplate="{DataTemplate local:SettingsPage}"
+        Route= "SettingsPage"
+        Icon="settings_icon.png"
+    />
+
     <ShellContent
         Title=""
         ContentTemplate="{DataTemplate local:MainPage}"
         Route= "MainPage" 
-        />
-    
+    />
+
     <ShellContent
         Title="Login"
         ContentTemplate="{DataTemplate local:LoginPage}"
         Route="LoginPage"
-        />
-    
+    />
     
 </Shell>

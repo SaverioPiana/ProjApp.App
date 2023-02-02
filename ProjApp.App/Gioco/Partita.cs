@@ -72,9 +72,6 @@ namespace ProjApp.Gioco
             }
             //senno' ricevi gli oggetti di gioco
             else Task.Run(riceviOggettiDiGioco);
-
-            //vado alla lobby page
-            Shell.Current.GoToAsync(nameof(LobbyPage));
         }
 
         [Obsolete]

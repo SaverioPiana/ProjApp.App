@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.Messaging;
 using ProjApp.ViewModel;
-using static ProjApp.MainActivity;
+
 
 namespace ProjApp;
 
