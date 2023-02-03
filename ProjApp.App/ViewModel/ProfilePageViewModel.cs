@@ -38,7 +38,7 @@ namespace ProjApp.ViewModel
                 {
                     MyUser.Nick = retrievedNick;
                 }
-                Nick = MyUser.Nick; //funzionera INotifyPropertyChanged???
+                Nick = MyUser.Nick; //funzionera INotifyPropertyChanged??? ----> SI
             }
             else Console.WriteLine("///////////////////NON STAI CHIAMANDO QUESTA SETNICK() DAL MAIN THREAD!!!!");
         }

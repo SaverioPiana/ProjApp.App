@@ -12,14 +12,14 @@
     <TabBar>
         
         <ShellContent
-            Title="Profilo"
+            Title=""
             ContentTemplate="{DataTemplate local:ProfilePage}"
             Route= "ProfilePage"
             Icon="profile_icon.png"
             />
         
         <ShellContent 
-            Title="Play"
+            Title=""
             ContentTemplate="{DataTemplate local:StartPage}"
             Route= "StartPage" 
             Icon="play_icon.png"

@@ -41,7 +41,7 @@
             />
 
         <Label 
-            Text="Sign in to continue"
+            Text="Accedi per continuare:"
             FontSize="25"
             VerticalOptions="Center" 
             HorizontalOptions="Center"
@@ -52,27 +52,26 @@
             Text="{Binding Username}"
             x:Name="Username"
             Placeholder="Username                                             "
-            TextColor="Black"
+            TextColor="#5BAFEC"
             FontAttributes="Bold"
             Margin="20"
             HorizontalOptions="Center"
             
              />
-
+        
         <Entry 
             Text="{Binding Password}"
-            IsPassword="True"
             x:Name="Password"
             Placeholder="Password                                             "
-            TextColor="Black"
+            TextColor="#5BAFEC"
             FontAttributes="Bold"
             Margin="10"
             HorizontalOptions="Center"
-
-             />
+            IsPassword="True"
+        />
 
         <Button
-            Text="SiGN IN"
+            Text="SIGN IN"
             Command="{Binding NavigateToStartPageCommand}"
             BackgroundColor="#5BAFEC"
             Margin="15"

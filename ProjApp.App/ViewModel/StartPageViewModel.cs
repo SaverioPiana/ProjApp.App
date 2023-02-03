@@ -2,37 +2,44 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Globalization;
+using Microsoft.Maui.Controls;
 
 namespace ProjApp.ViewModel
 {
     public partial class StartPageViewModel : ObservableObject
-    { 
+    {
 
-        public StartPageViewModel(){}
+        public StartPageViewModel() { }
 
-        [ObservableProperty] 
+        [ObservableProperty]
         string codice;
         [ObservableProperty]
         bool isCodiceVisible = false;
-        [ObservableProperty] 
+        [ObservableProperty]
         bool isAdmin = false;
         [ObservableProperty]
         string nick = MyUser.Nick;
 
         [RelayCommand]
-        Task NavigateToMainPage() => Shell.Current.GoToAsync(nameof(MainPage));
+        Task AvviaPartita() => Shell.Current.GoToAsync(nameof(MainPage));
+
+        [RelayCommand]
+        Task CopyCode() 
+        {
+            Clipboard.Default.SetTextAsync(Codice);
+            return Task.CompletedTask;
+        }
         
         [RelayCommand]
-        public async Task JoinLobby()
+        public void JoinLobby(Entry entry)
         {
             //faccio inserire il codice all'utente
-            string result = await Application.Current.MainPage.DisplayPromptAsync("Join Lobby", "Inserisci il codice della Lobby","Conferma","Annulla","ID");
-            MyUser.currPartita.IfCheckThenJoin(result);
+            MyUser.currPartita.IfCheckThenJoin(entry.Text);
             if(IsAdmin) IsAdmin = false;
         }
 
         [RelayCommand]
-        public async Task CreateLobby()
+        public void CreateLobby()
         {
             //NON CE ERROR HANDLING QUI
             MyUser.currPartita.CreateLobby();
