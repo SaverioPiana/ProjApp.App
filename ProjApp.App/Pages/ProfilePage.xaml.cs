@@ -10,7 +10,7 @@ public partial class ProfilePage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = viewModel;
-        viewModel.SetNick();
+        MainThread.BeginInvokeOnMainThread(viewModel.SetNick);
     }
 
     #if ANDROID

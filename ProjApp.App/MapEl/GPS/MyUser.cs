@@ -16,31 +16,26 @@ namespace ProjApp.MapEl.GPS
         private static CancellationTokenSource _cancelTokenSource;
         private static bool _isCheckingLocation;
         public static User user;
-        public static Partita currPartita = new();
+        public static Partita currPartita;
         public static bool isAdmin = false;
         public static string NICK_FILENAME = "playerNick.txt";
-        public static string Nick { get; set; }
         
-
-
         //SignalR Parametri
         public readonly static int SEND_POS_DELAY = 3000;
         private static bool want_sendposition = true;
 
-
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
-        public static void BuildMyUser(string ID)
+        public static void BuildMyUser(string ID, string nick)
         {
             Location loc = RetrieveLocFromFile("lastSavedPosition.txt");
-            user = new(Nick, ID, loc);
+            user = new(nick, ID, loc);
+            currPartita = new();
         }
 
         public static void ChangeNick(string newnick) 
         { 
-            Nick = newnick;
-            MyUser.user.Nickname=Nick;
+            user.Nickname = newnick;
             SaveLastNickOnFile(newnick);
-
         }
 
         public static void AddToCurrPartita(User u)
@@ -195,12 +190,7 @@ namespace ProjApp.MapEl.GPS
             {
                 if (Connessione.con.State.Equals(HubConnectionState.Connected))
                 {
-                    string jsonUser = JsonSerializer.Serialize<User>(user,
-                          new JsonSerializerOptions
-                          {
-                              NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-                              PropertyNameCaseInsensitive = true
-                          });
+                    string jsonUser = CreateJsonUser(user);
 
                     await Connessione.con.InvokeAsync("SendPosition",
                           arg1: jsonUser,
@@ -209,6 +199,16 @@ namespace ProjApp.MapEl.GPS
                 }
                 await Task.Delay(SEND_POS_DELAY);
             }
+        }
+
+        public static string CreateJsonUser(User u)
+        {
+            return JsonSerializer.Serialize<User>(u,
+                    new JsonSerializerOptions
+                    {
+                        NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+                        PropertyNameCaseInsensitive = true
+                    });
         }
     }
 }

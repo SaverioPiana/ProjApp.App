@@ -48,11 +48,12 @@
                 WidthRequest="40"
                 VerticalOptions="End"
                 BackgroundColor="Transparent"
+                CommandParameter=""
                />
 
         </StackLayout>
 
-        <StackLayout Orientation="Horizontal" Spacing="7">
+        <StackLayout x:Name="JoinStackLayout" Orientation="Horizontal" Spacing="7">
 
 
             <Label 

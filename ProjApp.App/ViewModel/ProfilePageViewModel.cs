@@ -5,12 +5,13 @@ using System.ComponentModel;
 
 namespace ProjApp.ViewModel
 {
-    
+    [QueryProperty(nameof(Username), "Username")]
     public partial class ProfilePageViewModel : ObservableObject
     {
-
-
         public ProfilePageViewModel() { }
+
+        [ObservableProperty]
+        private string username;
 
         [ObservableProperty]
         public string nick;
@@ -32,13 +33,13 @@ namespace ProjApp.ViewModel
                     "Nickname");
 
                     MyUser.SaveLastNickOnFile(newnick);
-                    MyUser.Nick = newnick;
+                    MyUser.BuildMyUser(Username, newnick);
                 }
                 else
                 {
-                    MyUser.Nick = retrievedNick;
+                    MyUser.BuildMyUser(Username, retrievedNick);
                 }
-                Nick = MyUser.Nick; //funzionera INotifyPropertyChanged??? ----> SI
+                Nick = MyUser.user.Nickname; //funzionera INotifyPropertyChanged??? ----> SI
             }
             else Console.WriteLine("///////////////////NON STAI CHIAMANDO QUESTA SETNICK() DAL MAIN THREAD!!!!");
         }

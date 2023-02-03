@@ -12,8 +12,6 @@ namespace ServerS
         {
             await Clients.OthersInGroup(lobbid).SendAsync("PositionReceived", user);
             //await Clients.Group(lobbid).SendAsync("PositionReceived", user);
-
-
         }
         
         public void CreateLobby(string id)
@@ -25,18 +23,18 @@ namespace ServerS
             lobbies.Add(lobby.Id, lobby);
         }
 
-        public async Task IfCheckThenJoin(string lobbyId)
+        public async Task IfCheckThenJoin(string lobbyId, string jsonUser)
         {
             bool lobbyvalid = lobbies.ContainsKey(lobbyId);
             if (lobbyvalid) {
-                await Clients.Caller.SendAsync("JoinLobby", lobbyId);
+                await Clients.Caller.SendAsync("JoinLobby", lobbyId, jsonUser);
             }
             else {
                 await Clients.Caller.SendAsync("InvalidID");   
             }
         }
 
-        public async Task JoinLobby(string lobbyId)
+        public async Task JoinLobby(string lobbyId, string jsonUser)
         {
             // find the lobby with the specified ID
             var lobby = lobbies[lobbyId];
@@ -49,10 +47,21 @@ namespace ServerS
             string mess = $"{clientId} joined {lobbyId}";
             await Clients.Caller.SendAsync("ServerMessage", "SEI TU --->");
             await Clients.All.SendAsync("ServerMessage", mess);
+            //se ci sei solo tu non serve
+            if (lobby.ConnectedClients.Count > 1)
+            {
+                await Clients.OthersInGroup(lobbyId).SendAsync("AddUserFromServer", jsonUser, clientId, true);
+            }
         }
+
+        public async Task SendToLastJoined(string clientId, string jsonToSend)
+        {
+            await Clients.Users(clientId).SendAsync("AddUserFromServer", jsonToSend, clientId, false);
+        }
+
+
         public async Task InviaOggettiDiGioco(string lobbyId, string area , string tana)
         {
-
             await Clients.OthersInGroup(lobbyId).SendAsync("RiceviOggettiDiGioco",
                 arg1: area,
                 arg2: tana);
@@ -69,6 +78,19 @@ namespace ServerS
             lobby.ConnectedClients.Remove(clientId);
 
             await Groups.RemoveFromGroupAsync(clientId, lobbyId);
+        }
+
+        //save controlla
+        public async Task DeleteLobby(string lobbyId)
+        {
+            // find the lobby with the specified ID
+            var lobby = lobbies[lobbyId];
+            // remove the client from the list of connected clients for the lobby
+            foreach (string clientId in lobby.ConnectedClients)
+            {
+                lobby.ConnectedClients.Remove(clientId);
+                await Groups.RemoveFromGroupAsync(clientId, lobbyId);
+            }
         }
 
         public async Task StartGame(string lobbyId)

@@ -24,8 +24,8 @@ namespace ProjApp.ViewModel
         Task NavigateToStartPage() {
             if (succesfullLogin)
             {
-                MyUser.BuildMyUser(Username); //username sarebbe l'ID/mail
                 Application.Current.MainPage = new AppShell();
+                Shell.Current.GoToAsync($"{nameof(ProfilePage)}?username={Username}");
             }
             return Task.CompletedTask;
         }

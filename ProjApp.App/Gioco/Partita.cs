@@ -9,6 +9,7 @@ using NetTopologySuite.Geometries;
 using ProjApp.MapEl;
 using ProjApp.MapEl.GPS;
 using ProjApp.MapEl.Serializable;
+using ProjApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,8 @@ namespace ProjApp.Gioco
         
         private int tap_counter = 0;
         public Tana tana;
+
+        private string meJson;
         
         public IList<User> Players { get ; set; }
         public AreaGiocabile area { get; set; }  
@@ -40,23 +43,25 @@ namespace ProjApp.Gioco
             area = new();
             Players = new List<User>();
             Connessione.con.On("InvalidID", InvalidID);
-            Connessione.con.On<string>("JoinLobby", (lid) => JoinLobby(lid));
+            Connessione.con.On<string,string>("JoinLobby", (lid, jsonUser) => JoinLobby(lid, jsonUser));
+            Connessione.con.On<string,string,bool>("AddUserFromServer", (jsonUser,clientId, hasToSend) => AddUserFromServer(jsonUser, clientId, hasToSend));
+            meJson = MyUser.CreateJsonUser(MyUser.user);
         }
 
-        public void CreateLobby()
+        public void CreateLobby(string jsonUser)
         {
             MyUser.isAdmin = true;
             cod_partita = CreateCode();
 
             Connessione.con.InvokeAsync("CreateLobby", arg1: cod_partita);
-            this.IfCheckThenJoin(Cod_partita);
+            this.IfCheckThenJoin(Cod_partita, jsonUser);
             Console.WriteLine($"Lobby Creata con codice {cod_partita}");
 
         }
 
-        public void JoinLobby(string lid)
+        public void JoinLobby(string lid, string jsonUser)
         {
-            Connessione.con.InvokeAsync("JoinLobby", lid);
+            Connessione.con.InvokeAsync("JoinLobby", lid, jsonUser);
             //joino la lobby con quell'id
             Cod_partita = lid;
             MyUser.AddToCurrPartita(MyUser.user);
@@ -74,6 +79,42 @@ namespace ProjApp.Gioco
             else Task.Run(riceviOggettiDiGioco);
         }
 
+        //SE viene chiamata dall'ultimo client joinato allora TU devi mandargli il tuo user
+        //SENNO' se viene chiamata da altri VERSO l'ultimo joinato NON devi mandare niente
+        //(ti hanno aggiunto prima con questa funzione)
+
+        //hasToSend -> true se vuoi mandare il tuo user DAL CLIENT DA CUI HAI RICEVUTO LA CHIAMATA
+        public void AddUserFromServer(string jsonUser, string clientId, bool hasToSend) 
+        {
+            SerializableUser user = JsonSerializer.Deserialize<SerializableUser>(jsonUser);
+
+            Pin userPin = new Pin(OurMapController.mapView)
+            {
+                Label = user.UserID,
+                Position = new(0,0),
+                Type = PinType.Icon,
+                Icon = user.UserIcon,
+                Scale = 0.4F
+            };
+            OurMapController.mapView.Pins.Add(userPin);
+
+            //creo loggetto user e lo aggiungo alla lista dei players nella partita
+
+            User joineduser = new(user.Nickname, user.UserID, new(0, 0))
+            {
+                UserPin = userPin
+            };
+
+            MyUser.AddToCurrPartita(joineduser);
+
+            //mando il mio user al client appena joinato (clientId) se non sono l'ultimo joinato
+            if (hasToSend)
+            {
+                Connessione.con.InvokeAsync("SendToLastJoined", clientId, meJson);
+            }
+        }
+
+
         [Obsolete]
         public void InvalidID() {
             //se il codice non e' valido notifico l'utente
@@ -83,18 +124,26 @@ namespace ProjApp.Gioco
             );
         }
 
-        public void IfCheckThenJoin(string lid)
+        public void IfCheckThenJoin(string lid, string jsonUser)
         {
             //controllo sul server se la lobby esiste
-            Connessione.con.InvokeAsync("IfCheckThenJoin", lid);
+            Connessione.con.InvokeAsync("IfCheckThenJoin", lid, jsonUser);
         }
 
         public void LeaveLobby()
         {
             Connessione.con.InvokeAsync("LeaveLobby", MyUser.currPartita.Cod_partita);
-            MyUser.isAdmin = false;
-            
         }
+
+
+        //we need implemetation on server
+        public void DeleteLobby()
+        {
+            //Connessione.con.InvokeAsync("DeleteLobby", MyUser.currPartita.Cod_partita);
+            MyUser.isAdmin = false;
+        }
+
+
         public void StartGame()
         {
 

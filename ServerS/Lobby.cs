@@ -19,14 +19,14 @@ namespace ServerS
         {
             lastTime = DateTime.Now;
             Id = id;
-            Task.Run(isExpired);
+            Task.Run(IsExpired);
         }
         //lobbies expiring in 10h
-        private async void isExpired()
+        private async void IsExpired()
         {
             while((DateTime.Now.Ticks - this.lastTime.Ticks) < TicksPerHour * 10)
             {
-                Task.Delay(HtoMs * 5).Wait();
+                await Task.Delay(HtoMs * 5);
             }
             LobbyHub.lobbies.Remove(this.Id);  
         }
