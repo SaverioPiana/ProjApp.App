@@ -1,6 +1,7 @@
 ﻿using ProjApp.MapEl.GPS;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Globalization;
 
 namespace ProjApp.ViewModel
 {
@@ -15,6 +16,8 @@ namespace ProjApp.ViewModel
         bool isCodiceVisible = false;
         [ObservableProperty] 
         bool isAdmin = false;
+        [ObservableProperty]
+        string nick = MyUser.Nick;
 
         [RelayCommand]
         Task NavigateToMainPage() => Shell.Current.GoToAsync(nameof(MainPage));

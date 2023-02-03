@@ -19,7 +19,7 @@
             />
 
         <Label
-            Text="Ciao, USERNAME"
+            Text="{ Binding Nick, StringFormat='Ciao, {0}'}"
             FontAttributes="Bold"
             FontSize="24"
             Margin="10"

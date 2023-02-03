@@ -24,38 +24,13 @@ namespace ProjApp.ViewModel
         Task NavigateToStartPage() {
             if (succesfullLogin)
             {
-                MainThread.BeginInvokeOnMainThread(SetNick);
-                
+                MyUser.BuildMyUser(Username); //username sarebbe l'ID/mail
                 Application.Current.MainPage = new AppShell();
             }
             return Task.CompletedTask;
         }
 
-        public async void SetNick()
-        {
-            if (MainThread.IsMainThread)
-            {
-                string retrievedNick = MyUser.RetrieveNickFromFile(MyUser.NICK_FILENAME);
-                if (retrievedNick.Equals(""))
-                {
-                    string newnick;
-
-                    newnick = await Application.Current.MainPage.DisplayPromptAsync("Come ti chiami?",
-                    "Inserisci il nome che gli altri utenti visualizzeranno", "Conferma", "Annulla",
-                    "Nickname");
-
-                    MyUser.SaveLastNickOnFile(newnick);
-                    MyUser.nick = newnick;
-                }
-                else
-                {
-                    MyUser.nick = retrievedNick;
-                }
-            }
-            else Console.WriteLine("///////////////////NON STAI CHIAMANDO QUESTA SETNICK() DAL MAIN THREAD!!!!");
-            
-            MyUser.BuildMyUser(Username); //username sarebbe l'ID/mail
-        }
+        
 
     };
 }

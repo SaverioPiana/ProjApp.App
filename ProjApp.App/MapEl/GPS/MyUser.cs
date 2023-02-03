@@ -7,10 +7,11 @@ using System.Text.Json;
 using Mapsui.Nts;
 using Mapsui.Extensions;
 using static System.Net.Mime.MediaTypeNames;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ProjApp.MapEl.GPS
 {
-    public class MyUser
+    public class MyUser 
     {
         private static CancellationTokenSource _cancelTokenSource;
         private static bool _isCheckingLocation;
@@ -18,7 +19,8 @@ namespace ProjApp.MapEl.GPS
         public static Partita currPartita = new();
         public static bool isAdmin = false;
         public static string NICK_FILENAME = "playerNick.txt";
-        public static string nick = "";
+        public static string Nick { get; set; }
+        
 
 
         //SignalR Parametri
@@ -30,13 +32,13 @@ namespace ProjApp.MapEl.GPS
         public static void BuildMyUser(string ID)
         {
             Location loc = RetrieveLocFromFile("lastSavedPosition.txt");
-            user = new(nick, ID, loc);
+            user = new(Nick, ID, loc);
         }
 
         public static void ChangeNick(string newnick) 
         { 
-            nick= newnick;
-            MyUser.user.Nickname=nick;
+            Nick = newnick;
+            MyUser.user.Nickname=Nick;
             SaveLastNickOnFile(newnick);
 
         }
