@@ -18,7 +18,7 @@
             
          />
 
-        <StackLayout Orientation="Horizontal" Spacing="165" > 
+        <StackLayout Orientation="Horizontal" Spacing="50" > 
             
             <Label 
                 Text="Profilo"
