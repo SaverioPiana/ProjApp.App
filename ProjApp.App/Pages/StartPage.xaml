@@ -11,7 +11,7 @@
 
         <Rectangle
             Margin="0"
-            Fill="#9051F6"
+            Fill="#5BAFEC"
             WidthRequest="400"
             HeightRequest="25"
             HorizontalOptions="Start"
@@ -44,10 +44,10 @@
             <Button
                 Command="{Binding CreateLobbyCommand}"
                 ImageSource="plus_icon.png"
-                HeightRequest="40"
-                WidthRequest="40"
+                HeightRequest="32"
+                WidthRequest="32"
                 VerticalOptions="End"
-                BackgroundColor="Transparent"
+                BackgroundColor="#5BAFEC"
                 CommandParameter=""
                />
 
@@ -81,7 +81,7 @@
 
         </StackLayout>
 
-        <Border  Padding="5" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Margin="5"  StrokeThickness="2.5"
+        <Border  Padding="5" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="5"  StrokeThickness="2.5"
                >
             <ScrollView>
                 <Grid Padding="4">
@@ -103,13 +103,13 @@
                         Grid.Column="0"
                         Grid.Row="0"
                     />
-                    
-                    <Border Padding="14" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Grid.Column="1" 
+
+                    <Border Padding="14" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Grid.Column="1" 
                             Grid.Row="0" IsVisible="{Binding IsCodiceVisible}" StrokeThickness="2.5">
                         <Button
                             Margin="-5"
                             Text="{Binding Codice}"
-                            TextColor="#9051F6"
+                            TextColor="#5BAFEC"
                             FontSize="17"
                             VerticalOptions="Center"
                             HeightRequest="50"
@@ -147,7 +147,7 @@
         <Button
             Text="Lascia lobby"
             Margin="20"
-            BackgroundColor="MediumVioletRed"
+            BackgroundColor="#5BAFEC"
             HeightRequest="50"
             WidthRequest="180"
             VerticalOptions="End"
@@ -158,7 +158,7 @@
         <Button
             Text="Lascia lobby"
             Margin="20"
-            BackgroundColor="MediumVioletRed"
+            BackgroundColor="#5BAFEC"
             HeightRequest="50"
             WidthRequest="180"
             VerticalOptions="End"
