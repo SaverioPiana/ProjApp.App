@@ -14,8 +14,8 @@
             <RowDefinition Height="25"></RowDefinition>
             <RowDefinition Height=".2*"></RowDefinition>
             <RowDefinition Height=".2*"></RowDefinition>
-            <RowDefinition Height="50"></RowDefinition>
-            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
