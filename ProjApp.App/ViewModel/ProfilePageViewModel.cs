@@ -24,7 +24,7 @@ namespace ProjApp.ViewModel
             if (MainThread.IsMainThread)
             {
                 string retrievedNick = MyUser.RetrieveNickFromFile(MyUser.NICK_FILENAME);
-                if (retrievedNick.Equals(""))
+                if (retrievedNick.Equals("") || retrievedNick == null)
                 {
                     string newnick;
 
@@ -33,16 +33,16 @@ namespace ProjApp.ViewModel
                     "Nickname");
 
                     MyUser.SaveLastNickOnFile(newnick);
-                    MyUser.BuildMyUser(Username, newnick);
+                    Nick = newnick;
                 }
-                else
-                {
-                    MyUser.BuildMyUser(Username, retrievedNick);
-                }
-                Nick = MyUser.user.Nickname; //funzionera INotifyPropertyChanged??? ----> SI
+                else Nick = retrievedNick; //funzionera INotifyPropertyChanged??? ----> SI
             }
             else Console.WriteLine("///////////////////NON STAI CHIAMANDO QUESTA SETNICK() DAL MAIN THREAD!!!!");
         }
 
+        public void BuildUser()
+        {
+            MyUser.BuildMyUser(Username, Nick);
+        }
     }
 }

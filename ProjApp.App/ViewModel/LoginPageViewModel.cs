@@ -14,8 +14,11 @@ namespace ProjApp.ViewModel
 
         public LoginPageViewModel() { }
 
-        [ObservableProperty] public string username;
-        [ObservableProperty] public string password;
+        [ObservableProperty] 
+        public string username;
+        [ObservableProperty] 
+        public string password;
+
         private bool succesfullLogin = true; ////////per ora true semrpe
 
 
@@ -24,13 +27,13 @@ namespace ProjApp.ViewModel
         Task NavigateToStartPage() {
             if (succesfullLogin)
             {
-                Application.Current.MainPage = new AppShell();
-                Shell.Current.GoToAsync($"{nameof(ProfilePage)}?username={Username}");
+                if(Shell.Current == null) 
+                {
+                    Application.Current.MainPage = new AppShell();
+                }
+                Shell.Current.GoToAsync($"//{nameof(ProfilePage)}?username={Username}");
             }
             return Task.CompletedTask;
         }
-
-        
-
     };
 }

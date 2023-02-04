@@ -41,6 +41,7 @@
     />
 
     <ShellContent
+        x:Name="login"
         Title="Login"
         ContentTemplate="{DataTemplate local:LoginPage}"
         Route="LoginPage"
