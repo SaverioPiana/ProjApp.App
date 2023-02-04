@@ -41,15 +41,12 @@
             
         </StackLayout>
 
-        
-
-
         <Border  Padding="5" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Margin="20"
                >
             <StackLayout Orientation="Horizontal" Spacing="15">
 
                 <Label 
-                    Text="{Binding Username, StringFormat='  Nickname:  {0}'}"
+                    Text="{Binding Nick, StringFormat='  Nickname:  {0}'}"
                     FontSize="20"
                     VerticalOptions="Center"
                     HorizontalOptions="Start"  
@@ -58,7 +55,6 @@
             </StackLayout>
             
         </Border>
-
 
         <Label 
             
@@ -71,24 +67,17 @@
             Text="Total Score:&#10;"
             FontSize="20"
             Margin="20"
-            />
-
+        />
 
         <Border  Padding="5" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Margin="20"
                >
             <StackLayout Orientation="Vertical" Spacing="15">
 
-
                 <Label Text="  Giocatori recenti:"
                        FontSize="20"
                        VerticalOptions="Center"
                        HorizontalOptions="Start"/>
-
                 
-                
-
-
-
             </StackLayout>
 
         </Border>

@@ -27,7 +27,9 @@ namespace ProjApp.ViewModel
         [ObservableProperty]
         bool isCodiceVisible = false;
         [ObservableProperty]
-        bool isAdmin = false;
+        bool hasCreated = false;
+        [ObservableProperty]
+        bool canJoin = true;
         [ObservableProperty]
         string nick = MyUser.user.Nickname;
 
@@ -35,7 +37,7 @@ namespace ProjApp.ViewModel
         Task AvviaPartita() => Shell.Current.GoToAsync(nameof(MainPage));
 
         [RelayCommand]
-        Task CopyCode() 
+        Task CopyCode()
         {
             Clipboard.Default.SetTextAsync(Codice);
             return Task.CompletedTask;
@@ -46,7 +48,7 @@ namespace ProjApp.ViewModel
         {
             //faccio inserire il codice all'utente
             MyUser.currPartita.IfCheckThenJoin(entry.Text, jsonUser);
-            if(IsAdmin) IsAdmin = false;
+            HasCreated = false;
         }
 
         [RelayCommand]
@@ -56,16 +58,17 @@ namespace ProjApp.ViewModel
             MyUser.currPartita.CreateLobby(jsonUser);
             Codice = MyUser.currPartita.Cod_partita;
             IsCodiceVisible = true;
-            IsAdmin = true;
-            //sl.IsVisible = false;
+            HasCreated= true;
+            CanJoin = false;
         }
 
         [RelayCommand]
         public void DeleteLobby()
         {
-            if(IsAdmin)
+            if(HasCreated)
             {
                 //
+                CanJoin = true;
             }
         }
     }

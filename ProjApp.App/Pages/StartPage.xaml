@@ -30,7 +30,7 @@
             Margin="10"
             />
 
-        <StackLayout Orientation="Horizontal" Spacing="30">
+        <StackLayout Orientation="Horizontal" Spacing="30" IsVisible="{Binding CanJoin}">
 
 
             <Label 
@@ -53,7 +53,8 @@
 
         </StackLayout>
 
-        <StackLayout x:Name="JoinStackLayout" Orientation="Horizontal" Spacing="7">
+        <StackLayout x:Name="JoinStackLayout" Orientation="Horizontal" Spacing="7" 
+                     IsVisible="{Binding CanJoin}">
 
 
             <Label 
@@ -99,10 +100,10 @@
                         Grid.Column="0"
                     />
 
-                    <Border Padding="10" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Grid.Column="1" Margin="3">
+                    <Border Padding="10" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Grid.Column="1" Margin="3" IsVisible="{Binding IsCodiceVisible}">
                         <Button
                             Text="{Binding Codice}"
-                            FontSize="18"
+                            FontSize="16"
                             VerticalOptions="Start"
                             HeightRequest="40"
                             WidthRequest="100"
@@ -124,7 +125,7 @@
             WidthRequest="180"
             VerticalOptions="End"
             Command="{Binding AvviaPartitaCommand}"
-            IsVisible="{Binding IsAdmin}"
+            IsVisible="{Binding HasCreated}"
          />
 
     </StackLayout>

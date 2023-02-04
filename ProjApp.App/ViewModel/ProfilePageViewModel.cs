@@ -1,14 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using ProjApp.MapEl.GPS;
 using System.ComponentModel;
 
 namespace ProjApp.ViewModel
 {
-    [QueryProperty(nameof(Username), "username")]
     public partial class ProfilePageViewModel : ObservableObject
     {
-        public ProfilePageViewModel() { }
+        public ProfilePageViewModel() 
+        {
+            MainThread.BeginInvokeOnMainThread(SetNick);
+            BuildUser();
+        }
 
         [ObservableProperty]
         private string username;
@@ -40,9 +45,21 @@ namespace ProjApp.ViewModel
             else Console.WriteLine("///////////////////NON STAI CHIAMANDO QUESTA SETNICK() DAL MAIN THREAD!!!!");
         }
 
+
+        public class BuildUserMessage : ValueChangedMessage<string>
+        {
+            public BuildUserMessage(string value) : base(value)
+            {
+            }
+        }
+
         public void BuildUser()
         {
-            MyUser.BuildMyUser(Username, Nick);
+            WeakReferenceMessenger.Default.Register<BuildUserMessage>(this, (r, m) => 
+            {
+                Username = m.Value;
+                MyUser.BuildMyUser(Username, Nick);
+            });
         }
     }
 }
