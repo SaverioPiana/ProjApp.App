@@ -6,6 +6,8 @@ using Microsoft.Maui.Controls;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using ProjApp.Gioco;
+using CommunityToolkit.Mvvm.Messaging.Messages;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace ProjApp.ViewModel
 {
@@ -19,24 +21,38 @@ namespace ProjApp.ViewModel
 
         public StartPageViewModel()
         {
-            while (!MyUser.isUserBuilt)
+            while (!MyUser.IsUserBuilt)
             {
                 Task.Delay(50).Wait();
             }
+
+            //quando l'utente joina riceveremo un messaggio e aggiorneremo il codice lobby
+            WeakReferenceMessenger.Default.Register<UserHasJoinedAlert>(this,
+                (r,m) => PutCurrentLobbyCodeWhenUserJoins(m.Value));
+            ///////////////////////////
+            
             Nick = MyUser.user.Nickname;
             jsonUser = MyUser.CreateJsonUser(MyUser.user);
         }
 
         [ObservableProperty]
+        string nick;
+        [ObservableProperty]
         string codice;
         [ObservableProperty]
+        bool hasCopied = false;
+        [ObservableProperty]
         bool isCodiceVisible = false;
-        [ObservableProperty]
+        [ObservableProperty, NotifyPropertyChangedFor(nameof(HasJoined))]
         bool hasCreated = false;
-        [ObservableProperty]
+        [ObservableProperty, NotifyPropertyChangedFor(nameof(HasJoined))]
         bool canJoin = true;
-        [ObservableProperty]
-        string nick;
+        
+                                             
+        public bool HasJoined => (!HasCreated && !CanJoin) ;
+           
+
+
 
         ////////////////////////  CREATING  ////////////////////////////////// 
         
@@ -52,18 +68,6 @@ namespace ProjApp.ViewModel
         }
 
         [RelayCommand]
-        public void DeleteLobby()
-        {
-            if(HasCreated)
-            {
-                MyUser.currPartita.DeleteLobby();
-                HasCreated= false;
-                CanJoin = true;
-                IsCodiceVisible = false;
-            }
-        }
-
-        [RelayCommand]
         public void AvviaPartita()
         {
             if (HasCreated)
@@ -72,6 +76,20 @@ namespace ProjApp.ViewModel
             }
             else Application.Current.MainPage.DisplayAlert("Are u an hacker?",
                 "non puoi avviare una partita se non sei l'admin, come hai clickato sto pulsante???",
+                "Non lo so sorry");
+        }
+
+        [RelayCommand]
+        public void DeleteLobby()
+        {
+            if(HasCreated)
+            {
+                MyUser.currPartita.DeleteLobby();
+                HasCreated= false;
+                CanJoin = true;
+                IsCodiceVisible = false;
+            } else Application.Current.MainPage.DisplayAlert("Are u an hacker?",
+                "non puoi chiudere una partita se non sei l'admin, come hai clickato sto pulsante???",
                 "Non lo so sorry");
         }
 
@@ -85,6 +103,7 @@ namespace ProjApp.ViewModel
         {
             //faccio inserire il codice all'utente
             MyUser.currPartita.IfCheckThenJoin(entry.Text, jsonUser);
+            IsCodiceVisible= true;
             HasCreated = false;
             CanJoin= false;
         }
@@ -93,12 +112,46 @@ namespace ProjApp.ViewModel
         public Task CopyCode()
         {
             Clipboard.Default.SetTextAsync(Codice);
-            
+            HasCopied= true;
+            Task.Run(async() =>
+            {
+                await Task.Delay(3000);
+                HasCopied = false;
+            });
             return Task.CompletedTask;
         }
 
+        [RelayCommand]
+        public void LeaveLobby()
+        {
+            if(HasJoined)
+            {
+                MyUser.currPartita.LeaveLobby();
+                CanJoin = true;
+                IsCodiceVisible = false;
+            } 
+            else Application.Current.MainPage.DisplayAlert("Are u an hacker?",
+                "non puoi lasciare una lobby se non sei in una lobby, come hai clickato sto pulsante???",
+                "Non lo so sorry");
+        }
 
         ////////////////////////////////////////////////////////////////////////
 
+
+
+        ////////////////////////////////////////////////////////////////////////
+        //to know when the user joins a lobby
+        public class UserHasJoinedAlert : ValueChangedMessage<string>
+        {
+            public UserHasJoinedAlert(string value) : base(value)
+            {
+            }
+        }
+
+        public void PutCurrentLobbyCodeWhenUserJoins(string code)
+        {
+            Codice = code;
+        }
+        ////////////////////////////////////////////////////////////////////////
     }
 }

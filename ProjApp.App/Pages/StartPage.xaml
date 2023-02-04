@@ -81,11 +81,13 @@
 
         </StackLayout>
 
-        <Border  Padding="5" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Margin="5"
+        <Border  Padding="5" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Margin="5"  StrokeThickness="2.5"
                >
             <ScrollView>
-                <Grid>
+                <Grid Padding="4">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="15"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -93,25 +95,37 @@
                         <ColumnDefinition Width="0.35*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Text="  Informazioni Lobby: "
+                    <Label 
+                        Text="Informazioni Lobby: "
                         FontSize="22"
                         HorizontalOptions="Center"
                         VerticalOptions="Center"
                         Grid.Column="0"
+                        Grid.Row="0"
                     />
-
-                    <Border Padding="10" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Grid.Column="1" Margin="3" IsVisible="{Binding IsCodiceVisible}">
+                    
+                    <Border Padding="14" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Grid.Column="1" 
+                            Grid.Row="0" IsVisible="{Binding IsCodiceVisible}" StrokeThickness="2.5">
                         <Button
+                            Margin="-5"
                             Text="{Binding Codice}"
-                            TextColor="#9051F6"
-                            FontSize="16"
-                            VerticalOptions="Start"
-                            HeightRequest="40"
+                            FontSize="17"
+                            VerticalOptions="Center"
+                            HeightRequest="50"
                             WidthRequest="100"
                             Command="{Binding CopyCodeCommand}"
                             BackgroundColor="Transparent"
-                         />
+                            />
                     </Border>
+
+                    <Label 
+                        Grid.Row="1" Grid.Column="1" 
+                        Text="Copiato!"
+                        FontSize="12"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        IsVisible="{Binding HasCopied}"
+                    />
 
                 </Grid>
 
@@ -139,6 +153,18 @@
             Command="{Binding DeleteLobbyCommand}"
             IsVisible="{Binding HasCreated}"
          />
+
+        <Button
+            Text="Lascia lobby"
+            Margin="20"
+            BackgroundColor="MediumVioletRed"
+            HeightRequest="50"
+            WidthRequest="180"
+            VerticalOptions="End"
+            Command="{Binding LeaveLobbyCommand}"
+            IsVisible="{Binding HasJoined}"
+         />
+
 
     </StackLayout>
     

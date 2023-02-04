@@ -1,4 +1,6 @@
-﻿using Mapsui;
+﻿using Android.Speech.Tts;
+using CommunityToolkit.Mvvm.Messaging;
+using Mapsui;
 using Mapsui.Extensions;
 using Mapsui.Projections;
 using Mapsui.UI;
@@ -21,6 +23,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using static ProjApp.ViewModel.StartPageViewModel;
 using Position = Mapsui.UI.Maui.Position;
 
 namespace ProjApp.Gioco
@@ -69,6 +72,8 @@ namespace ProjApp.Gioco
             Task.Run(IsGameStarted);
             Task.Run(MyUser.inviaPosSignalR);
 
+            WeakReferenceMessenger.Default.Send<UserHasJoinedAlert>(new(MyUser.currPartita.Cod_partita));
+
             //se sei l'admin crei l'area
             if (MyUser.isAdmin)
             {
@@ -77,8 +82,12 @@ namespace ProjApp.Gioco
                 GameLogic.UsersOutside += onUserOutside;
             }
             //senno' ricevi gli oggetti di gioco
-            else Task.Run(riceviOggettiDiGioco);
+            else
+            {
+                Task.Run(riceviOggettiDiGioco);
+            }
         }
+
 
         //SE viene chiamata dall'ultimo client joinato allora TU devi mandargli il tuo user
         //SENNO' se viene chiamata da altri VERSO l'ultimo joinato NON devi mandare niente
