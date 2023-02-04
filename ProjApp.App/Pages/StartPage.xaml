@@ -92,7 +92,7 @@
                         <ColumnDefinition Width="0.65*"/>
                         <ColumnDefinition Width="0.35*"/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <Label Text="  Informazioni Lobby: "
                         FontSize="22"
                         HorizontalOptions="Center"
@@ -111,7 +111,7 @@
                             BackgroundColor="Transparent"
                          />
                     </Border>
-                    
+
                 </Grid>
 
             </ScrollView>

@@ -88,7 +88,7 @@ namespace ProjApp.Gioco
         {
             SerializableUser user = JsonSerializer.Deserialize<SerializableUser>(jsonUser);
 
-            Pin userPin = new Pin(OurMapController.mapView)
+            Pin userPin = new Pin()
             {
                 Label = user.UserID,
                 Position = new(0,0),
@@ -96,7 +96,7 @@ namespace ProjApp.Gioco
                 Icon = user.UserIcon,
                 Scale = 0.4F
             };
-            OurMapController.mapView.Pins.Add(userPin);
+            OurMapController.preMatchPins.Add(userPin);
 
             //creo loggetto user e lo aggiungo alla lista dei players nella partita
 

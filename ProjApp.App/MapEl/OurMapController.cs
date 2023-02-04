@@ -33,6 +33,7 @@ namespace ProjApp.MapEl
     public class OurMapController : MapControl
     {
         public static MapView mapView = new();
+        public static IList<Pin> preMatchPins = new List<Pin>();
 
         const double STARTING_RES = 2;
         private bool update_once = true;   //carina l'idea ma non penso la useremo,
@@ -95,6 +96,11 @@ namespace ProjApp.MapEl
             mapView.Map.Home = n => n.NavigateTo(center:
                                       SphericalMercator.FromLonLat(initpos),
                                       STARTING_RES);
+            mapView.Pins.Clear();
+            foreach (Pin preMatchPin in preMatchPins) 
+            {
+                mapView.Pins.Add(preMatchPin);
+            }
 
             Task.Run(() => RestInitializer());
         }
@@ -138,7 +144,7 @@ namespace ProjApp.MapEl
                             alreadyIn.IsCercatore = user.IsCercatore;
                         }
                     }
-                    //altrimenti ne creo uno nuovo (di pin)
+                    //altrimenti ne creo uno nuovo(di pin)
                     //if (!trovato)
                     //{
                     //    Pin userPin = new Pin(mapView)

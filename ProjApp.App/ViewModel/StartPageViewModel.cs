@@ -19,7 +19,7 @@ namespace ProjApp.ViewModel
 
         public StartPageViewModel() 
         { 
-            Task.Delay(100).Wait();
+            Task.Delay(200).Wait();
             jsonUser = MyUser.CreateJsonUser(MyUser.user);
             Nick = MyUser.user.Nickname;
         }
@@ -34,7 +34,7 @@ namespace ProjApp.ViewModel
         bool canJoin = true;
         [ObservableProperty]
         string nick;
-
+       
         [RelayCommand]
         Task AvviaPartita() => Shell.Current.GoToAsync(nameof(MainPage));
 
@@ -72,6 +72,7 @@ namespace ProjApp.ViewModel
                 //
                 HasCreated= false;
                 CanJoin = true;
+                IsCodiceVisible = false;
             }
         }
     }
