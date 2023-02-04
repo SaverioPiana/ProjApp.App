@@ -103,6 +103,7 @@
                     <Border Padding="10" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Grid.Column="1" Margin="3" IsVisible="{Binding IsCodiceVisible}">
                         <Button
                             Text="{Binding Codice}"
+                            TextColor="#9051F6"
                             FontSize="16"
                             VerticalOptions="Start"
                             HeightRequest="40"

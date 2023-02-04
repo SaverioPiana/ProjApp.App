@@ -7,82 +7,87 @@
              Shell.TabBarIsVisible="False"
              
              Title="LoginPage">
-    
-    <VerticalStackLayout>
+
+    <Grid RowSpacing="10">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height=".3*"></RowDefinition>
+            <RowDefinition Height="80"></RowDefinition>
+            <RowDefinition Height=".2*"></RowDefinition>
+            <RowDefinition Height=".1*"></RowDefinition>
+            <RowDefinition Height=".1*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
 
         <Rectangle
+            Grid.Row="0"
             Margin="0"
-            Fill="#5BAFEC"
+            Fill="#ECD15B"
             WidthRequest="400"
             HeightRequest="25"
-            HorizontalOptions="Start"
-            
-            />
+        />
 
 
         <Label 
-            Text="&#10;Benvenuto!"
+            Grid.Row="1"
+            Text="Benvenuto!"
             FontSize="45"
-            FontAttributes="Bold"
-            VerticalOptions="Center" 
+            FontAttributes="Bold" 
             HorizontalOptions="Center"
-            Margin="20"
-            Padding="20"/>
+            VerticalOptions="Center"
+        />
 
         <Image
+            Grid.Row="2"
             Source="profile_icon_azz.png"
             HorizontalOptions="Center"
             WidthRequest="80"
             HeightRequest="80"
-            
             Margin="0"
-            
-            
-            />
+        />
 
         <Label 
+            Grid.Row="3"
             Text="Accedi per continuare:"
             FontSize="25"
             VerticalOptions="Center" 
             HorizontalOptions="Center"
-            Margin="20 "
-            />
+        />
 
         <Entry
+            Grid.Row="4"
             Text="{Binding Username}"
             x:Name="Username"
             Placeholder="Username                                             "
-            TextColor="#5BAFEC"
+            TextColor="#ECD15B"
             FontAttributes="Bold"
-            Margin="20"
             HorizontalOptions="Center"
-            
-             />
+        />
         
         <Entry 
+            Grid.Row="5"
             Text="{Binding Password}"
             x:Name="Password"
             Placeholder="Password                                             "
-            TextColor="#5BAFEC"
+            TextColor="#ECD15B"
             FontAttributes="Bold"
-            Margin="10"
             HorizontalOptions="Center"
             IsPassword="True"
         />
 
         <Button
+            Grid.Row="6"
             Text="SIGN IN"
             Command="{Binding NavigateToStartPageCommand}"
-            BackgroundColor="#5BAFEC"
+            BackgroundColor="#ECD15B"
             Margin="15"
             HeightRequest="50"
             WidthRequest="200"
-            VerticalOptions="End"/>
-            
-           
-
-
-    </VerticalStackLayout>
+            VerticalOptions="Start"
+        />
+        
+    </Grid>
     
     
 </ContentPage>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             
              x:Class="ProjApp.SettingsPage"
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:SettingsPageViewModel"
@@ -10,77 +9,91 @@
              >
 
 
-    <StackLayout Orientation="Vertical"  Spacing="25">
+    <Grid RowSpacing="20">
+        
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
 
         <Rectangle
-            Margin="0"
-            Fill="#9051F6"
+            Grid.Row="0"
+            Fill="#ECD15B"
             WidthRequest="400"
             HeightRequest="25"
             HorizontalOptions="Start"
             
-            />
-
-
-        <StackLayout Orientation="Horizontal" Spacing="24">
-
-
+        />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".25*"></ColumnDefinition>
+                <ColumnDefinition Width=".75*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
             <Button
+                x:Name="BackButton"
+                Grid.Column="0"
                 Command="{Binding NavigateToProfilePageCommand}"
-                BackgroundColor="#9051F6"
+                BackgroundColor="#ECD15B"
                 ImageSource="back_arrow_icon.png"
-                Margin="15"
                 CornerRadius="12"
-                HeightRequest="35"
-                WidthRequest="35"
+                HeightRequest="40"
+                WidthRequest="40"
                 VerticalOptions="Start"
-             />
+            
+            />
 
             <Label 
-                Text="Impostazioni&#10;"
+                Grid.Column="1"
+                Text=" Impostazioni"
                 FontSize="36"
-                Margin="20"
-                HorizontalOptions="Center"
-                VerticalOptions="End"
+                VerticalOptions="Start"
+            
+            />
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Label 
+                Grid.Column="0"
+                Text="Tema"
+                FontSize="20"
+                
+                HorizontalOptions="Start"
+                VerticalOptions="Center"
+            
+            />
+            
+            <Switch
+                Grid.Column="1"
+                IsToggled="False"
+                OnColor="#5BAFEC"
+                ThumbColor="#ECD15B"
+                VerticalOptions="Center"
                 
             />
+        </Grid>
 
-
-
-        </StackLayout>
-
-
-
-        <StackLayout Orientation="Horizontal" Spacing="250" HorizontalOptions="Center">
-
-
-            <Label Text=" Tema "
-                       FontSize="20"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Start"
-             />
-
-
-            <Switch
-                IsToggled="False"
-                VerticalOptions="End"
-                OnColor="#5BAFEC"
-                ThumbColor="#9051F6"
-             />
-
-        </StackLayout>
 
         <Button
+            Grid.Row="3"
             Text="Disconnetti"
             Command="{Binding NavigateToLoginPageCommand}"
-            Margin="15"
+            HorizontalOptions="Center"
+            VerticalOptions="End"
             HeightRequest="50"
             WidthRequest="200"
-            BackgroundColor="#9051F6"
-            VerticalOptions="End"
-            HorizontalOptions="Center"
+            Margin=" 30"
+            BackgroundColor="#ECD15B"
             />
 
-    </StackLayout>
+    </Grid>
     
 </ContentPage>
