@@ -19,9 +19,12 @@ namespace ProjApp.ViewModel
 
         public StartPageViewModel() 
         { 
-            Task.Delay(200).Wait();
-            jsonUser = MyUser.CreateJsonUser(MyUser.user);
+            while(!MyUser.isUserBuilt)
+            {
+                Task.Delay(50).Wait();
+            }
             Nick = MyUser.user.Nickname;
+            jsonUser = MyUser.CreateJsonUser(MyUser.user);
         }
 
         [ObservableProperty]

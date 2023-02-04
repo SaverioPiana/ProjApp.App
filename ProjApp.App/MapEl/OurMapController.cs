@@ -144,6 +144,8 @@ namespace ProjApp.MapEl
                             alreadyIn.IsCercatore = user.IsCercatore;
                         }
                     }
+                    //non serve piu aggiungere perche in toeria non puo entrare gente nuova se la partita è in corso
+
                     //altrimenti ne creo uno nuovo(di pin)
                     //if (!trovato)
                     //{

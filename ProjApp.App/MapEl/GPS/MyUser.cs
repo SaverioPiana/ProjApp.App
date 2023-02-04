@@ -11,7 +11,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ProjApp.MapEl.GPS
 {
-    public class MyUser 
+    public static class MyUser 
     {
         private static CancellationTokenSource _cancelTokenSource;
         private static bool _isCheckingLocation;
@@ -19,6 +19,7 @@ namespace ProjApp.MapEl.GPS
         public static Partita currPartita;
         public static bool isAdmin = false;
         public static string NICK_FILENAME = "playerNick.txt";
+        public static bool isUserBuilt = false;
         
         //SignalR Parametri
         public readonly static int SEND_POS_DELAY = 3000;
@@ -30,6 +31,9 @@ namespace ProjApp.MapEl.GPS
             Location loc = RetrieveLocFromFile("lastSavedPosition.txt");
             user = new(nick, ID, loc);
             currPartita = new();
+            //serve senno alcune componenti nel codice provano ad
+            //accedere allo user prima che sia stato creato
+            isUserBuilt = true;
         }
 
         public static void ChangeNick(string newnick) 
@@ -78,7 +82,7 @@ namespace ProjApp.MapEl.GPS
                 }
             
         }
-        public void CancelRequest()
+        private static void CancelRequest()
         {
             if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
                 _cancelTokenSource.Cancel();
