@@ -109,7 +109,7 @@ namespace ProjApp.ViewModel
         }
 
         [RelayCommand]
-        public Task CopyCode()
+        public void CopyCode()
         {
             Clipboard.Default.SetTextAsync(Codice);
             HasCopied= true;
@@ -118,7 +118,6 @@ namespace ProjApp.ViewModel
                 await Task.Delay(3000);
                 HasCopied = false;
             });
-            return Task.CompletedTask;
         }
 
         [RelayCommand]
