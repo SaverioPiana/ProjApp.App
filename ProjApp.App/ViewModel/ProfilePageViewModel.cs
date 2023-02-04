@@ -21,6 +21,8 @@ namespace ProjApp.ViewModel
         [ObservableProperty]
         public string nick;
 
+        private bool firstTime = true;
+
         [RelayCommand]
         Task NavigateToSettingsPage() => Shell.Current.GoToAsync(nameof(SettingsPage));
 
@@ -58,7 +60,12 @@ namespace ProjApp.ViewModel
             WeakReferenceMessenger.Default.Register<BuildUserMessage>(this, (r, m) => 
             {
                 Username = m.Value;
-                MyUser.BuildMyUser(Username, Nick);
+                if (firstTime)
+                {
+                    MyUser.BuildMyUser(Username, Nick);
+                    firstTime = false;
+                }
+                else MyUser.ChangeID(Username);
             });
         }
     }

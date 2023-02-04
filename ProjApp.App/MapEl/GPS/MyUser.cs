@@ -42,6 +42,11 @@ namespace ProjApp.MapEl.GPS
             SaveLastNickOnFile(newnick);
         }
 
+        public static void ChangeID(string newID)
+        {
+            user.UserID = newID;
+        }
+
         public static void AddToCurrPartita(User u)
         {
             currPartita.Players.Add(u);
