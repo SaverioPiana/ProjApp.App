@@ -96,6 +96,7 @@ namespace ProjApp.Gioco
                 Icon = user.UserIcon,
                 Scale = 0.4F
             };
+            //AGGIUNGO IL PIN AI PIN PREPARTITA (verranno caricati quando crei la mapview)
             OurMapController.preMatchPins.Add(userPin);
 
             //creo loggetto user e lo aggiungo alla lista dei players nella partita

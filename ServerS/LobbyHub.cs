@@ -56,7 +56,7 @@ namespace ServerS
 
         public async Task SendToLastJoined(string clientId, string jsonToSend)
         {
-            await Clients.Users(clientId).SendAsync("AddUserFromServer", jsonToSend, clientId, false);
+            await Clients.Client(clientId).SendAsync("AddUserFromServer", jsonToSend, clientId, false);
         }
 
 
