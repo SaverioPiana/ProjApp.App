@@ -49,7 +49,7 @@
             <StackLayout Orientation="Horizontal" Spacing="15">
 
                 <Label 
-                    Text="{Binding Nick, StringFormat='  Nickname:  {0}'}"
+                    Text="{Binding Username, StringFormat='  Nickname:  {0}'}"
                     FontSize="20"
                     VerticalOptions="Center"
                     HorizontalOptions="Start"  

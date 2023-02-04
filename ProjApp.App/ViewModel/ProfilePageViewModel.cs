@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace ProjApp.ViewModel
 {
-    [QueryProperty(nameof(Username), "Username")]
+    [QueryProperty(nameof(Username), "username")]
     public partial class ProfilePageViewModel : ObservableObject
     {
         public ProfilePageViewModel() { }
