@@ -19,7 +19,7 @@ namespace ProjApp.MapEl.GPS
         public static Partita currPartita;
         public static bool isAdmin = false;
         public static string NICK_FILENAME = "playerNick.txt";
-        public static bool isUserBuilt = false;
+        public static bool IsUserBuilt = false;
         
         //SignalR Parametri
         public readonly static int SEND_POS_DELAY = 3000;
@@ -33,7 +33,7 @@ namespace ProjApp.MapEl.GPS
             currPartita = new();
             //serve senno alcune componenti nel codice provano ad
             //accedere allo user prima che sia stato creato
-            isUserBuilt = true;
+            IsUserBuilt = true;
         }
 
         public static void ChangeNick(string newnick) 
