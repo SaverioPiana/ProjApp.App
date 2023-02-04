@@ -28,7 +28,7 @@ namespace ProjApp.ViewModel
 
             //quando l'utente joina riceveremo un messaggio e aggiorneremo il codice lobby
             WeakReferenceMessenger.Default.Register<UserHasJoinedAlert>(this,
-                (r,m) => PutCurrentLobbyCodeWhenUserJoins(m.Value));
+                (r,m) => DisplayCorrectUIWhenJoining(m.Value));
             ///////////////////////////
             
             Nick = MyUser.user.Nickname;
@@ -103,9 +103,6 @@ namespace ProjApp.ViewModel
         {
             //faccio inserire il codice all'utente
             MyUser.currPartita.IfCheckThenJoin(entry.Text, jsonUser);
-            IsCodiceVisible= true;
-            HasCreated = false;
-            CanJoin= false;
         }
 
         [RelayCommand]
@@ -147,9 +144,12 @@ namespace ProjApp.ViewModel
             }
         }
 
-        public void PutCurrentLobbyCodeWhenUserJoins(string code)
+        public void DisplayCorrectUIWhenJoining(string code)
         {
             Codice = code;
+            IsCodiceVisible = true;
+            HasCreated = false;
+            CanJoin = false;
         }
         ////////////////////////////////////////////////////////////////////////
     }

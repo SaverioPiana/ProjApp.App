@@ -126,8 +126,6 @@ namespace ProjApp.Gioco
             }
         }
 
-
-        
         public void InvalidID() {
             //se il codice non e' valido notifico l'utente
             MainThread.BeginInvokeOnMainThread(()=>
