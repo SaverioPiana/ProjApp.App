@@ -21,7 +21,7 @@
 
         <Rectangle
             Grid.Row="0"
-            Fill="#ECD15B"
+            Fill="#5BAFEC"
             WidthRequest="400"
             HeightRequest="25"
             HorizontalOptions="Start"
@@ -37,7 +37,7 @@
                 x:Name="BackButton"
                 Grid.Column="0"
                 Command="{Binding NavigateToProfilePageCommand}"
-                BackgroundColor="#ECD15B"
+                BackgroundColor="#5BAFEC"
                 ImageSource="back_arrow_icon.png"
                 CornerRadius="12"
                 HeightRequest="40"
@@ -75,7 +75,7 @@
                 Grid.Column="1"
                 IsToggled="False"
                 OnColor="#5BAFEC"
-                ThumbColor="#ECD15B"
+                ThumbColor="#5BAFEC"
                 VerticalOptions="Center"
                 
             />
@@ -91,7 +91,7 @@
             HeightRequest="50"
             WidthRequest="200"
             Margin=" 30"
-            BackgroundColor="#ECD15B"
+            BackgroundColor="#5BAFEC"
             />
 
     </Grid>
