@@ -89,8 +89,8 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition Width="0.65*"/>
+                        <ColumnDefinition Width="0.35*"/>
                     </Grid.ColumnDefinitions>
                     
                     <Label Text="  Informazioni Lobby: "
@@ -125,6 +125,17 @@
             WidthRequest="180"
             VerticalOptions="End"
             Command="{Binding AvviaPartitaCommand}"
+            IsVisible="{Binding HasCreated}"
+         />
+
+        <Button
+            Text="Lascia lobby"
+            Margin="20"
+            BackgroundColor="MediumVioletRed"
+            HeightRequest="50"
+            WidthRequest="180"
+            VerticalOptions="End"
+            Command="{Binding DeleteLobbyCommand}"
             IsVisible="{Binding HasCreated}"
          />
 

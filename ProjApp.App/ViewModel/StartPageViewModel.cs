@@ -19,7 +19,9 @@ namespace ProjApp.ViewModel
 
         public StartPageViewModel() 
         { 
+            Task.Delay(100).Wait();
             jsonUser = MyUser.CreateJsonUser(MyUser.user);
+            Nick = MyUser.user.Nickname;
         }
 
         [ObservableProperty]
@@ -31,7 +33,7 @@ namespace ProjApp.ViewModel
         [ObservableProperty]
         bool canJoin = true;
         [ObservableProperty]
-        string nick = MyUser.user.Nickname;
+        string nick;
 
         [RelayCommand]
         Task AvviaPartita() => Shell.Current.GoToAsync(nameof(MainPage));
@@ -68,6 +70,7 @@ namespace ProjApp.ViewModel
             if(HasCreated)
             {
                 //
+                HasCreated= false;
                 CanJoin = true;
             }
         }
