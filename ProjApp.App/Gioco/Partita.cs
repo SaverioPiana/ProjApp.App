@@ -115,10 +115,10 @@ namespace ProjApp.Gioco
         }
 
 
-        [Obsolete]
+        
         public void InvalidID() {
             //se il codice non e' valido notifico l'utente
-            Device.BeginInvokeOnMainThread(()=>
+            MainThread.BeginInvokeOnMainThread(()=>
             Application.Current.MainPage.DisplayAlert("Ops...", 
                 "Pare proprio non esista una partita con quell'ID", "OK")
             );
