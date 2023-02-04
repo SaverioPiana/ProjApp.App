@@ -169,12 +169,12 @@ namespace ProjApp.Gioco
                 {
                     Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
                     MyUser.user.IsCercatore = true;
-                    Shell.Current.GoToAsync(nameof(MainPage));
+                    Shell.Current.GoToAsync($"//{nameof(MainPage)}");
                 }
                 else
                 {
                     Console.WriteLine("GameStarted message from server, non sei il cacciatore");
-                    Shell.Current.GoToAsync(nameof(MainPage));
+                    Shell.Current.GoToAsync($"//{nameof(MainPage)}");
                 }
             });
         }
