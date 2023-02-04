@@ -17,9 +17,9 @@ namespace ProjApp.ViewModel
         //aggiorni i dati di posizione dei pin (gia lo fa)
         private string jsonUser;
 
-        public StartPageViewModel() 
-        { 
-            while(!MyUser.isUserBuilt)
+        public StartPageViewModel()
+        {
+            while (!MyUser.isUserBuilt)
             {
                 Task.Delay(50).Wait();
             }
@@ -37,25 +37,9 @@ namespace ProjApp.ViewModel
         bool canJoin = true;
         [ObservableProperty]
         string nick;
-       
-        [RelayCommand]
-        Task AvviaPartita() => Shell.Current.GoToAsync(nameof(MainPage));
 
-        [RelayCommand]
-        Task CopyCode()
-        {
-            Clipboard.Default.SetTextAsync(Codice);
-            return Task.CompletedTask;
-        }
+        ////////////////////////  CREATING  ////////////////////////////////// 
         
-        [RelayCommand]
-        public void JoinLobby(Entry entry)
-        {
-            //faccio inserire il codice all'utente
-            MyUser.currPartita.IfCheckThenJoin(entry.Text, jsonUser);
-            HasCreated = false;
-        }
-
         [RelayCommand]
         public void CreateLobby()
         {
@@ -72,11 +56,49 @@ namespace ProjApp.ViewModel
         {
             if(HasCreated)
             {
-                //
+                MyUser.currPartita.DeleteLobby();
                 HasCreated= false;
                 CanJoin = true;
                 IsCodiceVisible = false;
             }
         }
+
+        [RelayCommand]
+        public void AvviaPartita()
+        {
+            if (HasCreated)
+            {
+                MyUser.currPartita.StartGame();
+            }
+            else Application.Current.MainPage.DisplayAlert("Are u an hacker?",
+                "non puoi avviare una partita se non sei l'admin, come hai clickato sto pulsante???",
+                "Non lo so sorry");
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+
+
+        ////////////////////////  JOINING  ////////////////////////////////// 
+
+        [RelayCommand]
+        public void JoinLobby(Entry entry)
+        {
+            //faccio inserire il codice all'utente
+            MyUser.currPartita.IfCheckThenJoin(entry.Text, jsonUser);
+            HasCreated = false;
+            CanJoin= false;
+        }
+
+        [RelayCommand]
+        public Task CopyCode()
+        {
+            Clipboard.Default.SetTextAsync(Codice);
+            
+            return Task.CompletedTask;
+        }
+
+
+        ////////////////////////////////////////////////////////////////////////
+
     }
 }

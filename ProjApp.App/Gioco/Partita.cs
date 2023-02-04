@@ -12,6 +12,7 @@ using ProjApp.MapEl.Serializable;
 using ProjApp.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
@@ -65,7 +66,7 @@ namespace ProjApp.Gioco
             //joino la lobby con quell'id
             Cod_partita = lid;
             MyUser.AddToCurrPartita(MyUser.user);
-            Task.Run(isGameStarted);
+            Task.Run(IsGameStarted);
             Task.Run(MyUser.inviaPosSignalR);
 
             //se sei l'admin crei l'area
@@ -137,23 +138,21 @@ namespace ProjApp.Gioco
             Connessione.con.InvokeAsync("LeaveLobby", MyUser.currPartita.Cod_partita);
         }
 
-
-        //we need implemetation on server
         public void DeleteLobby()
         {
-            //Connessione.con.InvokeAsync("DeleteLobby", MyUser.currPartita.Cod_partita);
+            Connessione.con.InvokeAsync("DeleteLobby", MyUser.currPartita.Cod_partita);
             MyUser.isAdmin = false;
         }
 
-
         public void StartGame()
         {
-
-            Connessione.con.InvokeAsync("StartGame", arg1: cod_partita);
-            
+            if(MyUser.isAdmin) 
+            {
+                Connessione.con.InvokeAsync("StartGame", arg1: cod_partita);
+            } else { Debug.WriteLine("????????????????????? //CANNOT START GAME IF NOT ADMIN// ????????????????????????"); }
         }
 
-        private void isGameStarted()
+        private void IsGameStarted()
         {
             Connessione.con.On<bool>("GameStarted", (isCacciatore) =>
             {
@@ -161,10 +160,12 @@ namespace ProjApp.Gioco
                 {
                     Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
                     MyUser.user.IsCercatore = true;
+                    Shell.Current.GoToAsync(nameof(MainPage));
                 }
                 else
                 {
                     Console.WriteLine("GameStarted message from server, non sei il cacciatore");
+                    Shell.Current.GoToAsync(nameof(MainPage));
                 }
             });
         }

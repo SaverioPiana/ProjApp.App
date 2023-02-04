@@ -80,17 +80,18 @@ namespace ServerS
             await Groups.RemoveFromGroupAsync(clientId, lobbyId);
         }
 
-        //save controlla
         public async Task DeleteLobby(string lobbyId)
         {
             // find the lobby with the specified ID
             var lobby = lobbies[lobbyId];
-            // remove the client from the list of connected clients for the lobby
+            // remove all clients from the list of connected clients for the lobby
             foreach (string clientId in lobby.ConnectedClients)
             {
                 lobby.ConnectedClients.Remove(clientId);
                 await Groups.RemoveFromGroupAsync(clientId, lobbyId);
             }
+            //elimino la lobby
+            lobbies.Remove(lobbyId);
         }
 
         public async Task StartGame(string lobbyId)
@@ -120,12 +121,9 @@ namespace ServerS
                     await Clients.Client(cacciatore).SendAsync("GameStarted" , true);
                 }
             }
-
-
             // invoke the GameStarted clients method
             await Clients.GroupExcept(lobbyId, lobby.cacciatori).SendAsync("GameStarted" , false);
             //await Clients.Group(lobbyId).SendAsync("GameStarted", false);
-
         }
     }
 }
