@@ -25,12 +25,17 @@ namespace ServerS
 
         public async Task IfCheckThenJoin(string lobbyId, string jsonUser)
         {
+            try 
+            { 
             bool lobbyvalid = lobbies.ContainsKey(lobbyId);
-            if (lobbyvalid) {
-                await Clients.Caller.SendAsync("JoinLobby", lobbyId, jsonUser);
-            }
-            else {
-                await Clients.Caller.SendAsync("InvalidID");   
+                if (lobbyvalid) {
+                    await Clients.Caller.SendAsync("JoinLobby", lobbyId, jsonUser);
+                }
+                else {
+                    await Clients.Caller.SendAsync("InvalidID"); }
+            } catch(Exception e)
+            {
+                await Clients.Caller.SendAsync("InvalidID");
             }
         }
 
