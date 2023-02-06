@@ -61,7 +61,7 @@ namespace ProjApp.MapEl.GPS
 
                     _cancelTokenSource = new CancellationTokenSource();
 
-                    Location location = await Geolocation.Default.GetLocationAsync(request);
+                    Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
 
 
                     if (location != null && location.Accuracy < 50)
