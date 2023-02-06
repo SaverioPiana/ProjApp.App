@@ -28,7 +28,11 @@ namespace ServerS
             {
                 await Task.Delay(HtoMs * 5);
             }
-            LobbyHub.lobbies.Remove(this.Id);  
+            try
+            {
+                LobbyHub.lobbies.Remove(this.Id);
+            }
+            catch (Exception ex) { }
         }
     }
 
