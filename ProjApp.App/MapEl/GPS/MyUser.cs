@@ -23,7 +23,7 @@ namespace ProjApp.MapEl.GPS
         
         //SignalR Parametri
         public readonly static int SEND_POS_DELAY = 3000;
-        private static bool want_sendposition = true;
+        public static bool SEND_POSITION = false;
 
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
         public static void BuildMyUser(string ID, string nick)
@@ -195,7 +195,7 @@ namespace ProjApp.MapEl.GPS
 
         public static async void inviaPosSignalR()
         {
-            while (want_sendposition)
+            while (SEND_POSITION)
             {
                 if (Connessione.con.State.Equals(HubConnectionState.Connected))
                 {

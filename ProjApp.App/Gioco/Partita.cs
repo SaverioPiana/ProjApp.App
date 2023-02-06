@@ -76,7 +76,6 @@ namespace ProjApp.Gioco
             Cod_partita = lid;
             MyUser.AddToCurrPartita(MyUser.user);
             Task.Run(IsGameStarted);
-            Task.Run(MyUser.inviaPosSignalR);
             Task.Run(OnDeletedLobby);
             Task.Run(RemoveUserFromListAndPins);
             
@@ -201,6 +200,8 @@ namespace ProjApp.Gioco
         {
             Connessione.con.On<bool>("GameStarted", (isCacciatore) =>
             {
+                MyUser.SEND_POSITION = true;
+                Task.Run(MyUser.inviaPosSignalR);
                 if (isCacciatore)
                 {
                     Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
