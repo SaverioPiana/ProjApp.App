@@ -148,7 +148,6 @@ namespace ProjApp.ViewModel
         {
             Codice = code;
             IsCodiceVisible = true;
-            HasCreated = false;
             CanJoin = false;
         }
         ////////////////////////////////////////////////////////////////////////

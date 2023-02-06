@@ -83,7 +83,7 @@
 
         <Border  Padding="5" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="5"  StrokeThickness="2.5"
                >
-            <ScrollView>
+            <ScrollView VerticalScrollBarVisibility="Never">
                 <Grid Padding="4">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="60"/>

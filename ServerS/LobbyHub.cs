@@ -90,11 +90,12 @@ namespace ServerS
             // find the lobby with the specified ID
             var lobby = lobbies[lobbyId];
             // remove all clients from the list of connected clients for the lobby
-            foreach (string clientId in lobby.ConnectedClients)
-            {
-                lobby.ConnectedClients.Remove(clientId);
-                await Groups.RemoveFromGroupAsync(clientId, lobbyId);
-            }
+            IList<string> copy = lobby.ConnectedClients;
+            foreach (string clientId in copy)
+                {
+                    lobby.ConnectedClients.Remove(clientId);
+                    await Groups.RemoveFromGroupAsync(clientId, lobbyId);
+                }
             //elimino la lobby
             lobbies.Remove(lobbyId);
         }
