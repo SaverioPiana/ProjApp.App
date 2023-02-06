@@ -10,6 +10,7 @@ namespace ServerS
         //messaggi di errore id lobby
         private const string PARTITA_IN_CORSO = "La partita e' gia' iniziata";
         private const string INVALID_ID = "Pare proprio non esista una partita con quell'ID";
+        private const string ADMIN_LEFT = "L'admin ha chiuso baracca, entra in un'altra lobby";
         private const string GENERIC_ERROR = "Boh riapri lapp, errore de cristo";
 
         public static Dictionary<string, Lobby> lobbies = new Dictionary<string, Lobby>();
@@ -102,6 +103,7 @@ namespace ServerS
             //elimino la lobby
             lobbies.Remove(lobbyId);
             await Clients.OthersInGroup(lobbyId).SendAsync("DeletedLobby");
+            await Clients.OthersInGroup(lobbyId).SendAsync("ServerError", ADMIN_LEFT);
         }
 
         public async Task StartGame(string lobbyId)
