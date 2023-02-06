@@ -82,8 +82,14 @@ namespace ProjApp.Gioco
                 Connessione.con.On<string>("UserLeft", (userId) =>
                 {
                     IList<User> copy = MyUser.currPartita.Players;
-                    MyUser.currPartita.Players = copy.Where((x) => x.UserID != (userId)).ToList();
-                    
+                    foreach (User p in copy)
+                    {
+                        if (p.UserID.Equals(userId))
+                        {
+                            MyUser.currPartita.Players.Remove(p);
+                            break;
+                        }
+                    }
                 });
             });
             
