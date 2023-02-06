@@ -60,7 +60,7 @@ namespace ServerS
 
             string mess = $"{clientId} joined {lobbyId}";
             await Clients.Caller.SendAsync("ServerMessage", "SEI TU --->");
-            await Clients.All.SendAsync("ServerMessage", mess);
+            await Clients.OthersInGroup(lobbyId).SendAsync("ServerMessage", mess);
             //se ci sei solo tu non serve
             if (lobby.ConnectedClients.Count > 1)
             {
@@ -111,7 +111,7 @@ namespace ServerS
             lobby.IsStarted = true;
             foreach (string s in lobby.ConnectedClients){
                 string mess = $"Giocatore :({s}) nella lobby : ({lobbyId})";
-                await Clients.All.SendAsync("ServerMessage", mess);
+                await Clients.Group(lobbyId).SendAsync("ServerMessage", mess);
             }
             int num_clients = lobby.ConnectedClients.Count();
             int num_cacciatori = num_clients / 3;
