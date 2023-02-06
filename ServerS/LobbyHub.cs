@@ -7,6 +7,11 @@ namespace ServerS
 {
     public class LobbyHub : Hub
     {
+        //messaggi di errore id lobby
+        private const string PARTITA_IN_CORSO = "La partita e' gia' iniziata";
+        private const string INVALID_ID = "Pare proprio non esista una partita con quell'ID";
+        private const string GENERIC_ERROR = "Boh riapri lapp, errore de cristo";
+
         public static Dictionary<string, Lobby> lobbies = new Dictionary<string, Lobby>();
         public async Task SendPosition(string user, string lobbid)
         {
@@ -29,13 +34,17 @@ namespace ServerS
             { 
             bool lobbyvalid = lobbies.ContainsKey(lobbyId);
                 if (lobbyvalid) {
-                    await Clients.Caller.SendAsync("JoinLobby", lobbyId, jsonUser);
+                    if (lobbies[lobbyId].IsStarted)
+                    {
+                        await Clients.Caller.SendAsync("ServerError", PARTITA_IN_CORSO);
+                    }
+                        else await Clients.Caller.SendAsync("JoinLobby", lobbyId, jsonUser);
                 }
                 else {
-                    await Clients.Caller.SendAsync("InvalidID"); }
+                    await Clients.Caller.SendAsync("ServerError", INVALID_ID); }
             } catch(Exception e)
             {
-                await Clients.Caller.SendAsync("InvalidID");
+                await Clients.Caller.SendAsync("ServerError", GENERIC_ERROR );
             }
         }
 
@@ -51,7 +60,7 @@ namespace ServerS
 
             string mess = $"{clientId} joined {lobbyId}";
             await Clients.Caller.SendAsync("ServerMessage", "SEI TU --->");
-            await Clients.All.SendAsync("ServerMessage", mess);
+            await Clients.Group(lobbyId).SendAsync("ServerMessage", mess);
             //se ci sei solo tu non serve
             if (lobby.ConnectedClients.Count > 1)
             {
@@ -99,10 +108,10 @@ namespace ServerS
         {
             // find the lobby with the specified ID
             var lobby = lobbies[lobbyId];
-            lobby.isStarted = true;
+            lobby.IsStarted = true;
             foreach (string s in lobby.ConnectedClients){
                 string mess = $"Giocatore :({s}) nella lobby : ({lobbyId})";
-                await Clients.All.SendAsync("ServerMessage", mess);
+                await Clients.Group(lobbyId).SendAsync("ServerMessage", mess);
             }
             int num_clients = lobby.ConnectedClients.Count();
             int num_cacciatori = num_clients / 3;

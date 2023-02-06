@@ -15,7 +15,7 @@ namespace ProjApp.Gioco
 {
     public class Partita
     {
-        private object lockObject2 = new object();
+        private object lockPlayers = new object();
 
         private string cod_partita;
         
@@ -30,14 +30,14 @@ namespace ProjApp.Gioco
         {
             get
             {
-                lock (lockObject2)
+                lock (lockPlayers)
                 {
                     return players;
                 }
             }
             set
             {
-                lock (lockObject2)
+                lock (lockPlayers)
                 {
                     players = value;
                 }
@@ -52,7 +52,7 @@ namespace ProjApp.Gioco
         {
             area = new();
             Players = new List<User>();
-            Connessione.con.On("InvalidID", InvalidID);
+            Connessione.con.On<string>("ServerError", (errormsg) => ServerError(errormsg));
             Connessione.con.On<string,string>("JoinLobby", (lid, jsonUser) => JoinLobby(lid, jsonUser));
             Connessione.con.On<string,string,bool>("AddUserFromServer", (jsonUser,clientId, hasToSend) => AddUserFromServer(jsonUser, clientId, hasToSend));
             meJson = MyUser.CreateJsonUser(MyUser.user);
@@ -78,17 +78,9 @@ namespace ProjApp.Gioco
             Task.Run(IsGameStarted);
             Task.Run(MyUser.inviaPosSignalR);
             Task.Run(OnDeletedLobby);
-            Task.Run(() => {
-                Connessione.con.On<string>("UserLeft", (userId) =>
-                {
-                    IList<User> copy = MyUser.currPartita.Players;
-                    MyUser.currPartita.Players = copy.Where((x) => x.UserID != (userId)).ToList();
-                });
-            });
+            Task.Run(RemoveUserFromListAndPins);
             
-
             WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("userHasJoinedEvent", MyUser.currPartita.Cod_partita));
-
 
             //se sei l'admin crei l'area
             if (MyUser.isAdmin)
@@ -102,6 +94,23 @@ namespace ProjApp.Gioco
             {
                 Task.Run(riceviOggettiDiGioco);
             }
+        }
+
+        public void RemoveUserFromListAndPins()
+        {
+            Connessione.con.On<string>("UserLeft", (userId) =>
+            {
+                IList<User> copy = MyUser.currPartita.Players;
+                foreach (User p in copy)
+                {
+                    if (p.UserID.Equals(userId))
+                    {
+                        MyUser.currPartita.Players.Remove(p);
+                        OurMapController.PreMatchPins.Remove(p.UserPin);
+                        break;
+                    }
+                }
+            });
         }
 
 
@@ -124,7 +133,7 @@ namespace ProjApp.Gioco
             };
 
             //AGGIUNGO IL PIN AI PIN PREPARTITA (verranno caricati quando crei la mapview)
-            OurMapController.preMatchPins.Add(userPin);
+            OurMapController.PreMatchPins.Add(userPin);
 
             //creo loggetto user e lo aggiungo alla lista dei players nella partita
 
@@ -142,11 +151,11 @@ namespace ProjApp.Gioco
             }
         }
 
-        public void InvalidID() {
+        public void ServerError(string errormsg) {
             //se il codice non e' valido notifico l'utente
             MainThread.BeginInvokeOnMainThread(()=>
             Application.Current.MainPage.DisplayAlert("Ops...", 
-                "Pare proprio non esista una partita con quell'ID", "OK")
+                errormsg, "OK")
             );
         }
 
@@ -171,7 +180,10 @@ namespace ProjApp.Gioco
         {
             Connessione.con.On("DeletedLobby", () => 
             {
+                //mando un messaggio alla startpage per cambiare la UI
                 WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("lobbyHasBeenDeleted", "noPar"));
+                //RIMUOVO I PIN DAI PIN PREPARTITA
+                OurMapController.PreMatchPins.Clear();
                 MyUser.currPartita.Players.Clear();
             }
             ) ;

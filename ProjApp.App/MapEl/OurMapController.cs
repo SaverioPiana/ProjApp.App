@@ -26,6 +26,7 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using Location = Microsoft.Maui.Devices.Sensors.Location;
+using BruTile.Wms;
 
 
 namespace ProjApp.MapEl
@@ -33,7 +34,27 @@ namespace ProjApp.MapEl
     public class OurMapController : MapControl
     {
         public static MapView mapView = new();
-        public static IList<Pin> preMatchPins = new List<Pin>();
+
+        private static object lockPreMatchPins = new object();
+        private static IList<Pin> preMatchPins = new List<Pin>();
+
+        public static IList<Pin> PreMatchPins
+        {
+            get
+            {
+                lock (lockPreMatchPins)
+                {
+                    return preMatchPins;
+                }
+            }
+            set
+            {
+                lock (lockPreMatchPins)
+                {
+                    preMatchPins = value;
+                }
+            }
+        }
 
         const double STARTING_RES = 2;
         private bool update_once = true;   //carina l'idea ma non penso la useremo,
