@@ -60,7 +60,7 @@ namespace ServerS
 
             string mess = $"{clientId} joined {lobbyId}";
             await Clients.Caller.SendAsync("ServerMessage", "SEI TU --->");
-            await Clients.OthersInGroup(lobbyId).SendAsync("ServerMessage", mess);
+            await Clients.Group(lobbyId).SendAsync("ServerMessage", mess);
             //se ci sei solo tu non serve
             if (lobby.ConnectedClients.Count > 1)
             {
