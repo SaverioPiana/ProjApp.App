@@ -125,10 +125,11 @@
                     <Label 
                         Text="Informazioni Lobby: "
                         FontSize="22"
-                        HorizontalOptions="Center"
+                        HorizontalOptions="Start"
                         VerticalOptions="Center"
                         Grid.Column="0"
                         Grid.Row="0"
+                        Margin="5,0,0,0"
                     />
 
                     <Border Padding="14" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Grid.Column="1" 
