@@ -7,6 +7,11 @@ namespace ServerS
 {
     public class LobbyHub : Hub
     {
+        //messaggi di errore id lobby
+        private const string PARTITA_IN_CORSO = "La partita e' gia' iniziata";
+        private const string INVALID_ID = "Pare proprio non esista una partita con quell'ID";
+        private const string GENERIC_ERROR = "Boh riapri lapp, errore de cristo";
+
         public static Dictionary<string, Lobby> lobbies = new Dictionary<string, Lobby>();
         public async Task SendPosition(string user, string lobbid)
         {
@@ -29,13 +34,17 @@ namespace ServerS
             { 
             bool lobbyvalid = lobbies.ContainsKey(lobbyId);
                 if (lobbyvalid) {
+                    if (!lobbies[lobbyId].isStarted)
+                    {
                     await Clients.Caller.SendAsync("JoinLobby", lobbyId, jsonUser);
+                    }
+                    await Clients.Caller.SendAsync("ServerError", PARTITA_IN_CORSO);
                 }
                 else {
-                    await Clients.Caller.SendAsync("InvalidID"); }
+                    await Clients.Caller.SendAsync("ServerError", INVALID_ID); }
             } catch(Exception e)
             {
-                await Clients.Caller.SendAsync("InvalidID");
+                await Clients.Caller.SendAsync("ServerError", GENERIC_ERROR );
             }
         }
 

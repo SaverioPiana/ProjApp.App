@@ -52,7 +52,7 @@ namespace ProjApp.Gioco
         {
             area = new();
             Players = new List<User>();
-            Connessione.con.On("InvalidID", InvalidID);
+            Connessione.con.On<string>("ServerError", (errormsg) => ServerError(errormsg));
             Connessione.con.On<string,string>("JoinLobby", (lid, jsonUser) => JoinLobby(lid, jsonUser));
             Connessione.con.On<string,string,bool>("AddUserFromServer", (jsonUser,clientId, hasToSend) => AddUserFromServer(jsonUser, clientId, hasToSend));
             meJson = MyUser.CreateJsonUser(MyUser.user);
@@ -151,11 +151,11 @@ namespace ProjApp.Gioco
             }
         }
 
-        public void InvalidID() {
+        public void ServerError(string errormsg) {
             //se il codice non e' valido notifico l'utente
             MainThread.BeginInvokeOnMainThread(()=>
             Application.Current.MainPage.DisplayAlert("Ops...", 
-                "Pare proprio non esista una partita con quell'ID", "OK")
+                errormsg, "OK")
             );
         }
 
