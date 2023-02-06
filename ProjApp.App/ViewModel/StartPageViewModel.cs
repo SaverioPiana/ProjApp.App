@@ -97,8 +97,11 @@ namespace ProjApp.ViewModel
         [RelayCommand]
         public void JoinLobby(Entry entry)
         {
-            //faccio inserire il codice all'utente
-            MyUser.currPartita.IfCheckThenJoin(entry.Text, jsonUser);
+            if(CanJoin) 
+            { 
+                //faccio inserire il codice all'utente
+                MyUser.currPartita.IfCheckThenJoin(entry.Text, jsonUser);
+            }
         }
 
         [RelayCommand]
