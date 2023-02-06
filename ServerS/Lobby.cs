@@ -7,8 +7,9 @@ namespace ServerS
         private const long TicksPerHour = 36000000000;
         private const int HtoMs = 3600000;
         private DateTime lastTime;
+        private bool isStarted = false;
         public string Id { get; set; }
-        public bool IsStarted { get; set; } = false;
+        public bool IsStarted { get; set; }
 
         public List<string> cacciatori { get; set; } = new List<string>();
         public List<string> ConnectedClients { get; set; } = new List<string>();
