@@ -34,11 +34,11 @@ namespace ServerS
             { 
             bool lobbyvalid = lobbies.ContainsKey(lobbyId);
                 if (lobbyvalid) {
-                    if (!lobbies[lobbyId].IsStarted)
+                    if (lobbies[lobbyId].IsStarted)
                     {
-                    await Clients.Caller.SendAsync("JoinLobby", lobbyId, jsonUser);
+                        await Clients.Caller.SendAsync("ServerError", PARTITA_IN_CORSO);
                     }
-                    await Clients.Caller.SendAsync("ServerError", PARTITA_IN_CORSO);
+                        else await Clients.Caller.SendAsync("JoinLobby", lobbyId, jsonUser);
                 }
                 else {
                     await Clients.Caller.SendAsync("ServerError", INVALID_ID); }
