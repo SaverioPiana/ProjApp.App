@@ -34,7 +34,7 @@ namespace ServerS
             { 
             bool lobbyvalid = lobbies.ContainsKey(lobbyId);
                 if (lobbyvalid) {
-                    if (!lobbies[lobbyId].isStarted)
+                    if (!lobbies[lobbyId].IsStarted)
                     {
                     await Clients.Caller.SendAsync("JoinLobby", lobbyId, jsonUser);
                     }
@@ -108,7 +108,7 @@ namespace ServerS
         {
             // find the lobby with the specified ID
             var lobby = lobbies[lobbyId];
-            lobby.isStarted = true;
+            lobby.IsStarted = true;
             foreach (string s in lobby.ConnectedClients){
                 string mess = $"Giocatore :({s}) nella lobby : ({lobbyId})";
                 await Clients.All.SendAsync("ServerMessage", mess);

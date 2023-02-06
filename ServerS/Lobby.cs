@@ -8,7 +8,7 @@ namespace ServerS
         private const int HtoMs = 3600000;
         private DateTime lastTime;
         public string Id { get; set; }
-        public bool isStarted { get; set; }
+        public bool IsStarted { get; set; } = false;
 
         public List<string> cacciatori { get; set; } = new List<string>();
         public List<string> ConnectedClients { get; set; } = new List<string>();
