@@ -1,32 +1,15 @@
-﻿using Android.Service.Notification;
-using Android.Speech.Tts;
-using CommunityToolkit.Mvvm.Messaging;
-using Java.Lang.Invoke;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Mapsui;
-using Mapsui.Extensions;
-using Mapsui.Projections;
-using Mapsui.UI;
 using Mapsui.UI.Maui;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.Primitives;
-using NetTopologySuite.Geometries;
 using ProjApp.MapEl;
 using ProjApp.MapEl.GPS;
 using ProjApp.MapEl.Serializable;
-using ProjApp.ViewModel;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using static ProjApp.ViewModel.StartPageViewModel;
-using Position = Mapsui.UI.Maui.Position;
 
 namespace ProjApp.Gioco
 {
@@ -102,7 +85,7 @@ namespace ProjApp.Gioco
             });
             
 
-            WeakReferenceMessenger.Default.Send<UserHasJoinedAlert>(new(MyUser.currPartita.Cod_partita));
+            WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("userHasJoinedEvent", MyUser.currPartita.Cod_partita));
 
 
             //se sei l'admin crei l'area
@@ -186,7 +169,7 @@ namespace ProjApp.Gioco
         {
             Connessione.con.On("DeletedLobby", () => 
             {
-                WeakReferenceMessenger.Default.Send<LobbyDeletedAlert>(new(""));
+                WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("lobbyHasBeenDeleted", "noPar"));
                 MyUser.currPartita.Players.Clear();
             }
             ) ;

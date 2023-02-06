@@ -1,13 +1,9 @@
 ﻿using ProjApp.MapEl.GPS;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Globalization;
-using Microsoft.Maui.Controls;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using ProjApp.Gioco;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.Mvvm.Messaging;
+using ProjApp.Messagges;
 
 namespace ProjApp.ViewModel
 {
@@ -26,11 +22,11 @@ namespace ProjApp.ViewModel
                 Task.Delay(50).Wait();
             }
 
-            //quando l'utente joina riceveremo un messaggio e aggiorneremo il codice lobby
-            WeakReferenceMessenger.Default.Register<UserHasJoinedAlert>(this,
-                (r,m) => DisplayCorrectUIWhenJoining(m.Value));
-            ///////////////////////////
-            
+            //quando dobbiamo aggiornare la UI
+            WeakReferenceMessenger.Default.Register<UIChangeAlertStartPage>(this,
+                (r,m) => DisplayCorrectUI(m.Value));
+            //////////////////////////////////
+
             Nick = MyUser.user.Nickname;
             jsonUser = MyUser.CreateJsonUser(MyUser.user);
         }
@@ -137,34 +133,28 @@ namespace ProjApp.ViewModel
 
         ////////////////////////////////////////////////////////////////////////
         //to know when the user joins a lobby
-        public class UserHasJoinedAlert : ValueChangedMessage<string>
+        public class UIChangeAlertStartPage : ValueChangedMessage<UI_Event>
         {
-            public UserHasJoinedAlert(string value) : base(value)
+            public UIChangeAlertStartPage(string uieventType, string uieventPar) : base(new(uieventType, uieventPar))
             {
+               
             }
         }
 
-        public void DisplayCorrectUIWhenJoining(string code)
+        public void DisplayCorrectUI(UI_Event uiEvent)
         {
-            Codice = code;
-            IsCodiceVisible = true;
-            CanJoin = false;
-        }
-        ////////////////////////////////////////////////////////////////////////
-
-        ////////////////////////////////////////////////////////////////////////
-        //to know when a user leaves the lobby
-        public class LobbyDeletedAlert : ValueChangedMessage<string>
-        {
-            public LobbyDeletedAlert(string value) : base(value)
+            switch(uiEvent.EventType)
             {
-            }
-        }
-
-        public void DisplayCorrectUIWhenLobbyDeleted (string code)
-        {
-            CanJoin = true;
-            IsCodiceVisible = false;
+                case ("userHasJoinedEvent"):
+                    Codice = uiEvent.EventParameter;
+                    CanJoin = false;
+                    IsCodiceVisible = true;
+                    break;
+                case ("lobbyHasBeenDeleted"):
+                    CanJoin = true;
+                    IsCodiceVisible = false;
+                    break;
+            };
         }
         ////////////////////////////////////////////////////////////////////////
     }

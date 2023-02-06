@@ -103,7 +103,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Resources\Settings\" />
-	  <Folder Include="Services\" />
 	</ItemGroup>
 
 	<ItemGroup>
