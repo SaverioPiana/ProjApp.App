@@ -15,7 +15,7 @@ namespace ProjApp.Gioco
 {
     public class Partita
     {
-        private object lockObject = new object();
+        private object lockObject2 = new object();
 
         private string cod_partita;
         
@@ -23,21 +23,23 @@ namespace ProjApp.Gioco
         public Tana tana;
 
         private string meJson;
-        
+        private IList<User> players;
+
+
         public IList<User> Players
         {
             get
             {
-                lock (lockObject)
+                lock (lockObject2)
                 {
-                    return Players;
+                    return players;
                 }
             }
             set
             {
-                lock (lockObject)
+                lock (lockObject2)
                 {
-                    Players = value;
+                    players = value;
                 }
             }
         }
