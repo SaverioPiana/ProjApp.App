@@ -24,7 +24,7 @@ To Do:
 
 Miglioramenti/Problemini:
 
--Loffset dei pin del draw area non e' centrato
+- Loffset dei pin del draw area non e' centrato
 
 - forse bisognerebbe interpolare il myuserpin, va un po a scatti
 
