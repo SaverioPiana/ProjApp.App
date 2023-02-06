@@ -83,6 +83,7 @@ namespace ProjApp.Gioco
                 {
                     IList<User> copy = MyUser.currPartita.Players;
                     MyUser.currPartita.Players = copy.Where((x) => x.UserID != (userId)).ToList();
+                    
                 });
             });
             
@@ -171,7 +172,10 @@ namespace ProjApp.Gioco
         {
             Connessione.con.On("DeletedLobby", () => 
             {
+                //mando un messaggio alla startpage per cambiare la UI
                 WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("lobbyHasBeenDeleted", "noPar"));
+                //RIMUOVO I PIN DAI PIN PREPARTITA
+                OurMapController.preMatchPins.Clear();
                 MyUser.currPartita.Players.Clear();
             }
             ) ;
