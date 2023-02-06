@@ -73,9 +73,9 @@
                 Margin="14,0,0,0"
                 IsVisible="{Binding CanJoin}" >
                 <Button.Shadow>
-                    <Shadow Brush="#5BAFEC"
+                    <Shadow Brush="Black"
                     Offset="0,0"
-                    Radius="100"
+                    Radius="50"
                     Opacity="0.5" />
                 </Button.Shadow>
             </Button>
