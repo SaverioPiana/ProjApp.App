@@ -18,6 +18,8 @@ To Do:
 
 - logiche di gioco(non molte) -> da fare quando avremo almeno qualche bottone
 
+- Autorizzazione per posizione -> da mettere prima che si apri il gioco
+
 - DARE UN NOME ALL'APP
 
 - creare un icona e spash per lapp
