@@ -6,9 +6,65 @@
              x:DataType="viewmodel:MainPageViewModel"
              Shell.TabBarIsVisible="False"
              Shell.NavBarIsVisible="False"
-             Content="{Binding ContentMapView}"
              Title="MainPage"
              >
+
+    <Grid>
+        <Grid.RowDefinitions >
+            <RowDefinition Height="*" />
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>
+
+        <ContentView Content="{Binding ContentMapView}" Grid.RowSpan="2" Grid.ColumnSpan="4">
+        </ContentView>
+        
+        <Button 
+                ZIndex="1"
+                BackgroundColor="#5BAFEC"
+                ImageSource="settings_icon.png"
+                CornerRadius="20"
+                HeightRequest="50"
+                WidthRequest="50"
+                VerticalOptions="Center"
+                Margin="15"
+                Grid.Row="1"
+                Grid.Column="1"
+            />
+
+        <Button 
+                ZIndex="1"
+                BackgroundColor="#5BAFEC"
+                ImageSource="settings_icon.png"
+                CornerRadius="20"
+                HeightRequest="50"
+                WidthRequest="50"
+                VerticalOptions="Center"
+                Margin="15"
+                Grid.Row="1"
+                Grid.Column="2"
+            />
+
+        <Button 
+                ZIndex="1"
+                BackgroundColor="#5BAFEC"
+                ImageSource="settings_icon.png"
+                CornerRadius="20"
+                HeightRequest="50"
+                WidthRequest="50"
+                VerticalOptions="Center"
+                Margin="15"
+                Grid.Row="1"
+                Grid.Column="3"
+            />
+    </Grid>
+    
+
 
 
 </ContentPage>
