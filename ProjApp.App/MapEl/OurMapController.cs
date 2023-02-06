@@ -142,14 +142,13 @@ namespace ProjApp.MapEl
                 Console.WriteLine($"/////////Posizione ricevuta da:{user.UserID} , " +
                     $"lat:{user.Position.Latitude}, lon: {user.Position.Longitude}");
                 if (user.UserID != MyUser.user.UserID) {
-                    bool trovato = false;
+                    //bool trovato = false;
                     Position position = new(user.Position.Latitude, user.Position.Longitude);
                     //se trovo l'utente aggiorno la sua posizione
                     foreach (Pin p in mapView.Pins)
                     {
                         if (user.UserID.Equals(p.Label))
                         {
-                            trovato = true;
                             Interpolate(p, position); //animazione piu fluida
 
                             //aggiorno lo user nella lista della partita
