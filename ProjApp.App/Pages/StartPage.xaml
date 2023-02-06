@@ -137,7 +137,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Label 
-                        Text="Informazioni Lobby: "
+                        Text="Informazioni Lobby:"
                         FontSize="22"
                         HorizontalOptions="Start"
                         VerticalOptions="Center"
