@@ -111,7 +111,7 @@ namespace ProjApp.MapEl.GPS
             }
             catch (Exception e)
             {
-                throw new Exception("Qualcosa e andato storto col file zi");
+                throw new Exception("Qualcosa e andato storto col file zi ->>" + e.Message);
             }
         }
 
@@ -147,7 +147,7 @@ namespace ProjApp.MapEl.GPS
             }
             catch (Exception e)
             {
-                Console.WriteLine("/////////////////////Qualcosa e andato storto col file zi//////////////////");
+                Console.WriteLine("/////////////////////Qualcosa e andato storto col file zi//////////////////" + e.Message);
                 return new(0,0);
             }
         }
@@ -162,7 +162,7 @@ namespace ProjApp.MapEl.GPS
             }
             catch (Exception e)
             {
-                throw new Exception("Qualcosa e andato storto col file zi");
+                throw new Exception("Qualcosa e andato storto col file zi ->" + e.Message);
             }
         }
         public static string RetrieveNickFromFile(string filename)
@@ -187,7 +187,7 @@ namespace ProjApp.MapEl.GPS
             }
             catch (Exception e)
             {
-                Console.WriteLine("/////////////////////Qualcosa e andato storto col file zi//////////////////");
+                Console.WriteLine("/////////////////////Qualcosa e andato storto col file zi//////////////////" + e.Message);
                 return "";
             }
         }

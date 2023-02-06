@@ -45,7 +45,7 @@ namespace ServerS
                     await Clients.Caller.SendAsync("ServerError", INVALID_ID); }
             } catch(Exception e)
             {
-                await Clients.Caller.SendAsync("ServerError", GENERIC_ERROR );
+                await Clients.Caller.SendAsync("ServerError", GENERIC_ERROR +  e.Message);
             }
         }
 

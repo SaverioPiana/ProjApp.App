@@ -33,7 +33,7 @@ namespace ServerS
             {
                 LobbyHub.lobbies.Remove(this.Id);
             }
-            catch (Exception ex) { }
+            catch{ }
         }
     }
 
