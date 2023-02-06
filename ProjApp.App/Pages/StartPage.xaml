@@ -76,12 +76,9 @@
                     <Shadow Brush="Black"
                     Offset="0,0"
                     Radius="50"
-                    Opacity="0.5" />
+                    Opacity="0.7" />
                 </Button.Shadow>
             </Button>
-                
-            
-
         </Grid>
 
         <Grid  Grid.Row="4" x:Name="JoinStackLayout" IsVisible="{Binding CanJoin}">
@@ -102,7 +99,7 @@
             <Entry
                 Grid.Column="1"
                 x:Name="CodiceLobby"
-                Placeholder="  CODICE  "
+                Placeholder="CODICE"
                 TextColor="#5BAFEC"
                 ReturnCommand="{Binding JoinLobbyCommand}"
                 ReturnCommandParameter="{x:Reference CodiceLobby}"
