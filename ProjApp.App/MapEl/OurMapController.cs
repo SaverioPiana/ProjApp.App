@@ -36,7 +36,7 @@ namespace ProjApp.MapEl
         public static MapView mapView = new();
 
         private static object lockPreMatchPins = new object();
-        private IList<Pin> preMatchPins = new List<Pin>();
+        private static IList<Pin> preMatchPins = new List<Pin>();
 
         public static IList<Pin> PreMatchPins
         {
@@ -44,14 +44,14 @@ namespace ProjApp.MapEl
             {
                 lock (lockPreMatchPins)
                 {
-                    return PreMatchPins;
+                    return preMatchPins;
                 }
             }
             set
             {
                 lock (lockPreMatchPins)
                 {
-                    PreMatchPins = value;
+                    preMatchPins = value;
                 }
             }
         }
