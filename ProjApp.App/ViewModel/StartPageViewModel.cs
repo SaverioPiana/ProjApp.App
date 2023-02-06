@@ -151,5 +151,21 @@ namespace ProjApp.ViewModel
             CanJoin = false;
         }
         ////////////////////////////////////////////////////////////////////////
+
+        ////////////////////////////////////////////////////////////////////////
+        //to know when a user leaves the lobby
+        public class LobbyDeletedAlert : ValueChangedMessage<string>
+        {
+            public LobbyDeletedAlert(string value) : base(value)
+            {
+            }
+        }
+
+        public void DisplayCorrectUIWhenLobbyDeleted (string code)
+        {
+            CanJoin = true;
+            IsCodiceVisible = false;
+        }
+        ////////////////////////////////////////////////////////////////////////
     }
 }

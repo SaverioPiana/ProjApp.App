@@ -1,5 +1,7 @@
-﻿using Android.Speech.Tts;
+﻿using Android.Service.Notification;
+using Android.Speech.Tts;
 using CommunityToolkit.Mvvm.Messaging;
+using Java.Lang.Invoke;
 using Mapsui;
 using Mapsui.Extensions;
 using Mapsui.Projections;
@@ -30,6 +32,8 @@ namespace ProjApp.Gioco
 {
     public class Partita
     {
+        private object lockObject = new object();
+
         private string cod_partita;
         
         private int tap_counter = 0;
@@ -37,7 +41,24 @@ namespace ProjApp.Gioco
 
         private string meJson;
         
-        public IList<User> Players { get ; set; }
+        public IList<User> Players
+        {
+            get
+            {
+                lock (lockObject)
+                {
+                    return Players;
+                }
+            }
+            set
+            {
+                lock (lockObject)
+                {
+                    Players = value;
+                }
+            }
+        }
+
         public AreaGiocabile area { get; set; }  
         
         public string Cod_partita { get { return cod_partita; } set { cod_partita = value; } }
@@ -71,8 +92,18 @@ namespace ProjApp.Gioco
             MyUser.AddToCurrPartita(MyUser.user);
             Task.Run(IsGameStarted);
             Task.Run(MyUser.inviaPosSignalR);
+            Task.Run(OnDeletedLobby);
+            Task.Run(() => {
+                Connessione.con.On<string>("UserLeft", (userId) =>
+                {
+                    IList<User> copy = MyUser.currPartita.Players;
+                    MyUser.currPartita.Players = copy.Where((x) => x.UserID != (userId)).ToList();
+                });
+            });
+            
 
             WeakReferenceMessenger.Default.Send<UserHasJoinedAlert>(new(MyUser.currPartita.Cod_partita));
+
 
             //se sei l'admin crei l'area
             if (MyUser.isAdmin)
@@ -142,13 +173,23 @@ namespace ProjApp.Gioco
 
         public void LeaveLobby()
         {
-            Connessione.con.InvokeAsync("LeaveLobby", MyUser.currPartita.Cod_partita);
+            Connessione.con.InvokeAsync("LeaveLobby", MyUser.currPartita.Cod_partita, MyUser.user.UserID);
         }
 
         public void DeleteLobby()
         {
             Connessione.con.InvokeAsync("DeleteLobby", MyUser.currPartita.Cod_partita);
             MyUser.isAdmin = false;
+        }
+
+        public void OnDeletedLobby()
+        {
+            Connessione.con.On("DeletedLobby", () => 
+            {
+                WeakReferenceMessenger.Default.Send<LobbyDeletedAlert>(new(""));
+                MyUser.currPartita.Players.Clear();
+            }
+            ) ;
         }
 
         public void StartGame()

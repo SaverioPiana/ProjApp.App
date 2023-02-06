@@ -73,8 +73,9 @@ namespace ServerS
             await Clients.Group(lobbyId).SendAsync("ServerMessage", "OGGETTI DI GIOCO INVIATI");
 
         } 
-        public async Task LeaveLobby(string lobbyId)
+        public async Task LeaveLobby(string lobbyId, string userId)
         {
+
             // find the lobby with the specified ID
             var lobby = lobbies[lobbyId];
 
@@ -82,6 +83,7 @@ namespace ServerS
             string clientId = Context.ConnectionId;
             lobby.ConnectedClients.Remove(clientId);
             await Groups.RemoveFromGroupAsync(clientId, lobbyId);
+            await Clients.Group(lobbyId).SendAsync("UserLeft", userId);
         }
 
         public async Task DeleteLobby(string lobbyId)
@@ -90,6 +92,7 @@ namespace ServerS
             var lobby = lobbies[lobbyId];
             //elimino la lobby
             lobbies.Remove(lobbyId);
+            await Clients.OthersInGroup(lobbyId).SendAsync("DeletedLobby");
         }
 
         public async Task StartGame(string lobbyId)
