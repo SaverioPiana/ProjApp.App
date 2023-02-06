@@ -131,10 +131,6 @@ namespace ProjApp.MapEl
             Task.Run(Update_MyPosition_ALWAYS);
 
             Task.Run(aggiungiAltriGiocatoriAllaMappa);
-
-            //PROVA//
-            //Task.Run(creaPartitaEGioca);
-            ////////
         }
 
         
