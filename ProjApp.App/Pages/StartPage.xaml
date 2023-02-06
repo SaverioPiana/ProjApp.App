@@ -71,8 +71,16 @@
                 BackgroundColor="#5BAFEC"
                 CommandParameter=""
                 Margin="14,0,0,0"
-                IsVisible="{Binding CanJoin}"
-            />
+                IsVisible="{Binding CanJoin}" >
+                <Button.Shadow>
+                    <Shadow Brush="#5BAFEC"
+                    Offset="0,0"
+                    Radius="100"
+                    Opacity="0.5" />
+                </Button.Shadow>
+            </Button>
+                
+            
 
         </Grid>
 
@@ -110,6 +118,12 @@
 
         <Border  Grid.Row="5" Padding="5" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="5"  StrokeThickness="2.5"
                >
+            <Border.Shadow>
+                <Shadow Brush="Black"
+                    Offset="0,0"
+                    Radius="40"
+                    Opacity="0.55" />
+            </Border.Shadow>
             <ScrollView VerticalScrollBarVisibility="Never">
                 <Grid Padding="4">
                     <Grid.RowDefinitions>
