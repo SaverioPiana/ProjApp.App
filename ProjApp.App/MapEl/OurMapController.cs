@@ -61,7 +61,6 @@ namespace ProjApp.MapEl
                                            //a sto punto forse meglio usare due funzioni updateposition(ONCE/ALWAYS)
         const int INTERPOLATION_STEPS = 100;
         
-        private bool want_position = true;
         private int updateCtr = 0;
 
         //legge risorse come nomi di file e le trasforma in byte array
@@ -210,7 +209,7 @@ namespace ProjApp.MapEl
             //finchè vogliamo la posizione la queriamo, possiamo in qualsiasi momento
             //smettere di chiederla
             bool firstupdate = true;
-            while (want_position)
+            while (MyUser.SEND_POSITION)
             {
                 await MyUser.Get_Position();
                 Position p = MyUser.user.UserPin.Position;

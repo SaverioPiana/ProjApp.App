@@ -161,6 +161,7 @@ namespace ProjApp.ViewModel
                 case ("lobbyHasBeenDeleted"):
                     CanJoin = true;
                     IsCodiceVisible = false;
+                    HasCreated = false;
                     break;
                 case ("nickChanged"):
                     Nick = uiEvent.EventParameter;

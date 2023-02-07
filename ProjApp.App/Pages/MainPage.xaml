@@ -93,6 +93,7 @@
                 Grid.Row="6"
                 Text="Abbandona Partita"
                 BackgroundColor="#a4243b"
+                Command="{Binding AbbandonaPartitaCommand}"
                 TextColor="White"
                 Margin="10"
                 HeightRequest="40"

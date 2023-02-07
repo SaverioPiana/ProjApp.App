@@ -167,12 +167,13 @@ namespace ProjApp.Gioco
         public void LeaveLobby()
         {
             Connessione.con.InvokeAsync("LeaveLobby", MyUser.currPartita.Cod_partita, MyUser.user.UserID);
+            LobbyParamReset();
         }
 
         public void DeleteLobby()
         {
             Connessione.con.InvokeAsync("DeleteLobby", MyUser.currPartita.Cod_partita);
-            MyUser.isAdmin = false;
+            LobbyParamReset();
         }
 
         public void OnDeletedLobby()
@@ -181,11 +182,19 @@ namespace ProjApp.Gioco
             {
                 //mando un messaggio alla startpage per cambiare la UI
                 WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("lobbyHasBeenDeleted", "noPar"));
-                //RIMUOVO I PIN DAI PIN PREPARTITA
-                OurMapController.PreMatchPins.Clear();
-                MyUser.currPartita.Players.Clear();
-            }
-            ) ;
+                LobbyParamReset();
+            });
+        }
+
+        private void LobbyParamReset()
+        {
+            MyUser.isAdmin = false;
+            //RIMUOVO I PIN DAI PIN PREPARTITA
+            OurMapController.PreMatchPins.Clear();
+            MyUser.currPartita.Players.Clear();
+
+            MyUser.SEND_POSITION = false;
+
         }
 
         public void StartGame()
