@@ -4,7 +4,6 @@
              x:Class="ProjApp.StartPage"
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:StartPageViewModel"
-
              Title="StartPage">
 
     <Grid>

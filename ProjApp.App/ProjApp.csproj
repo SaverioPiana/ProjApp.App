@@ -109,6 +109,15 @@
 	  <Compile Update="Pages\SettingsPage.xaml.cs">
 	    <DependentUpon>SettingsPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Pages\TendinaPage.xaml.cs">
+	    <DependentUpon>TendinaPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Pages\TendinaPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionProjAppHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarProjAppHideInfoBar="True" /></VisualStudio></ProjectExtensions>

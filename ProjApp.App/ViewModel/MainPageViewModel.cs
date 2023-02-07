@@ -35,7 +35,4 @@ namespace ProjApp.ViewModel
                 await Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Lowest));
         }
     }
-        
 }
-
-

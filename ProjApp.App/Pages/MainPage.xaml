@@ -20,11 +20,12 @@
             <ColumnDefinition Width="0.5*"/>
         </Grid.ColumnDefinitions>
 
-        <ContentView Content="{Binding ContentMapView}" Grid.RowSpan="2" Grid.ColumnSpan="3">
-        </ContentView>
+        <ContentPage Content="{Binding ContentMapView}" Grid.RowSpan="2" Grid.ColumnSpan="3" ZIndex="0"/>
+        
+        <ContentPage BindingContext="{x:Reference Tendina}" Grid.Row="1" Grid.ColumnSpan="3" ZIndex="1"/>
         
         <Button 
-                ZIndex="1"
+                ZIndex="2"
                 BackgroundColor="#5BAFEC"
                 ImageSource="settings_icon.png"
                 CornerRadius="20"
@@ -37,7 +38,7 @@
             />
 
         <Button 
-                ZIndex="1"
+                ZIndex="2"
                 BackgroundColor="#5BAFEC"
                 ImageSource="settings_icon.png"
                 CornerRadius="20"
@@ -50,7 +51,7 @@
             />
 
         <Button 
-                ZIndex="1"
+                ZIndex="2"
                 BackgroundColor="#5BAFEC"
                 ImageSource="settings_icon.png"
                 CornerRadius="20"
