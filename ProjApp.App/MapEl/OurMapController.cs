@@ -214,7 +214,7 @@ namespace ProjApp.MapEl
             {
                 await MyUser.Get_Position();
                 Position p = MyUser.user.UserPin.Position;
-                //ma serve ancora sta cosa????
+                //ma serve ancora sta cosa???? ----- Carlo: SI zi
                 mapView.MyLocationLayer.UpdateMyLocation(p, false);
                 if(firstupdate)
                 {
