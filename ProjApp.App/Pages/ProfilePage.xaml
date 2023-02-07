@@ -12,10 +12,10 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
-            <RowDefinition Height="70"></RowDefinition>
-            <RowDefinition Height="90"></RowDefinition>
-            <RowDefinition Height="80"></RowDefinition>
-            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
@@ -29,21 +29,20 @@
             
          />
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" HeightRequest="80">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width=".75*"></ColumnDefinition>
                 <ColumnDefinition Width=".25*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             
             <Label 
-            
-            Grid.Column="0"
-            Text="Profilo"
-            FontSize="36"
-            HorizontalOptions="Start"
-            VerticalOptions="Center"
-            Margin="15"
-        />
+                Grid.Column="0"
+                Text="Profilo"
+                FontSize="36"
+                HorizontalOptions="Start"
+                VerticalOptions="Center"
+                Margin="15"
+            />
 
         <Button
             
@@ -60,18 +59,36 @@
             
         </Grid>
 
+        <Border Grid.Row="2" HeightRequest="60" Padding="5" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="15" StrokeThickness="3">
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                
+                <Label 
+                    Grid.Column="0"
+                    Text="{Binding Nick, StringFormat='  Nickname:   {0}'}"
+                    FontSize="20"
+                    VerticalOptions="Center"
+                    HorizontalOptions="StartAndExpand"  
+                />
 
-
-        <Border Grid.Row="2"  Padding="5" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="15" StrokeThickness="3">
-           
-           <Label 
-               Grid.Row="2"
-               Text="{Binding Nick, StringFormat='  Nickname:   {0}'}"
-               FontSize="20"
-               VerticalOptions="Center"
-               HorizontalOptions="StartAndExpand"  
-           />         
-
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding NavigateToSettingsPageCommand}"
+                    BackgroundColor="#5BAFEC"
+                    ImageSource="copy_icon.png"
+                    CornerRadius="5"
+                    HeightRequest="24"
+                    WidthRequest="24"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"  
+                    Margin="0,0,15,0"
+                />
+                
+            </Grid>
         </Border>
 
         <Label 
@@ -79,13 +96,15 @@
             Text="Max Score:"
             FontSize="20"
             Margin="15"
-             />
+            HeightRequest="26"
+        />
 
         <Label 
             Grid.Row="4"
             Text="Total Score:"
             FontSize="20"
             Margin="15"
+            HeightRequest="26"
         />
 
         <Border  Grid.Row="5" Padding="5" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="15" StrokeThickness="3">
