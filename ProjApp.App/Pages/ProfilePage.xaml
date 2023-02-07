@@ -71,7 +71,7 @@
                     Text="Nickname: "
                     FontSize="20"
                     VerticalOptions="Center"
-                    HorizontalOptions="Start" 
+                    HorizontalOptions="Start"
                     Margin="10"
                 />
 
@@ -91,11 +91,13 @@
                     FontSize="20"
                     VerticalOptions="Center"
                     HorizontalOptions="Start"
-                    Margin="-9,-9,-9,-10"
+                    Margin="-9,-9,-9,-10.5"
                     IsVisible="{Binding ChangingNick}"
                     IsTextPredictionEnabled="False"
                     IsSpellCheckEnabled="False"
                     HorizontalTextAlignment="Start"
+                    CursorPosition="0"
+                    IsEnabled="{Binding ChangingNick}"
                 />
 
                 <Button

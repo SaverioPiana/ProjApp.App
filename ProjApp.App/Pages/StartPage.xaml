@@ -109,6 +109,7 @@
                 IsSpellCheckEnabled="False"
                 VerticalOptions="Center"
                 HorizontalOptions="Start"
+                IsEnabled="{Binding CanJoin}"
             />
 
         </Grid>

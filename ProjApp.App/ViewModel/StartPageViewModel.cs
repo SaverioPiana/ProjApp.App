@@ -98,10 +98,14 @@ namespace ProjApp.ViewModel
         [RelayCommand]
         public void JoinLobby(Entry entry)
         {
-            if(CanJoin) 
+            if(CanJoin)
             { 
                 //faccio inserire il codice all'utente
                 MyUser.currPartita.IfCheckThenJoin(entry.Text, jsonUser);
+                
+                //SERVE PER LEVARE LA TASTIERA DALLA ENTRY, MICROSOFT ANCORA NON LO FA rip
+                CanJoin = false;
+                CanJoin = true;
             }
         }
 

@@ -85,6 +85,7 @@ namespace ProjApp.ViewModel
                     MyUser.BuildMyUser(Username, Nick);
                     firstTime = false;
                 }
+                //ANDRA TOLTO PERCHE A OGNI DISCONNESSIONE DISTUGGIAMO E RICREIAMO IL MYUSER
                 else MyUser.ChangeID(Username);
             });
         }
