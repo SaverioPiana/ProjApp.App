@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using ProjApp.MapEl.GPS;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace ProjApp.ViewModel
         public string password;
 
         private bool succesfullLogin = true; ////////per ora true semrpe
+        private bool firstTime = true;
 
 
 
@@ -33,17 +35,31 @@ namespace ProjApp.ViewModel
                 {
                     Application.Current.MainPage = new AppShell();
                 }
-                Shell.Current.GoToAsync($"//{nameof(ProfilePage)}?username={Username}");
+                Shell.Current.GoToAsync($"//{nameof(ProfilePage)}");
             }
-            //mandiamo un avviso alla pagina profilo: "ora è il momento di buildare lo user!!!"
-            //(username è stato passato)
-            Task.Run(() =>
+
+            //SOLO LA PRIMA VOLTA (da login -> profile)
+            //passiamo lo username alla pagina profilo solo se ha gia interagito con lo user per il nickmname
+            if (firstTime)
             {
-                Thread.Sleep(300);
+                WeakReferenceMessenger.Default.Register<ReadyToBuildUserMessage>(this, (r, m) =>
+                {
+                    WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
+                });
+            }
+            else //la prifle page è gia stata creata ed è pronta a ricevere il nuovo username senza aspettare
+            {
                 WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
-            });
+            }
 
             return Task.CompletedTask;
         }
     };
+
+    internal class ReadyToBuildUserMessage : ValueChangedMessage<string>
+    {
+        public ReadyToBuildUserMessage(string value) : base(value)
+        {
+        }
+    }
 }

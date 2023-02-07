@@ -17,18 +17,19 @@ namespace ProjApp.ViewModel
 
         public StartPageViewModel()
         {
-            while (!MyUser.IsUserBuilt)
+            while(MyUser.IsUserUpdating)
             {
-                Task.Delay(50).Wait();
-            }
+                Task.Delay(40).Wait();
+            } Task.Delay(10).Wait();
+
+            DisplayCorrectUI(new("nickChanged", MyUser.user.Nickname));
+
+            jsonUser = MyUser.CreateJsonUser(MyUser.user);
 
             //quando dobbiamo aggiornare la UI
             WeakReferenceMessenger.Default.Register<UIChangeAlertStartPage>(this,
                 (r,m) => DisplayCorrectUI(m.Value));
             //////////////////////////////////
-
-            Nick = MyUser.user.Nickname;
-            jsonUser = MyUser.CreateJsonUser(MyUser.user);
         }
 
         [ObservableProperty]
@@ -135,7 +136,7 @@ namespace ProjApp.ViewModel
 
 
         ////////////////////////////////////////////////////////////////////////
-        //to know when the user joins a lobby
+        //to know whenever we need to change the UI
         public class UIChangeAlertStartPage : ValueChangedMessage<UI_Event>
         {
             public UIChangeAlertStartPage(string uieventType, string uieventPar) : base(new(uieventType, uieventPar))
@@ -156,6 +157,9 @@ namespace ProjApp.ViewModel
                 case ("lobbyHasBeenDeleted"):
                     CanJoin = true;
                     IsCodiceVisible = false;
+                    break;
+                case ("nickChanged"):
+                    Nick = uiEvent.EventParameter;
                     break;
             };
         }

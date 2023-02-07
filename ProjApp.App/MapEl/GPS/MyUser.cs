@@ -8,6 +8,8 @@ using Mapsui.Nts;
 using Mapsui.Extensions;
 using static System.Net.Mime.MediaTypeNames;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
+using static ProjApp.ViewModel.StartPageViewModel;
 
 namespace ProjApp.MapEl.GPS
 {
@@ -19,7 +21,7 @@ namespace ProjApp.MapEl.GPS
         public static Partita currPartita;
         public static bool isAdmin = false;
         public static string NICK_FILENAME = "playerNick.txt";
-        public static bool IsUserBuilt = false;
+        public static bool IsUserUpdating = false;
         
         //SignalR Parametri
         public readonly static int SEND_POS_DELAY = 3000;
@@ -28,23 +30,29 @@ namespace ProjApp.MapEl.GPS
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
         public static void BuildMyUser(string ID, string nick)
         {
+            IsUserUpdating = true;
             Location loc = RetrieveLocFromFile("lastSavedPosition.txt");
             user = new(nick, ID, loc);
             currPartita = new();
             //serve senno alcune componenti nel codice provano ad
             //accedere allo user prima che sia stato creato
-            IsUserBuilt = true;
+            //WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("canDisplayNick", nick));
+            IsUserUpdating = false;
         }
 
         public static void ChangeNick(string newnick) 
-        { 
+        {
+            IsUserUpdating = true;
             user.Nickname = newnick;
             SaveLastNickOnFile(newnick);
+            IsUserUpdating = false;
         }
 
         public static void ChangeID(string newID)
         {
+            IsUserUpdating = true;
             user.UserID = newID;
+            IsUserUpdating = false;
         }
 
         public static void AddToCurrPartita(User u)

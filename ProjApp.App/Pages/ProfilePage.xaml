@@ -26,7 +26,6 @@
             WidthRequest="400"
             HeightRequest="25"
             HorizontalOptions="Start"
-            
          />
 
         <Grid Grid.Row="1">
@@ -45,8 +44,7 @@
             Margin="15"
         />
 
-        <Button
-            
+        <Button 
             Grid.Column="1"
             Command="{Binding NavigateToSettingsPageCommand}"
             BackgroundColor="#5BAFEC"
@@ -62,16 +60,74 @@
 
 
 
-        <Border Grid.Row="2"  Padding="5" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="15" StrokeThickness="3">
-           
-           <Label 
-               Grid.Row="2"
-               Text="{Binding Nick, StringFormat='  Nickname:   {0}'}"
-               FontSize="20"
-               VerticalOptions="Center"
-               HorizontalOptions="StartAndExpand"  
-           />         
+        <Border Grid.Row="2" Padding="5" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="5" StrokeThickness="3">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="60"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label 
+                    Grid.Column="0"
+                    Text="Nickname: "
+                    FontSize="20"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start" 
+                    Margin="10"
+                />
 
+                <Label 
+                    Grid.Column="1"
+                    Text="{Binding Nick}"
+                    FontSize="20"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start" 
+                    Margin="-5"
+                    IsVisible="{Binding DoneChangingNickname}"
+                />
+
+                <Entry
+                    Grid.Column="1"
+                    Text="{Binding Nick}"
+                    FontSize="20"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                    Margin="-9,-9,-9,-10"
+                    IsVisible="{Binding ChangingNick}"
+                    IsTextPredictionEnabled="False"
+                    IsSpellCheckEnabled="False"
+                    HorizontalTextAlignment="Start"
+                />
+
+                <Button
+                    Grid.Column="2"
+                    Command="{Binding ChangeNickCommand}"
+                    BackgroundColor="#5BAFEC"
+                    ImageSource="change_nick_icon.png"
+                    CornerRadius="13"
+                    HeightRequest="50"
+                    WidthRequest="50"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Margin="10"
+                    IsVisible="{Binding DoneChangingNickname}"
+                />
+
+                <Button 
+                    Grid.Column="2"
+                    Command="{Binding DoneChangingNickCommand}"
+                    BackgroundColor="#5BAFEC"
+                    ImageSource="done_icon.png"
+                    CornerRadius="13"
+                    HeightRequest="50"
+                    WidthRequest="50"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Margin="10"
+                    IsVisible="{Binding ChangingNick}"
+                />
+                
+            </Grid>
         </Border>
 
         <Label 
