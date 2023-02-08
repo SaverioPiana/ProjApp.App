@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using ExCSS;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
 using Firebase.Auth.Repository;
@@ -17,7 +18,6 @@ namespace ProjApp.ViewModel
 {
     public partial class LoginPageViewModel : ObservableObject
     {
-        public string webApiKey = "AIzaSyByATKL15ARJgSIxRHibyF-j2E3UUTNrWE";
         public LoginPageViewModel() { }
 
         [ObservableProperty] 
@@ -28,13 +28,31 @@ namespace ProjApp.ViewModel
         private bool succesfullLogin = true; ////////per ora true semrpe
         private bool firstTime = true;
 
+        // Configure...
+        FirebaseAuthConfig config = new FirebaseAuthConfig
+        {
+            ApiKey = "AIzaSyByATKL15ARJgSIxRHibyF-j2E3UUTNrWE",
+            AuthDomain = "nascondapp.firebaseapp.com",
+            Providers = new FirebaseAuthProvider[]
+            {
+                // Add and configure individual providers
+                new GoogleProvider().AddScopes("email"),
+                new EmailProvider()
+                
+            },
+            
+        };
+
         [RelayCommand]
         public async void RegisterUser()
         {
             try
             {
-                var authProvider = new FirebaseAuthProvider[1];
-            }catch(Exception ex)
+                var client = new FirebaseAuthClient(config);
+                await client.CreateUserWithEmailAndPasswordAsync(Username, Password);
+                
+            }
+            catch(Exception ex)
             {
 
             }

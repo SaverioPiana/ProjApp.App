@@ -79,7 +79,7 @@
         <Button
             Grid.Row="6"
             Text="SIGN IN"
-            Command="{Binding NavigateToStartPageCommand}"
+            Command="{Binding RegisterUserCommand}"
             BackgroundColor="#5BAFEC"
             Margin="15"
             HeightRequest="50"
