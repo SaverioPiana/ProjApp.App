@@ -14,12 +14,13 @@ using static ProjApp.ViewModel.ProfilePageViewModel;
 
 namespace ProjApp.ViewModel
 {
+    [QueryProperty(nameof(Username), nameof(Username))]
+    [QueryProperty(nameof(Password), nameof(Password))]
     public partial class LoginPageViewModel : ObservableObject
     {
-
         private static bool FIRST_TIME_LOGGING = true;
 
-        public LoginPageViewModel() 
+        public LoginPageViewModel()
         { 
             Username= string.Empty;
             Password= string.Empty;
@@ -30,7 +31,7 @@ namespace ProjApp.ViewModel
         [ObservableProperty] 
         private string password;
 
-        private bool succesfullLogin = true; ////////per ora true semrpe
+        private bool succesfullLogin = true; ////////per ora true sempre
 
 
 
@@ -38,11 +39,11 @@ namespace ProjApp.ViewModel
         Task NavigateToStartPage() {
             if (succesfullLogin)
             {
-                if (Shell.Current == null)
-                {
-                    Application.Current.MainPage = new AppShell();
-                }
-                Shell.Current.GoToAsync($"//{nameof(ProfilePage)}");
+                //if (Shell.Current == null)
+                //{
+                //    Application.Current.MainPage = new AppShell();
+                //}
+                Shell.Current.GoToAsync($"//{nameof(ProfilePage)}",false);
 
 
                 //SOLO LA PRIMA VOLTA (da login -> profile)

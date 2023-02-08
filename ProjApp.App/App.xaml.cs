@@ -19,6 +19,6 @@ public partial class App : Application
             await Connessione.con.StartAsync());
         });
 
-        MainPage = new LoginPage(new ViewModel.LoginPageViewModel());
+        MainPage = new AppShell();
     }
 }

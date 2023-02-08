@@ -8,10 +8,10 @@
     Shell.NavBarIsVisible="False"
     >
     
-    <!--<ShellContent
+    <ShellContent
         ContentTemplate="{DataTemplate local:LoginPage}"
         Route="LoginPage"
-    />-->
+    />
 
     <TabBar>
 
