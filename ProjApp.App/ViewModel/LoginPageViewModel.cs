@@ -2,6 +2,9 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using Firebase.Auth;
+using Firebase.Auth.Providers;
+using Firebase.Auth.Repository;
 using ProjApp.MapEl.GPS;
 using System;
 using System.Collections.Generic;
@@ -14,7 +17,7 @@ namespace ProjApp.ViewModel
 {
     public partial class LoginPageViewModel : ObservableObject
     {
-
+        public string webApiKey = "AIzaSyByATKL15ARJgSIxRHibyF-j2E3UUTNrWE";
         public LoginPageViewModel() { }
 
         [ObservableProperty] 
@@ -25,6 +28,17 @@ namespace ProjApp.ViewModel
         private bool succesfullLogin = true; ////////per ora true semrpe
         private bool firstTime = true;
 
+        [RelayCommand]
+        public async void RegisterUser()
+        {
+            try
+            {
+                var authProvider = new FirebaseAuthProvider[1];
+            }catch(Exception ex)
+            {
+
+            }
+        }
 
 
         [RelayCommand]

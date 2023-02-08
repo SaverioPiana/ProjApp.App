@@ -29,6 +29,15 @@
 		
 	</PropertyGroup>
 
+	<!--KEYSTORE and '$(Configuration)' == 'Release'-->
+	<PropertyGroup Condition="$(TargetFramework.Contains('-android'))">
+		<AndroidKeyStore>True</AndroidKeyStore>
+		<AndroidSigningKeyStore>myapp.keystore</AndroidSigningKeyStore>
+		<AndroidSigningKeyAlias>key</AndroidSigningKeyAlias>
+		<AndroidSigningKeyPass>sessopazzo</AndroidSigningKeyPass>
+		<AndroidSigningStorePass>sessopazzo</AndroidSigningStorePass>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
 	</PropertyGroup>
