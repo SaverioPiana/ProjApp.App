@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "466882726164",
+    "project_id": "nascondapp",
+    "storage_bucket": "nascondapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:466882726164:android:8150c521cda4cacafb5a01",
+        "android_client_info": {
+          "package_name": "com.companyname.projapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "466882726164-rsv7n5beus2dovt9q2gqemlc0d0f0831.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe6Ii007ufy3S8uBoHTyZ65dLn6QUgoR8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "466882726164-fbt07tdqtsq2go1ndd23mk3bj86eae9t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

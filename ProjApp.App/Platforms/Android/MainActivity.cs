@@ -1,9 +1,11 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Views;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using Plugin.Firebase.Auth;
 
 namespace ProjApp;
 
@@ -16,7 +18,11 @@ public class MainActivity : MauiAppCompatActivity
         {
         }
     }
-
+    protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+    {
+        base.OnActivityResult(requestCode, resultCode, data);
+        FirebaseAuthImplementation.HandleActivityResultAsync(requestCode, resultCode, data);
+    }
     protected override void OnCreate(Bundle savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
