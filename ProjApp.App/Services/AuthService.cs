@@ -7,13 +7,14 @@ using System.Reactive.Threading.Tasks;
 
 namespace ProjApp.Services
 {
-    public sealed class AuthService : IAuthService
-    {
+    public sealed class AuthService : IAuthService { 
+
         private readonly IFirebaseAuth _firebaseAuth;
         private readonly IPreferencesService _preferencesService;
         private readonly BehaviorSubject<IFirebaseUser> _currentUserSubject;
         private readonly ISubject<bool> _isSignInRunningSubject;
 
+        
         public AuthService(
             IFirebaseAuth firebaseAuth,
             IPreferencesService preferencesService)
@@ -25,7 +26,7 @@ namespace ProjApp.Services
 
             _currentUserSubject.OnNext(_firebaseAuth.CurrentUser);
         }
-
+        
         public IObservable<Unit> SignAnonymously()
         {
             return RunAuthTask(_firebaseAuth.SignInAnonymouslyAsync(), signOutWhenFailed: true);
@@ -56,11 +57,12 @@ namespace ProjApp.Services
                 signOutWhenFailed: true);
         }
 
-        public IObservable<Unit> SignInWithGoogle()
+        public Task<IFirebaseUser> SignInWithGoogle()
         {
-            return RunAuthTask(
-                _firebaseAuth.SignInWithGoogleAsync(),
-                signOutWhenFailed: true);
+            //return RunAuthTask(
+            //    _firebaseAuth.SignInWithGoogleAsync(),
+            //    signOutWhenFailed: true);
+            return _firebaseAuth.SignInWithGoogleAsync();
         }
 
         public IObservable<Unit> SignInWithFacebook()
@@ -94,9 +96,12 @@ namespace ProjApp.Services
             return RunAuthTask(_firebaseAuth.LinkWithEmailAndPasswordAsync(email, password));
         }
 
-        public IObservable<Unit> LinkWithGoogle()
+        public Task<IFirebaseUser> LinkWithGoogle()
         {
-            return RunAuthTask(_firebaseAuth.LinkWithGoogleAsync());
+            //return RunAuthTask(_firebaseAuth.LinkWithGoogleAsync());
+            var c = _firebaseAuth.LinkWithGoogleAsync();
+            return c;
+           
         }
 
         public IObservable<Unit> LinkWithFacebook()

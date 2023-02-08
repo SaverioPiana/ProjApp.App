@@ -4,6 +4,7 @@ using Plugin.Firebase.Android;
 #endif
 using Plugin.Firebase.Auth;
 using Plugin.Firebase.Shared;
+using ProjApp;
 using ProjApp.Services;
 using ProjApp.ViewModel;
 using SkiaSharp.Views.Maui.Controls.Hosting;
@@ -35,10 +36,12 @@ public static class MauiProgram
         builder.Services.AddSingleton<ProfilePage>();
         builder.Services.AddTransient<LoginPageViewModel>();
         builder.Services.AddTransient<LoginPage>();
+        builder.Services.AddSingleton<AuthPage>();
+        builder.Services.AddSingleton<AuthPageViewModel>();
 
 
-        builder.Services.AddSingleton<IAuthService, AuthService>();
-        builder.Services.AddSingleton<IPreferencesService, PreferencesService>();
+        builder.Services.AddTransient<IAuthService, AuthService>();
+        builder.Services.AddTransient<IPreferencesService, PreferencesService>();
 
         return builder.Build();
 	}
@@ -56,7 +59,7 @@ public static class MauiProgram
         return builder;
     }
 
-    private static CrossFirebaseSettings CreateCrossFirebaseSettings()
+    public static CrossFirebaseSettings CreateCrossFirebaseSettings()
     {
         return new CrossFirebaseSettings(
             isAuthEnabled: true,

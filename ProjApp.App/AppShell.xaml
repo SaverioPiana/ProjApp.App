@@ -12,6 +12,13 @@
         
         <ShellContent
             Title=""
+            ContentTemplate="{DataTemplate local:AuthPage}"
+            Route= "AuthPage"
+            Icon="profile_icon.png"
+            />
+        
+        <ShellContent
+            Title=""
             ContentTemplate="{DataTemplate local:ProfilePage}"
             Route= "ProfilePage"
             Icon="profile_icon.png"

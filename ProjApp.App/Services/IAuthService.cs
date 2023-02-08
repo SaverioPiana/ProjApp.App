@@ -14,13 +14,13 @@ namespace ProjApp.Services
         IObservable<Unit> SignInWithEmailAndPassword(string email, string password);
         IObservable<Unit> SendSignInLink(string toEmail);
         IObservable<Unit> SignInWithEmailLink(string email, string link);
-        IObservable<Unit> SignInWithGoogle();
+        Task<IFirebaseUser> SignInWithGoogle();
         IObservable<Unit> SignInWithFacebook();
         IObservable<Unit> SignInWithApple();
         IObservable<Unit> VerifyPhoneNumber(string phoneNumber);
         IObservable<Unit> SignInWithPhoneNumberVerificationCode(string verificationCode);
         IObservable<Unit> LinkWithEmailAndPassword(string email, string password);
-        IObservable<Unit> LinkWithGoogle();
+        Task<IFirebaseUser> LinkWithGoogle();
         IObservable<Unit> LinkWithFacebook();
         IObservable<Unit> LinkWithPhoneNumberVerificationCode(string verificationCode);
         IObservable<Unit> UnlinkProvider(string providerId);
