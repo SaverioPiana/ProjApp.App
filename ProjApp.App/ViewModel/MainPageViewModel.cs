@@ -47,9 +47,7 @@ namespace ProjApp.ViewModel
         {
             MyUser.currPartita.LeaveLobby();
             WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("lobbyHasBeenDeleted", "noPar"));
-            Shell.Current.GoToAsync($"//{nameof(ProfilePage)}");   
+            Shell.Current.GoToAsync($"//{nameof(StartPage)}");
         }
-
-
     }
 }

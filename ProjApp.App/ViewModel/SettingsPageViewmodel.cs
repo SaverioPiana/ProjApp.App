@@ -13,13 +13,11 @@ namespace ProjApp.ViewModel
 
         public SettingsPageViewModel() { }
 
-       
+        [RelayCommand]
+        Task NavigateToLoginPage() => Shell.Current.GoToAsync($"{nameof(LoginPage)}", false);
 
         [RelayCommand]
-        Task NavigateToLoginPage() => Shell.Current.GoToAsync(nameof(LoginPage));
-
-        [RelayCommand]
-        Task NavigateToProfilePage() => Shell.Current.GoToAsync("..");
+        Task NavigateToProfilePage() => Shell.Current.GoToAsync("..",true);
 
     }
 }

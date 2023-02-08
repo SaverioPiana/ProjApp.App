@@ -9,17 +9,18 @@ using ProjApp.Gioco;
 using ProjApp.MapEl;
 using ProjApp.ViewModel;
 using System.Collections.ObjectModel;
+#if ANDROID
 using static ProjApp.MainActivity;
+#endif
 
 namespace ProjApp;
 
-public  partial class MainPage : ContentPage
+public partial class MainPage : ContentPage
 {
     public MainPage(MainPageViewModel viewModel)
     {
         InitializeComponent();
         BindingContext= viewModel;
-
     }
 
     protected override bool OnBackButtonPressed()

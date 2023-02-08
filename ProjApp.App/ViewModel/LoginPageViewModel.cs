@@ -10,20 +10,27 @@ using System.Text;
 using System.Threading.Tasks;
 using static ProjApp.ViewModel.ProfilePageViewModel;
 
+
+
 namespace ProjApp.ViewModel
 {
     public partial class LoginPageViewModel : ObservableObject
     {
 
-        public LoginPageViewModel() { }
+        private static bool FIRST_TIME_LOGGING = true;
+
+        public LoginPageViewModel() 
+        { 
+            Username= string.Empty;
+            Password= string.Empty;
+        }
 
         [ObservableProperty] 
-        public string username;
+        private string username;
         [ObservableProperty] 
-        public string password;
+        private string password;
 
         private bool succesfullLogin = true; ////////per ora true semrpe
-        private bool firstTime = true;
 
 
 
@@ -31,27 +38,29 @@ namespace ProjApp.ViewModel
         Task NavigateToStartPage() {
             if (succesfullLogin)
             {
-                if(Shell.Current == null) 
+                if (Shell.Current == null)
                 {
                     Application.Current.MainPage = new AppShell();
                 }
                 Shell.Current.GoToAsync($"//{nameof(ProfilePage)}");
-            }
 
-            //SOLO LA PRIMA VOLTA (da login -> profile)
-            //passiamo lo username alla pagina profilo solo se ha gia interagito con lo user per il nickmname
-            if (firstTime)
-            {
-                WeakReferenceMessenger.Default.Register<ReadyToBuildUserMessage>(this, (r, m) =>
+
+                //SOLO LA PRIMA VOLTA (da login -> profile)
+                //passiamo lo username alla pagina profilo solo se ha gia interagito con lo user per il nickmname
+                if (FIRST_TIME_LOGGING)
+                {
+                    WeakReferenceMessenger.Default.Register<ReadyToBuildUserMessage>(this, (r, m) =>
+                    {
+                        WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
+                    });
+                    FIRST_TIME_LOGGING = false;
+                }
+                else //la prifle page è gia stata creata ed è pronta a ricevere il nuovo username senza aspettare
                 {
                     WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
-                });
-            }
-            else //la prifle page è gia stata creata ed è pronta a ricevere il nuovo username senza aspettare
-            {
-                WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
-            }
+                }
 
+            }
             return Task.CompletedTask;
         }
     };

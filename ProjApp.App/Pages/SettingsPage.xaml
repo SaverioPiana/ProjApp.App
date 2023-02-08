@@ -5,13 +5,12 @@
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:SettingsPageViewModel"
              
+             Shell.TabBarIsVisible="False"
              Title="SettingsPage"
              >
 
 
     <Grid RowSpacing="20">
-        
-        
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>

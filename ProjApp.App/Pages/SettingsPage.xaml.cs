@@ -1,6 +1,8 @@
 using CommunityToolkit.Mvvm.Messaging;
 using ProjApp.ViewModel;
+#if ANDROID
 using static ProjApp.MainActivity;
+#endif
 
 namespace ProjApp;
 
