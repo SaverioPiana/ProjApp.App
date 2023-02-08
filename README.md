@@ -18,6 +18,8 @@ To Do:
 
 - logiche di gioco(non molte) -> da fare quando avremo almeno qualche bottone
 
+- riga 89 del profileviewmodel metodo builduser -> bisogna levare una parte di codice quando verra' implementato un Auth 
+
 - Autorizzazione per posizione -> da mettere prima che si apri il gioco
 
 - DARE UN NOME ALL'APP
