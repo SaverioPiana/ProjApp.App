@@ -57,12 +57,12 @@ namespace ProjApp.Services
                 signOutWhenFailed: true);
         }
 
-        public Task<IFirebaseUser> SignInWithGoogle()
+        public IObservable<Unit> SignInWithGoogle()
         {
-            //return RunAuthTask(
-            //    _firebaseAuth.SignInWithGoogleAsync(),
-            //    signOutWhenFailed: true);
-            return _firebaseAuth.SignInWithGoogleAsync();
+            return RunAuthTask(
+                _firebaseAuth.SignInWithGoogleAsync(),
+                signOutWhenFailed: true);
+            
         }
 
         public IObservable<Unit> SignInWithFacebook()
@@ -96,11 +96,10 @@ namespace ProjApp.Services
             return RunAuthTask(_firebaseAuth.LinkWithEmailAndPasswordAsync(email, password));
         }
 
-        public Task<IFirebaseUser> LinkWithGoogle()
+        public IObservable<Unit> LinkWithGoogle()
         {
-            //return RunAuthTask(_firebaseAuth.LinkWithGoogleAsync());
-            var c = _firebaseAuth.LinkWithGoogleAsync();
-            return c;
+            return RunAuthTask(_firebaseAuth.LinkWithGoogleAsync());
+           
            
         }
 
