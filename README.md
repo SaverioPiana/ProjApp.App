@@ -20,6 +20,8 @@ To Do:
 
 - riga 89 del profileviewmodel metodo builduser -> bisogna levare una parte di codice quando verra' implementato un Auth 
 
+- Dobbiamo ricordarci di usare levento onDestroyed della classe app per gestire il fatto che lutente deve lasciare la lobby e la leva dalla memoria ...
+
 - Autorizzazione per posizione -> da mettere prima che si apri il gioco
 
 - DARE UN NOME ALL'APP
