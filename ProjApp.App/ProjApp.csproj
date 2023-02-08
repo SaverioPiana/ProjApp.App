@@ -22,24 +22,40 @@
 		<ApplicationVersion>1</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
-		
+
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-		
-		
-		
+
+
+
+	</PropertyGroup>
+	
+	<!--KEYSTORE and '$(Configuration)' == 'Release'-->
+	<PropertyGroup Condition="$(TargetFramework.Contains('-android'))">
+		<AndroidKeyStore>True</AndroidKeyStore>
+		<AndroidSigningKeyStore>myapp.keystore</AndroidSigningKeyStore>
+		<AndroidSigningKeyAlias>key</AndroidSigningKeyAlias>
+		<AndroidSigningKeyPass></AndroidSigningKeyPass>
+		<AndroidSigningStorePass></AndroidSigningStorePass>
 	</PropertyGroup>
 
+	<!--per firebase auth-->
+	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
+		<PackageReference Include="Xamarin.Kotlin.StdLib.Jdk7" Version="1.7.20.1" ExcludeAssets="build;buildTransitive" />
+		<PackageReference Include="Xamarin.Kotlin.StdLib.Jdk8" Version="1.7.20.1" ExcludeAssets="build;buildTransitive" />
+		<GoogleServicesJson Include="google-services.json" />
+	</ItemGroup>
+
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android|AnyCPU'">
-	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+		<EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-android|AnyCPU'">
-	  <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+		<EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\Appicon\appiconprova.svg" Color="#512BD4" />		
+		<MauiIcon Include="Resources\Appicon\appiconprova.svg" Color="#512BD4" />
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" />
 
@@ -55,63 +71,69 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiImage Remove="Resources\Images\green_pinicon.png" />
-	  <MauiImage Remove="Resources\Images\reddot.png" />
-	  <MauiImage Remove="Resources\Images\red_pinicon.png" />
-	  <MauiImage Remove="Resources\Images\tanaicon.png" />
-	  <MauiImage Remove="Resources\Images\yellow_pinicon.png" />
+		<MauiImage Remove="Resources\Images\green_pinicon.png" />
+		<MauiImage Remove="Resources\Images\reddot.png" />
+		<MauiImage Remove="Resources\Images\red_pinicon.png" />
+		<MauiImage Remove="Resources\Images\tanaicon.png" />
+		<MauiImage Remove="Resources\Images\yellow_pinicon.png" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\AppIcon\appiconprova.svg" />
-	  <None Remove="Resources\Images\reddot.png" />
-	  <None Remove="Resources\Raw\Shrek.txt" />
+		<None Remove="Resources\AppIcon\appiconprova.svg" />
+		<None Remove="Resources\Images\reddot.png" />
+		<None Remove="Resources\Raw\Shrek.txt" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Resources\Images\green_pinicon.png" />
-	  <EmbeddedResource Include="Resources\Images\red_pinicon.png" />
-	  <EmbeddedResource Include="Resources\Images\yellow_pinicon.png" />
-	  <EmbeddedResource Include="Resources\Images\reddot.png" />
-	  <EmbeddedResource Include="Resources\Images\tanaicon.png" />
+		<EmbeddedResource Include="Resources\Images\green_pinicon.png" />
+		<EmbeddedResource Include="Resources\Images\red_pinicon.png" />
+		<EmbeddedResource Include="Resources\Images\yellow_pinicon.png" />
+		<EmbeddedResource Include="Resources\Images\reddot.png" />
+		<EmbeddedResource Include="Resources\Images\tanaicon.png" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiIcon Include="Resources\AppIcon\appiconprova.svg" />
+		<MauiIcon Include="Resources\AppIcon\appiconprova.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
-	  <PackageReference Include="Mapsui.Maui" Version="4.0.0-beta.6" />
-	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.2" />
-	  <PackageReference Include="OnScreenSizeMarkup.Maui" Version="2.0.2" />
-	  <PackageReference Include="Plugin.Firebase" Version="1.3.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+		<PackageReference Include="Mapsui.Maui" Version="4.0.0-beta.6" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.2" />
+		<PackageReference Include="OnScreenSizeMarkup.Maui" Version="2.0.2" />
+		<PackageReference Include="Plugin.Firebase" Version="1.3.0" />
+		<PackageReference Include="System.Reactive.Core" Version="5.0.0" />
+		<PackageReference Include="System.Reactive.Linq" Version="5.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\LoginPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\ProfilePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\SettingsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\StartPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
+		<MauiXaml Update="Pages\LoginPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Pages\ProfilePage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Pages\SettingsPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Pages\StartPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Pages\SettingsPage.xaml.cs">
-	    <DependentUpon>SettingsPage.xaml</DependentUpon>
-	  </Compile>
+		<Compile Update="Pages\SettingsPage.xaml.cs">
+			<DependentUpon>SettingsPage.xaml</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
-	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionProjAppHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarProjAppHideInfoBar="True" /></VisualStudio></ProjectExtensions>
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties XamarinHotReloadDebuggerTimeoutExceptionProjAppHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarProjAppHideInfoBar="True" />
+		</VisualStudio>
+	</ProjectExtensions>
 
 </Project>
