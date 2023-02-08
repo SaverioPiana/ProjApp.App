@@ -30,12 +30,12 @@
 	</PropertyGroup>
 	
 	<!--KEYSTORE and '$(Configuration)' == 'Release'-->
-	<PropertyGroup Condition="$(TargetFramework.Contains('-android'))">
+	<PropertyGroup Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == 'Release'">
 		<AndroidKeyStore>True</AndroidKeyStore>
 		<AndroidSigningKeyStore>myapp.keystore</AndroidSigningKeyStore>
 		<AndroidSigningKeyAlias>key</AndroidSigningKeyAlias>
-		<AndroidSigningKeyPass></AndroidSigningKeyPass>
-		<AndroidSigningStorePass></AndroidSigningStorePass>
+		<AndroidSigningKeyPass>sessopazzo</AndroidSigningKeyPass>
+		<AndroidSigningStorePass>sessopazzo</AndroidSigningStorePass>
 	</PropertyGroup>
 
 	<!--per firebase auth-->
@@ -98,11 +98,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+		<PackageReference Include="Genesis.Observables" Version="3.0.0" />
 		<PackageReference Include="Mapsui.Maui" Version="4.0.0-beta.6" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.2" />
 		<PackageReference Include="OnScreenSizeMarkup.Maui" Version="2.0.2" />
 		<PackageReference Include="Plugin.Firebase" Version="1.3.0" />
-		<PackageReference Include="System.Reactive.Core" Version="5.0.0" />
 		<PackageReference Include="System.Reactive.Linq" Version="5.0.0" />
 	</ItemGroup>
 

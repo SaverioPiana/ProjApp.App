@@ -1,7 +1,10 @@
 ﻿using Microsoft.Maui.LifecycleEvents;
+#if ANDROID
 using Plugin.Firebase.Android;
+#endif
 using Plugin.Firebase.Auth;
 using Plugin.Firebase.Shared;
+using ProjApp.Services;
 using ProjApp.ViewModel;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
@@ -32,7 +35,10 @@ public static class MauiProgram
         builder.Services.AddSingleton<ProfilePage>();
         builder.Services.AddTransient<LoginPageViewModel>();
         builder.Services.AddTransient<LoginPage>();
-        
+
+
+        builder.Services.AddSingleton<IAuthService, AuthService>();
+        builder.Services.AddSingleton<IPreferencesService, PreferencesService>();
 
         return builder.Build();
 	}
@@ -40,12 +46,7 @@ public static class MauiProgram
     private static MauiAppBuilder RegisterFirebaseServices(this MauiAppBuilder builder)
     {
         builder.ConfigureLifecycleEvents(events => {
-#if IOS
-            events.AddiOS(iOS => iOS.FinishedLaunching((app, launchOptions) => {
-                CrossFirebase.Initialize(app, launchOptions, CreateCrossFirebaseSettings());
-                return false;
-            }));
-#else
+#if ANDROID
             events.AddAndroid(android => android.OnCreate((activity, state) =>
                 CrossFirebase.Initialize(activity, state, CreateCrossFirebaseSettings())));
 #endif

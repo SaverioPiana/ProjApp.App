@@ -1,15 +1,8 @@
-﻿using Plugin.Firebase.Android.Extensions;
-using Plugin.Firebase.Auth;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
+﻿using Plugin.Firebase.Auth;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace ProjApp.Services
@@ -44,7 +37,7 @@ namespace ProjApp.Services
             return Observable
                 .FromAsync(_ => task)
                 .Do(_currentUserSubject.OnNext)
-                .ToUnit()
+                .Select(_ => Unit.Default) //.ToUnit
                 .Catch<Unit, Exception>(e => (signOutWhenFailed ? SignOut() : Observables.Unit).SelectMany(Observable.Throw<Unit>(e)))
                 .Finally(() => _isSignInRunningSubject.OnNext(false));
         }
@@ -138,8 +131,8 @@ namespace ProjApp.Services
             var settings = new ActionCodeSettings();
             settings.Url = "https://playground-24cec.firebaseapp.com";
             settings.HandleCodeInApp = true;
-            settings.IOSBundleId = "com.tobishiba.playground";
-            settings.SetAndroidPackageName("com.tobishiba.playground", true, "21");
+            settings.IOSBundleId = "com.companyname.projapp";
+            settings.SetAndroidPackageName("com.companyname.projapp", true, "21");
             return settings;
         }
 
