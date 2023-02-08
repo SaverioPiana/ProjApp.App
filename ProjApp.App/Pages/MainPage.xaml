@@ -14,15 +14,15 @@
             <RowDefinition Height=".65*"></RowDefinition>
             <RowDefinition Height=".35*"></RowDefinition>
         </Grid.RowDefinitions>
-        
-        
+
+
         <!--Questa è la mappa:-->
         <Grid Grid.Row="0">
-            <ContentPage Content="{Binding ContentMapView}" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+            <ContentView Content="{Binding ContentMapView}" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
         </Grid>
-        
-        
-        <!--Questa è la tendina:--> 
+
+
+        <!--Questa è la tendina:-->
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="10"></RowDefinition>
@@ -71,9 +71,9 @@
                     Text="Tempo: "
                     TextColor="#5BAFEC"
                     FontSize="22"
-                    VerticalTextAlignment="Start"
+                    VerticalTextAlignment="Center"
                     HorizontalOptions="Start"
-                    HeightRequest="25"
+                    HeightRequest="35"
                     Margin="10,10,0,0"
                 />
             </Grid>
@@ -103,10 +103,5 @@
         </Grid>
 
     </Grid>
-
-
-
-
-
-
+    
 </ContentPage>
