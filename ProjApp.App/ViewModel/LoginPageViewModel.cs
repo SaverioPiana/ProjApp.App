@@ -20,10 +20,16 @@ namespace ProjApp.ViewModel
     {
         public LoginPageViewModel() { }
 
+
+
+        [ObservableProperty]
+        private string username;
+
         [ObservableProperty] 
-        public string username;
-        [ObservableProperty] 
-        public string password;
+        private string password;
+
+        [ObservableProperty]
+        private string ciccioPasticcio;
 
         private bool succesfullLogin = true; ////////per ora true semrpe
         private bool firstTime = true;
@@ -36,7 +42,7 @@ namespace ProjApp.ViewModel
             Providers = new FirebaseAuthProvider[]
             {
                 // Add and configure individual providers
-                new GoogleProvider().AddScopes("email"),
+                new GoogleProvider(),
                 new EmailProvider()
                 
             },
@@ -48,8 +54,19 @@ namespace ProjApp.ViewModel
         {
             try
             {
+                
                 var client = new FirebaseAuthClient(config);
-                await client.CreateUserWithEmailAndPasswordAsync(Username, Password);
+                await client.SignInWithRedirectAsync(FirebaseProviderType.Google, async uri =>
+                {
+                    CiccioPasticcio = uri;
+                    await Task.Delay(6000);
+                    string result = await Application.Current.MainPage.DisplayPromptAsync("uri redirect?",
+                    $"vai qui {uri} e incolla il link di redirect", "Conferma", "Annulla",
+                    "red link");
+                    return result;
+                });
+                UserCredential user = await client.CreateUserWithEmailAndPasswordAsync(Username, Password);
+                
                 
             }
             catch(Exception ex)

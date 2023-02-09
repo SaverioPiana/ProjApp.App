@@ -17,6 +17,7 @@
             <RowDefinition Height=".2*"></RowDefinition>
             <RowDefinition Height=".15*"></RowDefinition>
             <RowDefinition Height=".15*"></RowDefinition>
+            <RowDefinition Height=".15*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
@@ -54,6 +55,7 @@
             VerticalOptions="Center" 
             HorizontalOptions="Center"
         />
+        
 
         <Entry
             Grid.Row="4"
@@ -75,9 +77,18 @@
             HorizontalOptions="Center"
             IsPassword="True"
         />
+        <Entry
+            Grid.Row="6"
+            Text="{Binding CiccioPasticcio}"
+            x:Name="url"
+            Placeholder="Username                                             "
+            TextColor="#5BAFEC"
+            FontAttributes="Bold"
+            HorizontalOptions="Center"
+        />
 
         <Button
-            Grid.Row="6"
+            Grid.Row="7"
             Text="SIGN IN"
             Command="{Binding RegisterUserCommand}"
             BackgroundColor="#5BAFEC"
