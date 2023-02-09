@@ -6,27 +6,27 @@
              x:DataType="viewmodel:StartPageViewModel"
              Title="StartPage">
 
-    <Grid>
+    <Grid Margin="5" RowSpacing="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"></RowDefinition>
-            <RowDefinition Height="70"></RowDefinition>
-            <RowDefinition Height="80"></RowDefinition>
-            <RowDefinition Height="80"></RowDefinition>
-            <RowDefinition Height="80"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="60"></RowDefinition>
-            <RowDefinition Height="60"></RowDefinition>
-            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="Auto" x:Name="Row0"></RowDefinition>
+            <RowDefinition Height="Auto" x:Name="Row1"></RowDefinition>
+            <RowDefinition Height="Auto" x:Name="Row2"></RowDefinition>
+            <RowDefinition Height="Auto" x:Name="Row3"></RowDefinition>
+            <RowDefinition Height="Auto" x:Name="Row4"></RowDefinition>
+            <RowDefinition Height="*" x:Name="LobbyBorderRow"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="0"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Rectangle
             Grid.Row="0"
+            Margin="0"
             Fill="#5BAFEC"
             WidthRequest="400"
             HeightRequest="25"
             HorizontalOptions="Start"
-            
-        />
+         />
 
         <Label
             Grid.Row="1"
@@ -34,6 +34,7 @@
             FontAttributes="Bold"
             FontSize="24"
             Margin="15,20,0,0"
+            IsVisible="{Binding CanJoin}"
         />
         
         <Label
@@ -41,12 +42,13 @@
             Text="Per giocare hai bisogno di una lobby"
             FontSize="20"
             Margin="15"
+            IsVisible="{Binding CanJoin}"
         />
 
         <Grid Grid.Row="3" x:Name="CreateLobby" IsVisible="{Binding CanJoin}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width=".6*"></ColumnDefinition>
-                <ColumnDefinition Width=".4*"></ColumnDefinition>
+                <ColumnDefinition Width=".8*"></ColumnDefinition>
+                <ColumnDefinition Width=".2*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <Label 
@@ -59,6 +61,8 @@
                 IsVisible="{Binding CanJoin}"
             />
 
+            
+            <!--Clicked="OnClickedCreaPartitaOrJoin" LHO LEVATO PERCHE ANCORA NON FUNZIONA, GUARDA STARTPAGE.CS-->
             <Button
                 Grid.Column="1"
                 Command="{Binding CreateLobbyCommand}"
@@ -98,7 +102,11 @@
             <Entry
                 Grid.Column="1"
                 x:Name="CodiceLobby"
-                Placeholder="CODICE"
+                Placeholder="     CODICE"
+                FontSize="20"
+                PlaceholderColor="#5BAFEC"
+                Opacity="0.8"
+                MinimumWidthRequest="300"
                 TextColor="#5BAFEC"
                 ReturnCommand="{Binding JoinLobbyCommand}"
                 ReturnCommandParameter="{x:Reference CodiceLobby}"
@@ -107,13 +115,13 @@
                 IsTextPredictionEnabled="False"
                 IsSpellCheckEnabled="False"
                 VerticalOptions="Center"
-                HorizontalOptions="Start"
+                HorizontalOptions="Center"
                 IsEnabled="{Binding CanJoin}"
             />
 
         </Grid>
 
-        <Border  Grid.Row="5" Padding="5" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="5"  StrokeThickness="2.5"
+        <Border  x:Name="LobbyBorder"  Grid.Row="5" Padding="5" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="5"  StrokeThickness="2.5"
                >
             <Border.Shadow>
                 <Shadow Brush="Black"
@@ -178,8 +186,9 @@
             Grid.Row="6"
             Text="Avvia partita!"
             HeightRequest="50"
-            WidthRequest="180"
+            WidthRequest="344"
             VerticalOptions="Center"
+            HorizontalOptions="Center"
             Command="{Binding AvviaPartitaCommand}"
             IsVisible="{Binding HasCreated}"
         />
@@ -189,14 +198,15 @@
             Text="Lascia lobby"
             BackgroundColor="#5BAFEC"
             HeightRequest="50"
-            WidthRequest="180"
+            WidthRequest="344"
             VerticalOptions="Center"
+            HorizontalOptions="Center"
             Command="{Binding DeleteLobbyCommand}"
             IsVisible="{Binding HasCreated}"
         />
 
         <Button
-            Grid.Row="8"
+            Grid.Row="7"
             Text="Lascia lobby"
             BackgroundColor="#5BAFEC"
             HeightRequest="50"
