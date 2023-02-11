@@ -23,6 +23,7 @@ public partial class StartPage : ContentPage
         base.OnAppearing();
         WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar"));
     }
+#endif
 
     //PIU O MENO FUNZIONA, MI MANCA UN PEZZO    
 
@@ -41,6 +42,5 @@ public partial class StartPage : ContentPage
     //    //Row3.Height = GridLength.Auto;
     //    //Row4.Height = GridLength.Auto;
     //}
-#endif
 
 }

@@ -6,7 +6,7 @@
              x:DataType="viewmodel:StartPageViewModel"
              Title="StartPage">
 
-    <Grid Margin="5" RowSpacing="10">
+    <Grid Margin="0" RowSpacing="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" x:Name="Row0"></RowDefinition>
             <RowDefinition Height="Auto" x:Name="Row1"></RowDefinition>
@@ -26,6 +26,7 @@
             WidthRequest="400"
             HeightRequest="25"
             HorizontalOptions="Start"
+            VerticalOptions="Start"
          />
 
         <Label
