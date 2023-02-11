@@ -59,12 +59,13 @@ namespace ProjApp.ViewModel
 
             var userCredential = await client.SignInWithRedirectAsync(FirebaseProviderType.Github, async uris =>
             {
-                WebAuthenticatorResult authResult = await WebAuthenticator.Default.AuthenticateAsync(
-                    new Uri(uris),
-                    new Uri("napp://"));
+                //WebAuthenticatorResult authResult = await WebAuthenticator.Default.AuthenticateAsync(
+                //    new Uri(uris),
+                //    new Uri("napp://"));
+                //
+                //string accessToken = authResult?.AccessToken;
 
-                string accessToken = authResult?.AccessToken;
-
+                
                 return string.Empty;
 
                 //return credential
