@@ -25,7 +25,7 @@ namespace ProjApp.ViewModel
         [ObservableProperty]
         private string username;
 
-        [ObservableProperty] 
+        [ObservableProperty]
         private string password;
 
         [ObservableProperty]
@@ -42,73 +42,94 @@ namespace ProjApp.ViewModel
             Providers = new FirebaseAuthProvider[]
             {
                 // Add and configure individual providers
-                new GoogleProvider(),
-                new EmailProvider()
-                
+                new GoogleProvider().AddScopes("email"),
+                new EmailProvider(),
+                new GithubProvider().AddScopes("user:email")
+
             },
-            
+
         };
 
         [RelayCommand]
         public async void RegisterUser()
         {
-            try
+
+
+            var client = new FirebaseAuthClient(config);
+
+            var userCredential = await client.SignInWithRedirectAsync(FirebaseProviderType.Github, async uris =>
             {
-                
-                var client = new FirebaseAuthClient(config);
-                await client.SignInWithRedirectAsync(FirebaseProviderType.Google, async uri =>
+                WebAuthenticatorResult authResult = await WebAuthenticator.Default.AuthenticateAsync(
+                    new Uri(uris),
+                    new Uri("napp://"));
+
+                string accessToken = authResult?.AccessToken;
+
+                return string.Empty;
+
+                //return credential
+            });
+
+            //    try
+            //    {
+
+            //        var client = new FirebaseAuthClient(config);
+            //        await client.SignInWithRedirectAsync(FirebaseProviderType.Google, async uri =>
+            //        {
+            //            CiccioPasticcio = uri;
+            //            await Task.Delay(6000);
+            //            string result = await Application.Current.MainPage.DisplayPromptAsync("uri redirect?",
+            //            $"vai qui {uri} e incolla il link di redirect", "Conferma", "Annulla",
+            //            "red link");
+            //            return result;
+            //        });
+            //        UserCredential user = await client.CreateUserWithEmailAndPasswordAsync(Username, Password);
+
+
+            //    }
+            //    catch(Exception ex)
+            //    {
+
+            //    }
+            //}
+
+
+            [RelayCommand]
+            Task NavigateToStartPage()
+            {
+                if (succesfullLogin)
                 {
-                    CiccioPasticcio = uri;
-                    await Task.Delay(6000);
-                    string result = await Application.Current.MainPage.DisplayPromptAsync("uri redirect?",
-                    $"vai qui {uri} e incolla il link di redirect", "Conferma", "Annulla",
-                    "red link");
-                    return result;
-                });
-                UserCredential user = await client.CreateUserWithEmailAndPasswordAsync(Username, Password);
-                
-                
-            }
-            catch(Exception ex)
-            {
-
-            }
-        }
-
-
-        [RelayCommand]
-        Task NavigateToStartPage() {
-            if (succesfullLogin)
-            {
-                if(Shell.Current == null) 
-                {
-                    Application.Current.MainPage = new AppShell();
+                    if (Shell.Current == null)
+                    {
+                        Application.Current.MainPage = new AppShell();
+                    }
+                    Shell.Current.GoToAsync($"//{nameof(ProfilePage)}");
                 }
-                Shell.Current.GoToAsync($"//{nameof(ProfilePage)}");
-            }
 
-            //SOLO LA PRIMA VOLTA (da login -> profile)
-            //passiamo lo username alla pagina profilo solo se ha gia interagito con lo user per il nickmname
-            if (firstTime)
-            {
-                WeakReferenceMessenger.Default.Register<ReadyToBuildUserMessage>(this, (r, m) =>
+                //SOLO LA PRIMA VOLTA (da login -> profile)
+                //passiamo lo username alla pagina profilo solo se ha gia interagito con lo user per il nickmname
+                if (firstTime)
+                {
+                    WeakReferenceMessenger.Default.Register<ReadyToBuildUserMessage>(this, (r, m) =>
+                    {
+                        WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
+                    });
+                }
+                else //la prifle page è gia stata creata ed è pronta a ricevere il nuovo username senza aspettare
                 {
                     WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
-                });
-            }
-            else //la prifle page è gia stata creata ed è pronta a ricevere il nuovo username senza aspettare
-            {
-                WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
-            }
+                }
 
-            return Task.CompletedTask;
+                return Task.CompletedTask;
+            }
         }
-    };
 
-    internal class ReadyToBuildUserMessage : ValueChangedMessage<string>
-    {
-        public ReadyToBuildUserMessage(string value) : base(value)
+        internal class ReadyToBuildUserMessage : ValueChangedMessage<string>
         {
+            public ReadyToBuildUserMessage(string value) : base(value)
+            {
+            }
         }
     }
 }
+

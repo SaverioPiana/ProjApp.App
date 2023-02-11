@@ -62,7 +62,7 @@ namespace ProjApp.ViewModel
                 }
                 else Nick = retrievedNick; //funzionera INotifyPropertyChanged??? ----> SI
 
-                WeakReferenceMessenger.Default.Send<ReadyToBuildUserMessage>(new("ready"));
+                WeakReferenceMessenger.Default.Send<LoginPageViewModel.ReadyToBuildUserMessage>(new("ready"));
             }
             else Console.WriteLine("///////////////////NON STAI CHIAMANDO QUESTA SETNICK() DAL MAIN THREAD!!!!");
         }
