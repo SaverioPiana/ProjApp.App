@@ -59,17 +59,28 @@ namespace ProjApp.ViewModel
 
             var userCredential = await client.SignInWithRedirectAsync(FirebaseProviderType.Github, async uris =>
             {
+                try
+                {
+                    Uri uri = new Uri(uris);
+                    await Browser.Default.OpenAsync(uri, BrowserLaunchMode.External);
+                }
+                catch (Exception ex)
+                {
+                    // An unexpected error occurred. No browser may be installed on the device.
+                }
+
+
                 //WebAuthenticatorResult authResult = await WebAuthenticator.Default.AuthenticateAsync(
                 //    new Uri(uris),
-                //    new Uri("napp://"));
-                //
-                //string accessToken = authResult?.AccessToken;
+                //    new Uri("https://nascondapp.firebaseapp.com/__/auth/handler"));
 
-                
-                return string.Empty;
+                //string accessToken = authResult?.AccessToken;
+                await Task.Delay(15000);
+                return Password;
 
                 //return credential
             });
+            userCredential.AuthCredential.ToString();
 
             //    try
             //    {
