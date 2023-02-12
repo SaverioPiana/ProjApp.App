@@ -60,10 +60,10 @@ namespace ProjApp.ViewModel
         private int updateCtr = 0;
         private int tap_counter;
 
-        //messaggio di richiesta della mapview
-        public class GetMapView : RequestMessage<MapView> {}
-
-        public MainPageViewModel() {}
+        public MainPageViewModel() 
+        {
+            Constructor();
+        }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////
         ///                             |                                   |                          ///
@@ -78,21 +78,16 @@ namespace ProjApp.ViewModel
             //runniamo il check dei permessi sul main thread
             MainThread.BeginInvokeOnMainThread(CheckANDSetPermission);
 
-            if (FIRST_CREATION)
-            {
-                //ORA LA MAPVIEW NON è STATICA, QUINDI LA DIAMO A CHI LA CHIEDE
-                WeakReferenceMessenger.Default.Register<GetMapView>(this, (r, m) =>
-                {
-                    m.Reply(Mapview);
-                });
-                FIRST_CREATION = false;
-            }
+            Mapview = new();
+
             MapInitializer();
         }
 
         [RelayCommand]
         public async Task AbbandonaPartita()
         {
+            //////////////////////
+            //forse non va fatto??
             MyUser.CancelPositionRequest();
             if (MyUser.isAdmin)
             {
@@ -100,10 +95,15 @@ namespace ProjApp.ViewModel
                 //event subscription
                 GameLogic.UsersOutside -= onUserOutside;
             }
-            foreach(var subscription in serverRegistrations)
+            foreach (var subscription in serverRegistrations)
             {
                 subscription.Dispose();
             }
+            //forse non va fatto??
+            /////////////////////
+
+            MyUser.currPartita.area = new();
+
             MyUser.currPartita.LeaveLobby();
             tap_counter = 0;
             WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("lobbyHasBeenDeleted", "noPar"));
@@ -160,8 +160,6 @@ namespace ProjApp.ViewModel
 
         public void MapInitializer()
         {
-            Mapview = new();
-            
             MPoint initpos = new MPoint(MyUser.user.Position.Longitude,
                 MyUser.user.Position.Latitude);
             Mapview.MyLocationLayer.UpdateMyLocation(initpos.ToMaui());
