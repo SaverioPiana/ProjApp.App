@@ -78,8 +78,6 @@ namespace ProjApp.ViewModel
             //runniamo il check dei permessi sul main thread
             MainThread.BeginInvokeOnMainThread(CheckANDSetPermission);
 
-            MapInitializer();
-
             if (FIRST_CREATION)
             {
                 //ORA LA MAPVIEW NON è STATICA, QUINDI LA DIAMO A CHI LA CHIEDE
@@ -89,11 +87,13 @@ namespace ProjApp.ViewModel
                 });
                 FIRST_CREATION = false;
             }
+            MapInitializer();
         }
 
         [RelayCommand]
         public async Task AbbandonaPartita()
         {
+            MyUser.CancelPositionRequest();
             if (MyUser.isAdmin)
             {
                 Mapview.SingleTap -= creaPin;
@@ -106,6 +106,7 @@ namespace ProjApp.ViewModel
             }
             MyUser.currPartita.LeaveLobby();
             tap_counter = 0;
+            Mapview = null;
             WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("lobbyHasBeenDeleted", "noPar"));
             await AppShell.Current.GoToAsync("..", false);
             //var r = Shell.Current.Navigation.NavigationStack;
@@ -160,8 +161,8 @@ namespace ProjApp.ViewModel
 
         public void MapInitializer()
         {
-            Mapview = new MapView();
-
+            Mapview = new();
+            
             MPoint initpos = new MPoint(MyUser.user.Position.Longitude,
                 MyUser.user.Position.Latitude);
             Mapview.MyLocationLayer.UpdateMyLocation(initpos.ToMaui());

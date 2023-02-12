@@ -77,14 +77,14 @@ namespace ProjApp.MapEl.GPS
                         user.Position = location;
                         SaveLastPositionOnFile(location);
                         Console.WriteLine($"GET_POSITION::: Accuracy: {location.Accuracy} Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
-                    } else {
-                        MainThread.BeginInvokeOnMainThread(() => 
-                            {
-                                Microsoft.Maui.Controls.Application.Current.MainPage.DisplayAlert("Ao?",
-                                "Pare che il tuo GPS prenda molto male",
-                                "Prometto di uscire dal bunker");
-                            });
-                    }
+                    } //else {
+                    //    MainThread.BeginInvokeOnMainThread(() => 
+                    //        {
+                    //            Microsoft.Maui.Controls.Application.Current.MainPage.DisplayAlert("Ao?",
+                    //            "Pare che il tuo GPS prenda molto male",
+                    //            "Prometto di uscire dal bunker");
+                    //        });
+                   // }
 
                 }
                 // Catch one of the following exceptions:
@@ -102,7 +102,7 @@ namespace ProjApp.MapEl.GPS
                 }
             
         }
-        private static void CancelRequest()
+        public static void CancelPositionRequest()
         {
             if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
                 _cancelTokenSource.Cancel();
