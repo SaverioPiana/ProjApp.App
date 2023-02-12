@@ -47,12 +47,12 @@ namespace ProjApp.ViewModel
         
                                              
         public bool HasJoined => (!HasCreated && !CanJoin) ;
-           
 
+        private async Task NavigateToMainPage() => await AppShell.Current.GoToAsync(nameof(MainPage), false);
 
 
         ////////////////////////  CREATING  ////////////////////////////////// 
-        
+
         [RelayCommand]
         public void CreateLobby()
         {
@@ -65,11 +65,12 @@ namespace ProjApp.ViewModel
         }
 
         [RelayCommand]
-        public void AvviaPartita()
+        public async Task AvviaPartita()
         {
             if (HasCreated)
             {
                 MyUser.currPartita.StartGame();
+                await NavigateToMainPage();
             }
             else Application.Current.MainPage.DisplayAlert("Are u an hacker?",
                 "non puoi avviare una partita se non sei l'admin, come hai clickato sto pulsante???",
@@ -149,7 +150,7 @@ namespace ProjApp.ViewModel
             }
         }
 
-        public void DisplayCorrectUI(UI_Event uiEvent)
+        public async Task DisplayCorrectUI(UI_Event uiEvent)
         {
             switch(uiEvent.EventType)
             {

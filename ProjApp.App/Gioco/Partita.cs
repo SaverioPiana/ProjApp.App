@@ -182,7 +182,6 @@ namespace ProjApp.Gioco
             MyUser.currPartita.Players.Clear();
 
             MyUser.SEND_POSITION = false;
-
         }
 
         public void StartGame()
@@ -203,12 +202,13 @@ namespace ProjApp.Gioco
                 {
                     Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
                     MyUser.user.IsCercatore = true;
-                    Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+                    //AppShell.Current.GoToAsync(nameof(MainPage));
+                    //var r = Shell.Current.Navigation.NavigationStack;
                 }
                 else
                 {
                     Console.WriteLine("GameStarted message from server, non sei il cacciatore");
-                    Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+                    //AppShell.Current.GoToAsync(nameof(MainPage));
                 }
             });
         }

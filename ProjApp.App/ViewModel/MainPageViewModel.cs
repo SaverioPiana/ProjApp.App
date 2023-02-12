@@ -28,6 +28,8 @@ namespace ProjApp.ViewModel
         private MapView mapview;
 
         private static bool FIRST_CREATION = true;
+        private static List<IDisposable> serverRegistrations = new();
+
 
         private static object lockPreMatchPins = new object();
         private static IList<Pin> preMatchPins = new List<Pin>();
@@ -61,10 +63,8 @@ namespace ProjApp.ViewModel
         //messaggio di richiesta della mapview
         public class GetMapView : RequestMessage<MapView> {}
 
-        public MainPageViewModel()
-        {
-            Constructor();
-        }
+        public MainPageViewModel() {}
+
         //////////////////////////////////////////////////////////////////////////////////////////////////
         ///                             |                                   |                          ///
         ///                             |            BUG DI MAUI            |                          ///
@@ -92,12 +92,23 @@ namespace ProjApp.ViewModel
         }
 
         [RelayCommand]
-        public void AbbandonaPartita()
+        public async Task AbbandonaPartita()
         {
+            if (MyUser.isAdmin)
+            {
+                Mapview.SingleTap -= creaPin;
+                //event subscription
+                GameLogic.UsersOutside -= onUserOutside;
+            }
+            foreach(var subscription in serverRegistrations)
+            {
+                subscription.Dispose();
+            }
             MyUser.currPartita.LeaveLobby();
             tap_counter = 0;
             WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("lobbyHasBeenDeleted", "noPar"));
-            AppShell.Current.GoToAsync($"//{nameof(StartPage)}");
+            await AppShell.Current.GoToAsync("..", false);
+            //var r = Shell.Current.Navigation.NavigationStack;
         }
 
         //forse va messa una condizione in modo tale che non runni sempre all avvio, tipo salvarci un bool su un file boh
@@ -149,7 +160,7 @@ namespace ProjApp.ViewModel
 
         public void MapInitializer()
         {
-            Mapview = new();
+            Mapview = new MapView();
 
             MPoint initpos = new MPoint(MyUser.user.Position.Longitude,
                 MyUser.user.Position.Latitude);
@@ -214,13 +225,15 @@ namespace ProjApp.ViewModel
         }
         private void riceviOggettiDiGioco()
         {
-            Connessione.con.On<string, string>("RiceviOggettiDiGioco", (coordarea, tana) =>
-            {
-                SerializableCoordinate[] ca = JsonSerializer.Deserialize<SerializableCoordinate[]>(coordarea);
-                SerializableCoordinate ct = JsonSerializer.Deserialize<SerializableCoordinate>(tana);
-                MyUser.currPartita.area.drawArea(ca, Mapview);
-                MyUser.currPartita.tana = new(ct, Mapview);
-            });
+            serverRegistrations.Add( 
+                Connessione.con.On<string, string>("RiceviOggettiDiGioco", (coordarea, tana) =>
+                    {
+                        SerializableCoordinate[] ca = JsonSerializer.Deserialize<SerializableCoordinate[]>(coordarea);
+                        SerializableCoordinate ct = JsonSerializer.Deserialize<SerializableCoordinate>(tana);
+                        MyUser.currPartita.area.drawArea(ca, Mapview);
+                        MyUser.currPartita.tana = new(ct, Mapview);
+                    })
+            );
         }
 
         public void creaPin(object sender, Mapsui.UI.TappedEventArgs e)
@@ -282,58 +295,60 @@ namespace ProjApp.ViewModel
 
         private void aggiungiAltriGiocatoriAllaMappa()
         {
-            Connessione.con.On<string>("PositionReceived", (receiveduser) =>
-            {
-                SerializableUser user = JsonSerializer.Deserialize<SerializableUser>(receiveduser);
-                Console.WriteLine($"/////////Posizione ricevuta da:{user.UserID} , " +
-                    $"lat:{user.Position.Latitude}, lon: {user.Position.Longitude}");
-                if (user.UserID != MyUser.user.UserID)
-                {
-                    //bool trovato = false; //ho gia tutti i players
-                    Position position = new(user.Position.Latitude, user.Position.Longitude);
-                    //se trovo l'utente aggiorno la sua posizione
-                    foreach (Pin p in Mapview.Pins)
+            serverRegistrations.Add( 
+                Connessione.con.On<string>("PositionReceived", (receiveduser) =>
                     {
-                        if (user.UserID.Equals(p.Label))
+                        SerializableUser user = JsonSerializer.Deserialize<SerializableUser>(receiveduser);
+                        Console.WriteLine($"/////////Posizione ricevuta da:{user.UserID} , " +
+                            $"lat:{user.Position.Latitude}, lon: {user.Position.Longitude}");
+                        if (user.UserID != MyUser.user.UserID)
                         {
-                            Interpolate(p, position); //animazione piu fluida
+                            //bool trovato = false; //ho gia tutti i players
+                            Position position = new(user.Position.Latitude, user.Position.Longitude);
+                            //se trovo l'utente aggiorno la sua posizione
+                            foreach (Pin p in Mapview.Pins)
+                            {
+                                if (user.UserID.Equals(p.Label))
+                                {
+                                    Interpolate(p, position); //animazione piu fluida
 
-                            //aggiorno lo user nella lista della partita
-                            //ma che sto facendo AIUTO!
-                            User alreadyIn = MyUser.currPartita.Players.Where((x) =>
-                            x.UserID.Equals(p.Label)).First();
+                                    //aggiorno lo user nella lista della partita
+                                    //ma che sto facendo AIUTO!
+                                    User alreadyIn = MyUser.currPartita.Players.Where((x) =>
+                                    x.UserID.Equals(p.Label)).First();
 
-                            alreadyIn.Position = new(position.Latitude, position.Longitude);
-                            alreadyIn.IsCercatore = user.IsCercatore;
+                                    alreadyIn.Position = new(position.Latitude, position.Longitude);
+                                    alreadyIn.IsCercatore = user.IsCercatore;
+                                }
+                            }
+                            //non serve piu aggiungere perche in toeria non puo entrare gente nuova se la partita è in corso
+
+                            //altrimenti ne creo uno nuovo(di pin)
+                            //if (!trovato)
+                            //{
+                            //    Pin userPin = new Pin(mapView)
+                            //    {
+                            //        Label = user.UserID,
+                            //        Position = position,
+                            //        Type = PinType.Icon,
+                            //        Icon = user.UserIcon,
+                            //        Scale = 0.4F
+                            //    };
+                            //    mapView.Pins.Add(userPin);
+
+                            //    //creo loggetto user e lo aggiungo alla lista dei players nella partita
+
+                            //    User justReceived = new(user.Nickname, user.UserID, new(position.Latitude, position.Longitude))
+                            //    {
+                            //        UserPin = userPin
+                            //    };
+
+                            //    MyUser.currPartita.Players.Add(justReceived);
+
+                            //}
                         }
-                    }
-                    //non serve piu aggiungere perche in toeria non puo entrare gente nuova se la partita è in corso
-
-                    //altrimenti ne creo uno nuovo(di pin)
-                    //if (!trovato)
-                    //{
-                    //    Pin userPin = new Pin(mapView)
-                    //    {
-                    //        Label = user.UserID,
-                    //        Position = position,
-                    //        Type = PinType.Icon,
-                    //        Icon = user.UserIcon,
-                    //        Scale = 0.4F
-                    //    };
-                    //    mapView.Pins.Add(userPin);
-
-                    //    //creo loggetto user e lo aggiungo alla lista dei players nella partita
-
-                    //    User justReceived = new(user.Nickname, user.UserID, new(position.Latitude, position.Longitude))
-                    //    {
-                    //        UserPin = userPin
-                    //    };
-
-                    //    MyUser.currPartita.Players.Add(justReceived);
-
-                    //}
-                }
-            });
+                    })
+                );
         }
 
         //updates the position once

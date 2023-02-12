@@ -23,11 +23,6 @@ public partial class MainPage : ContentPage
         BindingContext = viewModel;
     }
 
-    protected override bool OnBackButtonPressed()
-    {
-        return true;
-    }
-
     protected override void OnAppearing()
     {
         (BindingContext as MainPageViewModel).Constructor();

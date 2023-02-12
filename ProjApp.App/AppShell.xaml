@@ -7,31 +7,29 @@
     Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False"
     >
-    
+
     <ShellContent
         ContentTemplate="{DataTemplate local:LoginPage}"
         Route="LoginPage"
     />
-    
-    <ShellContent
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage"
-    />
 
     <TabBar>
+        
+        <Tab Route="ProfilePage"
+             Icon="profile_icon.png">
+            <ShellContent
+                ContentTemplate="{DataTemplate local:ProfilePage}"
+            />
 
-        <ShellContent
-            ContentTemplate="{DataTemplate local:ProfilePage}"
-            Route= "ProfilePage"
-            Icon="profile_icon.png"
-        />
-
-        <ShellContent
-            ContentTemplate="{DataTemplate local:StartPage}"
-            Route= "StartPage" 
-            Icon="play_icon.png"
-        />
-
+        </Tab>
+        
+        <Tab Route="StartPage"
+             Icon="play_icon.png">
+            <ShellContent
+                ContentTemplate="{DataTemplate local:StartPage}"
+            />
+        </Tab>
+        
     </TabBar>
 
 

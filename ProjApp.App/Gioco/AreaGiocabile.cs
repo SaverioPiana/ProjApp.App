@@ -69,7 +69,7 @@ namespace ProjApp.Gioco
 
         public void drawArea(Coordinate[] c, MapView mv)
         {
-            mv.Map.Layers.Add(CustomLayerExtensions.CreatePoligonoLayer(NOME_LAYER_AREA, c, stileArea));
+            mv?.Map?.Layers.Add(CustomLayerExtensions.CreatePoligonoLayer(NOME_LAYER_AREA, c, stileArea));
         }
 
         public void drawArea(SerializableCoordinate[] c, MapView mv)
@@ -81,7 +81,7 @@ namespace ProjApp.Gioco
                 lc.Add(new Coordinate(c2.X, c2.Y));
             }
 
-            mv.Map.Layers.Add(CustomLayerExtensions.CreatePoligonoLayer("AreaDiGioco", lc.ToArray(), stileArea));
+            mv?.Map?.Layers.Add(CustomLayerExtensions.CreatePoligonoLayer("AreaDiGioco", lc.ToArray(), stileArea));
 
         }
 

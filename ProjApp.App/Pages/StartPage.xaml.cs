@@ -11,19 +11,20 @@ namespace ProjApp;
 
 public partial class StartPage : ContentPage 
 {
-	public StartPage(StartPageViewModel viewModel)
+    public StartPage() { }
+    public StartPage(StartPageViewModel viewModel)
 	{
 		InitializeComponent();
 		BindingContext= viewModel;
 	}
 
-#if ANDROID
     protected override void OnAppearing()
     {
         base.OnAppearing();
+        #if ANDROID
         WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar"));
+        #endif
     }
-#endif
 
     //PIU O MENO FUNZIONA, MI MANCA UN PEZZO    
 

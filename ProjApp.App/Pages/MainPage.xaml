@@ -5,7 +5,7 @@
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:MainPageViewModel"
              Shell.TabBarIsVisible="False"
-             Shell.NavBarIsVisible="False"
+             
              Title="MainPage"
              >
 
