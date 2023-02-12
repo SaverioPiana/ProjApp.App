@@ -14,11 +14,12 @@ public partial class LoginPage : ContentPage
         BindingContext = viewModel;
     }
 
-    #if ANDROID
     protected override void OnAppearing()
     {
         base.OnAppearing();
+        #if ANDROID
         WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar")); 
+        #endif
+        (BindingContext as LoginPageViewModel).Constructor();
     }
-    #endif
 }

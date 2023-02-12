@@ -14,10 +14,10 @@ namespace ProjApp.ViewModel
         public SettingsPageViewModel() { }
 
         [RelayCommand]
-        Task NavigateToLoginPage() => Shell.Current.GoToAsync($"//{nameof(LoginPage)}?Username={string.Empty}&Password={string.Empty}", false);
+        private async Task NavigateToLoginPage() => await AppShell.Current.GoToAsync($"//{nameof(LoginPage)}", false);
 
         [RelayCommand]
-        Task NavigateToProfilePage() => Shell.Current.GoToAsync("..",true);
+        private async Task NavigateToProfilePage() => await AppShell.Current.GoToAsync("..",true);
 
     }
 }

@@ -1,18 +1,8 @@
-﻿using Android.Text;
-using Mapsui;
+﻿using Mapsui;
 using Mapsui.Nts.Extensions;
 using Mapsui.Projections;
-using Mapsui.UI.Maui.Extensions;
 using NetTopologySuite.Geometries;
 using ProjApp.MapEl.GPS;
-using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using static Mapsui.Rendering.Skia.Functions.ClippingFunctions;
 using Location = Microsoft.Maui.Devices.Sensors.Location;
 using Point = NetTopologySuite.Geometries.Point;
 

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using ProjApp.MapEl;
 using ProjApp.MapEl.GPS;
 using ProjApp.MapEl.Serializable;
+using ProjApp.ViewModel;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
@@ -19,7 +20,7 @@ namespace ProjApp.Gioco
 
         private string cod_partita;
         
-        private int tap_counter = 0;
+        //private int tap_counter = 0;
         public Tana tana;
 
         private string meJson;
@@ -80,19 +81,6 @@ namespace ProjApp.Gioco
             Task.Run(RemoveUserFromListAndPins);
             
             WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("userHasJoinedEvent", MyUser.currPartita.Cod_partita));
-
-            //se sei l'admin crei l'area
-            if (MyUser.isAdmin)
-            {
-                OurMapController.mapView.SingleTap += creaPin;
-                //event subscription
-                GameLogic.UsersOutside += onUserOutside;
-            }
-            //senno' ricevi gli oggetti di gioco
-            else
-            {
-                Task.Run(riceviOggettiDiGioco);
-            }
         }
 
         public void RemoveUserFromListAndPins()
@@ -105,7 +93,7 @@ namespace ProjApp.Gioco
                     if (p.UserID.Equals(userId))
                     {
                         MyUser.currPartita.Players.Remove(p);
-                        OurMapController.PreMatchPins.Remove(p.UserPin);
+                        MainPageViewModel.PreMatchPins.Remove(p.UserPin);
                         break;
                     }
                 }
@@ -132,7 +120,7 @@ namespace ProjApp.Gioco
             };
 
             //AGGIUNGO IL PIN AI PIN PREPARTITA (verranno caricati quando crei la mapview)
-            OurMapController.PreMatchPins.Add(userPin);
+            MainPageViewModel.PreMatchPins.Add(userPin);
 
             //creo loggetto user e lo aggiungo alla lista dei players nella partita
 
@@ -190,7 +178,7 @@ namespace ProjApp.Gioco
         {
             MyUser.isAdmin = false;
             //RIMUOVO I PIN DAI PIN PREPARTITA
-            OurMapController.PreMatchPins.Clear();
+            MainPageViewModel.PreMatchPins.Clear();
             MyUser.currPartita.Players.Clear();
 
             MyUser.SEND_POSITION = false;
@@ -224,84 +212,6 @@ namespace ProjApp.Gioco
                 }
             });
         }
-        //event handler
-        private void onUserOutside(object sender, List<User> UO)
-        {
-            tap_counter = 0;
-            area = new();
-            OurMapController.mapView.Map.Layers.Remove(
-                OurMapController.mapView.Map.Layers.Single(x => x.Name.Equals( AreaGiocabile.NOME_LAYER_AREA ))
-                );
-            StringBuilder s = new();
-            UO.ForEach(u => s.Append(u.UserID + ", "));
-            Console.WriteLine($"{s} sono fuori dall' area");
-        }
-        private void creaPin(object sender, Mapsui.UI.TappedEventArgs e)
-        {
-            tap_counter++;
-            // Get the coordinates of the tap
-            MPoint worldPosition = OurMapController.mapView.Viewport.ScreenToWorld(e.ScreenPosition);
-            switch (tap_counter){
-                case <6:
-                    area.puntoBordo(worldPosition);
-                    break;
-                case 6:
-                    area.creaArea();
-                    GameLogic.whoOutsideTheArea();
-                    break;
-                case 7:
-                    this.tana = new(worldPosition);
-                    if (GameLogic.IsInsideTheArea(area.bordi, worldPosition))
-                    {
-                        tana.drawArea();
-                        inviaOggettiDiGioco();
-                        
-                        StartGame();
-                    }
-                    else tap_counter--;
-                    break;
-            };
- 
-        }
-
-        private void riceviOggettiDiGioco()
-        {
-            Connessione.con.On<string, string>("RiceviOggettiDiGioco", (coordarea , tana) =>
-           {
-               SerializableCoordinate[] ca = JsonSerializer.Deserialize<SerializableCoordinate[]>(coordarea);
-               SerializableCoordinate ct = JsonSerializer.Deserialize<SerializableCoordinate>(tana);
-               area.drawArea(ca);
-               this.tana = new(ct);
-           });
-        }
-
-        private void inviaOggettiDiGioco()
-        {
-            SerializableCoordinate[] gioco = SerializableCoordinate.fromCoordinateArray(area.bordi.ToArray());
-            SerializableCoordinate tana = new(this.tana.position.Longitude ,this.tana.position.Latitude);
-
-
-            string jcord = JsonSerializer.Serialize<SerializableCoordinate[]>
-                ( gioco , new JsonSerializerOptions
-                { 
-                    NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-                    PropertyNameCaseInsensitive = true
-                });
-
-            string jtana = JsonSerializer.Serialize<SerializableCoordinate>
-                (tana, new JsonSerializerOptions
-                {
-                    NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-                    PropertyNameCaseInsensitive = true
-                });
-
-            Connessione.con.InvokeAsync("InviaOggettiDiGioco", 
-                arg1: MyUser.currPartita.Cod_partita, 
-                arg2: jcord, 
-                arg3: jtana);
-        }
-
-
 
         //crea un codice hash per la partita usando data e ora e userID
         private static string CreateCode()

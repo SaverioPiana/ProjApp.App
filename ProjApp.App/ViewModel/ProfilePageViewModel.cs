@@ -28,7 +28,7 @@ namespace ProjApp.ViewModel
         private bool firstTime = true;
 
         [RelayCommand]
-        Task NavigateToSettingsPage() => Shell.Current.GoToAsync(nameof(SettingsPage));
+        private async Task NavigateToSettingsPage() => await AppShell.Current.GoToAsync(nameof(SettingsPage));
 
         [RelayCommand]
         public void ChangeNick()

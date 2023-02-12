@@ -1,5 +1,4 @@
-﻿
-using Mapsui.Projections;
+﻿using Mapsui.Projections;
 using Mapsui;
 using Mapsui.UI.Maui;
 using ProjApp.MapEl;
@@ -12,6 +11,9 @@ using NetTopologySuite.Geometries;
 using Position = Mapsui.UI.Maui.Position;
 using ProjApp.MapEl.Serializable;
 using Mapsui.Styles;
+using ProjApp.ViewModel;
+using CommunityToolkit.Mvvm.Messaging;
+using static ProjApp.ViewModel.MainPageViewModel;
 
 namespace ProjApp.Gioco
 {
@@ -19,6 +21,7 @@ namespace ProjApp.Gioco
     {
         public readonly static string NOME_LAYER_AREA = "Area di Gioco";
         public List<NetTopologySuite.Geometries.Coordinate> bordi;
+
         private Mapsui.Styles.Style stileArea = new VectorStyle
         {
             Fill = null,
@@ -36,40 +39,40 @@ namespace ProjApp.Gioco
             bordi = new List<NetTopologySuite.Geometries.Coordinate>();
         }
 
-        public void puntoBordo(MPoint worldPosition)
+        public void puntoBordo(MPoint worldPosition, MapView mv)
         {
             Position position;
 
             MPoint punto = new(SphericalMercator.ToLonLat(worldPosition));
             position = new(punto.Y, punto.X);
 
-            OurMapController.AddPinFromFile(position, "Bordi", "reddot.png", 0.15F);
+            MainPageViewModel.AddPinFromFile(position, "Bordi", "reddot.png", 0.15F, mv);
 
             bordi.Add(position.ToCoordinate());
 
         }
 
-        public void creaArea()
+        public void creaArea(MapView mv)
         {
-            List<Pin> pins = new List<Pin>(OurMapController.mapView.Pins);
+            List<Pin> pins = new List<Pin>(mv.Pins);
                 foreach (Pin pin in pins)
                 {
                     if (pin.Label == "Bordi")
                     {
-                        OurMapController.mapView.Pins.Remove(pin);
+                        mv.Pins.Remove(pin);
                     }
                 }
             bordi.Add(bordi.First());
 
-            drawArea(bordi.ToArray());
+            drawArea(bordi.ToArray(), mv);
         }
 
-        public void drawArea(Coordinate[] c)
+        public void drawArea(Coordinate[] c, MapView mv)
         {
-            OurMapController.mapView.Map.Layers.Add(CustomLayerExtensions.CreatePoligonoLayer(NOME_LAYER_AREA, c, stileArea));
+            mv.Map.Layers.Add(CustomLayerExtensions.CreatePoligonoLayer(NOME_LAYER_AREA, c, stileArea));
         }
 
-        public void drawArea(SerializableCoordinate[] c)
+        public void drawArea(SerializableCoordinate[] c, MapView mv)
         {
             List <Coordinate> lc = new();
 
@@ -78,7 +81,7 @@ namespace ProjApp.Gioco
                 lc.Add(new Coordinate(c2.X, c2.Y));
             }
 
-            OurMapController.mapView.Map.Layers.Add(CustomLayerExtensions.CreatePoligonoLayer("AreaDiGioco", lc.ToArray(), stileArea));
+            mv.Map.Layers.Add(CustomLayerExtensions.CreatePoligonoLayer("AreaDiGioco", lc.ToArray(), stileArea));
 
         }
 

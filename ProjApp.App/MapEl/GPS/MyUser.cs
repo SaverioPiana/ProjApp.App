@@ -77,6 +77,13 @@ namespace ProjApp.MapEl.GPS
                         user.Position = location;
                         SaveLastPositionOnFile(location);
                         Console.WriteLine($"GET_POSITION::: Accuracy: {location.Accuracy} Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+                    } else {
+                        MainThread.BeginInvokeOnMainThread(() => 
+                            {
+                                Microsoft.Maui.Controls.Application.Current.MainPage.DisplayAlert("Ao?",
+                                "Pare che il tuo GPS prenda molto male",
+                                "Prometto di uscire dal bunker");
+                            });
                     }
 
                 }

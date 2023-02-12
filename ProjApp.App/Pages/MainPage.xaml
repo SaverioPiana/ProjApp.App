@@ -18,7 +18,7 @@
 
         <!--Questa è la mappa:-->
         <Grid Grid.Row="0">
-            <ContentView Content="{Binding ContentMapView}" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+            <ContentView Content="{Binding Mapview}" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
         </Grid>
 
 
@@ -90,7 +90,7 @@
             </Border>
 
             <Button
-                Grid.Row="6"
+                Grid.Row="3"
                 Text="Abbandona Partita"
                 BackgroundColor="#a4243b"
                 Command="{Binding AbbandonaPartitaCommand}"

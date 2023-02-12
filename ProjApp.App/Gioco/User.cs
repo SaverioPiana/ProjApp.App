@@ -1,17 +1,10 @@
-﻿
-using Mapsui.UI.Maui;
-using Microsoft.AspNetCore.SignalR.Client;
-using NetTopologySuite.GeometriesGraph;
-using ProjApp.MapEl;
+﻿using Mapsui.UI.Maui;
 using System.Reflection;
 using System.Text.Json.Serialization;
-using System.Text.Json;
 using Position = Mapsui.UI.Maui.Position;
-using Java.Util;
 using Random = System.Random;
-using NetTopologySuite.Triangulate;
-using System.Globalization;
-using Java.Lang;
+using System.Text;
+using ProjApp.ViewModel;
 
 namespace ProjApp.Gioco
 {
@@ -62,20 +55,14 @@ namespace ProjApp.Gioco
         private static List<string> icone = GetIconsFromImages();
 
         [JsonInclude]
-        public byte[] UserIcon = OurMapController.ReadResource(icone.ToArray()[new Random().Next(0, 3)]);
+        public byte[] UserIcon = MainPageViewModel.ReadResource(icone.ToArray()[new Random().Next(0, 3)]);
 
         public User(string nickname, string userID, Location posizione)
         {
             Nickname = nickname;
             UserID = userID;
-            UserPin = new Pin(OurMapController.mapView)
-            {
-                Label = userID,
-                Position = new Position(posizione.Latitude, posizione.Longitude),
-                Type = PinType.Icon,
-                Icon = UserIcon,
-                Scale = 0.4F
-            };
+            //dobbiamo crearlo dopo perche non abbiamo piu la mapview
+            UserPin = new();
             position = posizione;
         }
 

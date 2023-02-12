@@ -20,7 +20,7 @@ public partial class MainPage : ContentPage
     public MainPage(MainPageViewModel viewModel)
     {
         InitializeComponent();
-        BindingContext= viewModel;
+        BindingContext = viewModel;
     }
 
     protected override bool OnBackButtonPressed()
@@ -28,12 +28,13 @@ public partial class MainPage : ContentPage
         return true;
     }
 
-    #if ANDROID
     protected override void OnAppearing()
     {
+        (BindingContext as MainPageViewModel).Constructor();
         base.OnAppearing();
+        #if ANDROID
         WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar"));
+        #endif
     }
-    #endif
 }
 
