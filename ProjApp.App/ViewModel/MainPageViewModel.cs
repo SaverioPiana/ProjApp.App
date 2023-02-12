@@ -106,7 +106,6 @@ namespace ProjApp.ViewModel
             }
             MyUser.currPartita.LeaveLobby();
             tap_counter = 0;
-            Mapview = null;
             WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("lobbyHasBeenDeleted", "noPar"));
             await AppShell.Current.GoToAsync("..", false);
             //var r = Shell.Current.Navigation.NavigationStack;
