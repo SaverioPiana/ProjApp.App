@@ -86,13 +86,17 @@ namespace ProjApp.ViewModel
         [RelayCommand]
         public async Task AbbandonaPartita()
         {
+            MyUser.currPartita.LeaveLobby();
+
+            Task.Delay(10).Wait();
+
+            MyUser.CancelPositionRequest();
             //////////////////////
             //forse non va fatto??
-            MyUser.CancelPositionRequest();
             if (MyUser.isAdmin)
             {
+                //event unsubscription
                 Mapview.SingleTap -= creaPin;
-                //event subscription
                 GameLogic.UsersOutside -= onUserOutside;
             }
             foreach (var subscription in serverRegistrations)
@@ -101,10 +105,12 @@ namespace ProjApp.ViewModel
             }
             //forse non va fatto??
             /////////////////////
+            
+            MyUser.currPartita.DisposeServerRegistrations();
 
-            MyUser.currPartita.area = new();
+            MyUser.currPartita = new();
+            
 
-            MyUser.currPartita.LeaveLobby();
             tap_counter = 0;
             WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("lobbyHasBeenDeleted", "noPar"));
             await AppShell.Current.GoToAsync("..", false);

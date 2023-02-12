@@ -19,6 +19,7 @@ namespace ProjApp.MapEl.GPS
         private static bool _isCheckingLocation;
         public static User user;
         public static Partita currPartita;
+        public static List<Partita> partiteRecenti = new();
         public static bool isAdmin = false;
         public static string NICK_FILENAME = "playerNick.txt";
         public static bool IsUserUpdating = false;

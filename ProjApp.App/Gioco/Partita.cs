@@ -18,6 +18,7 @@ namespace ProjApp.Gioco
     {
         private object lockPlayers = new object();
 
+        private static List<IDisposable> serverRegistrations = new();
         private string cod_partita;
         
         //private int tap_counter = 0;
@@ -53,9 +54,16 @@ namespace ProjApp.Gioco
         {
             area = new();
             Players = new List<User>();
-            Connessione.con.On<string>("ServerError", (errormsg) => ServerError(errormsg));
-            Connessione.con.On<string,string>("JoinLobby", (lid, jsonUser) => JoinLobby(lid, jsonUser));
-            Connessione.con.On<string,string,bool>("AddUserFromServer", (jsonUser,clientId, hasToSend) => AddUserFromServer(jsonUser, clientId, hasToSend));
+            serverRegistrations.Add(
+                Connessione.con.On<string>("ServerError", (errormsg) => ServerError(errormsg))
+            );
+            serverRegistrations.Add(
+                Connessione.con.On<string, string>("JoinLobby", (lid, jsonUser) => JoinLobby(lid, jsonUser))
+            );
+            serverRegistrations.Add(
+                Connessione.con.On<string, string, bool>("AddUserFromServer", (jsonUser, clientId, hasToSend) => AddUserFromServer(jsonUser, clientId, hasToSend))
+            );
+
             meJson = MyUser.CreateJsonUser(MyUser.user);
         }
 
@@ -212,6 +220,15 @@ namespace ProjApp.Gioco
                 }
             });
         }
+
+        public void DisposeServerRegistrations()
+        {
+            foreach(var s in serverRegistrations)
+            {
+                s.Dispose();
+            }
+        }
+
 
         //crea un codice hash per la partita usando data e ora e userID
         private static string CreateCode()
