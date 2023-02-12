@@ -11,19 +11,72 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height=".65*"></RowDefinition>
-            <RowDefinition Height=".35*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
 
         <!--Questa è la mappa:-->
-        <Grid Grid.Row="0">
-            <ContentView Content="{Binding Mapview}" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+        <Grid>
+            <ContentView Content="{Binding Mapview}" ZIndex="0"/>
         </Grid>
+
+        <Button Grid.Row="0" BackgroundColor="red"
+            WidthRequest="50" HeightRequest="50"
+            Clicked="Button_Clicked"
+        />
+
+        <Grid   
+                 ZIndex="0"
+                 Opacity="1"
+                 x:Name="Backdrop"
+                 IsVisible="False">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer
+                    Tapped="TapGestureRecognizer_Tapped"/>
+            </Grid.GestureRecognizers>
+        </Grid>
+
+        <Frame Grid.Row="1"
+            ZIndex="1"
+            x:Name="BottomToolbar"
+            HeightRequest="400"
+            VerticalOptions="End"
+            BackgroundColor="#FFFFFF"
+            CornerRadius="20"
+            TranslationY="700"
+            Padding="15,6"
+            IsVisible="False">
+            <Frame.GestureRecognizers>
+                <PanGestureRecognizer
+                    PanUpdated="PanGestureRecognizer_PanUpdated"
+            />
+            </Frame.GestureRecognizers>
+            <StackLayout Orientation="Vertical" Padding="0,4">
+                <BoxView CornerRadius="4" HeightRequest="4" WidthRequest="40"
+                         BackgroundColor="LightGray"
+                         HorizontalOptions="Center"/>
+                <Label Text="Actions"
+                       HorizontalOptions="Center"
+                       FontSize="18"
+                       FontAttributes="Bold"/>
+                <TableView Intent="Settings"
+                   VerticalOptions="End"
+                   BackgroundColor="White"
+                   >
+                    <TableSection>
+                        <TextCell
+                            Text="Favorite"/>
+                        <TextCell
+                            Text="Share"/>
+                    </TableSection>
+                </TableView>
+            </StackLayout>
+
+        </Frame>
 
 
         <!--Questa è la tendina:-->
-        <Grid Grid.Row="1">
+        <!--<Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="10"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -100,7 +153,7 @@
                 WidthRequest="150"
                 VerticalOptions="Start"
             />
-        </Grid>
+        </Grid>-->
 
     </Grid>
     
