@@ -11,6 +11,7 @@ public partial class LoginPage : ContentPage
 {
     public LoginPage(LoginPageViewModel viewModel)
 	{
+        
 		InitializeComponent();
         BindingContext = viewModel;
         viewW.Navigated += OnNavigated;
@@ -19,6 +20,7 @@ public partial class LoginPage : ContentPage
     private void OnNavigated(object sender, WebNavigatedEventArgs e)
     {
         LoginPageViewModel.NavigatedEventHandler(this, e);
+        
     }
 
 
