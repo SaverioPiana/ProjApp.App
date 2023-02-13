@@ -60,7 +60,7 @@ public partial class MainPage : ContentPage
             Debug.WriteLine($"Running: {e.TotalY}");
             if (e.TotalY > 0)
             {
-                BottomToolbar.TranslationY = openY + e.TotalY;
+                BottomDrawer.TranslationY = openY + e.TotalY;
             }
 
         }
@@ -83,7 +83,7 @@ public partial class MainPage : ContentPage
     {
         await Task.WhenAll
         (
-            BottomToolbar.TranslateTo(0, openY, length: duration, easing: Easing.CubicInOut)
+            BottomDrawer.TranslateTo(0, openY, length: duration, easing: Easing.CubicInOut)
         );
         
     }
@@ -92,8 +92,8 @@ public partial class MainPage : ContentPage
     {
         await Task.WhenAll
         (
-            
-            BottomToolbar.TranslateTo(0, 430, length: duration, easing: Easing.CubicInOut)
+
+            BottomDrawer.TranslateTo(0, 430, length: duration, easing: Easing.CubicInOut)
         );
         
     }

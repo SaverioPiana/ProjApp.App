@@ -17,6 +17,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Rectangle
@@ -32,7 +33,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="auto"></ColumnDefinition>
+                
             </Grid.ColumnDefinitions>
 
             <Image
@@ -52,9 +53,9 @@
                 Margin="10,0,0,0"
             />
 
-            <Button 
+            <!--<Button 
                 Grid.Column="2"
-                Command="{Binding NavigateToSettingsPageCommand}"
+                Command="{Binding NavigateToLoginPageCommand}"
                 BackgroundColor="{StaticResource Primary}"
                 ImageSource="settings_icon.png"
                 CornerRadius="20"
@@ -62,7 +63,7 @@
                 WidthRequest="50"
                 VerticalOptions="Center"
                 Margin="0,0,20,0"
-            />
+            />-->
 
 
 
@@ -167,7 +168,7 @@
             IsVisible="False"
         />
 
-        <Border  Grid.Row="5" Padding="5" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="15" StrokeThickness="3">
+        <Border  Grid.Row="5" Padding="5" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="15" StrokeThickness="3" >
             <Border.Shadow>
                 <Shadow Brush="Black"
                     Offset="0,0"
@@ -182,8 +183,33 @@
                 VerticalOptions="Start"
                 HorizontalOptions="Start"
             />
+            
+            
 
         </Border>
+
+        <Button
+            Grid.Row="6"
+            Text="Disconnetti"
+            Command="{Binding NavigateToLoginPageCommand}"
+            HorizontalOptions="Center"
+            VerticalOptions="End"
+            HeightRequest="50"
+            WidthRequest="200"
+            Margin="0,0,0,20"
+            BackgroundColor="{StaticResource Primary}"
+            TextColor="{StaticResource Secondary}"
+            FontSize="18"
+            FontAttributes="Bold">
+
+            <Button.Shadow>
+                <Shadow Brush="Black"
+                    Offset="0,0"
+                    Radius="50"
+                    Opacity="0.7" />
+            </Button.Shadow>
+        </Button>
+
 
     </Grid>
     

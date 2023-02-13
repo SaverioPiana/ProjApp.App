@@ -6,8 +6,8 @@
              x:DataType="viewmodel:MainPageViewModel"
              Shell.TabBarIsVisible="False"
              
-             Title="MainPage"
-             >
+             Title="MainPage">
+             
 
     <Grid>
         <Grid.RowDefinitions>
@@ -28,15 +28,12 @@
 
         <Border
             Grid.Row="1"
-            x:Name="BottomToolbar"
+            x:Name="BottomDrawer"
             ZIndex="1"
             HeightRequest="500"
             VerticalOptions="End"
-            StrokeShape="RoundRectangle 20"
-            Padding="15"
-            Stroke="#5BAFEC"
-            StrokeThickness="2"
-            IsVisible="True">
+            IsVisible="True"
+            Style="{StaticResource bottomDrawer}">
             
             <Border.GestureRecognizers>
                 <PanGestureRecognizer
@@ -116,7 +113,13 @@
                 </Grid>
                     
 
-                <Border  Grid.Row="1" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="15" StrokeThickness="3">
+                <Border  
+                    Grid.Row="1"
+                    Stroke="#5BAFEC" 
+                    StrokeShape="RoundRectangle 18" 
+                    Margin="15" 
+                    StrokeThickness="3"
+                    Style="{StaticResource bottomDrawer}">
                     <Border.Shadow>
                         <Shadow Brush="Black"
                             Offset="0,0"
