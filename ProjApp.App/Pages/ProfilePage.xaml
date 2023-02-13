@@ -190,7 +190,7 @@
 
         <Button
             Grid.Row="6"
-            Text="Disconnetti"
+            Text="Disconnettiti"
             Command="{Binding NavigateToLoginPageCommand}"
             HorizontalOptions="Center"
             VerticalOptions="End"

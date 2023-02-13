@@ -27,27 +27,32 @@ public partial class MainPage : ContentPage
     protected override void OnAppearing()
     {
         (BindingContext as MainPageViewModel).Constructor();
+        CloseDrawer();
         base.OnAppearing();
         #if ANDROID
         WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar"));
         #endif
     }
 
-    uint duration = 300;
+    uint duration = 450;
     double openY = 0;
+    bool IsDrawerOpen = false;
     
 
-    async void DrawerUp(System.Object sender, System.EventArgs e)
-    {
-        await OpenDrawer();
+    async void DrawerDownOrUp(System.Object sender, System.EventArgs e)
+    {   
+        if(IsDrawerOpen)
+        {
+            IsDrawerOpen = false;
+            await CloseDrawer();
+        }
+        else
+        {
+            IsDrawerOpen = true;
+            await OpenDrawer();
+        }
+        
     }
-
-    async void DrawerDown(System.Object sender, System.EventArgs e)
-    {
-        await CloseDrawer();
-    }
-
-
 
     double lastPanY = 0;
     
@@ -69,10 +74,12 @@ public partial class MainPage : ContentPage
             //Debug.WriteLine($"Completed: {e.TotalY}");
             if (lastPanY < 70)
             {
+                IsDrawerOpen= true;
                 await OpenDrawer();
             }
             else
             {
+                IsDrawerOpen = false;
                 await CloseDrawer();
             }
             
@@ -83,7 +90,8 @@ public partial class MainPage : ContentPage
     {
         await Task.WhenAll
         (
-            BottomDrawer.TranslateTo(0, openY, length: duration, easing: Easing.CubicInOut)
+            BottomDrawer.TranslateTo(0, openY, length: duration, easing: Easing.CubicInOut),
+            BottomDrawerArrow.RotateTo(180, duration, Easing.CubicInOut)
         );
         
     }
@@ -92,15 +100,10 @@ public partial class MainPage : ContentPage
     {
         await Task.WhenAll
         (
-
-            BottomDrawer.TranslateTo(0, 430, length: duration, easing: Easing.CubicInOut)
+            BottomDrawer.TranslateTo(0, 430, length: duration, easing: Easing.CubicInOut),
+            BottomDrawerArrow.RotateTo(0, duration, Easing.CubicInOut)
         );
         
-    }
-
-    private void Button_Clicked_1(object sender, EventArgs e)
-    {
-
     }
 }
 
