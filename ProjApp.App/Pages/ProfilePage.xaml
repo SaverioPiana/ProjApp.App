@@ -22,7 +22,7 @@
         <Rectangle
             Grid.Row="0"
             Margin="0"
-            Fill="#5BAFEC"
+            Fill="{StaticResource Primary}"
             WidthRequest="400"
             HeightRequest="25"
             HorizontalOptions="Start"
@@ -30,36 +30,54 @@
 
         <Grid Grid.Row="1" HeightRequest="80">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width=".75*"></ColumnDefinition>
-                <ColumnDefinition Width=".25*"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
+
+            <Image
+                Grid.Column="0"
+                Source="profile_icon_azz.png"
+                HeightRequest="48"
+                WidthRequest="48"
+                Margin="15,0,0,0">
+            </Image>
             
             <Label 
-                Grid.Column="0"
+                Grid.Column="1"
                 Text="Profilo"
                 FontSize="36"
                 HorizontalOptions="Start"
                 VerticalOptions="Center"
-                Margin="15"
+                Margin="10,0,0,0"
             />
 
-        <Button 
-            Grid.Column="1"
-            Command="{Binding NavigateToSettingsPageCommand}"
-            BackgroundColor="#5BAFEC"
-            ImageSource="settings_icon.png"
-            CornerRadius="20"
-            HeightRequest="50"
-            WidthRequest="50"
-            VerticalOptions="Center"
-            Margin="15"
-        />
-            
+            <Button 
+                Grid.Column="2"
+                Command="{Binding NavigateToSettingsPageCommand}"
+                BackgroundColor="{StaticResource Primary}"
+                ImageSource="settings_icon.png"
+                CornerRadius="20"
+                HeightRequest="50"
+                WidthRequest="50"
+                VerticalOptions="Center"
+                Margin="0,0,20,0"
+            />
+
+
+
         </Grid>
 
 
 
         <Border Grid.Row="2" Padding="5" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="5" StrokeThickness="3">
+            <Border.Shadow>
+                <Shadow Brush="Black"
+                    Offset="0,0"
+                    Radius="40"
+                    Opacity="0.55"/>
+            </Border.Shadow>
+            
             <Grid >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="130"></ColumnDefinition>
@@ -117,7 +135,7 @@
                 <Button 
                     Grid.Column="2"
                     Command="{Binding DoneChangingNickCommand}"
-                    BackgroundColor="#5BAFEC"
+                    BackgroundColor="{StaticResource Primary}"
                     ImageSource="check_icon.png"
                     CornerRadius="12"
                     HeightRequest="30"
@@ -137,6 +155,7 @@
             FontSize="20"
             Margin="15"
             HeightRequest="26"
+            IsVisible="False"
         />
 
         <Label 
@@ -145,9 +164,16 @@
             FontSize="20"
             Margin="15"
             HeightRequest="26"
+            IsVisible="False"
         />
 
         <Border  Grid.Row="5" Padding="5" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="15" StrokeThickness="3">
+            <Border.Shadow>
+                <Shadow Brush="Black"
+                    Offset="0,0"
+                    Radius="40"
+                    Opacity="0.55" />
+            </Border.Shadow>
 
             <Label 
                 Text="  Giocatori recenti:"

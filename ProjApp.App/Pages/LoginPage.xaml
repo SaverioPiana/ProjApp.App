@@ -23,7 +23,7 @@
         <Rectangle
             Grid.Row="0"
             Margin="0"
-            Fill="#5BAFEC"
+            Fill="{StaticResource Primary}"
             WidthRequest="400"
             HeightRequest="25"
         />
@@ -33,7 +33,7 @@
             Grid.Row="1"
             Text="Benvenuto!"
             FontSize="45"
-            FontAttributes="Bold" 
+            FontAttributes="Bold"
             HorizontalOptions="Center"
             VerticalOptions="Center"
         />
@@ -60,7 +60,7 @@
             Text="{Binding Username}"
             x:Name="Username"
             Placeholder="Username                                             "
-            TextColor="#5BAFEC"
+            TextColor="{StaticResource Primary}"
             FontAttributes="Bold"
             HorizontalOptions="Center"
         />
@@ -70,7 +70,7 @@
             Text="{Binding Password}"
             x:Name="Password"
             Placeholder="Password                                             "
-            TextColor="#5BAFEC"
+            TextColor="{StaticResource Primary}"
             FontAttributes="Bold"
             HorizontalOptions="Center"
             IsPassword="True"
@@ -80,8 +80,11 @@
             Grid.Row="6"
             Text="SIGN IN"
             Command="{Binding NavigateToStartPageCommand}"
-            BackgroundColor="#5BAFEC"
+            BackgroundColor="{StaticResource Primary}"
+            TextColor="{StaticResource Secondary}"
             Margin="15"
+            FontSize="18"
+            FontAttributes="Bold"
             HeightRequest="50"
             WidthRequest="200"
             VerticalOptions="Start"

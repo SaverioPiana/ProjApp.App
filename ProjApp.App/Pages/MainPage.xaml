@@ -26,17 +26,16 @@
             
         </Grid>
 
-        <Border 
+        <Border
             Grid.Row="1"
             x:Name="BottomToolbar"
             ZIndex="1"
             HeightRequest="500"
             VerticalOptions="End"
-            BackgroundColor="#FFFFFF"
             StrokeShape="RoundRectangle 20"
             Padding="15"
             Stroke="#5BAFEC"
-            StrokeThickness="1.5"
+            StrokeThickness="2"
             IsVisible="True">
             
             <Border.GestureRecognizers>
@@ -54,13 +53,13 @@
 
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Label
+                    <!--<Label
                         Grid.Column="0"
                         Text="Ruolo: "
                         TextColor="#5BAFEC"
@@ -69,22 +68,22 @@
                         HorizontalOptions="Start"
                         HeightRequest="25"
                         Margin="10,10,0,0"
-                    />
+                    />-->
 
                     <Image
-                        Grid.Column="1"
+                        Grid.Column="0"
                         VerticalOptions="Center"
-                        HorizontalOptions="Center"
-                        Margin="0,12,0,0"
+                        HorizontalOptions="Start"
+                        Margin="22,12,0,0"
                         Source="clock_icon_azz.png"
                         HeightRequest="25"
                         WidthRequest="25"
                     />
 
                     <Label
-                        Grid.Column="2"
+                        Grid.Column="1"
                         Text="Tempo: "
-                        TextColor="#5BAFEC"
+                        TextColor="{StaticResource Primary}"
                         FontSize="22"
                         VerticalTextAlignment="Center"
                         VerticalOptions="Center"
@@ -92,10 +91,10 @@
                         HeightRequest="25"
                         Margin="10,10,0,0"
                     />
-                    
+
                     <Button  
                         Grid.Column="3"
-                        BackgroundColor="#5BAFEC"
+                        BackgroundColor="{StaticResource Primary}"
                         ImageSource="down_arrow_icon.png"
                         VerticalOptions="Center"
                         WidthRequest="35" 
@@ -103,48 +102,49 @@
                         Margin="0,0,15,0"
                         Clicked="DrawerDown"
                     />
-
-                    <!--<Grid Grid.Column="3">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                        </Grid.RowDefinitions>
-
-                        <Button  
-                            Grid.Row="0"
-                            BackgroundColor="#5BAFEC"
-                            WidthRequest="36" 
-                            HeightRequest="24"
-                            Margin="0,0,10,4"
-                            Clicked="DrawerUp"
-                        />
-                        
-                        
-
-                    </Grid>-->
-
                     
+                    <Button  
+                        Grid.Column="2"
+                        BackgroundColor="{StaticResource Primary}"
+                        ImageSource="up_arrow_icon.png"
+                        VerticalOptions="Center"
+                        WidthRequest="35" 
+                        HeightRequest="25"
+                        Margin="0,0,15,0"
+                        Clicked="DrawerUp"
+                    />
                 </Grid>
+                    
 
                 <Border  Grid.Row="1" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="15" StrokeThickness="3">
+                    <Border.Shadow>
+                        <Shadow Brush="Black"
+                            Offset="0,0"
+                            Radius="40"
+                            Opacity="0.55" />
+                    </Border.Shadow>
+                    
                     <Label 
-                    Text="Informazioni partita:"
-                    TextColor="#5BAFEC"
-                    FontSize="20"
-                    Margin="10,15,0,0"
-                    VerticalOptions="Start"
-                    HorizontalOptions="Start"
-                />
+                        Text="Informazioni partita:"
+                        TextColor="{StaticResource Primary}"
+                        FontSize="20"
+                        Margin="10,15,0,0"
+                        VerticalOptions="Start"
+                        HorizontalOptions="Start"
+                    />
                 </Border>
 
                 <Button
                 Grid.Row="2"
                 Text="Abbandona Partita"
-                BackgroundColor="#a4243b"
+                BackgroundColor="{StaticResource Manzz}"
                 Command="{Binding AbbandonaPartitaCommand}"
                 TextColor="White"
                 Margin="10"
                 HeightRequest="40"
                 WidthRequest="150"
+                FontSize="18"
+                FontAttributes="Bold"
                 VerticalOptions="Start"
             />
 
