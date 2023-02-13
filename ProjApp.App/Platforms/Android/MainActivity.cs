@@ -4,6 +4,8 @@ using Android.OS;
 using Android.Views;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using Java.Util.Logging;
+using Org.Apache.Http.Authentication;
 
 namespace ProjApp;
 
@@ -34,15 +36,15 @@ public class MainActivity : MauiAppCompatActivity
         });
     }
 
-    [Activity(NoHistory = true, LaunchMode = LaunchMode.SingleTop, Exported = true)]
+    [Activity(NoHistory = false, LaunchMode = LaunchMode.SingleTop, Exported = true)]
     [IntentFilter(new[] { Android.Content.Intent.ActionView },
               Categories = new[] { Android.Content.Intent.CategoryDefault, Android.Content.Intent.CategoryBrowsable },
-              DataScheme = "https",
-        DataHost = "nascondapp.firebaseapp.com"),
+        DataScheme = "napp"
+        )
          ]
     public class WebAuthenticationCallbackActivity : Microsoft.Maui.Authentication.WebAuthenticatorCallbackActivity
     {
-        const string CALLBACK_SCHEME = "https";
+        const string CALLBACK_SCHEME = "napp";
        
 
     }

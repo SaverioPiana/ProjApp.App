@@ -1,3 +1,4 @@
+using Android.Webkit;
 using CommunityToolkit.Mvvm.Messaging;
 using ProjApp.ViewModel;
 #if ANDROID
@@ -12,7 +13,14 @@ public partial class LoginPage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = viewModel;
+        viewW.Navigated += OnNavigated;
     }
+
+    private void OnNavigated(object sender, WebNavigatedEventArgs e)
+    {
+        LoginPageViewModel.NavigatedEventHandler(this, e);
+    }
+
 
     #if ANDROID
     protected override void OnAppearing()

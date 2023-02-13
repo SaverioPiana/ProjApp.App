@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="ProjApp.LoginPage"
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:LoginPageViewModel"
@@ -17,6 +18,7 @@
             <RowDefinition Height=".2*"></RowDefinition>
             <RowDefinition Height=".15*"></RowDefinition>
             <RowDefinition Height=".15*"></RowDefinition>
+            <RowDefinition Height=".30*"></RowDefinition>
             <RowDefinition Height=".15*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
@@ -77,18 +79,20 @@
             HorizontalOptions="Center"
             IsPassword="True"
         />
-        <Entry
-            Grid.Row="6"
-            Text="{Binding CiccioPasticcio}"
-            x:Name="url"
-            Placeholder="Username                                             "
-            TextColor="#5BAFEC"
-            FontAttributes="Bold"
-            HorizontalOptions="Center"
-        />
-
-        <Button
+        <WebView x:Name="viewW"
+            IsVisible="{Binding Webviewvisible}"
+            Source="{Binding Sourceurl}"
             Grid.Row="7"
+            HeightRequest="500"
+            WidthRequest="300"
+            Navigated="OnNavigated"
+        >
+        </WebView>
+
+
+
+            <Button
+            Grid.Row="8"
             Text="SIGN IN"
             Command="{Binding RegisterUserCommand}"
             BackgroundColor="#5BAFEC"

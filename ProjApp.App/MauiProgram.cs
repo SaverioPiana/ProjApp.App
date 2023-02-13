@@ -1,4 +1,5 @@
-﻿using ProjApp.ViewModel;
+﻿using CommunityToolkit.Maui;
+using ProjApp.ViewModel;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace ProjApp;
@@ -10,6 +11,7 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .UseSkiaSharp(true)
             .ConfigureFonts(fonts =>
 			{

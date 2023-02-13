@@ -6,6 +6,7 @@ using ExCSS;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
 using Firebase.Auth.Repository;
+using Javax.Security.Auth;
 using ProjApp.MapEl.GPS;
 using System;
 using System.Collections.Generic;
@@ -20,8 +21,6 @@ namespace ProjApp.ViewModel
     {
         public LoginPageViewModel() { }
 
-
-
         [ObservableProperty]
         private string username;
 
@@ -31,10 +30,18 @@ namespace ProjApp.ViewModel
         [ObservableProperty]
         private string ciccioPasticcio;
 
+        [ObservableProperty]
+        private string sourceurl = string.Empty;
+
+        [ObservableProperty]
+        private bool webviewvisible = false;
         private bool succesfullLogin = true; ////////per ora true semrpe
         private bool firstTime = true;
-
         // Configure...
+
+        private static string redirectedUrl = String.Empty;
+
+
         FirebaseAuthConfig config = new FirebaseAuthConfig
         {
             ApiKey = "AIzaSyByATKL15ARJgSIxRHibyF-j2E3UUTNrWE",
@@ -54,94 +61,66 @@ namespace ProjApp.ViewModel
         public async void RegisterUser()
         {
 
-
             var client = new FirebaseAuthClient(config);
 
             var userCredential = await client.SignInWithRedirectAsync(FirebaseProviderType.Github, async uris =>
             {
-                try
+                Sourceurl = uris;
+                Webviewvisible = true;
+                while (!redirectedUrl.Contains(config.RedirectUri))
                 {
-                    Uri uri = new Uri(uris);
-                    await Browser.Default.OpenAsync(uri, BrowserLaunchMode.External);
+                    await Task.Delay(100);
                 }
-                catch (Exception ex)
-                {
-                    // An unexpected error occurred. No browser may be installed on the device.
-                }
-
-
-                //WebAuthenticatorResult authResult = await WebAuthenticator.Default.AuthenticateAsync(
-                //    new Uri(uris),
-                //    new Uri("https://nascondapp.firebaseapp.com/__/auth/handler"));
-
-                //string accessToken = authResult?.AccessToken;
-                await Task.Delay(15000);
-                return Password;
-
-                //return credential
+                Webviewvisible = false;
+                return redirectedUrl;
             });
             userCredential.AuthCredential.ToString();
 
-            //    try
-            //    {
-
-            //        var client = new FirebaseAuthClient(config);
-            //        await client.SignInWithRedirectAsync(FirebaseProviderType.Google, async uri =>
-            //        {
-            //            CiccioPasticcio = uri;
-            //            await Task.Delay(6000);
-            //            string result = await Application.Current.MainPage.DisplayPromptAsync("uri redirect?",
-            //            $"vai qui {uri} e incolla il link di redirect", "Conferma", "Annulla",
-            //            "red link");
-            //            return result;
-            //        });
-            //        UserCredential user = await client.CreateUserWithEmailAndPasswordAsync(Username, Password);
-
-
-            //    }
-            //    catch(Exception ex)
-            //    {
-
-            //    }
-            //}
-
-
-            [RelayCommand]
-            Task NavigateToStartPage()
-            {
-                if (succesfullLogin)
-                {
-                    if (Shell.Current == null)
-                    {
-                        Application.Current.MainPage = new AppShell();
-                    }
-                    Shell.Current.GoToAsync($"//{nameof(ProfilePage)}");
-                }
-
-                //SOLO LA PRIMA VOLTA (da login -> profile)
-                //passiamo lo username alla pagina profilo solo se ha gia interagito con lo user per il nickmname
-                if (firstTime)
-                {
-                    WeakReferenceMessenger.Default.Register<ReadyToBuildUserMessage>(this, (r, m) =>
-                    {
-                        WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
-                    });
-                }
-                else //la prifle page è gia stata creata ed è pronta a ricevere il nuovo username senza aspettare
-                {
-                    WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
-                }
-
-                return Task.CompletedTask;
-            }
         }
 
-        internal class ReadyToBuildUserMessage : ValueChangedMessage<string>
+        public static void NavigatedEventHandler( object sender, WebNavigatedEventArgs e)
         {
-            public ReadyToBuildUserMessage(string value) : base(value)
+            redirectedUrl = e.Url;
+            
+        }
+
+        [RelayCommand]
+        Task NavigateToStartPage()
+        {
+            if (succesfullLogin)
             {
+                if (Shell.Current == null)
+                {
+                    Application.Current.MainPage = new AppShell();
+                }
+                Shell.Current.GoToAsync($"//{nameof(ProfilePage)}");
             }
+
+            //SOLO LA PRIMA VOLTA (da login -> profile)
+            //passiamo lo username alla pagina profilo solo se ha gia interagito con lo user per il nickmname
+            if (firstTime)
+            {
+                WeakReferenceMessenger.Default.Register<ReadyToBuildUserMessage>(this, (r, m) =>
+                {
+                    WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
+                });
+            }
+            else //la prifle page è gia stata creata ed è pronta a ricevere il nuovo username senza aspettare
+            {
+                WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
+            }
+
+            return Task.CompletedTask;
+        }
+    }
+
+    internal class ReadyToBuildUserMessage : ValueChangedMessage<string>
+    {
+        public ReadyToBuildUserMessage(string value) : base(value)
+        {
         }
     }
 }
+
+
 
