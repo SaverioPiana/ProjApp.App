@@ -102,7 +102,7 @@
             <Entry
                 Grid.Column="1"
                 x:Name="CodiceLobby"
-                Placeholder="     CODICE     "
+                Placeholder="CODICE"
                 FontSize="20"
                 PlaceholderColor="#5BAFEC"
                 TextColor="{StaticResource Primary}"

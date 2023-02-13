@@ -30,8 +30,8 @@
             Grid.Row="1"
             x:Name="BottomDrawer"
             ZIndex="1"
-            HeightRequest="500"
-            TranslationY="10"
+            HeightRequest="520"
+            TranslationY="13"
             VerticalOptions="End"
             IsVisible="True"
             Style="{StaticResource bottomDrawer}">

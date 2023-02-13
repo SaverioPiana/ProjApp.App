@@ -27,7 +27,7 @@ public partial class MainPage : ContentPage
     protected override void OnAppearing()
     {
         (BindingContext as MainPageViewModel).Constructor();
-        CloseDrawer();
+        CloseDrawer(); //se lo aspetti non si apre mai la pagina DO NOT AWAIT
         base.OnAppearing();
         #if ANDROID
         WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar"));
@@ -35,7 +35,7 @@ public partial class MainPage : ContentPage
     }
 
     uint duration = 450;
-    double openY = 0;
+    double openY = 10;
     bool IsDrawerOpen = false;
     
 
