@@ -15,124 +15,118 @@
         </Grid.RowDefinitions>
 
 
-        <!--Questa è la mappa:-->
+        <!--Questa è la mappa senza bottoni over:-->
         <Grid>
-            <ContentView Content="{Binding Mapview}" ZIndex="0"/>
-        </Grid>
-
-        <Button Grid.Row="0" BackgroundColor="red"
-            WidthRequest="50" HeightRequest="50"
-            Clicked="Button_Clicked"
-        />
-
-        <Grid   
-                 ZIndex="0"
-                 Opacity="1"
-                 x:Name="Backdrop"
-                 IsVisible="False">
-            <Grid.GestureRecognizers>
-                <TapGestureRecognizer
-                    Tapped="TapGestureRecognizer_Tapped"/>
-            </Grid.GestureRecognizers>
-        </Grid>
-
-        <Frame Grid.Row="1"
-            ZIndex="1"
-            x:Name="BottomToolbar"
-            HeightRequest="400"
-            VerticalOptions="End"
-            BackgroundColor="#FFFFFF"
-            CornerRadius="20"
-            TranslationY="700"
-            Padding="15,6"
-            IsVisible="False">
-            <Frame.GestureRecognizers>
-                <PanGestureRecognizer
-                    PanUpdated="PanGestureRecognizer_PanUpdated"
-            />
-            </Frame.GestureRecognizers>
-            <StackLayout Orientation="Vertical" Padding="0,4">
-                <BoxView CornerRadius="4" HeightRequest="4" WidthRequest="40"
-                         BackgroundColor="LightGray"
-                         HorizontalOptions="Center"/>
-                <Label Text="Actions"
-                       HorizontalOptions="Center"
-                       FontSize="18"
-                       FontAttributes="Bold"/>
-                <TableView Intent="Settings"
-                   VerticalOptions="End"
-                   BackgroundColor="White"
-                   >
-                    <TableSection>
-                        <TextCell
-                            Text="Favorite"/>
-                        <TextCell
-                            Text="Share"/>
-                    </TableSection>
-                </TableView>
-            </StackLayout>
-
-        </Frame>
-
-
-        <!--Questa è la tendina:-->
-        <!--<Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="10"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Rectangle
-                Grid.Row="0"
-                Fill="#5BAFEC"
-                WidthRequest="400"
-                HeightRequest="10"
-                HorizontalOptions="Start"
-            />
+            <ContentView Grid.RowSpan="2" ZIndex="0" Content="{Binding Mapview}" />
+            
+        </Grid>
 
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label
-                    Grid.Column="0"
-                    Text="Ruolo: "
-                    TextColor="#5BAFEC"
-                    FontSize="22"
-                    VerticalTextAlignment="Start"
-                    HorizontalOptions="Start"
-                    HeightRequest="25"
-                    Margin="10,10,0,0"
-                />
+        <Border 
+            Grid.Row="1"
+            x:Name="BottomToolbar"
+            ZIndex="1"
+            HeightRequest="500"
+            VerticalOptions="End"
+            BackgroundColor="#FFFFFF"
+            StrokeShape="RoundRectangle 20"
+            Padding="15"
+            Stroke="#5BAFEC"
+            StrokeThickness="1.5"
+            IsVisible="True">
+            
+            <Border.GestureRecognizers>
+                <PanGestureRecognizer
+                    PanUpdated="PanGestureRecognizer_PanUpdated"/>
+            </Border.GestureRecognizers>
+            
+            <!--Questa è la tendina:-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
 
-                <Image
-                    Grid.Column="1"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Center"
-                    Margin="0,12,0,0"
-                    Source="clock_icon_azz.png"
-                    HeightRequest="25"
-                    WidthRequest="25"
-                />
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
 
-                <Label
-                    Grid.Column="2"
-                    Text="Tempo: "
-                    TextColor="#5BAFEC"
-                    FontSize="22"
-                    VerticalTextAlignment="Center"
-                    HorizontalOptions="Start"
-                    HeightRequest="35"
-                    Margin="10,10,0,0"
-                />
-            </Grid>
+                    <Label
+                        Grid.Column="0"
+                        Text="Ruolo: "
+                        TextColor="#5BAFEC"
+                        FontSize="22"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start"
+                        HeightRequest="25"
+                        Margin="10,10,0,0"
+                    />
 
-            <Border  Grid.Row="2" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="15" StrokeThickness="3">
-                <Label 
+                    <Image
+                        Grid.Column="1"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        Margin="0,12,0,0"
+                        Source="clock_icon_azz.png"
+                        HeightRequest="25"
+                        WidthRequest="25"
+                    />
+
+                    <Label
+                        Grid.Column="2"
+                        Text="Tempo: "
+                        TextColor="#5BAFEC"
+                        FontSize="22"
+                        VerticalTextAlignment="Center"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start"
+                        HeightRequest="25"
+                        Margin="10,10,0,0"
+                    />
+                    
+                    <Button  
+                        Grid.Column="3"
+                        BackgroundColor="#5BAFEC"
+                        ImageSource="down_arrow_icon.png"
+                        VerticalOptions="Center"
+                        WidthRequest="35" 
+                        HeightRequest="25"
+                        Margin="0,0,15,0"
+                        Clicked="DrawerDown"
+                    />
+
+                    <!--<Grid Grid.Column="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Button  
+                            Grid.Row="0"
+                            BackgroundColor="#5BAFEC"
+                            WidthRequest="36" 
+                            HeightRequest="24"
+                            Margin="0,0,10,4"
+                            Clicked="DrawerUp"
+                        />
+                        
+                        
+
+                    </Grid>-->
+
+                    
+                </Grid>
+
+                <Border  Grid.Row="1" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="15" StrokeThickness="3">
+                    <Label 
                     Text="Informazioni partita:"
                     TextColor="#5BAFEC"
                     FontSize="20"
@@ -140,10 +134,10 @@
                     VerticalOptions="Start"
                     HorizontalOptions="Start"
                 />
-            </Border>
+                </Border>
 
-            <Button
-                Grid.Row="3"
+                <Button
+                Grid.Row="2"
                 Text="Abbandona Partita"
                 BackgroundColor="#a4243b"
                 Command="{Binding AbbandonaPartitaCommand}"
@@ -153,7 +147,13 @@
                 WidthRequest="150"
                 VerticalOptions="Start"
             />
-        </Grid>-->
+
+            </Grid>
+
+        </Border>
+
+
+        
 
     </Grid>
     

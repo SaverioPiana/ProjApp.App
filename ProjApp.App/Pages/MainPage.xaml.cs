@@ -34,37 +34,28 @@ public partial class MainPage : ContentPage
     }
 
     uint duration = 300;
-    double openY = 60;
+    double openY = 0;
+    
 
-    async void Button_Clicked(System.Object sender, System.EventArgs e)
+    async void DrawerUp(System.Object sender, System.EventArgs e)
     {
-        if (Backdrop.Opacity == 0)
-        {
-            BottomToolbar.IsVisible = true;
-            await OpenDrawer();
-        }
-        else
-        {
-            await CloseDrawer();
-            BottomToolbar.IsVisible = false;
-        }
+        await OpenDrawer();
     }
 
-    async void TapGestureRecognizer_Tapped(System.Object sender, System.EventArgs e)
+    async void DrawerDown(System.Object sender, System.EventArgs e)
     {
-        if (isBackdropTapEnabled)
-        {
-            await CloseDrawer();
-        }
+        await CloseDrawer();
     }
+
+
 
     double lastPanY = 0;
-    bool isBackdropTapEnabled = true;
+    
     async void PanGestureRecognizer_PanUpdated(System.Object sender, PanUpdatedEventArgs e)
     {
         if (e.StatusType == GestureStatus.Running)
         {
-            isBackdropTapEnabled = false;
+            
             lastPanY = e.TotalY;
             Debug.WriteLine($"Running: {e.TotalY}");
             if (e.TotalY > 0)
@@ -84,7 +75,7 @@ public partial class MainPage : ContentPage
             {
                 await CloseDrawer();
             }
-            isBackdropTapEnabled = true;
+            
         }
     }
 
@@ -92,20 +83,24 @@ public partial class MainPage : ContentPage
     {
         await Task.WhenAll
         (
-            Backdrop.FadeTo(1, length: duration),
             BottomToolbar.TranslateTo(0, openY, length: duration, easing: Easing.CubicInOut)
         );
-        Backdrop.IsVisible= true;
+        
     }
 
     async Task CloseDrawer()
     {
         await Task.WhenAll
         (
-            Backdrop.FadeTo(0, length: duration),
-            BottomToolbar.TranslateTo(0, 260, length: duration, easing: Easing.CubicInOut)
+            
+            BottomToolbar.TranslateTo(0, 430, length: duration, easing: Easing.CubicInOut)
         );
-        Backdrop.IsVisible = false;
+        
+    }
+
+    private void Button_Clicked_1(object sender, EventArgs e)
+    {
+
     }
 }
 
