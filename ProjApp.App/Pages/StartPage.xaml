@@ -149,7 +149,7 @@
                         <Button
                             Margin="-5"
                             Text="{Binding Codice}"
-                            FontSize="18"
+                            FontSize="15"
                             FontAttributes="Bold"
                             VerticalOptions="Center"
                             HeightRequest="50"

@@ -83,7 +83,7 @@ public partial class MainPage : ContentPage
             
             lastPanY = e.TotalY;
             Debug.WriteLine($"Running: {e.TotalY}");
-            if (e.TotalY > 5)
+            if (e.TotalY > 0)
             {
                 BottomDrawer.TranslationY = openY + e.TotalY;
             }

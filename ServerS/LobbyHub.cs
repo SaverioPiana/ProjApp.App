@@ -120,7 +120,7 @@ namespace ServerS
             Random random = new Random();
             if (num_cacciatori == 0)
             {
-                string cacciatore = lobby.ConnectedClients[random.Next(num_clients - 1)];
+                string cacciatore = lobby.ConnectedClients[random.Next(num_clients)];
                 lobby.cacciatori.Add(cacciatore);
                 await Clients.Client(cacciatore).SendAsync("GameStarted", true);
             }
@@ -128,7 +128,7 @@ namespace ServerS
             {
                 for (int i = 0; i < num_cacciatori; i++)
                 {
-                    string cacciatore = lobby.ConnectedClients[random.Next(num_clients - 1)];
+                    string cacciatore = lobby.ConnectedClients[random.Next(num_clients)];
                     lobby.cacciatori.Add(cacciatore);
                     await Clients.Client(cacciatore).SendAsync("GameStarted" , true);
                 }
