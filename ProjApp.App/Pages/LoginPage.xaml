@@ -23,9 +23,9 @@
         <Rectangle
             Grid.Row="0"
             Margin="0"
-            Fill="{StaticResource Primary}"
             WidthRequest="400"
             HeightRequest="25"
+            Style="{StaticResource TopRectangle}"
         />
 
 
@@ -40,7 +40,7 @@
 
         <Image
             Grid.Row="2"
-            Source="profile_icon_azz.png"
+            Source="{AppThemeBinding Light=profile_icon_azz.png, Dark=profile_icon_ver.png}"
             HorizontalOptions="Center"
             WidthRequest="80"
             HeightRequest="80"
@@ -60,7 +60,6 @@
             Text="{Binding Username}"
             x:Name="Username"
             Placeholder="Username                                             "
-            TextColor="{StaticResource Primary}"
             FontAttributes="Bold"
             HorizontalOptions="Center"
         />
@@ -70,7 +69,6 @@
             Text="{Binding Password}"
             x:Name="Password"
             Placeholder="Password                                             "
-            TextColor="{StaticResource Primary}"
             FontAttributes="Bold"
             HorizontalOptions="Center"
             IsPassword="True"
@@ -80,8 +78,6 @@
             Grid.Row="6"
             Text="SIGN IN"
             Command="{Binding NavigateToStartPageCommand}"
-            BackgroundColor="{StaticResource Primary}"
-            TextColor="{StaticResource Secondary}"
             Margin="15"
             FontSize="18"
             FontAttributes="Bold"

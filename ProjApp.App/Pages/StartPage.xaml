@@ -22,7 +22,7 @@
         <Rectangle
             Grid.Row="0"
             Margin="0"
-            Fill="{StaticResource Primary}"
+            Style="{StaticResource TopRectangle}"
             WidthRequest="400"
             HeightRequest="25"
             HorizontalOptions="Start"
@@ -72,7 +72,6 @@
                 WidthRequest="36"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
-                BackgroundColor="{StaticResource Primary}"
                 IsVisible="{Binding CanJoin}">
                 
                 <Button.Shadow>
@@ -104,7 +103,6 @@
                 x:Name="CodiceLobby"
                 Placeholder="     CODICE     "
                 FontSize="20"
-                PlaceholderColor="#5BAFEC"
                 TextColor="{StaticResource Primary}"
                 ReturnCommand="{Binding JoinLobbyCommand}"
                 ReturnCommandParameter="{x:Reference CodiceLobby}"
@@ -118,8 +116,7 @@
 
         </Grid>
 
-        <Border  x:Name="LobbyBorder"  Grid.Row="5" Padding="5" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Margin="5"  StrokeThickness="2.5"
-               >
+        <Border  x:Name="LobbyBorder"  Grid.Row="5" Padding="5" Margin="5"  StrokeThickness="2.5">
             <Border.Shadow>
                 <Shadow Brush="Black"
                     Offset="0,0"
@@ -148,20 +145,19 @@
                         Margin="5,0,0,0"
                     />
 
-                    <Border Padding="14" Stroke="#5BAFEC" StrokeShape="RoundRectangle 18" Grid.Column="1" 
-                            Grid.Row="0" IsVisible="{Binding IsCodiceVisible}" StrokeThickness="2.5">
+                    <Border Padding="14" Grid.Column="1" Grid.Row="0" IsVisible="{Binding IsCodiceVisible}" StrokeThickness="2.5">
+
                         <Button
                             Margin="-5"
                             Text="{Binding Codice}"
-                            TextColor="{StaticResource Primary}"
-                            FontSize="17"
+                            FontSize="18"
                             VerticalOptions="Center"
                             HeightRequest="50"
                             WidthRequest="100"
                             Command="{Binding CopyCodeCommand}"
                             BackgroundColor="Transparent"
+                            Style="{StaticResource ButtonInfoLobby}"
                         />
-                        
                     </Border>
 
                     <Label 
@@ -184,8 +180,6 @@
             Text="Avvia partita!"
             HeightRequest="50"
             WidthRequest="350"
-            BackgroundColor="{StaticResource Tertiary}"
-            TextColor="{StaticResource Secondary}"
             FontSize="18"
             FontAttributes="Bold"
             VerticalOptions="Center"
@@ -197,8 +191,7 @@
         <Button
             Grid.Row="7"
             Text="Lascia lobby"
-            BackgroundColor="{StaticResource Primary}"
-            TextColor="{StaticResource Secondary}"
+            BackgroundColor="{StaticResource Manzz}"
             FontSize="18"
             FontAttributes="Bold"
             HeightRequest="50"
@@ -212,7 +205,6 @@
         <Button
             Grid.Row="7"
             Text="Lascia lobby"
-            BackgroundColor="{StaticResource Primary}"
             HeightRequest="50"
             WidthRequest="180"
             VerticalOptions="Center"

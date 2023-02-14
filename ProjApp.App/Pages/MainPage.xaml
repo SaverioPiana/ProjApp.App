@@ -30,7 +30,7 @@
             Grid.Row="1"
             x:Name="BottomDrawer"
             ZIndex="1"
-            HeightRequest="500"
+            HeightRequest="520"
             VerticalOptions="End"
             IsVisible="True"
             Style="{StaticResource bottomDrawer}">
@@ -43,55 +43,50 @@
             <!--Questa è la tendina:-->
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0">
+                <Image Grid.Row="0"
+                       VerticalOptions="Start"
+                       HorizontalOptions="Center"
+                       Margin="0,10,0,0"
+                       Source="{AppThemeBinding Light=drawer_handle_icon_azz.png, Dark=drawer_handle_icon_ver.png}"
+                       HeightRequest="30"
+                       WidthRequest="100"
+                />
+                <Grid Grid.Row="1" Margin="0,-5,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <!--<Label
-                        Grid.Column="0"
-                        Text="Ruolo: "
-                        TextColor="#5BAFEC"
-                        FontSize="22"
-                        VerticalOptions="Center"
-                        HorizontalOptions="Start"
-                        HeightRequest="25"
-                        Margin="10,10,0,0"
-                    />-->
-
                     <Image
-                        Grid.Column="0"
-                        VerticalOptions="Center"
-                        HorizontalOptions="Start"
-                        Margin="22,12,0,0"
-                        Source="clock_icon_azz.png"
-                        HeightRequest="25"
-                        WidthRequest="25"
+                       Grid.Column="0"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start"
+                       Margin="22,12,0,0"
+                       Source="{AppThemeBinding Light=clock_icon_azz.png, Dark=clock_icon_ver.png}"
+                       HeightRequest="25"
+                       WidthRequest="25"
                     />
 
                     <Label
-                        Grid.Column="1"
-                        Text="Tempo: "
-                        TextColor="{StaticResource Primary}"
-                        FontSize="22"
-                        VerticalTextAlignment="Center"
-                        VerticalOptions="Center"
-                        HorizontalOptions="Start"
-                        HeightRequest="25"
-                        Margin="10,10,0,0"
+                       Grid.Column="1"
+                       Text="Tempo: "
+                       FontSize="22"
+                       VerticalTextAlignment="Center"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start"
+                       HeightRequest="25"
+                       Margin="10,10,0,0"
                     />
 
                     <Button  
-                        Grid.Column="3"
-                        BackgroundColor="{StaticResource Primary}"
+                        Grid.Column="2"
                         ImageSource="down_arrow_icon.png"
                         VerticalOptions="Center"
                         WidthRequest="35" 
@@ -101,8 +96,7 @@
                     />
                     
                     <Button  
-                        Grid.Column="2"
-                        BackgroundColor="{StaticResource Primary}"
+                        Grid.Column="3"
                         ImageSource="up_arrow_icon.png"
                         VerticalOptions="Center"
                         WidthRequest="35" 
@@ -114,9 +108,7 @@
                     
 
                 <Border  
-                    Grid.Row="1"
-                    Stroke="#5BAFEC" 
-                    StrokeShape="RoundRectangle 18" 
+                    Grid.Row="2" 
                     Margin="15" 
                     StrokeThickness="3"
                     Style="{StaticResource bottomDrawer}">
@@ -129,7 +121,6 @@
                     
                     <Label 
                         Text="Informazioni partita:"
-                        TextColor="{StaticResource Primary}"
                         FontSize="20"
                         Margin="10,15,0,0"
                         VerticalOptions="Start"
@@ -138,25 +129,21 @@
                 </Border>
 
                 <Button
-                Grid.Row="2"
-                Text="Abbandona Partita"
-                BackgroundColor="{StaticResource Manzz}"
-                Command="{Binding AbbandonaPartitaCommand}"
-                TextColor="White"
-                Margin="10"
-                HeightRequest="40"
-                WidthRequest="150"
-                FontSize="18"
-                FontAttributes="Bold"
-                VerticalOptions="Start"
-            />
+                    Grid.Row="3"
+                    Text="Abbandona Partita"
+                    BackgroundColor="{StaticResource Manzz}"
+                    Command="{Binding AbbandonaPartitaCommand}"
+                    Margin="10"
+                    HeightRequest="40"
+                    WidthRequest="150"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    VerticalOptions="Start"
+                />
 
             </Grid>
 
         </Border>
-
-
-        
 
     </Grid>
     
