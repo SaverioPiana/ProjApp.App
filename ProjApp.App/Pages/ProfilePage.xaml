@@ -117,7 +117,6 @@
                 <Button 
                     Grid.Column="2"
                     Command="{Binding DoneChangingNickCommand}"
-                    BackgroundColor="{StaticResource Primary}"
                     ImageSource="check_icon.png"
                     CornerRadius="12"
                     HeightRequest="30"

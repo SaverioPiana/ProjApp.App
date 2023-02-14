@@ -168,6 +168,8 @@
                     FontSize="18"
                     FontAttributes="Bold"
                     VerticalOptions="Start"
+                    Padding="0,0,0,5"
+                    
                 />
 
             </Grid>

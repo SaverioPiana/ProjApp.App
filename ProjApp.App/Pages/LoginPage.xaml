@@ -31,9 +31,9 @@
 
         <Label 
             Grid.Row="1"
-            Text="Benvenuto!"
-            FontSize="45"
-            FontAttributes="Bold"
+            Text="BENVENUTO!"
+            FontSize="60"
+            FontFamily="OriginTech"
             HorizontalOptions="Center"
             VerticalOptions="Center"
         />
@@ -76,10 +76,9 @@
 
         <Button
             Grid.Row="6"
-            Text="SIGN IN"
+            Text=" S I G N   I N "
             Command="{Binding NavigateToStartPageCommand}"
             Margin="15"
-            FontSize="18"
             FontAttributes="Bold"
             HeightRequest="50"
             WidthRequest="200"
