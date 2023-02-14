@@ -91,7 +91,7 @@ public partial class MainPage : ContentPage
         await Task.WhenAll
         (
             BottomDrawer.TranslateTo(0, openY, length: duration, easing: Easing.CubicInOut),
-            BottomDrawerArrow.RotateTo(180, duration, Easing.CubicInOut)
+            BottomDrawerArrow.RotateTo(0, duration, Easing.CubicInOut)
         );
         
     }
@@ -101,7 +101,7 @@ public partial class MainPage : ContentPage
         await Task.WhenAll
         (
             BottomDrawer.TranslateTo(0, 430, length: duration, easing: Easing.CubicInOut),
-            BottomDrawerArrow.RotateTo(0, duration, Easing.CubicInOut)
+            BottomDrawerArrow.RotateTo(180, duration, Easing.CubicInOut)
         );
         
     }

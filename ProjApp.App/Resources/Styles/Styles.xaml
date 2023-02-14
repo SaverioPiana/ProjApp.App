@@ -21,7 +21,7 @@
     </Style>
 
     <Style TargetType="BoxView">
-        <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
+        <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Verdino}}" />
     </Style>
 
     <Style TargetType="Button">
@@ -390,7 +390,7 @@
     
     <Style TargetType="Border" x:Key="bottomDrawer">
         <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Verdino}}" />
-        <Setter Property="StrokeShape" Value="RoundRectangle 20"/>
+        <Setter Property="StrokeShape" Value="RoundRectangle 20, 20, 0,0"/>
         <Setter Property="StrokeThickness" Value="3"/>
         <Setter Property="Padding" Value="15,0,15,0"/>
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}" />
@@ -403,6 +403,8 @@
     <Style TargetType="Rectangle" x:Key="TopRectangle" >
         <Setter Property="Fill" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Verdino}}" />
     </Style>
+
+    
 
     <!--Da correggere
     <Style TargetType="Image" x:Key="profile_icon" >

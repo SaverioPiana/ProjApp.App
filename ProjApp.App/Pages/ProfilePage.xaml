@@ -11,7 +11,7 @@
     <Grid RowSpacing="20">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="24"></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -20,7 +20,6 @@
 
         <Rectangle
             Grid.Row="0"
-            Margin="0"
             Style="{StaticResource TopRectangle}"
             WidthRequest="400"
             HeightRequest="25"
@@ -31,7 +30,6 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
-                
             </Grid.ColumnDefinitions>
 
             <Image
@@ -50,20 +48,6 @@
                 VerticalOptions="Center"
                 Margin="10,0,0,0"
             />
-
-            <!--<Button 
-                Grid.Column="2"
-                Command="{Binding NavigateToLoginPageCommand}"
-                BackgroundColor="{StaticResource Primary}"
-                ImageSource="settings_icon.png"
-                CornerRadius="20"
-                HeightRequest="50"
-                WidthRequest="50"
-                VerticalOptions="Center"
-                Margin="0,0,20,0"
-            />-->
-
-
 
         </Grid>
 
@@ -165,7 +149,7 @@
             IsVisible="False"
         />-->
 
-        <Border  Grid.Row="5" Padding="5" Margin="15" StrokeThickness="3" >
+        <Border  Grid.Row="3" Padding="5" Margin="5" StrokeThickness="3" >
             <Border.Shadow>
                 <Shadow Brush="Black"
                     Offset="0,0"
@@ -181,8 +165,6 @@
                 HorizontalOptions="Start"
             />
             
-            
-
         </Border>
 
         <Button
