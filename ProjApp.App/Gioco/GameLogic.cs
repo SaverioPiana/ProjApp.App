@@ -10,10 +10,7 @@ namespace ProjApp.Gioco
 {
     public static class GameLogic
     {
-        //dichiarazione evento
-        public static event EventHandler<List<User>> UsersOutside;
-
-        public static void whoOutsideTheArea()
+        public static async Task<List<User>> whoOutsideTheArea()
         {
             List<Coordinate> bordi = MyUser.currPartita.area.bordi;
             //bordi.Remove(bordi.First());
@@ -25,16 +22,7 @@ namespace ProjApp.Gioco
                 if (!IsInsideTheArea(bordi, p.Position))
                     UO.Add(p);
             }
-
-            if (UO.Count > 0)
-            {
-                //evento
-                OnUserOutside(UO);
-            }
-        }
-        public static void OnUserOutside(List<User> e)
-        {
-            UsersOutside?.Invoke(new(), e);
+            return UO;
         }
 
         // uso di "Ray Casting Method" , chat GPT in aiuto

@@ -41,7 +41,7 @@ namespace ProjApp.ViewModel
         public void DoneChangingNick()
         {
             MyUser.ChangeNick(Nick);
-            WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("nickChanged", Nick));
+            WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(NICK_CHANGED, Nick));
             DoneChangingNickname = true;
             ChangingNick = false;
         }

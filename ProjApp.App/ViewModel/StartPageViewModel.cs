@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using ProjApp.Messagges;
+using System.Runtime.ConstrainedExecution;
 
 namespace ProjApp.ViewModel
 {
@@ -15,6 +16,14 @@ namespace ProjApp.ViewModel
         //aggiorni i dati di posizione dei pin (gia lo fa)
         private string jsonUser;
 
+        //messaggi
+        public const string USER_HAS_JOINED_EVENT = "userHasJoinedEvent";
+        public const string LOBBY_HAS_BEEN_DELETED = "lobbyHasBeenDeleted";
+        public const string NICK_CHANGED = "nickChanged";
+        public const string NAVIGATE_TO_MAIN_PAGE = "navigateToMainPage";
+        //no parametri messaggio
+        public const string NO_PAR = "";
+
         public StartPageViewModel()
         {
             while(MyUser.IsUserUpdating)
@@ -22,7 +31,7 @@ namespace ProjApp.ViewModel
                 Task.Delay(40).Wait();
             } Task.Delay(10).Wait();
 
-            DisplayCorrectUI(new("nickChanged", MyUser.user.Nickname));
+            DisplayCorrectUI(new(NICK_CHANGED, MyUser.user.Nickname));
 
             jsonUser = MyUser.CreateJsonUser(MyUser.user);
 
@@ -39,17 +48,15 @@ namespace ProjApp.ViewModel
         [ObservableProperty]
         bool hasCopied = false;
         [ObservableProperty]
+        bool hasToNavigate = false;
+        [ObservableProperty]
         bool isCodiceVisible = false;
         [ObservableProperty, NotifyPropertyChangedFor(nameof(HasJoined))]
         bool hasCreated = false;
         [ObservableProperty, NotifyPropertyChangedFor(nameof(HasJoined))]
         bool canJoin = true;
-        
-                                             
-        public bool HasJoined => (!HasCreated && !CanJoin) ;
 
-        private async Task NavigateToMainPage() => await AppShell.Current.GoToAsync(nameof(MainPage), false);
-
+        public bool HasJoined => (!HasCreated && !CanJoin);
 
         ////////////////////////  CREATING  ////////////////////////////////// 
 
@@ -65,16 +72,12 @@ namespace ProjApp.ViewModel
         }
 
         [RelayCommand]
-        public async Task AvviaPartita()
+        public async void AvviaPartita()
         {
-            if (HasCreated)
+            if(HasCreated)
             {
                 MyUser.currPartita.StartGame();
-                await NavigateToMainPage();
             }
-            else Application.Current.MainPage.DisplayAlert("Are u an hacker?",
-                "non puoi avviare una partita se non sei l'admin, come hai clickato sto pulsante???",
-                "Non lo so sorry");
         }
 
         [RelayCommand]
@@ -155,21 +158,40 @@ namespace ProjApp.ViewModel
         {
             switch(uiEvent.EventType)
             {
-                case ("userHasJoinedEvent"):
+                case (USER_HAS_JOINED_EVENT):
                     Codice = uiEvent.EventParameter;
                     CanJoin = false;
                     IsCodiceVisible = true;
+                    await MainThread.InvokeOnMainThreadAsync(WaitToNavigate);
                     break;
-                case ("lobbyHasBeenDeleted"):
+                case (LOBBY_HAS_BEEN_DELETED):
                     CanJoin = true;
                     IsCodiceVisible = false;
                     HasCreated = false;
                     break;
-                case ("nickChanged"):
+                case (NICK_CHANGED):
                     Nick = uiEvent.EventParameter;
+                    break;
+                case (NAVIGATE_TO_MAIN_PAGE):
+                    if(!HasToNavigate)
+                    {
+                        HasToNavigate = true;
+                    }
                     break;
             };
         }
+
+        public async Task WaitToNavigate()
+        {
+            while(!HasToNavigate)
+            {
+                await Task.Delay(500);
+            }
+            bool g = MainThread.IsMainThread;
+            await AppShell.Current.GoToAsync(nameof(MainPage), false);
+            HasToNavigate = false;
+        }
+
         ////////////////////////////////////////////////////////////////////////
     }
 }

@@ -88,7 +88,7 @@ namespace ProjApp.Gioco
             Task.Run(OnDeletedLobby);
             Task.Run(RemoveUserFromListAndPins);
             
-            WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("userHasJoinedEvent", MyUser.currPartita.Cod_partita));
+            WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(USER_HAS_JOINED_EVENT, MyUser.currPartita.Cod_partita));
         }
 
         public void RemoveUserFromListAndPins()
@@ -177,7 +177,7 @@ namespace ProjApp.Gioco
             Connessione.con.On("DeletedLobby", () => 
             {
                 //mando un messaggio alla startpage per cambiare la UI
-                WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("lobbyHasBeenDeleted", "noPar"));
+                WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(LOBBY_HAS_BEEN_DELETED, NO_PAR));
                 LobbyParamReset();
             });
         }
@@ -210,14 +210,12 @@ namespace ProjApp.Gioco
                 {
                     Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
                     MyUser.user.IsCercatore = true;
-                    //AppShell.Current.GoToAsync(nameof(MainPage));
-                    //var r = Shell.Current.Navigation.NavigationStack;
                 }
                 else
                 {
                     Console.WriteLine("GameStarted message from server, non sei il cacciatore");
-                    //AppShell.Current.GoToAsync(nameof(MainPage));
                 }
+                WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(NAVIGATE_TO_MAIN_PAGE, NO_PAR));
             });
         }
 

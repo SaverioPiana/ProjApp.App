@@ -62,7 +62,7 @@ namespace ProjApp.ViewModel
 
         public MainPageViewModel() 
         {
-            Constructor();
+            //Constructor();
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,13 +91,12 @@ namespace ProjApp.ViewModel
             Task.Delay(10).Wait();
 
             MyUser.CancelPositionRequest();
-            //////////////////////
+            ////////////////////
             //forse non va fatto??
             if (MyUser.isAdmin)
             {
                 //event unsubscription
                 Mapview.SingleTap -= creaPin;
-                GameLogic.UsersOutside -= onUserOutside;
             }
             foreach (var subscription in serverRegistrations)
             {
@@ -112,7 +111,7 @@ namespace ProjApp.ViewModel
             
 
             tap_counter = 0;
-            WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("lobbyHasBeenDeleted", "noPar"));
+            WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(LOBBY_HAS_BEEN_DELETED, NO_PAR));
             await AppShell.Current.GoToAsync("..", false);
             //var r = Shell.Current.Navigation.NavigationStack;
         }
@@ -204,8 +203,6 @@ namespace ProjApp.ViewModel
             if (MyUser.isAdmin)
             {
                 Mapview.SingleTap += creaPin;
-                //event subscription
-                GameLogic.UsersOutside += onUserOutside;
             }
             //senno' ricevi gli oggetti di gioco
             else
@@ -214,9 +211,7 @@ namespace ProjApp.ViewModel
             }
         }
 
-
-        //event handler
-        public void onUserOutside(object sender, List<User> UO)
+        public async Task OnUserOutside(List<User> UO)
         {
             tap_counter = 0;
             MyUser.currPartita.area = new();
@@ -240,7 +235,7 @@ namespace ProjApp.ViewModel
             );
         }
 
-        public void creaPin(object sender, Mapsui.UI.TappedEventArgs e)
+        public async void creaPin(object sender, Mapsui.UI.TappedEventArgs e)
         {
             Partita p = MyUser.currPartita;
             tap_counter++;
@@ -253,7 +248,11 @@ namespace ProjApp.ViewModel
                     break;
                 case 6:
                     p.area.creaArea(Mapview);
-                    GameLogic.whoOutsideTheArea();
+                    List<User> UO = GameLogic.whoOutsideTheArea().Result;
+                    if(UO.Count > 0)
+                    {
+                        await OnUserOutside(UO);
+                    }
                     break;
                 case 7:
                     p.tana = new(worldPosition);
