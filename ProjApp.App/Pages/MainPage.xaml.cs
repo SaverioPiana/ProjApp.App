@@ -26,11 +26,6 @@ public partial class MainPage : ContentPage
         BindingContext = viewModel;
     }
 
-    protected override async void OnNavigatedFrom(NavigatedFromEventArgs args)
-    {
-        base.OnNavigatedFrom(args);
-    }
-
     protected override bool OnBackButtonPressed()
     {
         if (IsDrawerOpen)
@@ -47,6 +42,7 @@ public partial class MainPage : ContentPage
         if (IsDrawerOpen)
         {
             CloseDrawer();
+            IsDrawerOpen= false;
         }
     }
 
@@ -69,12 +65,10 @@ public partial class MainPage : ContentPage
     {   
         if(IsDrawerOpen)
         {
-            IsDrawerOpen = false;
             await CloseDrawer();
         }
         else
         {
-            IsDrawerOpen = true;
             await OpenDrawer();
         }
         
@@ -89,7 +83,7 @@ public partial class MainPage : ContentPage
             
             lastPanY = e.TotalY;
             Debug.WriteLine($"Running: {e.TotalY}");
-            if (e.TotalY > 0)
+            if (e.TotalY > 5)
             {
                 BottomDrawer.TranslationY = openY + e.TotalY;
             }
@@ -100,12 +94,10 @@ public partial class MainPage : ContentPage
             //Debug.WriteLine($"Completed: {e.TotalY}");
             if (lastPanY < 70)
             {
-                IsDrawerOpen= true;
                 await OpenDrawer();
             }
             else
             {
-                IsDrawerOpen = false;
                 await CloseDrawer();
             }
             
@@ -119,6 +111,7 @@ public partial class MainPage : ContentPage
             BottomDrawer.TranslateTo(0, openY, length: duration, easing: Easing.CubicInOut),
             BottomDrawerArrow.RotateTo(0, duration, Easing.CubicInOut)
         );
+        IsDrawerOpen= true;
         
     }
 
@@ -129,7 +122,7 @@ public partial class MainPage : ContentPage
             BottomDrawer.TranslateTo(0, 430, length: duration, easing: Easing.CubicInOut),
             BottomDrawerArrow.RotateTo(180, duration, Easing.CubicInOut)
         );
-        
+        IsDrawerOpen= false;
     }
 }
 

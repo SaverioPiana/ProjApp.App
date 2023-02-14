@@ -73,7 +73,7 @@
                     FontSize="20"
                     VerticalOptions="Center"
                     HorizontalOptions="Start"
-                    Margin="10"
+                    Margin="15"
                 />
 
                 <Label 
@@ -157,7 +157,7 @@
             </Border.Shadow>
 
             <Label 
-                Text="  Giocatori recenti:"
+                Text="Giocatori recenti:"
                 FontSize="20"
                 Margin="15"
                 VerticalOptions="Start"
