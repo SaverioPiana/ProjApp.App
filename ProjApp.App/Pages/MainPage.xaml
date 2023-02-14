@@ -22,7 +22,7 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <ContentView Grid.RowSpan="2" ZIndex="0" Content="{Binding Mapview}" />
+            <ContentView Grid.RowSpan="2" ZIndex="0" Content="{Binding Mapview}" x:Name="Mapview"/>
             
         </Grid>
 
@@ -81,36 +81,33 @@
                        VerticalTextAlignment="Center"
                        VerticalOptions="Center"
                        HorizontalOptions="Start"
-                       HeightRequest="25"
+                       HeightRequest="30"
                        Margin="10,10,0,0"
                     />
 
 
                     <BoxView Grid.Column="2"
-                        WidthRequest="100" 
+                        WidthRequest="60" 
                         HeightRequest="25"
-                        Margin="0,10,10,0"
+                        Margin="0,10,20,0"
                         VerticalOptions="Center"
+                        HorizontalOptions="Center"
                         CornerRadius="10"
                      />
 
-                    <Button 
+                    <Button
                         x:Name="BottomDrawerArrow"
                         Grid.Column="2"
                         BackgroundColor="Transparent"
                         ImageSource="down_arrow_icon.png"
                         VerticalOptions="Center"
+                        HorizontalOptions="Center"
                         WidthRequest="60" 
                         HeightRequest="25"
-                        Margin="0,10,15,0"
+                        Margin="0,10,20,0"
                         Clicked="DrawerDownOrUp"
-                        Rotation="180">
-                                
-                        <Button.GestureRecognizers>
-                            <PanGestureRecognizer
-                                PanUpdated="PanGestureRecognizer_PanUpdated"/>
-                        </Button.GestureRecognizers>
-                    </Button>
+                        Rotation="180"
+                    />
 
                     <!--<Button  
                         Grid.Column="3"
@@ -151,7 +148,7 @@
                     Text="Abbandona Partita"
                     BackgroundColor="{StaticResource Manzz}"
                     Command="{Binding AbbandonaPartitaCommand}"
-                    Margin="10"
+                    Margin="0,0,0,110"
                     HeightRequest="40"
                     WidthRequest="150"
                     FontSize="18"

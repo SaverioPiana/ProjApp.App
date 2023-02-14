@@ -10,6 +10,8 @@ using ProjApp.MapEl;
 using ProjApp.ViewModel;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Mapsui.ViewportAnimations;
+using ProjApp.MapEl.GPS;
 #if ANDROID
 using static ProjApp.MainActivity;
 #endif
@@ -24,6 +26,29 @@ public partial class MainPage : ContentPage
         BindingContext = viewModel;
     }
 
+    protected override async void OnNavigatedFrom(NavigatedFromEventArgs args)
+    {
+        base.OnNavigatedFrom(args);
+    }
+
+    protected override bool OnBackButtonPressed()
+    {
+        if (IsDrawerOpen)
+        {
+            CloseDrawer();
+        }
+        return true;
+    }
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+        if (IsDrawerOpen)
+        {
+            CloseDrawer();
+        }
+    }
+
     protected override void OnAppearing()
     {
         (BindingContext as MainPageViewModel).Constructor();
@@ -35,7 +60,7 @@ public partial class MainPage : ContentPage
     }
 
     uint duration = 450;
-    double openY = 10;
+    double openY = 100;
     bool IsDrawerOpen = false;
     
 
