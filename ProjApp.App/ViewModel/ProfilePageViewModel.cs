@@ -55,7 +55,7 @@ namespace ProjApp.ViewModel
                 {
                     string newnick = await Application.Current.MainPage.DisplayPromptAsync("Come ti chiami?",
                     "Inserisci il nome che gli altri utenti visualizzeranno", "Conferma", "Annulla",
-                    "Nickname");
+                    "Nickname", 20);
 
                     MyUser.SaveLastNickOnFile(newnick);
                     Nick = newnick;

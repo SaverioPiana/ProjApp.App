@@ -16,10 +16,12 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 
+                fonts.AddFont("OriginTech.otf", "OriginTech");
                 fonts.AddFont("NewRodin_Pro_EB.otf", "NewRodin");
                 fonts.AddFont("SuperMarioBrosWii.otf", "Mario");
                 fonts.AddFont("Starjedi.ttf", "Jedi");
                 fonts.AddFont("Glitch.otf", "Glitch");
+                fonts.AddFont("space.ttf", "Space");
             });
 
 		builder.Services.AddSingleton<StartPageViewModel>();

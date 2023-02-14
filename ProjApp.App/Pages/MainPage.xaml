@@ -147,14 +147,37 @@
                             Radius="40"
                             Opacity="0.55" />
                     </Border.Shadow>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Row="0"
+                            Text="Informazioni partita:"
+                            FontSize="20"
+                            Margin="10,15,0,0"
+                            HeightRequest="25"
+                            VerticalOptions="Start"
+                            HorizontalOptions="Start"
+                        />
+
+                        <!--<CollectionView>
+                            <CollectionView.ItemsSource>
+                                <x:Array Type="{x:Type lista:Giocatore}">
+                                    <lista:Giocatore Name="Porco"/>
+                                </x:Array>
+                            </CollectionView.ItemsSource>
+                        </CollectionView>-->
+                        
+                        
+                        
+                    </Grid>
                     
-                    <Label 
-                        Text="Informazioni partita:"
-                        FontSize="20"
-                        Margin="10,15,0,0"
-                        VerticalOptions="Start"
-                        HorizontalOptions="Start"
-                    />
+                    
+                    
+                    
                 </Border>
 
                 <Button

@@ -168,7 +168,7 @@
 
         <Button
             Grid.Row="4"
-            Text="Disconnettiti"
+            Text=" S I G N   O U T "
             Command="{Binding NavigateToLoginPageCommand}"
             HorizontalOptions="Center"
             VerticalOptions="End"
