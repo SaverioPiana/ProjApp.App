@@ -16,6 +16,7 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 fonts.AddFont("comici.ttf", "ComicSansRegular");
+                fonts.AddFont("NewRodin_Pro_EB.otf", "NewRodin");
             });
 
 		builder.Services.AddSingleton<StartPageViewModel>();

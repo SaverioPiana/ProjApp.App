@@ -36,6 +36,7 @@ public partial class MainPage : ContentPage
         if (IsDrawerOpen)
         {
             CloseDrawer();
+            IsDrawerOpen= false;
         }
         return true;
     }
