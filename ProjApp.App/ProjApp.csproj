@@ -11,7 +11,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>NascondApp</ApplicationTitle>
+		<ApplicationTitle>Buddy Hunt</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.projapp</ApplicationId>
@@ -42,7 +42,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\Appicon\appiconprova.svg" Color="#512BD4" />		
+		<MauiIcon Include="Resources\Appicon\appiconblackpin.svg" Color="#512BD4" />		
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" />
 
@@ -66,7 +66,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\AppIcon\appiconprova.svg" />
+	  <None Remove="Resources\AppIcon\appiconblackpin.svg" />
 	  <None Remove="Resources\Images\reddot.png" />
 	  <None Remove="Resources\Raw\Shrek.txt" />
 	</ItemGroup>
@@ -80,7 +80,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiIcon Include="Resources\AppIcon\appiconprova.svg" />
+	  <MauiIcon Include="Resources\AppIcon\appiconblackpin.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
