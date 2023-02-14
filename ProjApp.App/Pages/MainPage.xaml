@@ -41,7 +41,7 @@
             </Border.GestureRecognizers>
             
             <!--Questa è la tendina:-->
-            <Grid>
+            <Grid RowSpacing="5" Margin="5" Padding="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
@@ -61,7 +61,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
                     <Image
@@ -85,14 +85,27 @@
                        Margin="10,10,0,0"
                     />
 
+
+                    <BoxView Grid.Column="2"
+                        Color="{StaticResource Primary}"
+                        WidthRequest="100" 
+                        HeightRequest="25"
+                        Margin="0,10,15,0"
+                        VerticalOptions="Center"
+                        CornerRadius="10"
+                     />
+                    
                     <Button  
+                        x:Name="BottomDrawerArrow"
                         Grid.Column="2"
+                        BackgroundColor="Transparent"
                         ImageSource="down_arrow_icon.png"
                         VerticalOptions="Center"
-                        WidthRequest="35" 
+                        WidthRequest="100" 
                         HeightRequest="25"
-                        Margin="0,0,15,0"
-                        Clicked="DrawerDown"
+                        Margin="0,10,15,0"
+                        Clicked="DrawerDownOrUp"
+                        Rotation="0"
                     />
                     
                     <Button  
@@ -103,7 +116,7 @@
                         HeightRequest="25"
                         Margin="0,0,15,0"
                         Clicked="DrawerUp"
-                    />
+                    />-->
                 </Grid>
                     
 

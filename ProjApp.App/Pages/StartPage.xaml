@@ -101,7 +101,7 @@
             <Entry
                 Grid.Column="1"
                 x:Name="CodiceLobby"
-                Placeholder="     CODICE     "
+                Placeholder="CODICE"
                 FontSize="20"
                 TextColor="{StaticResource Primary}"
                 ReturnCommand="{Binding JoinLobbyCommand}"
