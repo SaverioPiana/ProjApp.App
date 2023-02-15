@@ -112,6 +112,7 @@ namespace ProjApp.ViewModel
 
                 //faccio inserire il codice all'utente
                 MyUser.currPartita.IfCheckThenJoin(entry.Text.ToUpper(), jsonUser);
+                entry.Text = string.Empty;
                 
             }
         }
