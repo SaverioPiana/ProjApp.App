@@ -189,6 +189,8 @@ namespace ProjApp.ViewModel
             Task.Run(RestInitializer);
         }
 
+
+        //QUA METTIAMO CHE TUTTI SI SPARGONO PARTENDO DALLA TUA POSIZIONE //FIGO
         private List<Pin> CreaPinsBindatiAllaMappa(IList<Pin> pins)
         {
             List<Pin> result = new List<Pin>();
@@ -197,7 +199,8 @@ namespace ProjApp.ViewModel
                 Pin newpin = new Pin(Mapview)
                 {
                     Label = toAdd.Label,
-                    Position = new(0, 0),
+                    Position = new(MyUser.user.Position.Latitude,
+                                   MyUser.user.Position.Longitude),
                     Type = PinType.Icon,
                     Icon = toAdd.Icon,
                     Scale = 0.4F
@@ -241,6 +244,7 @@ namespace ProjApp.ViewModel
             UO.ForEach(u => s.Append(u.UserID + ", "));
             Console.WriteLine($"{s} sono fuori dall' area");
         }
+
         private void riceviOggettiDiGioco()
         {
             serverRegistrations.Add( 

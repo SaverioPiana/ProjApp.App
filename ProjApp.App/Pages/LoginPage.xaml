@@ -64,6 +64,7 @@
             FontAttributes="Bold"
             HorizontalOptions="Center"
             ClearButtonVisibility="WhileEditing"
+            Keyboard="Email"
         />
         
         <Entry 

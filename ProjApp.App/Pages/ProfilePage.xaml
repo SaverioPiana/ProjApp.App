@@ -92,7 +92,7 @@
                     FontSize="20"
                     VerticalOptions="Center"
                     HorizontalOptions="Start"
-                    Margin="-9,-9,-9,-10.5"
+                    Margin="-9,-9,-9,-10"
                     IsVisible="{Binding ChangingNick}"
                     IsTextPredictionEnabled="False"
                     IsSpellCheckEnabled="False"

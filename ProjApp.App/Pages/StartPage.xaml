@@ -105,13 +105,14 @@
                 FontSize="20"
                 ReturnCommand="{Binding JoinLobbyCommand}"
                 ReturnCommandParameter="{x:Reference CodiceLobby}"
-                ReturnType="Search"
                 FontAttributes="Bold"
                 IsTextPredictionEnabled="False"
                 IsSpellCheckEnabled="False"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 IsEnabled="{Binding EntryEnabled}"
+                Keyboard="Text"
+                ReturnType="Done"
             />
 
         </Grid>

@@ -111,7 +111,7 @@ namespace ProjApp.ViewModel
                 EntryEnabled = true;
 
                 //faccio inserire il codice all'utente
-                MyUser.currPartita.IfCheckThenJoin(entry.Text, jsonUser);
+                MyUser.currPartita.IfCheckThenJoin(entry.Text.ToUpper(), jsonUser);
                 
             }
         }
