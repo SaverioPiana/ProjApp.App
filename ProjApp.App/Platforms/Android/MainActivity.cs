@@ -39,13 +39,16 @@ public class MainActivity : MauiAppCompatActivity
     [Activity(NoHistory = false, LaunchMode = LaunchMode.SingleTop, Exported = true)]
     [IntentFilter(new[] { Android.Content.Intent.ActionView },
               Categories = new[] { Android.Content.Intent.CategoryDefault, Android.Content.Intent.CategoryBrowsable },
-        DataScheme = "napp"
+        DataScheme = CALLBACK_SCHEME,
+        DataHost = AUTH_URI
         )
          ]
     public class WebAuthenticationCallbackActivity : Microsoft.Maui.Authentication.WebAuthenticatorCallbackActivity
     {
-        const string CALLBACK_SCHEME = "napp";
-       
+        const string CALLBACK_SCHEME = "https";
+        const string AUTH_URI = "nascondapp.firebaseapp.com";
+
+
 
     }
 }

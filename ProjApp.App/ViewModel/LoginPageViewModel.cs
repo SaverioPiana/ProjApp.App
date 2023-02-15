@@ -73,6 +73,9 @@ namespace ProjApp.ViewModel
                 }
                 Webviewvisible = false;
                 return redirectedUrl;
+
+
+
             });
             userCredential.AuthCredential.ToString();
 
