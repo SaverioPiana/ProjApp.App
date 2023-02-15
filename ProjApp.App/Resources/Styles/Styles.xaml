@@ -148,7 +148,7 @@
 
     <Style TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Verdino}}" />
-        <Setter Property="FontFamily" Value="NewRonin" />
+        <Setter Property="FontFamily" Value="NewRodin" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
