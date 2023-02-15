@@ -211,6 +211,7 @@
             WidthRequest="180"
             FontAttributes="Bold"
             VerticalOptions="Center"
+            Margin="0,0,0,60"
             Command="{Binding LeaveLobbyCommand}"
             IsVisible="{Binding HasJoined}"
         />

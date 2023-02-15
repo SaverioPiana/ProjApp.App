@@ -31,9 +31,9 @@
 
         <Label 
             Grid.Row="1"
-            Text="BENVENUTO!"
-            FontSize="50"
-            FontFamily="OriginTech"
+            Text="BENVENUTO"
+            FontSize="40"
+            FontFamily="NewRodin"
             HorizontalOptions="Center"
             VerticalOptions="Center"
         />
