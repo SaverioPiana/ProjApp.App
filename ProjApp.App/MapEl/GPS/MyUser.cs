@@ -23,6 +23,8 @@ namespace ProjApp.MapEl.GPS
         public static bool isAdmin = false;
         public static string NICK_FILENAME = "playerNick.txt";
         public static bool IsUserUpdating = false;
+
+        private static int consecutiveChecks = 0;
         
         //SignalR Parametri
         public readonly static int SEND_POS_DELAY = 3000;
@@ -71,21 +73,30 @@ namespace ProjApp.MapEl.GPS
                     _cancelTokenSource = new CancellationTokenSource();
 
                     Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
-
+                    
+                    if (_cancelTokenSource.IsCancellationRequested) 
+                    { 
+                        return;
+                    }
 
                     if (location != null && location.Accuracy < 50)
                     {
                         user.Position = location;
                         SaveLastPositionOnFile(location);
                         Console.WriteLine($"GET_POSITION::: Accuracy: {location.Accuracy} Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
-                    } //else {
-                    //    MainThread.BeginInvokeOnMainThread(() => 
-                    //        {
-                    //            Microsoft.Maui.Controls.Application.Current.MainPage.DisplayAlert("Ao?",
-                    //            "Pare che il tuo GPS prenda molto male",
-                    //            "Prometto di uscire dal bunker");
-                    //        });
-                   // }
+                } else {
+                        consecutiveChecks++;
+                        if (consecutiveChecks >= 5)
+                        {
+                            MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                                Microsoft.Maui.Controls.Application.Current.MainPage.DisplayAlert("Ao?",
+                                "Pare che il tuo GPS prenda molto male",
+                                "Prometto di uscire dal bunker");
+                            });
+                            consecutiveChecks = 0;
+                        }
+                    }
 
                 }
                 // Catch one of the following exceptions:

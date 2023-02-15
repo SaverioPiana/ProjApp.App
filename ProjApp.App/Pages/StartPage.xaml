@@ -66,6 +66,7 @@
             <!--Clicked="OnClickedCreaPartitaOrJoin" LHO LEVATO PERCHE ANCORA NON FUNZIONA, GUARDA STARTPAGE.CS-->
             <Button
                 Grid.Column="1"
+                Margin="35"
                 Command="{Binding CreateLobbyCommand}"
                 ImageSource="plus_icon.png"
                 HeightRequest="36"
@@ -138,7 +139,7 @@
 
                     <Label 
                         Text="Informazioni Lobby:"
-                        FontSize="22"
+                        FontSize="18"
                         HorizontalOptions="Start"
                         VerticalOptions="Center"
                         Grid.Column="0"

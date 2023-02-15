@@ -19,6 +19,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using System.Text.Json.Serialization;
 using ProjApp.MapEl.Serializable;
 using System.Text;
+using System.Data;
 
 namespace ProjApp.ViewModel
 {
@@ -33,6 +34,8 @@ namespace ProjApp.ViewModel
 
         private static object lockPreMatchPins = new object();
         private static IList<Pin> preMatchPins = new List<Pin>();
+
+        private CancellationTokenSource cancellationTokenSource;
 
         public static IList<Pin> PreMatchPins
         {
@@ -86,13 +89,15 @@ namespace ProjApp.ViewModel
         [RelayCommand]
         public async Task AbbandonaPartita()
         {
+            //per myposalways
+            cancellationTokenSource.Cancel();
+            
             MyUser.currPartita.LeaveLobby();
 
             Task.Delay(10).Wait();
 
-            MyUser.CancelPositionRequest();
-            ////////////////////
-            //forse non va fatto??
+            //////////////////////
+            ////forse non va fatto??
             if (MyUser.isAdmin)
             {
                 //event unsubscription
@@ -102,18 +107,19 @@ namespace ProjApp.ViewModel
             {
                 subscription.Dispose();
             }
-            //forse non va fatto??
-            /////////////////////
-            
+            ////forse non va fatto??
+            ///////////////////////
+
             MyUser.currPartita.DisposeServerRegistrations();
 
+            Task.Delay(10).Wait();
+
             MyUser.currPartita = new();
-            
+
 
             tap_counter = 0;
             WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(LOBBY_HAS_BEEN_DELETED, NO_PAR));
             await AppShell.Current.GoToAsync("..", false);
-            //var r = Shell.Current.Navigation.NavigationStack;
         }
 
         //forse va messa una condizione in modo tale che non runni sempre all avvio, tipo salvarci un bool su un file boh
@@ -186,7 +192,8 @@ namespace ProjApp.ViewModel
                 Mapview.Pins.Add(toAdd);
             }
 
-            Task.Run(RestInitializer);
+            cancellationTokenSource = new CancellationTokenSource();
+            Task.Run(RestInitializer, cancellationTokenSource.Token);
         }
 
 
@@ -212,7 +219,7 @@ namespace ProjApp.ViewModel
 
         private void RestInitializer()
         {
-            Task.Run(Update_MyPosition_ALWAYS);
+            Task.Run(Update_MyPosition_ALWAYS, cancellationTokenSource.Token);
 
             Task.Run(aggiungiAltriGiocatoriAllaMappa);
 
@@ -401,6 +408,12 @@ namespace ProjApp.ViewModel
             bool firstupdate = true;
             while (MyUser.SEND_POSITION)
             {
+                if(cancellationTokenSource.IsCancellationRequested)
+                {
+                    Console.WriteLine("!?!?!?!?!?!?! CANCELLATION REQUESTED FOR TASKS IN MAIN PAGE !?!?!?!??!?!?!?!");
+                    return;
+                }
+
                 await MyUser.Get_Position();
                 Position p = MyUser.user.UserPin.Position;
                 //ma serve ancora sta cosa???? ----- Carlo: SI zi

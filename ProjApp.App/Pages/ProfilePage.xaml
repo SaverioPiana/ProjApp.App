@@ -63,7 +63,7 @@
             
             <Grid >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="130"></ColumnDefinition>
+                    <ColumnDefinition Width="165"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="60"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
@@ -90,6 +90,8 @@
                     Grid.Column="1"
                     Text="{Binding Nick}"
                     FontSize="20"
+                    FontFamily="NewRodin"
+                    ReturnCommand="{Binding DoneChangingNickCommand}"
                     VerticalOptions="Center"
                     HorizontalOptions="Start"
                     Margin="-9,-9,-9,-10"
