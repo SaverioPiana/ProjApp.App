@@ -12,11 +12,11 @@
         
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
-            <RowDefinition Height=".3*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="80"></RowDefinition>
             <RowDefinition Height=".2*"></RowDefinition>
-            <RowDefinition Height=".15*"></RowDefinition>
-            <RowDefinition Height=".15*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
@@ -31,20 +31,23 @@
 
         <Label 
             Grid.Row="1"
-            Text="BENVENUTO"
+            ZIndex="1"
+            Text="BUDDY HUNT"
             FontSize="40"
             FontFamily="NewRodin"
             HorizontalOptions="Center"
             VerticalOptions="Center"
+            Margin="0,70,0,0"
         />
 
         <Image
-            Grid.Row="2"
-            Source="{AppThemeBinding Light=profile_icon_azz.png, Dark=profile_icon_ver.png}"
+            Grid.Row="1"
+            ZIndex="0"
+            Source="{AppThemeBinding Light=appiconblackpin_image.png, Dark=appiconblackpin_image.png}"
             HorizontalOptions="Center"
-            WidthRequest="80"
-            HeightRequest="80"
-            Margin="0"
+            WidthRequest="180"
+            HeightRequest="180"
+            Margin="0,20,0,0"
         />
 
         <Label 

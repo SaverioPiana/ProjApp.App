@@ -83,7 +83,7 @@ namespace ProjApp.Gioco
                 FillColor = Color.FromRgba("#006F0032"),
                 StrokeColor = Colors.Green,
                 StrokeWidth = 2,
-                MaxVisible = mv.Map.Resolutions[16]
+                MaxVisible = mv.Map.Resolutions[mv.Map.Resolutions.Count()-4]
             };
 
             circleLayer.Add(circle.Feature);

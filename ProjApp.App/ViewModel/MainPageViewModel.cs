@@ -346,6 +346,7 @@ namespace ProjApp.ViewModel
                                     alreadyIn.Position = new(position.Latitude, position.Longitude);
                                     alreadyIn.IsCercatore = user.IsCercatore;
                                 }
+
                             }
                             //non serve piu aggiungere perche in toeria non puo entrare gente nuova se la partita è in corso
 

@@ -35,6 +35,15 @@ public partial class MainPage : ContentPage
         }
         return true;
     }
+    protected override void OnAppearing()
+    {
+        (BindingContext as MainPageViewModel).Constructor();
+        CloseDrawer(); //se lo aspetti non si apre mai la pagina DO NOT AWAIT
+        base.OnAppearing();
+        #if ANDROID
+        WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar"));
+        #endif
+    }
 
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
@@ -46,15 +55,6 @@ public partial class MainPage : ContentPage
         }
     }
 
-    protected override void OnAppearing()
-    {
-        (BindingContext as MainPageViewModel).Constructor();
-        CloseDrawer(); //se lo aspetti non si apre mai la pagina DO NOT AWAIT
-        base.OnAppearing();
-        #if ANDROID
-        WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar"));
-        #endif
-    }
 
     uint duration = 450;
     double openY = 100;

@@ -21,7 +21,6 @@ public partial class StartPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        (BindingContext as StartPageViewModel).Codice = string.Empty;
         #if ANDROID
         WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar"));
         #endif

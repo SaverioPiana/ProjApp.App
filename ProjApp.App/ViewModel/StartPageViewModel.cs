@@ -65,6 +65,10 @@ namespace ProjApp.ViewModel
         [RelayCommand]
         public void CreateLobby()
         {
+            //SERVE PER LEVARE LA TASTIERA DALLA ENTRY, MICROSOFT ANCORA NON LO FA rip
+            EntryEnabled = false;
+            EntryEnabled = true;
+
             //NON CE ERROR HANDLING QUI
             MyUser.currPartita.CreateLobby(jsonUser);
             Codice = MyUser.currPartita.Cod_partita;
@@ -170,6 +174,7 @@ namespace ProjApp.ViewModel
                 case (LOBBY_HAS_BEEN_DELETED):
                     CanJoin = true;
                     IsCodiceVisible = false;
+                    Codice = string.Empty;
                     HasCreated = false;
                     break;
                 case (NICK_CHANGED):
@@ -192,6 +197,7 @@ namespace ProjApp.ViewModel
             }
             bool g = MainThread.IsMainThread;
             await AppShell.Current.GoToAsync(nameof(MainPage), false);
+            Codice = string.Empty;
             HasToNavigate = false;
         }
 
