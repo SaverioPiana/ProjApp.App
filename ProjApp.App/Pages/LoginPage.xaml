@@ -32,8 +32,8 @@
         <Label 
             Grid.Row="1"
             ZIndex="1"
-            Text="BUDDY  HUNT"
-            FontSize="44"
+            Text="BUDDY HUNT"
+            FontSize="38"
             FontFamily="NewRodin"
             HorizontalOptions="Center"
             VerticalOptions="Center"
@@ -67,6 +67,7 @@
             FontAttributes="Bold"
             HorizontalOptions="Center"
             ClearButtonVisibility="WhileEditing"
+            MaximumWidthRequest="220"
             Keyboard="Email"
         />
         
@@ -79,6 +80,7 @@
             FontAttributes="Bold"
             HorizontalOptions="Center"
             IsPassword="True"
+            MaximumWidthRequest="220"
             ClearButtonVisibility="WhileEditing"
         />
 
