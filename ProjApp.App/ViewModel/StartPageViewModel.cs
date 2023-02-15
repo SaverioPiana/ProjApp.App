@@ -55,6 +55,8 @@ namespace ProjApp.ViewModel
         bool hasCreated = false;
         [ObservableProperty, NotifyPropertyChangedFor(nameof(HasJoined))]
         bool canJoin = true;
+        [ObservableProperty]
+        bool entryEnabled = true;
 
         public bool HasJoined => (!HasCreated && !CanJoin);
 
@@ -105,8 +107,8 @@ namespace ProjApp.ViewModel
             if(CanJoin)
             { 
                 //SERVE PER LEVARE LA TASTIERA DALLA ENTRY, MICROSOFT ANCORA NON LO FA rip
-                CanJoin = false;
-                CanJoin = true;
+                EntryEnabled = false;
+                EntryEnabled = true;
 
                 //faccio inserire il codice all'utente
                 MyUser.currPartita.IfCheckThenJoin(entry.Text, jsonUser);

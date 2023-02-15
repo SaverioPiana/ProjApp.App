@@ -180,12 +180,31 @@ namespace ProjApp.ViewModel
                                       SphericalMercator.FromLonLat(initpos),
                                       STARTING_RES);
             Mapview.Pins.Clear();
-            foreach (Pin preMatchPin in preMatchPins)
+            List<Pin> pinsToAdd = CreaPinsBindatiAllaMappa(PreMatchPins);
+            foreach (Pin toAdd in pinsToAdd)
             {
-                Mapview.Pins.Add(preMatchPin);
+                Mapview.Pins.Add(toAdd);
             }
 
             Task.Run(RestInitializer);
+        }
+
+        private List<Pin> CreaPinsBindatiAllaMappa(IList<Pin> pins)
+        {
+            List<Pin> result = new List<Pin>();
+            foreach(Pin toAdd in pins)
+            {
+                Pin newpin = new Pin(Mapview)
+                {
+                    Label = toAdd.Label,
+                    Position = new(0, 0),
+                    Type = PinType.Icon,
+                    Icon = toAdd.Icon,
+                    Scale = 0.4F
+                };
+                result.Add(newpin);
+            }
+            return result;
         }
 
         private void RestInitializer()

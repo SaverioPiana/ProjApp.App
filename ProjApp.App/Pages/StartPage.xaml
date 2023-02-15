@@ -111,6 +111,7 @@
                 IsSpellCheckEnabled="False"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
+                IsEnabled="{Binding EntryEnabled}"
             />
 
         </Grid>
