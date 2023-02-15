@@ -56,6 +56,7 @@
             FontSize="25"
             VerticalOptions="Center" 
             HorizontalOptions="Center"
+            Margin="0,0,0,15"
         />
 
         <Entry
@@ -75,7 +76,7 @@
             Grid.Row="5"
             Text="{Binding Password}"
             x:Name="Password"
-            Margin="6"
+            Margin="7"
             Placeholder="Password                                             "
             FontAttributes="Bold"
             HorizontalOptions="Center"
