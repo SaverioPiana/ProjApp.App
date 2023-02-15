@@ -42,13 +42,13 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\Appicon\appiconblackpin.svg" Color="#512BD4" />		
+		<MauiIcon Include="Resources\Appicon\app_icon.svg" Color="#FFFFFF" />		
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#FFFFFF" BaseSize="256,256" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\appiconblackpin_image.svg">
+		<MauiImage Update="Resources\Images\app_icon.svg">
 		  <Color>#512BD4</Color>
 		</MauiImage>
 		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
@@ -69,8 +69,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\AppIcon\appiconblackpin.svg" />
-	  <None Remove="Resources\Images\appiconblackpin_image.svg" />
+	  <None Remove="Resources\AppIcon\app_icon.svg" />
+	  <None Remove="Resources\Images\app_icon_image.svg" />
+	  <None Remove="Resources\Images\black_pin_icon.svg" />
 	  <None Remove="Resources\Images\reddot.png" />
 	  <None Remove="Resources\Raw\Shrek.txt" />
 	</ItemGroup>
@@ -84,7 +85,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiIcon Include="Resources\AppIcon\appiconblackpin.svg" />
+	  <MauiIcon Include="Resources\AppIcon\app_icon.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -110,12 +111,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Update="Pages\SettingsPage.xaml.cs">
-	    <DependentUpon>SettingsPage.xaml</DependentUpon>
-	  </Compile>
 	</ItemGroup>
 
 	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionProjAppHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarProjAppHideInfoBar="True" /></VisualStudio></ProjectExtensions>

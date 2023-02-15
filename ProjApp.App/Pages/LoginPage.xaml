@@ -32,21 +32,21 @@
         <Label 
             Grid.Row="1"
             ZIndex="1"
-            Text="BUDDY HUNT"
-            FontSize="40"
+            Text="BUDDY  HUNT"
+            FontSize="44"
             FontFamily="NewRodin"
             HorizontalOptions="Center"
             VerticalOptions="Center"
-            Margin="0,70,0,0"
+            Margin="0,125,0,0"
         />
 
         <Image
             Grid.Row="1"
             ZIndex="0"
-            Source="{AppThemeBinding Light=appiconblackpin_image.png, Dark=appiconblackpin_image.png}"
+            Source="black_pin_icon"
             HorizontalOptions="Center"
-            WidthRequest="180"
-            HeightRequest="180"
+            WidthRequest="250"
+            HeightRequest="250"
             Margin="0,20,0,0"
         />
 
