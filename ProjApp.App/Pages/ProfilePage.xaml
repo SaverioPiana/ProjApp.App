@@ -168,7 +168,7 @@
 
         <Button
             Grid.Row="4"
-            Text=" S I G N   O U T "
+            Text="LOG OUT"
             Command="{Binding NavigateToLoginPageCommand}"
             HorizontalOptions="Center"
             VerticalOptions="End"
@@ -176,7 +176,8 @@
             WidthRequest="200"
             Margin="0,0,0,20"
             FontSize="18"
-            FontAttributes="Bold">
+            FontAttributes="Bold"
+            CharacterSpacing="2">
 
             <Button.Shadow>
                 <Shadow Brush="Black"

@@ -32,7 +32,7 @@
         <Label 
             Grid.Row="1"
             Text="BENVENUTO!"
-            FontSize="60"
+            FontSize="50"
             FontFamily="OriginTech"
             HorizontalOptions="Center"
             VerticalOptions="Center"
@@ -59,30 +59,35 @@
             Grid.Row="4"
             Text="{Binding Username}"
             x:Name="Username"
+            Margin="6"
             Placeholder="Username                                             "
             FontAttributes="Bold"
             HorizontalOptions="Center"
+            ClearButtonVisibility="WhileEditing"
         />
         
         <Entry 
             Grid.Row="5"
             Text="{Binding Password}"
             x:Name="Password"
+            Margin="6"
             Placeholder="Password                                             "
             FontAttributes="Bold"
             HorizontalOptions="Center"
             IsPassword="True"
+            ClearButtonVisibility="WhileEditing"
         />
 
         <Button
             Grid.Row="6"
-            Text=" S I G N   I N "
+            Text="LOG IN"
             Command="{Binding NavigateToStartPageCommand}"
             Margin="15"
             FontAttributes="Bold"
             HeightRequest="50"
             WidthRequest="200"
             VerticalOptions="Start"
+            CharacterSpacing="2"
         />
         
     </Grid>
