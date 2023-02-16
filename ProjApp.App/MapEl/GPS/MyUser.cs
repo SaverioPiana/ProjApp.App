@@ -25,10 +25,10 @@ namespace ProjApp.MapEl.GPS
         public static bool IsUserUpdating = false;
 
         private static int consecutiveChecks = 0;
-        
+
         //SignalR Parametri
-        //public readonly static int SEND_POS_DELAY = 3000;
-        //public static bool SEND_POSITION = false;
+        public readonly static int SEND_POS_DELAY = 3000;
+        public static bool SEND_POSITION = false;
 
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
         public static void BuildMyUser(string ID, string nick)
@@ -41,6 +41,7 @@ namespace ProjApp.MapEl.GPS
             //accedere allo user prima che sia stato creato
             //WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("canDisplayNick", nick));
             IsUserUpdating = false;
+            user.IsCercatore= true;
         }
 
         public static void ChangeNick(string newnick) 
@@ -112,7 +113,6 @@ namespace ProjApp.MapEl.GPS
             finally
             {
                 _isCheckingLocation = false;
-                await inviaPosSignalR();
             }
             
         }
@@ -224,14 +224,18 @@ namespace ProjApp.MapEl.GPS
 
         public static async Task inviaPosSignalR()
         {
-            if (Connessione.con.State.Equals(HubConnectionState.Connected))
+            while(SEND_POSITION)
             {
-                string jsonUser = CreateJsonUser(user);
+                if (Connessione.con.State.Equals(HubConnectionState.Connected))
+                {
+                    string jsonUser = CreateJsonUser(user);
 
-                await Connessione.con.InvokeAsync("SendPosition",
-                        arg1: jsonUser,
-                        //Codice lobby
-                        arg2: currPartita.Cod_partita);
+                    await Connessione.con.InvokeAsync("SendPosition",
+                            arg1: jsonUser,
+                            //Codice lobby
+                            arg2: currPartita.Cod_partita);
+                }
+                await Task.Delay(SEND_POS_DELAY);
             }
         }
 

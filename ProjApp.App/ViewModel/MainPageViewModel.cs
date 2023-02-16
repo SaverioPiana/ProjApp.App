@@ -277,7 +277,7 @@ namespace ProjApp.ViewModel
                         { 
                             await Task.Delay(2000);
                             PinVisibilityPolicySet = true;
-                            await Task.Delay(180000);
+                            await Task.Delay(3000);
                             IsHuntPossible = true;
                         });
                     })
@@ -315,7 +315,7 @@ namespace ProjApp.ViewModel
                         {
                             await Task.Delay(2000);
                             PinVisibilityPolicySet = true;
-                            await Task.Delay(180000);
+                            await Task.Delay(3000);
                             IsHuntPossible = true;
                         });
                     }
@@ -420,7 +420,6 @@ namespace ProjApp.ViewModel
                         }
                     })
                 );
-            await MyUser.inviaPosSignalR();
         }
 
         private async Task<bool> ShouldPinBeVisible(bool isPinCercatore, double distanceMts)
@@ -542,7 +541,7 @@ namespace ProjApp.ViewModel
             for (double i = 1; i <= INTERPOLATION_STEPS; i++)
             {
                 p.Position = Interpolate_points_scalar(oldPos, newPos, i);
-                await Task.Delay(2000 / INTERPOLATION_STEPS);
+                await Task.Delay(MyUser.SEND_POS_DELAY / INTERPOLATION_STEPS);
             }
         }
         //funzione di supporto
