@@ -363,7 +363,7 @@ namespace ProjApp.ViewModel
                         if (received.UserID != MyUser.user.UserID)
                         {
                             //bool trovato = false; //ho gia tutti i players
-                            Position position = new(received.Position.Latitude, received.Position.Longitude);
+                            Position newposition = new(received.Position.Latitude, received.Position.Longitude);
                             //se trovo l'utente aggiorno la sua posizione
                             foreach (Pin p in Mapview.Pins)
                             {
@@ -381,14 +381,21 @@ namespace ProjApp.ViewModel
                                         p.IsVisible = ShouldPinBeVisible(received.IsCercatore, distanceInMeters).Result;
                                     }
 
-                                    Interpolate(p, position); //animazione piu fluida
+                                    if(p.IsVisible)
+                                    {
+                                        Interpolate(p, newposition); //animazione piu fluida
+                                    }
+                                    else
+                                    {
+                                        p.Position= newposition;
+                                    }
 
                                     //aggiorno lo user nella lista della partita
                                     //ma che sto facendo AIUTO!
                                     User alreadyIn = MyUser.currPartita.Players.Where((x) =>
                                     x.UserID.Equals(p.Label)).First();
 
-                                    alreadyIn.Position = new(position.Latitude, position.Longitude);
+                                    alreadyIn.Position = new(newposition.Latitude, newposition.Longitude);
                                     alreadyIn.IsCercatore = received.IsCercatore;
                                 }
                             }
