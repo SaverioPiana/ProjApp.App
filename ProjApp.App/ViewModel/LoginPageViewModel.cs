@@ -85,9 +85,9 @@ namespace ProjApp.ViewModel
 
 
         [RelayCommand]
-        public async void RegisterUser()
+        public async void SignInWithGitHub()
         {
-                Fbclient = new FirebaseAuthClient(config);
+            Fbclient = new FirebaseAuthClient(config);
             try
             {
                 await Fbclient.SignInWithRedirectAsync(FirebaseProviderType.Github, async uris =>
@@ -95,7 +95,6 @@ namespace ProjApp.ViewModel
                    
                     Sourceurl = uris;
                     Othersarevisible = false;
-                    Webviewvisible = true;
                     while (!redirectedUrl.StartsWith(config.RedirectUri))
                     {
                         await Task.Delay(200);
@@ -115,6 +114,8 @@ namespace ProjApp.ViewModel
 
         public void OnNavigated(object sender, WebNavigatedEventArgs e)
         {
+            if(e.Url.StartsWith("https://github.com/login") && Webviewvisible!=true) Webviewvisible = true;
+
             if (e.Url.StartsWith(config.RedirectUri))
             { 
                 Webviewvisible = false;
@@ -122,7 +123,7 @@ namespace ProjApp.ViewModel
                 redirectedUrl = e.Url;
             }
         }
-
+        [RelayCommand]
         private async Task NavigateToStartPage() {
            
             

@@ -12,13 +12,13 @@
         
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="80"></RowDefinition>
-            <RowDefinition Height=".2*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Rectangle
@@ -53,9 +53,9 @@
 
         <Label 
             IsVisible="{Binding Othersarevisible}"
-            Grid.Row="3"
-            Text="Accedi per continuare:"
-            FontSize="25"
+            Grid.Row="2"
+            Text="Accedi per continuare"
+            FontSize="16"
             VerticalOptions="Center" 
             HorizontalOptions="Center"
             Margin="0,0,0,15"
@@ -63,7 +63,7 @@
 
         <Entry
             IsVisible="{Binding Othersarevisible}"
-            Grid.Row="4"
+            Grid.Row="3"
             Text="{Binding Username}"
             x:Name="Username"
             Margin="6"
@@ -77,7 +77,7 @@
         
         <Entry 
             IsVisible="{Binding Othersarevisible}"
-            Grid.Row="5"
+            Grid.Row="4"
             Text="{Binding Password}"
             x:Name="Password"
             Margin="7"
@@ -88,7 +88,11 @@
             MaximumWidthRequest="220"
             ClearButtonVisibility="WhileEditing"
         />
-        <Frame BackgroundColor="CadetBlue" Padding="0" CornerRadius="20" HasShadow="false" Grid.Row="6"
+        <Frame BackgroundColor="CadetBlue" 
+               Grid.Row="5"
+               Padding="0" 
+               CornerRadius="20" 
+               HasShadow="false" 
                IsVisible="{Binding Webviewvisible}">
 
         <WebView x:Name="loginWebView"
@@ -101,16 +105,32 @@
 
         <Button
             IsVisible="{Binding Othersarevisible}"
-            Grid.Row="7"
-            Text="LOG IN with GitHub"
-            Command="{Binding RegisterUserCommand}"
-            Margin="15"
+            Grid.Row="6"
+            Text="SIGN IN"
+            Command="{Binding NavigateToStartPageCommand}"
             FontAttributes="Bold"
-            HeightRequest="50"
-            WidthRequest="300"
+            HeightRequest="55"
+            WidthRequest="150"
             VerticalOptions="Start"
             CharacterSpacing="2"
         />
+        <Button
+            Grid.Row="7"
+            IsVisible="{Binding Othersarevisible}"
+            Command="{Binding SignInWithGitHubCommand}"
+            ImageSource="github_icon"
+            HeightRequest="50"
+            WidthRequest="50"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            Margin="15">
+            <Button.Shadow>
+                <Shadow Brush="Black"
+                    Offset="0,0"
+                    Radius="50"
+                    Opacity="0.7" />
+            </Button.Shadow>
+        </Button>
         
     </Grid>
     
