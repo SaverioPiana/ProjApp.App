@@ -45,9 +45,5 @@ namespace ProjApp.Gioco
             var area = new Polygon(new(polygon.ToArray()));
             return area.Contains(polygon2); 
         }
-
-       
-
-
     }
 }

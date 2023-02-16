@@ -15,11 +15,11 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Position = Mapsui.UI.Maui.Position;
 using ProjApp.Gioco;
 using System.Text.Json;
-using CommunityToolkit.Mvvm.Messaging.Messages;
 using System.Text.Json.Serialization;
 using ProjApp.MapEl.Serializable;
 using System.Text;
 using System.Data;
+using ShimSkiaSharp;
 
 namespace ProjApp.ViewModel
 {
@@ -29,6 +29,8 @@ namespace ProjApp.ViewModel
         private MapView mapview;
         [ObservableProperty]
         private bool pinVisibilityPolicySet = false;
+        [ObservableProperty]
+        private bool isHuntPossible = false;
 
         private static bool FIRST_CREATION = true;
         private static List<IDisposable> serverRegistrations = new();
@@ -275,6 +277,8 @@ namespace ProjApp.ViewModel
                         { 
                             await Task.Delay(2000);
                             PinVisibilityPolicySet = true;
+                            await Task.Delay(180000);
+                            IsHuntPossible = true;
                         });
                     })
             );
@@ -306,10 +310,13 @@ namespace ProjApp.ViewModel
                         p.tana.drawArea(Mapview);
                         inviaOggettiDiGioco();
 
+                        //causa problemi l'await???
                         await Task.Run(async () =>
                         {
                             await Task.Delay(2000);
                             PinVisibilityPolicySet = true;
+                            await Task.Delay(180000);
+                            IsHuntPossible = true;
                         });
                     }
                     else tap_counter--;
@@ -348,21 +355,31 @@ namespace ProjApp.ViewModel
         private async void aggiungiAltriGiocatoriAllaMappa()
         {
             serverRegistrations.Add( 
-                Connessione.con.On<string>("PositionReceived", (receiveduser) =>
+                Connessione.con.On<string>("PositionReceived",  (receiveduser) =>
                     {
-                        SerializableUser user = JsonSerializer.Deserialize<SerializableUser>(receiveduser);
-                        Console.WriteLine($"/////////Posizione ricevuta da:{user.UserID} , " +
-                            $"lat:{user.Position.Latitude}, lon: {user.Position.Longitude}");
-                        if (user.UserID != MyUser.user.UserID)
+                        SerializableUser received = JsonSerializer.Deserialize<SerializableUser>(receiveduser);
+                        Console.WriteLine($"/////////Posizione ricevuta da:{received.UserID} , " +
+                            $"lat:{received.Position.Latitude}, lon: {received.Position.Longitude}");
+                        if (received.UserID != MyUser.user.UserID)
                         {
                             //bool trovato = false; //ho gia tutti i players
-                            Position position = new(user.Position.Latitude, user.Position.Longitude);
+                            Position position = new(received.Position.Latitude, received.Position.Longitude);
                             //se trovo l'utente aggiorno la sua posizione
                             foreach (Pin p in Mapview.Pins)
                             {
-                                if(user.UserID.Equals(p.Label))
+                                if(received.UserID.Equals(p.Label))
                                 {
-                                    if (PinVisibilityPolicySet) ;
+                                    if (PinVisibilityPolicySet)
+                                    {
+                                        double distanceInMeters = 0;
+                                        if (IsHuntPossible)
+                                        {
+                                            distanceInMeters = GetDistance(MyUser.user.Position.Longitude, 
+                                                MyUser.user.Position.Latitude,
+                                                received.Position.Longitude, received.Position.Latitude);
+                                        }
+                                        p.IsVisible = ShouldPinBeVisible(received.IsCercatore, distanceInMeters).Result;
+                                    }
 
                                     Interpolate(p, position); //animazione piu fluida
 
@@ -372,7 +389,7 @@ namespace ProjApp.ViewModel
                                     x.UserID.Equals(p.Label)).First();
 
                                     alreadyIn.Position = new(position.Latitude, position.Longitude);
-                                    alreadyIn.IsCercatore = user.IsCercatore;
+                                    alreadyIn.IsCercatore = received.IsCercatore;
                                 }
                             }
                             //non serve piu aggiungere perche in toeria non puo entrare gente nuova se la partita è in corso
@@ -404,6 +421,65 @@ namespace ProjApp.ViewModel
                     })
                 );
             await MyUser.inviaPosSignalR();
+        }
+
+        private async Task<bool> ShouldPinBeVisible(bool isPinCercatore, double distanceMts)
+        {
+            bool res = true;
+
+            //stesso ruolo
+            if((isPinCercatore && MyUser.user.IsCercatore) || (!isPinCercatore && !MyUser.user.IsCercatore))
+            {
+                res = true;
+            }
+            //ruoli diversi
+            if (!isPinCercatore && MyUser.user.IsCercatore)
+            {
+                if (IsHuntPossible)
+                {
+                    await EventOnDistance(distanceMts);
+                }else return false;
+            }
+            if (isPinCercatore && !MyUser.user.IsCercatore)
+            {
+                if (IsHuntPossible)
+                {
+                    await EventOnDistance(distanceMts);
+                } else return false;
+            }
+
+            return res;
+        }
+
+        //DA FARE
+        private async Task EventOnDistance(double distanceMts)
+        {
+            //avviso solo la prima volta
+            if (distanceMts <= 40)
+            {
+                //SAS AVVISO SILENZIOSOS
+            }
+            //la prima volta avviso e vibrazione, poi solo visibilita true del pin
+            if (distanceMts <= 20)
+            {
+                //SAS INSEGUIMENTO PAZZO
+            }
+            //solo una volta, evento cattura
+            if (distanceMts <= 5)
+            {
+                //SAS PRESOS
+            }
+        }
+
+        private double GetDistance(double longitude, double latitude, double otherLongitude, double otherLatitude)
+        {
+            var d1 = latitude * (Math.PI / 180.0);
+            var num1 = longitude * (Math.PI / 180.0);
+            var d2 = otherLatitude * (Math.PI / 180.0);
+            var num2 = otherLongitude * (Math.PI / 180.0) - num1;
+            var d3 = Math.Pow(Math.Sin((d2 - d1) / 2.0), 2.0) + Math.Cos(d1) * Math.Cos(d2) * Math.Pow(Math.Sin(num2 / 2.0), 2.0);
+
+            return 6376500.0 * (2.0 * Math.Atan2(Math.Sqrt(d3), Math.Sqrt(1.0 - d3)));
         }
 
         //updates the position once
