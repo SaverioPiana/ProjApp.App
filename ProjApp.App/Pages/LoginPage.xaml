@@ -92,7 +92,9 @@
         <Border 
             Grid.Row="5"
             Padding="0" 
-            IsVisible="{Binding Webviewvisible}">
+            IsVisible="true"
+            HeightRequest="400"
+            WidthRequest="350">
             <Border.Shadow>
                 <Shadow Brush="Black"
                     Offset="0,0"
@@ -102,9 +104,7 @@
 
             <WebView 
                 x:Name="loginWebView"
-                Source="{Binding Sourceurl}"
-                HeightRequest="400"
-                WidthRequest="350">
+                Source="{Binding Sourceurl}">
             </WebView>
         </Border>
 
