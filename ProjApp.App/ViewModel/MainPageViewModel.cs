@@ -357,7 +357,7 @@ namespace ProjApp.ViewModel
                 arg3: jtana);
         }
 
-        private async void aggiungiAltriGiocatoriAllaMappa()
+        private void aggiungiAltriGiocatoriAllaMappa()
         {
             serverRegistrations.Add( 
                 Connessione.con.On<string>("PositionReceived",  (receiveduser) =>
