@@ -35,6 +35,12 @@ namespace ProjApp.ViewModel
         private static bool FIRST_CREATION = true;
         private static List<IDisposable> serverRegistrations = new();
 
+        //costanti
+        private const double DISTANZA_AVVISO = 40;
+        private const double DISTANZA_INSEGUIMENTO = 20;
+        private const double DISTANZA_CATTURA = 5;
+
+        private const int DELAY_INIZIO_GIOCO = 180000;
 
         private static object lockPreMatchPins = new object();
         private static IList<Pin> preMatchPins = new List<Pin>();
@@ -277,7 +283,7 @@ namespace ProjApp.ViewModel
                         { 
                             await Task.Delay(2000);
                             PinVisibilityPolicySet = true;
-                            await Task.Delay(3000);
+                            await Task.Delay(DELAY_INIZIO_GIOCO);
                             IsHuntPossible = true;
                         });
                     })
@@ -315,7 +321,7 @@ namespace ProjApp.ViewModel
                         {
                             await Task.Delay(2000);
                             PinVisibilityPolicySet = true;
-                            await Task.Delay(3000);
+                            await Task.Delay(DELAY_INIZIO_GIOCO);
                             IsHuntPossible = true;
                         });
                     }
@@ -461,17 +467,17 @@ namespace ProjApp.ViewModel
         private async Task EventOnDistance(double distanceMts)
         {
             //avviso solo la prima volta
-            if (distanceMts <= 40)
+            if (distanceMts <= DISTANZA_AVVISO)
             {
                 //SAS AVVISO SILENZIOSOS
             }
             //la prima volta avviso e vibrazione, poi solo visibilita true del pin
-            if (distanceMts <= 20)
+            if (distanceMts <= DISTANZA_INSEGUIMENTO)
             {
                 //SAS INSEGUIMENTO PAZZO
             }
             //solo una volta, evento cattura
-            if (distanceMts <= 5)
+            if (distanceMts <= DISTANZA_CATTURA)
             {
                 //SAS PRESOS
             }

@@ -41,7 +41,6 @@ namespace ProjApp.MapEl.GPS
             //accedere allo user prima che sia stato creato
             //WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("canDisplayNick", nick));
             IsUserUpdating = false;
-            user.IsCercatore= true;
         }
 
         public static void ChangeNick(string newnick) 
