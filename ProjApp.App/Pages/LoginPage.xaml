@@ -11,7 +11,7 @@
     <Grid RowSpacing="10">
         
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -30,7 +30,8 @@
         />
 
 
-        <Label 
+        <Label
+            IsVisible="{Binding Othersarevisible}"
             Grid.Row="1"
             ZIndex="1"
             Text="BUDDY HUNT"
@@ -42,6 +43,7 @@
         />
 
         <Image
+            IsVisible="{Binding Othersarevisible}"
             Grid.Row="1"
             ZIndex="0"
             Source="black_pin_icon"
@@ -88,25 +90,28 @@
             MaximumWidthRequest="220"
             ClearButtonVisibility="WhileEditing"
         />
-            
-        <Border 
+
+        <Frame
             Grid.Row="5"
-            Padding="0" 
-            IsVisible="true"
-            HeightRequest="400"
-            WidthRequest="350">
-            <Border.Shadow>
+            Grid.RowSpan="8"
+            IsVisible="{Binding Webviewvisible}"
+            HeightRequest="655"
+            WidthRequest="350"
+            Padding="0"
+            HorizontalOptions="Center">
+            <Frame.Shadow>
                 <Shadow Brush="Black"
                     Offset="0,0"
                     Radius="40"
                     Opacity="0.55" />
-            </Border.Shadow>
+            </Frame.Shadow>
 
             <WebView 
+                MaximumWidthRequest="350"
                 x:Name="loginWebView"
                 Source="{Binding Sourceurl}">
             </WebView>
-        </Border>
+        </Frame>
 
         <Button
             IsVisible="{Binding Othersarevisible}"
