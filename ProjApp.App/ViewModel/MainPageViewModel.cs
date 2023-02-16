@@ -32,7 +32,6 @@ namespace ProjApp.ViewModel
         [ObservableProperty]
         private bool isHuntPossible = false;
 
-        private static bool FIRST_CREATION = true;
         private static List<IDisposable> serverRegistrations = new();
 
         //costanti
