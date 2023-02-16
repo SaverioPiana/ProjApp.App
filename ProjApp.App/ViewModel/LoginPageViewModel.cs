@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
+using Microsoft.Maui.Controls.PlatformConfiguration;
 using ProjApp.MapEl.GPS;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,9 @@ namespace ProjApp.ViewModel
             if(Fbclient?.User != null)
             {
                 Fbclient.SignOut();
+                redirectedUrl= string.Empty;
+                Sourceurl = string.Empty;
+                Android.Webkit.CookieManager.Instance.RemoveAllCookie();
             }
         }
 
@@ -83,28 +87,35 @@ namespace ProjApp.ViewModel
         [RelayCommand]
         public async void RegisterUser()
         {
-            if(FIRST_TIME_LOGGING)
-            {
                 Fbclient = new FirebaseAuthClient(config);
+            try
+            {
+                await Fbclient.SignInWithRedirectAsync(FirebaseProviderType.Github, async uris =>
+                {
+                   
+                    Sourceurl = uris;
+                    Othersarevisible = false;
+                    Webviewvisible = true;
+                    while (!redirectedUrl.StartsWith(config.RedirectUri))
+                    {
+                        await Task.Delay(200);
+                    }
+                    return redirectedUrl;
+                });
+            }
+            //per catchare errori http per non far crashare lapp
+            catch (Exception ex)
+            { 
+                redirectedUrl = String.Empty;
+                Android.Webkit.CookieManager.Instance.RemoveAllCookie();
             }
 
-            await Fbclient.SignInWithRedirectAsync(FirebaseProviderType.Github, async uris =>
-            {
-                Sourceurl = uris;
-                Othersarevisible = false;
-                Webviewvisible = true;
-                while (!redirectedUrl.Contains(config.RedirectUri))
-                {
-                    await Task.Delay(200);
-                }
-                return redirectedUrl;
-            });
             if (Fbclient.User != null) await NavigateToStartPage();
         }
 
         public void OnNavigated(object sender, WebNavigatedEventArgs e)
         {
-            if (e.Url.Contains(config.RedirectUri))
+            if (e.Url.StartsWith(config.RedirectUri))
             { 
                 Webviewvisible = false;
                 Othersarevisible = true;
