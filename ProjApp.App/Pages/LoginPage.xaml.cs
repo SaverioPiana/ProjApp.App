@@ -12,7 +12,9 @@ public partial class LoginPage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = viewModel;
+        loginWebView.Navigated += viewModel.OnNavigated;
     }
+
 
     protected override void OnAppearing()
     {

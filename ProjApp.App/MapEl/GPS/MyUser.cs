@@ -10,11 +10,16 @@ using static System.Net.Mime.MediaTypeNames;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using static ProjApp.ViewModel.StartPageViewModel;
+using Firebase.Auth;
+using User = ProjApp.Gioco.User;
 
 namespace ProjApp.MapEl.GPS
 {
     public static class MyUser 
     {
+        //firebase auth
+        public static FirebaseAuthClient fbclient;
+        //
         private static CancellationTokenSource _cancelTokenSource;
         private static bool _isCheckingLocation;
         public static User user;

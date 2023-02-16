@@ -17,6 +17,7 @@
             <RowDefinition Height=".2*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
@@ -51,6 +52,7 @@
         />
 
         <Label 
+            IsVisible="{Binding Othersarevisible}"
             Grid.Row="3"
             Text="Accedi per continuare:"
             FontSize="25"
@@ -60,6 +62,7 @@
         />
 
         <Entry
+            IsVisible="{Binding Othersarevisible}"
             Grid.Row="4"
             Text="{Binding Username}"
             x:Name="Username"
@@ -73,6 +76,7 @@
         />
         
         <Entry 
+            IsVisible="{Binding Othersarevisible}"
             Grid.Row="5"
             Text="{Binding Password}"
             x:Name="Password"
@@ -84,15 +88,26 @@
             MaximumWidthRequest="220"
             ClearButtonVisibility="WhileEditing"
         />
+        <Frame BackgroundColor="CadetBlue" Padding="0" CornerRadius="20" HasShadow="false" Grid.Row="6"
+               IsVisible="{Binding Webviewvisible}">
+
+        <WebView x:Name="loginWebView"
+            Source="{Binding Sourceurl}"
+            HeightRequest="400"
+            WidthRequest="350"
+        >
+            </WebView>
+        </Frame>
 
         <Button
-            Grid.Row="6"
-            Text="LOG IN"
-            Command="{Binding NavigateToStartPageCommand}"
+            IsVisible="{Binding Othersarevisible}"
+            Grid.Row="7"
+            Text="LOG IN with GitHub"
+            Command="{Binding RegisterUserCommand}"
             Margin="15"
             FontAttributes="Bold"
             HeightRequest="50"
-            WidthRequest="200"
+            WidthRequest="300"
             VerticalOptions="Start"
             CharacterSpacing="2"
         />

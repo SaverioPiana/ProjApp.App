@@ -28,7 +28,12 @@ namespace ProjApp.ViewModel
         private bool firstTime = true;
 
         [RelayCommand]
-        private async Task NavigateToLoginPage() => await AppShell.Current.GoToAsync($"//{nameof(LoginPage)}", false);
+        private async Task NavigateToLoginPage() {
+
+            MyUser.fbclient.SignOut();
+            await AppShell.Current.GoToAsync($"//{nameof(LoginPage)}", false); 
+        }
+
 
         [RelayCommand]
         public void ChangeNick()
