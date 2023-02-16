@@ -108,8 +108,10 @@ namespace ProjApp.ViewModel
                 redirectedUrl = String.Empty;
                 Android.Webkit.CookieManager.Instance.RemoveAllCookie();
             }
-
-            if (Fbclient.User != null) await NavigateToStartPage();
+            if (Fbclient.User != null) {
+                Username = Fbclient.User.Uid;
+                await NavigateToStartPage(); 
+            }
         }
 
         public void OnNavigated(object sender, WebNavigatedEventArgs e)
@@ -140,13 +142,13 @@ namespace ProjApp.ViewModel
                 {
                     WeakReferenceMessenger.Default.Register<ReadyToBuildUserMessage>(this, (r, m) =>
                     {
-                        WeakReferenceMessenger.Default.Send(new BuildUserMessage(Fbclient.User.Uid));
+                        WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
                     });
                     FIRST_TIME_LOGGING = false;
                 }
                 else //la prifle page è gia stata creata ed è pronta a ricevere il nuovo username senza aspettare
                 {
-                    WeakReferenceMessenger.Default.Send(new BuildUserMessage(Fbclient.User.Uid));
+                    WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
                 }
 
             }
