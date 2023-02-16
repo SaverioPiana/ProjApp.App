@@ -10,6 +10,13 @@ namespace ProjApp.Gioco
 {
     public static class GameLogic
     {
+        //costanti
+        public const double DISTANZA_AVVISO = 40;
+        public const double DISTANZA_INSEGUIMENTO = 20;
+        public const double DISTANZA_CATTURA = 5;
+
+        public const int DELAY_INIZIO_GIOCO = 180000;
+
         public static async Task<List<User>> whoOutsideTheArea()
         {
             List<Coordinate> bordi = MyUser.currPartita.area.bordi;
@@ -45,5 +52,77 @@ namespace ProjApp.Gioco
             var area = new Polygon(new(polygon.ToArray()));
             return area.Contains(polygon2); 
         }
+
+        //LOGICA EVENTI DISTANZA E VISIBILITA PIN
+        public static async Task<bool> ShouldPinBeVisible(bool isPinCercatore, bool previousVal, double distanceMts, bool IsHuntPossible)
+        {
+            bool res = previousVal;
+
+            //stesso ruolo
+            if ((isPinCercatore && MyUser.user.IsCercatore) || (!isPinCercatore && !MyUser.user.IsCercatore))
+            {
+                res = true;
+            }
+            //ruoli diversi
+            if (!isPinCercatore && MyUser.user.IsCercatore)
+            {
+                if (IsHuntPossible)
+                {
+                    res = await EventOnDistance(distanceMts, previousVal);
+                }
+                else return false;
+            }
+            if (isPinCercatore && !MyUser.user.IsCercatore)
+            {
+                if (IsHuntPossible)
+                {
+                    res = await EventOnDistance(distanceMts, previousVal);
+                }
+                else return false;
+            }
+
+            return res;
+        }
+
+        //DA FARE
+        public static async Task<bool> EventOnDistance(double distanceMts, bool previousVal)
+        {
+            bool res = previousVal;
+
+            //avviso solo la prima volta
+            if (distanceMts <= DISTANZA_AVVISO)
+            {
+                //SAS AVVISO SILENZIOSOS
+                if (true) //prima volta o timer scaduto -> avviso
+                {
+
+                }
+                //e in ogni caso -> 
+                res = false;
+            }
+            //la prima volta avviso e vibrazione(a ogni cooldown del timer), poi solo visibilita true del pin
+            if (distanceMts <= DISTANZA_INSEGUIMENTO)
+            {
+                //SAS INSEGUIMENTO PAZZO
+                if (true) //prima volta o timer scaduto -> avviso
+                {
+
+                }
+                //e in ogni caso -> 
+                res = true;
+            }
+            //solo una volta, evento cattura
+            if (distanceMts <= DISTANZA_CATTURA)
+            {
+                //SAS PRESOS
+                if (true) //se non è gia stato preso
+                {
+                    //prendilo
+                }
+            }
+
+            return res;
+        }
+
     }
 }

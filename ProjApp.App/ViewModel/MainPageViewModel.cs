@@ -34,13 +34,6 @@ namespace ProjApp.ViewModel
 
         private static List<IDisposable> serverRegistrations = new();
 
-        //costanti
-        private const double DISTANZA_AVVISO = 40;
-        private const double DISTANZA_INSEGUIMENTO = 20;
-        private const double DISTANZA_CATTURA = 5;
-
-        private const int DELAY_INIZIO_GIOCO = 180000;
-
         private static object lockPreMatchPins = new object();
         private static IList<Pin> preMatchPins = new List<Pin>();
 
@@ -282,7 +275,7 @@ namespace ProjApp.ViewModel
                         { 
                             await Task.Delay(2000);
                             PinVisibilityPolicySet = true;
-                            await Task.Delay(DELAY_INIZIO_GIOCO);
+                            await Task.Delay(GameLogic.DELAY_INIZIO_GIOCO);
                             IsHuntPossible = true;
                         });
                     })
@@ -320,7 +313,7 @@ namespace ProjApp.ViewModel
                         {
                             await Task.Delay(2000);
                             PinVisibilityPolicySet = true;
-                            await Task.Delay(DELAY_INIZIO_GIOCO);
+                            await Task.Delay(GameLogic.DELAY_INIZIO_GIOCO);
                             IsHuntPossible = true;
                         });
                     }
@@ -360,7 +353,7 @@ namespace ProjApp.ViewModel
         private void aggiungiAltriGiocatoriAllaMappa()
         {
             serverRegistrations.Add( 
-                Connessione.con.On<string>("PositionReceived",  (receiveduser) =>
+                Connessione.con.On<string>("PositionReceived",  async(receiveduser) =>
                     {
                         SerializableUser received = JsonSerializer.Deserialize<SerializableUser>(receiveduser);
                         Console.WriteLine($"/////////Posizione ricevuta da:{received.UserID} , " +
@@ -383,7 +376,8 @@ namespace ProjApp.ViewModel
                                                 MyUser.user.Position.Latitude,
                                                 received.Position.Longitude, received.Position.Latitude);
                                         }
-                                        p.IsVisible = ShouldPinBeVisible(received.IsCercatore, distanceInMeters).Result;
+                                        p.IsVisible = await GameLogic.ShouldPinBeVisible(received.IsCercatore, p.IsVisible,
+                                                                                         distanceInMeters, IsHuntPossible);
                                     }
 
                                     if(p.IsVisible)
@@ -432,54 +426,6 @@ namespace ProjApp.ViewModel
                         }
                     })
                 );
-        }
-
-        private async Task<bool> ShouldPinBeVisible(bool isPinCercatore, double distanceMts)
-        {
-            bool res = true;
-
-            //stesso ruolo
-            if((isPinCercatore && MyUser.user.IsCercatore) || (!isPinCercatore && !MyUser.user.IsCercatore))
-            {
-                res = true;
-            }
-            //ruoli diversi
-            if (!isPinCercatore && MyUser.user.IsCercatore)
-            {
-                if (IsHuntPossible)
-                {
-                    await EventOnDistance(distanceMts);
-                }else return false;
-            }
-            if (isPinCercatore && !MyUser.user.IsCercatore)
-            {
-                if (IsHuntPossible)
-                {
-                    await EventOnDistance(distanceMts);
-                } else return false;
-            }
-
-            return res;
-        }
-
-        //DA FARE
-        private async Task EventOnDistance(double distanceMts)
-        {
-            //avviso solo la prima volta
-            if (distanceMts <= DISTANZA_AVVISO)
-            {
-                //SAS AVVISO SILENZIOSOS
-            }
-            //la prima volta avviso e vibrazione, poi solo visibilita true del pin
-            if (distanceMts <= DISTANZA_INSEGUIMENTO)
-            {
-                //SAS INSEGUIMENTO PAZZO
-            }
-            //solo una volta, evento cattura
-            if (distanceMts <= DISTANZA_CATTURA)
-            {
-                //SAS PRESOS
-            }
         }
 
         private double GetDistance(double longitude, double latitude, double otherLongitude, double otherLatitude)
