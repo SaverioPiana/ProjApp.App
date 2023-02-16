@@ -17,9 +17,6 @@ namespace ProjApp.MapEl.GPS
 {
     public static class MyUser 
     {
-        //firebase auth
-        public static FirebaseAuthClient fbclient;
-        //
         private static CancellationTokenSource _cancelTokenSource;
         private static bool _isCheckingLocation;
         public static User user;

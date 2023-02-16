@@ -30,7 +30,6 @@ namespace ProjApp.ViewModel
         [RelayCommand]
         private async Task NavigateToLoginPage() {
 
-            MyUser.fbclient.SignOut();
             await AppShell.Current.GoToAsync($"//{nameof(LoginPage)}", false); 
         }
 
@@ -90,7 +89,7 @@ namespace ProjApp.ViewModel
                     MyUser.BuildMyUser(Username, Nick);
                     firstTime = false;
                 }
-                //ANDRA TOLTO PERCHE A OGNI DISCONNESSIONE DISTUGGIAMO E RICREIAMO IL MYUSER
+                //ANDRA TOLTO PERCHE A OGNI DISCONNESSIONE DISTRUGGIAMO E RICREIAMO IL MYUSER
                 else MyUser.ChangeID(Username);
             });
         }

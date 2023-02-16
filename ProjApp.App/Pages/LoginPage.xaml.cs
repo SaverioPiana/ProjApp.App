@@ -23,5 +23,6 @@ public partial class LoginPage : ContentPage
         WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar")); 
         #endif
         (BindingContext as LoginPageViewModel).Constructor();
+
     }
 }
