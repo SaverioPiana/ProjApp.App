@@ -67,7 +67,6 @@ namespace ProjApp.ViewModel
                 // Add and configure individual providers
                 new EmailProvider(),
                 new GithubProvider().AddScopes("user:email")
-
            },
         };
 
@@ -88,11 +87,11 @@ namespace ProjApp.ViewModel
             {
                 Fbclient = new FirebaseAuthClient(config);
             }
-            
+
             await Fbclient.SignInWithRedirectAsync(FirebaseProviderType.Github, async uris =>
             {
                 Sourceurl = uris;
-                Othersarevisible= false;
+                Othersarevisible = false;
                 Webviewvisible = true;
                 while (!redirectedUrl.Contains(config.RedirectUri))
                 {
@@ -100,7 +99,6 @@ namespace ProjApp.ViewModel
                 }
                 return redirectedUrl;
             });
-            Fbclient.User?.ToString();
             if (Fbclient.User != null) await NavigateToStartPage();
         }
 
