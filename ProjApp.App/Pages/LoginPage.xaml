@@ -88,20 +88,25 @@
             MaximumWidthRequest="220"
             ClearButtonVisibility="WhileEditing"
         />
-        <Frame BackgroundColor="CadetBlue" 
-               Grid.Row="5"
-               Padding="0" 
-               CornerRadius="20" 
-               HasShadow="false" 
-               IsVisible="{Binding Webviewvisible}">
+            
+        <Border 
+            Grid.Row="5"
+            Padding="0" 
+            IsVisible="{Binding Webviewvisible}">
+            <Border.Shadow>
+                <Shadow Brush="Black"
+                    Offset="0,0"
+                    Radius="40"
+                    Opacity="0.55" />
+            </Border.Shadow>
 
-        <WebView x:Name="loginWebView"
-            Source="{Binding Sourceurl}"
-            HeightRequest="400"
-            WidthRequest="350"
-        >
+            <WebView 
+                x:Name="loginWebView"
+                Source="{Binding Sourceurl}"
+                HeightRequest="400"
+                WidthRequest="350">
             </WebView>
-        </Frame>
+        </Border>
 
         <Button
             IsVisible="{Binding Othersarevisible}"
