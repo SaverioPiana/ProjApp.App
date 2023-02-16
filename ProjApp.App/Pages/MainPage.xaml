@@ -43,7 +43,7 @@
             <!--Questa è la tendina:-->
             <Grid RowSpacing="5" Margin="5" Padding="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="23"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
@@ -57,65 +57,50 @@
                        HeightRequest="30"
                        WidthRequest="100"
                 />
-                <Grid Grid.Row="1" Margin="0,-5,0,0">
+                <Grid Grid.Row="1" Margin="0,0,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"></ColumnDefinition>
-                        <ColumnDefinition Width="9.2*"></ColumnDefinition>
-                        <ColumnDefinition Width="10*"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                        <ColumnDefinition Width="0.3*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
                     <Image
                        Grid.Column="0"
                        VerticalOptions="Center"
                        HorizontalOptions="Start"
-                       Margin="22,12,0,0"
+                       Margin="35,13,0,0"
                        Source="{AppThemeBinding Light=clock_icon_azz.png, Dark=clock_icon_ver.png}"
-                       HeightRequest="25"
-                       WidthRequest="25"
+                       HeightRequest="35"
+                       WidthRequest="35"
                     />
 
                     <Label
                        Grid.Column="1"
-                       Text="Tempo: "
-                       FontSize="22"
-                       VerticalTextAlignment="Center"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Start"
-                       HeightRequest="30"
-                       Margin="15,10,0,0"
-                    />
-
-                    <Label
-                       Grid.Column="2"
                        Text="00:00"
-                       FontSize="22"
+                       FontSize="24"
                        VerticalTextAlignment="Center"
                        VerticalOptions="Center"
                        HorizontalOptions="Start"
-                       HeightRequest="30"
-                       Margin="0,10,0,0"
+                       HeightRequest="35"
+                       Margin="-10,5,0,0"
                     />
 
-
-
-
-                    <BoxView Grid.Column="3"
+                    <BoxView Grid.Column="2"
                         WidthRequest="60" 
                         HeightRequest="25"
                         Margin="0,10,20,0"
                         VerticalOptions="Center"
-                        HorizontalOptions="Center"
+                        HorizontalOptions="End"
                         CornerRadius="10"
                      />
 
                     <Button
                         x:Name="BottomDrawerArrow"
-                        Grid.Column="3"
+                        Grid.Column="2"
                         BackgroundColor="Transparent"
                         ImageSource="down_arrow_icon.png"
                         VerticalOptions="Center"
-                        HorizontalOptions="Center"
+                        HorizontalOptions="End"
                         WidthRequest="60" 
                         HeightRequest="25"
                         Margin="0,10,20,0"

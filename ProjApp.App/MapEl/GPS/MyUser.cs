@@ -27,8 +27,8 @@ namespace ProjApp.MapEl.GPS
         private static int consecutiveChecks = 0;
         
         //SignalR Parametri
-        public readonly static int SEND_POS_DELAY = 3000;
-        public static bool SEND_POSITION = false;
+        //public readonly static int SEND_POS_DELAY = 3000;
+        //public static bool SEND_POSITION = false;
 
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
         public static void BuildMyUser(string ID, string nick)
@@ -62,56 +62,58 @@ namespace ProjApp.MapEl.GPS
         {
             currPartita.Players.Add(u);
         }
+
         public static async Task Get_Position()
         {
             try
-                {
-                    _isCheckingLocation = true;
+            {
+                _isCheckingLocation = true;
 
-                    GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(6));
+                GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(6));
 
-                    _cancelTokenSource = new CancellationTokenSource();
+                _cancelTokenSource = new CancellationTokenSource();
 
-                    Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
+                Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
                     
-                    if (_cancelTokenSource.IsCancellationRequested) 
-                    { 
-                        return;
-                    }
+                if (_cancelTokenSource.IsCancellationRequested) 
+                { 
+                    return;
+                }
 
-                    if (location != null && location.Accuracy < 50)
-                    {
-                        user.Position = location;
-                        SaveLastPositionOnFile(location);
-                        Console.WriteLine($"GET_POSITION::: Accuracy: {location.Accuracy} Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+                if (location != null && location.Accuracy < 50)
+                {
+                    user.Position = location;
+                    SaveLastPositionOnFile(location);
+                    Console.WriteLine($"GET_POSITION::: Accuracy: {location.Accuracy} Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
                 } else {
-                        consecutiveChecks++;
-                        if (consecutiveChecks >= 5)
+                    consecutiveChecks++;
+                    if (consecutiveChecks >= 5)
+                    {
+                        MainThread.BeginInvokeOnMainThread(() =>
                         {
-                            MainThread.BeginInvokeOnMainThread(() =>
-                            {
-                                Microsoft.Maui.Controls.Application.Current.MainPage.DisplayAlert("Ao?",
-                                "Pare che il tuo GPS prenda molto male",
-                                "Prometto di uscire dal bunker");
-                            });
-                            consecutiveChecks = 0;
-                        }
+                            Microsoft.Maui.Controls.Application.Current.MainPage.DisplayAlert("Ao?",
+                            "Pare che il tuo GPS prenda molto male",
+                            "Prometto di uscire dal bunker");
+                        });
+                        consecutiveChecks = 0;
                     }
+                }
 
-                }
-                // Catch one of the following exceptions:
-                //   FeatureNotSupportedException
-                //   FeatureNotEnabledException
-                //   PermissionException
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"EXCEPTION position not found {ex.Message}");
+            }
+            // Catch one of the following exceptions:
+            //   FeatureNotSupportedException
+            //   FeatureNotEnabledException
+            //   PermissionException
+            catch (Exception ex)
+            {
+                Console.WriteLine($"EXCEPTION position not found {ex.Message}");
 
-                }
-                finally
-                {
-                    _isCheckingLocation = false;
-                }
+            }
+            finally
+            {
+                _isCheckingLocation = false;
+                await inviaPosSignalR();
+            }
             
         }
         public static void CancelPositionRequest()
@@ -220,20 +222,16 @@ namespace ProjApp.MapEl.GPS
         }
 
 
-        public static async void inviaPosSignalR()
+        public static async Task inviaPosSignalR()
         {
-            while (SEND_POSITION)
+            if (Connessione.con.State.Equals(HubConnectionState.Connected))
             {
-                if (Connessione.con.State.Equals(HubConnectionState.Connected))
-                {
-                    string jsonUser = CreateJsonUser(user);
+                string jsonUser = CreateJsonUser(user);
 
-                    await Connessione.con.InvokeAsync("SendPosition",
-                          arg1: jsonUser,
-                          //Codice lobby
-                          arg2: currPartita.Cod_partita);
-                }
-                await Task.Delay(SEND_POS_DELAY);
+                await Connessione.con.InvokeAsync("SendPosition",
+                        arg1: jsonUser,
+                        //Codice lobby
+                        arg2: currPartita.Cod_partita);
             }
         }
 

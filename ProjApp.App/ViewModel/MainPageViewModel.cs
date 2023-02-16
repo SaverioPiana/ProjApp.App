@@ -27,6 +27,8 @@ namespace ProjApp.ViewModel
     {
         [ObservableProperty]
         private MapView mapview;
+        [ObservableProperty]
+        private bool pinVisibilityPolicySet = false;
 
         private static bool FIRST_CREATION = true;
         private static List<IDisposable> serverRegistrations = new();
@@ -252,6 +254,10 @@ namespace ProjApp.ViewModel
             Console.WriteLine($"{s} sono fuori dall' area");
         }
 
+        ////////////////////////////////////////////////////////////////////////////////////  |
+        ///////////////    IMPORTANTE DA CAMBIARE DOPO ALPHA    ////////////////////////////  |
+        ////////////////////////////////////////////////////////////////////////////////////  V
+
         private void riceviOggettiDiGioco()
         {
             serverRegistrations.Add( 
@@ -261,6 +267,15 @@ namespace ProjApp.ViewModel
                         SerializableCoordinate ct = JsonSerializer.Deserialize<SerializableCoordinate>(tana);
                         MyUser.currPartita.area.drawArea(ca, Mapview);
                         MyUser.currPartita.tana = new(ct, Mapview);
+
+                        //DA CAMBIARE
+                        //ricevuti gli oggetti di gioco la partita "comincia" dopo qualche secondo, potremmo 
+                        //fare che l'admin ha un bottone "inizia" e li i pin saranno visibili in base al ruolo
+                        Task.Run(async() => 
+                        { 
+                            await Task.Delay(2000);
+                            PinVisibilityPolicySet = true;
+                        });
                     })
             );
         }
@@ -291,7 +306,11 @@ namespace ProjApp.ViewModel
                         p.tana.drawArea(Mapview);
                         inviaOggettiDiGioco();
 
-                        //StartGame(); //trovato il bug della doppia mappa?
+                        await Task.Run(async () =>
+                        {
+                            await Task.Delay(2000);
+                            PinVisibilityPolicySet = true;
+                        });
                     }
                     else tap_counter--;
                     break;
@@ -326,7 +345,7 @@ namespace ProjApp.ViewModel
                 arg3: jtana);
         }
 
-        private void aggiungiAltriGiocatoriAllaMappa()
+        private async void aggiungiAltriGiocatoriAllaMappa()
         {
             serverRegistrations.Add( 
                 Connessione.con.On<string>("PositionReceived", (receiveduser) =>
@@ -341,8 +360,10 @@ namespace ProjApp.ViewModel
                             //se trovo l'utente aggiorno la sua posizione
                             foreach (Pin p in Mapview.Pins)
                             {
-                                if (user.UserID.Equals(p.Label))
+                                if(user.UserID.Equals(p.Label))
                                 {
+                                    if (PinVisibilityPolicySet) ;
+
                                     Interpolate(p, position); //animazione piu fluida
 
                                     //aggiorno lo user nella lista della partita
@@ -353,7 +374,6 @@ namespace ProjApp.ViewModel
                                     alreadyIn.Position = new(position.Latitude, position.Longitude);
                                     alreadyIn.IsCercatore = user.IsCercatore;
                                 }
-
                             }
                             //non serve piu aggiungere perche in toeria non puo entrare gente nuova se la partita è in corso
 
@@ -383,6 +403,7 @@ namespace ProjApp.ViewModel
                         }
                     })
                 );
+            await MyUser.inviaPosSignalR();
         }
 
         //updates the position once
@@ -406,14 +427,8 @@ namespace ProjApp.ViewModel
             //finchè vogliamo la posizione la queriamo, possiamo in qualsiasi momento
             //smettere di chiederla
             bool firstupdate = true;
-            while (MyUser.SEND_POSITION)
+            while (!cancellationTokenSource.IsCancellationRequested)
             {
-                if(cancellationTokenSource.IsCancellationRequested)
-                {
-                    Console.WriteLine("!?!?!?!?!?!?! CANCELLATION REQUESTED FOR TASKS IN MAIN PAGE !?!?!?!??!?!?!?!");
-                    return;
-                }
-
                 await MyUser.Get_Position();
                 Position p = MyUser.user.UserPin.Position;
                 //ma serve ancora sta cosa???? ----- Carlo: SI zi
@@ -439,6 +454,7 @@ namespace ProjApp.ViewModel
                 updateCtr++;
                 Console.WriteLine($"Position updated from {MyUser.user.UserID} {updateCtr} times (continuos update)");
             }
+            Console.WriteLine("!?!?!?!?!?!?! CANCELLATION REQUESTED FOR TASKS IN MAIN PAGE !?!?!?!??!?!?!?!");
         }
 
 
@@ -450,7 +466,7 @@ namespace ProjApp.ViewModel
             for (double i = 1; i <= INTERPOLATION_STEPS; i++)
             {
                 p.Position = Interpolate_points_scalar(oldPos, newPos, i);
-                await Task.Delay(MyUser.SEND_POS_DELAY / INTERPOLATION_STEPS);
+                await Task.Delay(2000 / INTERPOLATION_STEPS);
             }
         }
         //funzione di supporto

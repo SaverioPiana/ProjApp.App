@@ -188,8 +188,6 @@ namespace ProjApp.Gioco
             //RIMUOVO I PIN DAI PIN PREPARTITA
             MainPageViewModel.PreMatchPins.Clear();
             MyUser.currPartita.Players.Clear();
-
-            MyUser.SEND_POSITION = false;
         }
 
         public void StartGame()
@@ -204,8 +202,6 @@ namespace ProjApp.Gioco
         {
             Connessione.con.On<bool>("GameStarted", (isCacciatore) =>
             {
-                MyUser.SEND_POSITION = true;
-                Task.Run(MyUser.inviaPosSignalR);
                 if (isCacciatore)
                 {
                     Console.WriteLine("GameStarted message from server, SEI IL CACCIATORE");
