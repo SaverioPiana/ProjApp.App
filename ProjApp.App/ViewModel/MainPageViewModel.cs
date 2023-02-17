@@ -24,6 +24,7 @@ using ShimSkiaSharp;
 using Microsoft.VisualBasic;
 using static Google.Android.Material.Tabs.TabLayout;
 using Java.Nio.Channels;
+using System.Diagnostics;
 
 namespace ProjApp.ViewModel
 {
@@ -426,6 +427,7 @@ namespace ProjApp.ViewModel
                                             else
                                             {
                                                 p.IsVisible = true;
+                                                p.Icon = received.UserIcon;
                                                 if (received.IsPreso)
                                                 {
                                                     if(!alreadyIn.IsPreso) 
@@ -433,8 +435,8 @@ namespace ProjApp.ViewModel
                                                         //incrementa giocatori presi
                                                         numGiocatoriPresi++;
                                                         alreadyIn.IsPreso = received.IsPreso;
-                                                        p.Icon = received.UserIcon;
                                                     }
+                                                        
                                                     
                                                 }
                                                 else if (received.IsSalvo)
@@ -444,7 +446,6 @@ namespace ProjApp.ViewModel
                                                         //incrementa giocatori presi
                                                         numGiocatoriTanati++;
                                                         alreadyIn.IsSalvo = received.IsSalvo;
-                                                        p.Icon = received.UserIcon;
                                                     }
                                                 }
                                                 if (numGiocatoriPresi + numGiocatoriTanati == (numGiocatori - QuantiCacciatori()))
@@ -634,6 +635,19 @@ namespace ProjApp.ViewModel
             cancellationTokenSource.Cancel();
         }
 
+
+        //TIMER
+        IDispatcherTimer timer;
+        Stopwatch stopwatch = new Stopwatch();
+        private void startTimer()
+        {
+            timer = Dispatcher.CreateTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(16);
+            timer.Tick += (s, e) =>
+            {
+                label.Rotation = 360 * (stopwatch.Elapsed.TotalSeconds % 1);
+            };
+        }
 
         /////////////////////////////////////////////////////////////////////////////////
         ///ALTRO MODO DI IMPLEMENTARE MA DEVI CHIAMARE DUE VOLTE UPDATE POSITION PERCHE//
