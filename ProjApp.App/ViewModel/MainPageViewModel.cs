@@ -475,6 +475,7 @@ namespace ProjApp.ViewModel
                 );
         }
 
+
         private int QuantiCacciatori()
         {
             if (numGiocatori/ 3 > 0)
