@@ -245,8 +245,6 @@ namespace ProjApp.ViewModel
             Task.Run(aggiungiAltriGiocatoriAllaMappa);
 
             Task.Run(CreaAreaETana);
-
-            Task.Run(OnPreso);
         }
 
         public void CreaAreaETana()
