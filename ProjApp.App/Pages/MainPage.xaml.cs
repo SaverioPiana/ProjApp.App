@@ -49,10 +49,6 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
         BindingContext = viewModel;
-
-        //registro la pagina per i messaggi con il viewmodel
-        //BAD PRACTICE -----> MA DOBBIAMO CONSEGNARE, NON C'E' TEMPO
-        Task.Run(AvvisoRicevuto);
     }
 
     private void AvvisoRicevuto()
@@ -155,6 +151,10 @@ public partial class MainPage : ContentPage
     {
         (BindingContext as MainPageViewModel).Constructor();
         CloseDrawer(); //se lo aspetti non si apre mai la pagina DO NOT AWAIT
+
+        //registro la pagina per i messaggi con il viewmodel
+        //BAD PRACTICE -----> MA DOBBIAMO CONSEGNARE, NON C'E' TEMPO
+        Task.Run(AvvisoRicevuto);
         base.OnAppearing();
         #if ANDROID
         WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar"));
