@@ -526,7 +526,7 @@ namespace ProjApp.ViewModel
         public static async void OnPreso()
         {
             Console.WriteLine($"()())()())))()()()()(  PRESOOOOOOOOOOOO: sono {MyUser.user.UserID}   ()()()()()())()()())(");
-            MyUser.user.isPreso = true;
+            MyUser.user.IsPreso = true;
             MyUser.user.UserIcon = ReadResource(DEAD_ICON_FILENAME);
             MyUser.SEND_POSITION = false;
             //aspettiamo che un minimo passi dall'ultimo invio

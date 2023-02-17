@@ -149,12 +149,11 @@ namespace ProjApp.Gioco
                 if (!otherUser.isPreso)
                 {
                     //se non sei il cacciatore ti marchi come preso
-                    if (!MyUser.user.IsCercatore)
+                    if (!MyUser.user.IsCercatore && !MyUser.user.isPreso)
                     {
                         MainPageViewModel.OnPreso();
                     }
                     await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_CATTURA);
-                    await Task.Delay(1500);
                 }
             }
             else
