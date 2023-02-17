@@ -46,7 +46,7 @@ namespace ProjApp.ViewModel
         private static object lockPreMatchPins = new object();
         private static IList<Pin> preMatchPins = new List<Pin>();
 
-        private CancellationTokenSource cancellationTokenSource;
+        private static CancellationTokenSource cancellationTokenSource;
 
         public static IList<Pin> PreMatchPins
         {
@@ -546,22 +546,19 @@ namespace ProjApp.ViewModel
         }
 
 
-        private void OnPreso()
+        public static async void OnPreso()
         {
-            serverRegistrations.Add( Connessione.con.On("Preso", async () =>
-            {
-                MyUser.user.isPreso = true;
-                MyUser.user.UserIcon = ReadResource(DEAD_ICON_FILENAME);
-                MyUser.SEND_POSITION = false;
-                //aspettiamo che un minimo passi dall'ultimo invio
-                await Task.Delay(1000);
+            Console.WriteLine($"()())()())))()()()()(  PRESOOOOOOOOOOOO: sono {MyUser.user.UserID}   ()()()()()())()()())(");
+            MyUser.user.isPreso = true;
+            MyUser.user.UserIcon = ReadResource(DEAD_ICON_FILENAME);
+            MyUser.SEND_POSITION = false;
+            //aspettiamo che un minimo passi dall'ultimo invio
+            await Task.Delay(1000);
                 
-                //ultimo invio a tutti con icona morto e isPreso = true
-                await MyUser.inviaPosCatturatoOneLastTime();
+            //ultimo invio a tutti con icona morto e isPreso = true
+            await MyUser.inviaPosCatturatoOneLastTime();
 
-                cancellationTokenSource.Cancel();
-            }
-            ));
+            cancellationTokenSource.Cancel();
         }
 
 

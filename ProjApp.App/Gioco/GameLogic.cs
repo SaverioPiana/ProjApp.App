@@ -172,10 +172,10 @@ namespace ProjApp.Gioco
                 //se non è gia stato preso
                 if(!otherUser.isPreso)
                 {
-                    //prendilo
-                    if (MyUser.user.IsCercatore)
+                    //se non sei il cacciatore ti marchi come preso
+                    if (!MyUser.user.IsCercatore)
                     {
-                        await Connessione.con.InvokeAsync("GiocatorePreso", MyUser.currPartita.Cod_partita, uid);
+                        MainPageViewModel.OnPreso();
                     }
                     await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_CATTURA);
                     await Task.Delay(1500);

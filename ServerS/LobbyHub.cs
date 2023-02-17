@@ -49,14 +49,13 @@ namespace ServerS
             }
         }
 
-        public async Task JoinLobby(string lobbyId, string jsonUser, string uid)
+        public async Task JoinLobby(string lobbyId, string jsonUser)
         {
             // find the lobby with the specified ID
             var lobby = lobbies[lobbyId];
             // add the client to the list of connected clients for the lobby
             string clientId = Context.ConnectionId;
             lobby.ConnectedClients.Add(clientId);
-            lobby.UidToConnectedClient.Add(uid, clientId);
             await Groups.AddToGroupAsync(clientId, lobbyId);
 
             string mess = $"{clientId} joined {lobbyId}";
@@ -92,7 +91,6 @@ namespace ServerS
             // remove the client from the list of connected clients for the lobby
             string clientId = Context.ConnectionId;
             lobby.ConnectedClients.Remove(clientId);
-            lobby.UidToConnectedClient.Remove(uid);
             await Groups.RemoveFromGroupAsync(clientId, lobbyId);
             await Clients.Group(lobbyId).SendAsync("UserLeft", uid);
         }
@@ -138,17 +136,5 @@ namespace ServerS
             await Clients.GroupExcept(lobbyId, lobby.cacciatori).SendAsync("GameStarted" , false);
             //await Clients.Group(lobbyId).SendAsync("GameStarted", false);
         }
-
-        //METODI DOPO LO START GAME
-
-        public async Task GiocatorePreso(string lobbyId, string uid)
-        {
-           // find the lobby with the specified ID
-           var lobby = lobbies[lobbyId];
-
-           await Clients.Client(lobby.UidToConnectedClient[uid]).SendAsync("Preso");
-        }
-
-
     }
 }
