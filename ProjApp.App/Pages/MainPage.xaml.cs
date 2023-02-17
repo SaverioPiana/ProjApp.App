@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Mapsui.ViewportAnimations;
 using ProjApp.MapEl.GPS;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 #if ANDROID
 using static ProjApp.MainActivity;
 #endif
@@ -24,6 +25,13 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
         BindingContext = viewModel;
+
+        //registro la pagina per i messaggi con il viewmodel
+        //BAD PRACTICE -----> MA DOBBIAMO CONSEGNARE, NON C'E' TEMPO
+        WeakReferenceMessenger.Default.Register<OpenAvvisoMessage>(this, async(r, m) =>
+        {
+            await OpenDrawer(m.Value);
+        });
     }
 
     protected override bool OnBackButtonPressed()
@@ -55,6 +63,23 @@ public partial class MainPage : ContentPage
         }
     }
 
+    //messaggio per aprire la tendina per gli avvisi generati ad eventi per la distanza tra giocatori
+    public class OpenAvvisoMessage : ValueChangedMessage<double>
+    {
+        public OpenAvvisoMessage(double value) : base(value)
+        {
+        }
+    }
+    //gestione messaggio
+    async Task OpenDrawer(double customOpenY)
+    {
+        await Task.WhenAll
+        (
+            BottomDrawer.TranslateTo(0, customOpenY, length: duration, easing: Easing.CubicInOut),
+            BottomDrawerArrow.RotateTo(0, duration, Easing.CubicInOut)
+        );
+        IsDrawerOpen = true;
+    }
 
     uint duration = 450;
     double openY = 100;
@@ -112,7 +137,6 @@ public partial class MainPage : ContentPage
             BottomDrawerArrow.RotateTo(0, duration, Easing.CubicInOut)
         );
         IsDrawerOpen= true;
-        
     }
 
     async Task CloseDrawer()

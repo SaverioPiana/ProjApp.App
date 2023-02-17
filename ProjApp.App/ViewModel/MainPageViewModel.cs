@@ -20,6 +20,7 @@ using ProjApp.MapEl.Serializable;
 using System.Text;
 using System.Data;
 using ShimSkiaSharp;
+using static ProjApp.MainPage;
 
 namespace ProjApp.ViewModel
 {
@@ -31,6 +32,13 @@ namespace ProjApp.ViewModel
         private bool pinVisibilityPolicySet = false;
         [ObservableProperty]
         private bool isHuntPossible = false;
+        [ObservableProperty]
+        private bool avvisoHasCome = false;
+        [ObservableProperty]
+        private string tendinaText = INFO_PARTITA_TEXT_DEFAULT;
+
+        public const string INFO_PARTITA_TEXT_DEFAULT = "Informazioni partita";
+        public const string INFO_PARTITA_TEXT_AVVISO = "Avviso";
 
         private static List<IDisposable> serverRegistrations = new();
 
@@ -86,6 +94,29 @@ namespace ProjApp.ViewModel
             Mapview = new();
 
             MapInitializer();
+        }
+
+        //////////////////////////////////////////////////////////////////
+        
+                        //DA CANCELLARE
+
+        //////////////////////////////////////////////////////////////////
+        [RelayCommand]
+        private async void Prova_avviso()
+        {
+            await ApriTendinaAvviso(325);
+        }
+
+        //////////////////////////////////////////////////////////////////
+
+        //DA CANCELLARE
+
+        //////////////////////////////////////////////////////////////////
+
+
+        private async Task ApriTendinaAvviso(double openY)
+        {
+            WeakReferenceMessenger.Default.Send<OpenAvvisoMessage>(new(openY));
         }
 
         [RelayCommand]

@@ -118,14 +118,15 @@
                         Clicked="DrawerUp"
                     />-->
                 </Grid>
-                    
 
+                <!--Questo è per le informazioni partita-->
                 <Border  
                     Grid.Row="2" 
                     Margin="15" 
                     StrokeThickness="3"
                     StrokeShape="RoundRectangle 20"
-                    Style="{StaticResource bottomDrawer}">
+                    Style="{StaticResource bottomDrawer}"
+                    >
                     <Border.Shadow>
                         <Shadow Brush="Black"
                             Offset="0,0"
@@ -140,7 +141,7 @@
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0"
-                            Text="Informazioni partita:"
+                            Text="{Binding TendinaText}"
                             FontSize="20"
                             Margin="10,15,0,0"
                             HeightRequest="30"
@@ -155,21 +156,15 @@
                                 </x:Array>
                             </CollectionView.ItemsSource>
                         </CollectionView>-->
-                        
-                        
-                        
                     </Grid>
-                    
-                    
-                    
-                    
+
                 </Border>
 
                 <Button
                     Grid.Row="3"
                     Text="Abbandona Partita"
                     BackgroundColor="{StaticResource Manzz}"
-                    Command="{Binding AbbandonaPartitaCommand}"
+                    Command="{Binding Prova_avvisoCommand}"
                     Margin="0,0,0,110"
                     HeightRequest="40"
                     WidthRequest="150"
