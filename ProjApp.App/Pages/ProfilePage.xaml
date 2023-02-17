@@ -34,7 +34,7 @@
 
             <Image
                 Grid.Column="0"
-                Source="{AppThemeBinding Light=profile_icon_azz.png, Dark=profile_icon_ver.png}"
+                Source="{AppThemeBinding Light=profile_icon_lig, Dark=profile_icon_dar}"
                 HeightRequest="48"
                 WidthRequest="48"
                 Margin="15,0,0,0">

@@ -194,7 +194,7 @@
         <Button
             Grid.Row="7"
             Text="Lascia lobby"
-            BackgroundColor="{StaticResource Manzz}"
+            BackgroundColor="{StaticResource AllertButton}"
             FontSize="18"
             FontAttributes="Bold"
             HeightRequest="50"
@@ -208,6 +208,7 @@
         <Button
             Grid.Row="7"
             Text="Lascia lobby"
+            BackgroundColor="{StaticResource AllertButton}"
             HeightRequest="50"
             WidthRequest="180"
             FontAttributes="Bold"

@@ -138,7 +138,7 @@
                 <Shadow Brush="Black"
                     Offset="0,0"
                     Radius="50"
-                    Opacity="0.7" />
+                    Opacity="0.7"/>
             </Button.Shadow>
         </Button>
         

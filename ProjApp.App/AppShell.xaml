@@ -24,7 +24,7 @@
         </Tab>
         
         <Tab Route="StartPage"
-             Icon="play_icon.png">
+             Icon="home_icon.png">
             <ShellContent
                 ContentTemplate="{DataTemplate local:StartPage}"
             />
