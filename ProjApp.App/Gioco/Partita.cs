@@ -91,6 +91,7 @@ namespace ProjApp.Gioco
             WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(USER_HAS_JOINED_EVENT, MyUser.currPartita.Cod_partita));
         }
 
+
         public void RemoveUserFromListAndPins()
         {
             Connessione.con.On<string>("UserLeft", (userId) =>
