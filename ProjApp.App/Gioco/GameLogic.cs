@@ -173,7 +173,10 @@ namespace ProjApp.Gioco
                 if(!otherUser.isPreso)
                 {
                     //prendilo
-                    await Connessione.con.InvokeAsync("GiocatorePreso", MyUser.currPartita.Cod_partita, uid);
+                    if (MyUser.user.IsCercatore)
+                    {
+                        await Connessione.con.InvokeAsync("GiocatorePreso", MyUser.currPartita.Cod_partita, uid);
+                    }
                     await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_CATTURA);
                 }
             }
