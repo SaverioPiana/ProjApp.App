@@ -243,6 +243,8 @@ namespace ProjApp.ViewModel
                     Scale = 0.4F
                 };
                 result.Add(newpin);
+                //e' subito avvisabile il giocatore perche quando lo aggiungo al dizionario gli tolgo gia il timeout
+                GameLogic.UidToLastTime.Add(newpin.Label, DateTime.Now.Ticks - GameLogic.TIMEOUT_NOTIFICHE_AVVISO);
             }
             return result;
         }
@@ -404,7 +406,7 @@ namespace ProjApp.ViewModel
                                                 MyUser.user.Position.Latitude,
                                                 received.Position.Longitude, received.Position.Latitude);
                                         }
-                                        p.IsVisible = await GameLogic.ShouldPinBeVisible(received.IsCercatore, p.IsVisible,
+                                        p.IsVisible = await GameLogic.ShouldPinBeVisible(p.Label, received.IsCercatore, p.IsVisible,
                                                                                          distanceInMeters, IsHuntPossible);
                                     }
 

@@ -1,6 +1,7 @@
 ﻿using Mapsui;
 using Mapsui.Nts.Extensions;
 using Mapsui.Projections;
+using Microsoft.AspNetCore.SignalR.Client;
 using NetTopologySuite.Geometries;
 using ProjApp.MapEl.GPS;
 using Location = Microsoft.Maui.Devices.Sensors.Location;
@@ -15,8 +16,17 @@ namespace ProjApp.Gioco
         public const double DISTANZA_INSEGUIMENTO = 20;
         public const double DISTANZA_CATTURA = 5;
 
+        private const long TICS_PER_SECOND = 10000000;
+
         public const int DELAY_INIZIO_GIOCO = 180000;
 
+        public const long TIMEOUT_NOTIFICHE_AVVISO = TICS_PER_SECOND*120;
+
+        public const long TIMEOUT_NOTIFICHE_INSEGUIMENTO = TICS_PER_SECOND*30;
+
+        //mappa per ogni giocatore quando e' stato inviato l'ultimo avviso -> da clearare per ogni start game
+        public static Dictionary<string, long> UidToLastTime = new();
+        
         public static async Task<List<User>> whoOutsideTheArea()
         {
             List<Coordinate> bordi = MyUser.currPartita.area.bordi;
@@ -54,7 +64,7 @@ namespace ProjApp.Gioco
         }
 
         //LOGICA EVENTI DISTANZA E VISIBILITA PIN
-        public static async Task<bool> ShouldPinBeVisible(bool isPinCercatore, bool previousVal, double distanceMts, bool IsHuntPossible)
+        public static async Task<bool> ShouldPinBeVisible(string uid, bool isPinCercatore, bool previousVal, double distanceMts, bool IsHuntPossible)
         {
             bool res = previousVal;
 
@@ -68,7 +78,7 @@ namespace ProjApp.Gioco
             {
                 if (IsHuntPossible)
                 {
-                    res = await EventOnDistance(distanceMts, previousVal);
+                    res = await EventOnDistance(uid, distanceMts, previousVal);
                 }
                 else return false;
             }
@@ -76,7 +86,7 @@ namespace ProjApp.Gioco
             {
                 if (IsHuntPossible)
                 {
-                    res = await EventOnDistance(distanceMts, previousVal);
+                    res = await EventOnDistance(uid, distanceMts, previousVal);
                 }
                 else return false;
             }
@@ -85,7 +95,7 @@ namespace ProjApp.Gioco
         }
 
         //DA FARE
-        public static async Task<bool> EventOnDistance(double distanceMts, bool previousVal)
+        public static async Task<bool> EventOnDistance(string uid, double distanceMts, bool previousVal)
         {
             bool res = previousVal;
 
@@ -93,8 +103,11 @@ namespace ProjApp.Gioco
             if (distanceMts <= DISTANZA_AVVISO)
             {
                 //SAS AVVISO SILENZIOSOS
-                if (true) //prima volta o timer scaduto -> avviso
+                if ((DateTime.Now.Ticks - UidToLastTime[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
                 {
+                    GameLogic.UidToLastTime[uid] = DateTime.Now.Ticks;
+
+
 
                 }
                 //e in ogni caso -> 
@@ -104,9 +117,9 @@ namespace ProjApp.Gioco
             if (distanceMts <= DISTANZA_INSEGUIMENTO)
             {
                 //SAS INSEGUIMENTO PAZZO
-                if (true) //prima volta o timer scaduto -> avviso
+                if ((DateTime.Now.Ticks - UidToLastTime[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
                 {
-
+                    GameLogic.UidToLastTime[uid] = DateTime.Now.Ticks;
                 }
                 //e in ogni caso -> 
                 res = true;
@@ -114,8 +127,17 @@ namespace ProjApp.Gioco
             //solo una volta, evento cattura
             if (distanceMts <= DISTANZA_CATTURA)
             {
+                User otherUser = null;
+                foreach (User u in MyUser.currPartita.Players)
+                {
+                    if (u.UserID == uid)
+                    {
+                        otherUser = u;
+                    }
+                }
                 //SAS PRESOS
-                if (true) //se non è gia stato preso
+                //se non è gia stato preso
+                if(!otherUser.isPreso)
                 {
                     //prendilo
                 }
