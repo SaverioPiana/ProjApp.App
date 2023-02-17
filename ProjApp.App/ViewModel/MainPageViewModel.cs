@@ -119,7 +119,7 @@ namespace ProjApp.ViewModel
         public async Task AbbandonaPartita()
         {
             //per myposalways
-            cancellationTokenSource.Cancel();
+            if(!cancellationTokenSource.IsCancellationRequested) cancellationTokenSource.Cancel();
             
             MyUser.currPartita.LeaveLobby();
 
