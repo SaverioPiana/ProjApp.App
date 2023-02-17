@@ -475,24 +475,6 @@ namespace ProjApp.ViewModel
                 );
         }
 
-        private bool WasAlreadyCounted(string eventoDiGioco, string UID)
-        {
-            
-                switch (eventoDiGioco)
-                {
-                    case (EVENTO_CATTURA):
-                        {
-
-                            break;
-                        }
-                    case (EVENTO_TANATO):
-                        {
-                        
-                            break;
-                        }
-                }
-        }
-
         private int QuantiCacciatori()
         {
             if (numGiocatori/ 3 > 0)
