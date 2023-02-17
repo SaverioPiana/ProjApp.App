@@ -43,7 +43,7 @@ public partial class MainPage : ContentPage
 
     public static CancellationTokenSource _cancelTokenSourceAvviso = null;
 
-    Brush originalStroke = InfoPartBorder.Stroke;
+    Brush originalStroke;
 
     public MainPage(MainPageViewModel viewModel)
     {
@@ -57,6 +57,7 @@ public partial class MainPage : ContentPage
 
     private void AvvisoRicevuto()
     {
+        originalStroke = InfoPartBorder.Stroke;
         WeakReferenceMessenger.Default.Register<OpenAvvisoMessage>(this, async (r, m) =>
         {
             try
