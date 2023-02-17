@@ -178,6 +178,7 @@ namespace ProjApp.Gioco
                         await Connessione.con.InvokeAsync("GiocatorePreso", MyUser.currPartita.Cod_partita, uid);
                     }
                     await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_CATTURA);
+                    await Task.Delay(1500);
                 }
             }
 
