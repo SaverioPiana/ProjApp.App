@@ -25,6 +25,7 @@ using Microsoft.VisualBasic;
 using static Google.Android.Material.Tabs.TabLayout;
 using Java.Nio.Channels;
 using System.Diagnostics;
+using System.Threading;
 
 namespace ProjApp.ViewModel
 {
@@ -637,16 +638,29 @@ namespace ProjApp.ViewModel
 
 
         //TIMER
-        IDispatcherTimer timer;
-        Stopwatch stopwatch = new Stopwatch();
-        private void startTimer()
+        DateTime _startTime;
+        CancellationTokenSource _cancellationTokenSourceForTimer;
+        double _duration;
+        private void StartCountdown(double minuti)
         {
-            timer = Dispatcher.CreateTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(16);
-            timer.Tick += (s, e) =>
+            _startTime = DateTime.Now;
+            _cancellationTokenSourceForTimer = new CancellationTokenSource();
+            _duration = TimeSpan.FromMinutes(minuti).TotalMilliseconds;
+            CountDown();
+        }
+        private async void CountDown()
+        {
+            while (!_cancellationTokenSourceForTimer.IsCancellationRequested)
             {
-                label.Rotation = 360 * (stopwatch.Elapsed.TotalSeconds % 1);
-            };
+                var elapsedTime = (DateTime.Now - _startTime);
+                int secondsRemaining = (int)(_duration - elapsedTime.TotalMilliseconds) / 1000;
+
+                //metti secondsRemaining nella view
+
+                // More stuff to come ...
+
+                await Task.Delay(500);
+            }
         }
 
         /////////////////////////////////////////////////////////////////////////////////
