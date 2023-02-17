@@ -418,19 +418,18 @@ namespace ProjApp.ViewModel
                                               //e i presi possono vedere tutti
                                             else
                                             {
-                                                p.Icon = received.UserIcon;
                                                 p.IsVisible = true;
                                                 if (received.IsPreso)
                                                 {
                                                     //incrementa giocatori presi
                                                     numGiocatoriPresi++;
-
+                                                    p.Icon = received.UserIcon;
                                                 }
                                                 else if (received.IsSalvo)
                                                 {
                                                     //incrementa giocatori presi
                                                     numGiocatoriTanati++;
-
+                                                    p.Icon = received.UserIcon;
                                                 }
                                                 if (numGiocatoriPresi + numGiocatoriTanati == (numGiocatori - QuantiCacciatori()))
                                                 {
@@ -546,7 +545,7 @@ namespace ProjApp.ViewModel
                 Console.WriteLine($"Position updated from {MyUser.user.UserID} {updateCtr} times (continuos update)");
 
                 //check se sei arrivato nellarea della tana
-                if (!MyUser.user.IsSalvo && !MyUser.user.IsCercatore) IsMYUserInsideTana();
+                if (!MyUser.user.IsSalvo && !MyUser.user.IsCercatore && IsHuntPossible) IsMYUserInsideTana();
 
             }
             Console.WriteLine("!?!?!?!?!?!?! CANCELLATION REQUESTED FOR TASKS IN MAIN PAGE !?!?!?!??!?!?!?!");
@@ -559,7 +558,7 @@ namespace ProjApp.ViewModel
             double tanalatitude = MyUser.currPartita.tana.position.Latitude;
             double tanalongitude = MyUser.currPartita.tana.position.Longitude;
 
-            if (GetDistance(mylongitude, mylatitude, tanalongitude, tanalatitude)<= Tana.RADIUS_TANA)
+            if (GetDistance(mylongitude, mylatitude, tanalongitude, tanalatitude) <= Tana.RADIUS_TANA)
             {
                 MyUser.user.IsSalvo = true;
                 //smetti di inviare posizione e cambia icona e diventa invulnerabile
@@ -605,7 +604,6 @@ namespace ProjApp.ViewModel
                 case (EVENTO_CATTURA):
                 {
                     numGiocatoriPresi++;
-
                     break;
                 }
                 case (EVENTO_TANATO):
@@ -620,7 +618,7 @@ namespace ProjApp.ViewModel
             //aspettiamo che un minimo passi dall'ultimo invio
             await Task.Delay(1000);
 
-            //ultimo invio a tutti con icona morto e isPreso = true
+            //ultimo invio a tutti con icona morto/tanato e isPreso/isSalvo = true
             await MyUser.inviaPosOneLastTime();
 
             cancellationTokenSource.Cancel();
