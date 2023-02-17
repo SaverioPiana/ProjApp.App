@@ -43,14 +43,12 @@ public partial class MainPage : ContentPage
 
     public static CancellationTokenSource _cancelTokenSourceAvviso = null;
 
-    Brush originalStroke;
+    Brush originalStroke = InfoPartBorder.Stroke;
 
     public MainPage(MainPageViewModel viewModel)
     {
         InitializeComponent();
         BindingContext = viewModel;
-       
-        originalStroke = InfoPartBorder.Stroke;
 
         //registro la pagina per i messaggi con il viewmodel
         //BAD PRACTICE -----> MA DOBBIAMO CONSEGNARE, NON C'E' TEMPO
