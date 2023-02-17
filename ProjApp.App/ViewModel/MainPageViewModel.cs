@@ -22,6 +22,7 @@ using System.Data;
 using static ProjApp.Gioco.GameLogic;
 using ShimSkiaSharp;
 using Microsoft.VisualBasic;
+using static Google.Android.Material.Tabs.TabLayout;
 
 namespace ProjApp.ViewModel
 {
@@ -374,80 +375,58 @@ namespace ProjApp.ViewModel
             serverRegistrations.Add( 
                 Connessione.con.On<string>("PositionReceived",  async(receiveduser) =>
                     {
-                        SerializableUser received = JsonSerializer.Deserialize<SerializableUser>(receiveduser);
-                        Console.WriteLine($"/////////Posizione ricevuta da:{received.UserID} , " +
-                            $"lat:{received.Position.Latitude}, lon: {received.Position.Longitude}");
-                        if (received.UserID != MyUser.user.UserID)
+                        Task.Run(async () =>
                         {
-                            //bool trovato = false; //ho gia tutti i players
-                            Position newposition = new(received.Position.Latitude, received.Position.Longitude);
-                            //se trovo l'utente aggiorno la sua posizione
-                            foreach (Pin p in Mapview.Pins)
+                            SerializableUser received = JsonSerializer.Deserialize<SerializableUser>(receiveduser);
+                            Console.WriteLine($"/////////Posizione ricevuta da:{received.UserID} , " +
+                                $"lat:{received.Position.Latitude}, lon: {received.Position.Longitude}");
+                            if (received.UserID != MyUser.user.UserID)
                             {
-                                if(received.UserID.Equals(p.Label))
+                                //bool trovato = false; //ho gia tutti i players
+                                Position newposition = new(received.Position.Latitude, received.Position.Longitude);
+                                //se trovo l'utente aggiorno la sua posizione
+                                foreach (Pin p in Mapview.Pins)
                                 {
-                                    if (PinVisibilityPolicySet)
+                                    if (received.UserID.Equals(p.Label))
                                     {
-                                        //se non è stato preso dobiamo decidere
-                                        if (!received.IsPreso)
+                                        if (PinVisibilityPolicySet)
                                         {
-                                            double distanceInMeters = 0;
-                                            if (IsHuntPossible)
+                                            //se non è stato preso dobiamo decidere
+                                            if (!received.IsPreso)
                                             {
-                                                distanceInMeters = GetDistance(MyUser.user.Position.Longitude,
-                                                    MyUser.user.Position.Latitude,
-                                                    received.Position.Longitude, received.Position.Latitude);
-                                            }
-                                            p.IsVisible = await GameLogic.ShouldPinBeVisible(p.Label, received.IsCercatore, p.IsVisible,
-                                                                                             distanceInMeters, IsHuntPossible);
-                                        } //altrimenti tutti possono vedere i presi
-                                        else p.IsVisible = true;
-                                    }
+                                                double distanceInMeters = 0;
+                                                if (IsHuntPossible)
+                                                {
+                                                    distanceInMeters = GetDistance(MyUser.user.Position.Longitude,
+                                                        MyUser.user.Position.Latitude,
+                                                        received.Position.Longitude, received.Position.Latitude);
+                                                }
+                                                p.IsVisible = await GameLogic.ShouldPinBeVisible(p.Label, received.IsCercatore, p.IsVisible,
+                                                                                                 distanceInMeters, IsHuntPossible);
+                                            } //altrimenti tutti possono vedere i presi
+                                            else p.IsVisible = true;
+                                        }
 
-                                    if(p.IsVisible)
-                                    {
-                                        Interpolate(p, newposition); //animazione piu fluida
-                                    }
-                                    else
-                                    {
-                                        p.Position= newposition;
-                                    }
+                                        if (p.IsVisible)
+                                        {
+                                            Interpolate(p, newposition); //animazione piu fluida
+                                        }
+                                        else
+                                        {
+                                            p.Position = newposition;
+                                        }
 
-                                    //aggiorno lo user nella lista della partita
-                                    //ma che sto facendo AIUTO!
-                                    User alreadyIn = MyUser.currPartita.Players.Where((x) =>
-                                    x.UserID.Equals(p.Label)).First();
+                                        //aggiorno lo user nella lista della partita
+                                        //ma che sto facendo AIUTO!
+                                        User alreadyIn = MyUser.currPartita.Players.Where((x) =>
+                                        x.UserID.Equals(p.Label)).First();
 
-                                    alreadyIn.Position = new(newposition.Latitude, newposition.Longitude);
-                                    alreadyIn.IsCercatore = received.IsCercatore;
+                                        alreadyIn.Position = new(newposition.Latitude, newposition.Longitude);
+                                        alreadyIn.IsCercatore = received.IsCercatore;
+                                    }
                                 }
                             }
-                            //non serve piu aggiungere perche in toeria non puo entrare gente nuova se la partita è in corso
-
-                            //altrimenti ne creo uno nuovo(di pin)
-                            //if (!trovato)
-                            //{
-                            //    Pin userPin = new Pin(mapView)
-                            //    {
-                            //        Label = user.UserID,
-                            //        Position = position,
-                            //        Type = PinType.Icon,
-                            //        Icon = user.UserIcon,
-                            //        Scale = 0.4F
-                            //    };
-                            //    mapView.Pins.Add(userPin);
-
-                            //    //creo loggetto user e lo aggiungo alla lista dei players nella partita
-
-                            //    User justReceived = new(user.Nickname, user.UserID, new(position.Latitude, position.Longitude))
-                            //    {
-                            //        UserPin = userPin
-                            //    };
-
-                            //    MyUser.currPartita.Players.Add(justReceived);
-
-                            //}
-                        }
+                        });
                     })
                 );
         }
