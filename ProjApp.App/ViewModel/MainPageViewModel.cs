@@ -19,8 +19,8 @@ using System.Text.Json.Serialization;
 using ProjApp.MapEl.Serializable;
 using System.Text;
 using System.Data;
+using static ProjApp.Gioco.GameLogic;
 using ShimSkiaSharp;
-using static ProjApp.MainPage;
 using Microsoft.VisualBasic;
 
 namespace ProjApp.ViewModel
@@ -39,6 +39,7 @@ namespace ProjApp.ViewModel
         private string tendinaText = INFO_PARTITA_TEXT_DEFAULT;
         [ObservableProperty]
         private string tendinaTextDetail = "";
+
 
         private static List<IDisposable> serverRegistrations = new();
 

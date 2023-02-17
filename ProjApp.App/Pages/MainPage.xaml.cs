@@ -14,6 +14,7 @@ using Mapsui.ViewportAnimations;
 using ProjApp.MapEl.GPS;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using ProjApp.Messagges;
+using static ProjApp.Gioco.GameLogic;
 #if ANDROID
 using static ProjApp.MainActivity;
 #endif
@@ -22,25 +23,6 @@ namespace ProjApp;
 
 public partial class MainPage : ContentPage
 {
-
-    public const string INFO_PARTITA_TEXT_DEFAULT = "Informazioni partita";
-    public const string INFO_PARTITA_TEXT_AVVISO = "Avviso";
-
-    //detail text cacciatori
-    public const string TEXTDETAIL_NOTIFICA_SEEKER = "Qualcuno si nasconde nei dintorni";
-    public const string TEXTDETAIL_INSEGUIMENTO_SEEKER = "SEI VICINO, CATTURALO!";
-    public const string TEXTDETAIL_CATTURA_SEEKER = "Cattura completata! :)";
-
-    //detail text hiders
-    public const string TEXTDETAIL_NOTIFICA_HIDER = "Un cacciatore è nei paraggi";
-    public const string TEXTDETAIL_INSEGUIMENTO_HIDER = "SCAPPA DAL CACCIATORE!";
-    public const string TEXTDETAIL_CATTURA_HIDER = "Sei stato catturato! :(";
-
-    //avvisi
-    public const string AVVISO_NOTIFICA = "EventoNotifica";
-    public const string AVVISO_INSEGUIMENTO = "EventoInseguimento";
-    public const string AVVISO_CATTURA = "EventoCattura";
-
     public static CancellationTokenSource _cancelTokenSourceAvviso = null;
 
     Brush originalStroke;
@@ -51,7 +33,7 @@ public partial class MainPage : ContentPage
         BindingContext = viewModel;
     }
 
-    private void AvvisoRicevuto()
+    private async void AvvisoRicevuto()
     {
         originalStroke = InfoPartBorder.Stroke;
         WeakReferenceMessenger.Default.Register<OpenAvvisoMessage>(this, async (r, m) =>
@@ -154,7 +136,8 @@ public partial class MainPage : ContentPage
 
         //registro la pagina per i messaggi con il viewmodel
         //BAD PRACTICE -----> MA DOBBIAMO CONSEGNARE, NON C'E' TEMPO
-        Task.Run(AvvisoRicevuto);
+        AvvisoRicevuto();
+
         base.OnAppearing();
         #if ANDROID
         WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar"));
@@ -171,13 +154,6 @@ public partial class MainPage : ContentPage
         }
     }
 
-    //messaggio per aprire la tendina per gli avvisi generati ad eventi per la distanza tra giocatori
-    public class OpenAvvisoMessage : ValueChangedMessage<UI_Event<double>>
-    {
-        public OpenAvvisoMessage(UI_Event<double> value) : base(value)
-        {
-        }
-    }
     //gestione messaggio
     async Task OpenDrawer(double customOpenY, CancellationToken tk)
     {

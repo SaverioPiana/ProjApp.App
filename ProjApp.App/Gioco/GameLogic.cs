@@ -8,6 +8,8 @@ using ProjApp.ViewModel;
 using Location = Microsoft.Maui.Devices.Sensors.Location;
 using Point = NetTopologySuite.Geometries.Point;
 using ProjApp;
+using CommunityToolkit.Mvvm.Messaging.Messages;
+using ProjApp.Messagges;
 
 namespace ProjApp.Gioco
 {
@@ -28,9 +30,35 @@ namespace ProjApp.Gioco
 
         public const long TIMEOUT_NOTIFICHE_INSEGUIMENTO = TICS_PER_SECOND*30;
 
+        public const string INFO_PARTITA_TEXT_DEFAULT = "Informazioni partita";
+        public const string INFO_PARTITA_TEXT_AVVISO = "Avviso";
+
+        //detail text cacciatori
+        public const string TEXTDETAIL_NOTIFICA_SEEKER = "Qualcuno si nasconde nei dintorni";
+        public const string TEXTDETAIL_INSEGUIMENTO_SEEKER = "SEI VICINO, CATTURALO!";
+        public const string TEXTDETAIL_CATTURA_SEEKER = "Cattura completata! :)";
+
+        //detail text hiders
+        public const string TEXTDETAIL_NOTIFICA_HIDER = "Un cacciatore è nei paraggi";
+        public const string TEXTDETAIL_INSEGUIMENTO_HIDER = "SCAPPA DAL CACCIATORE!";
+        public const string TEXTDETAIL_CATTURA_HIDER = "Sei stato catturato! :(";
+
+        //avvisi
+        public const string AVVISO_NOTIFICA = "EventoNotifica";
+        public const string AVVISO_INSEGUIMENTO = "EventoInseguimento";
+        public const string AVVISO_CATTURA = "EventoCattura";
+
         //mappa per ogni giocatore quando e' stato inviato l'ultimo avviso -> da clearare per ogni start game
         public static Dictionary<string, long> UidToLastTime_AvvisoNotifica = new();
         public static Dictionary<string, long> UidToLastTime_AvvisoInseguimento = new();
+
+        //messaggio per aprire la tendina per gli avvisi generati ad eventi per la distanza tra giocatori
+        public class OpenAvvisoMessage : ValueChangedMessage<UI_Event<double>>
+        {
+            public OpenAvvisoMessage(UI_Event<double> value) : base(value)
+            {
+            }
+        }
 
 
         public static async Task<List<User>> whoOutsideTheArea()
@@ -112,7 +140,7 @@ namespace ProjApp.Gioco
                 if ((DateTime.Now.Ticks - UidToLastTime_AvvisoNotifica[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
                 {
                     GameLogic.UidToLastTime_AvvisoNotifica[uid] = DateTime.Now.Ticks;
-                    await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, MainPage.AVVISO_NOTIFICA);
+                    await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_NOTIFICA);
                 }
                 //e in ogni caso -> 
                 res = false;
@@ -124,7 +152,7 @@ namespace ProjApp.Gioco
                 if ((DateTime.Now.Ticks - UidToLastTime_AvvisoInseguimento[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
                 {
                     GameLogic.UidToLastTime_AvvisoInseguimento[uid] = DateTime.Now.Ticks;
-                    await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, MainPage.AVVISO_INSEGUIMENTO);
+                    await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_INSEGUIMENTO);
                 }
                 //e in ogni caso -> 
                 res = true;
@@ -146,7 +174,7 @@ namespace ProjApp.Gioco
                 {
                     //prendilo
                     await Connessione.con.InvokeAsync("GiocatorePreso", MyUser.currPartita.Cod_partita, uid);
-                    await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, MainPage.AVVISO_CATTURA);
+                    await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_CATTURA);
                 }
             }
 
