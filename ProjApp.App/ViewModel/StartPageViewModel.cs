@@ -153,7 +153,7 @@ namespace ProjApp.ViewModel
 
         ////////////////////////////////////////////////////////////////////////
         //to know whenever we need to change the UI
-        public class UIChangeAlertStartPage : ValueChangedMessage<UI_Event>
+        public class UIChangeAlertStartPage : ValueChangedMessage<UI_Event<string>>
         {
             public UIChangeAlertStartPage(string uieventType, string uieventPar) : base(new(uieventType, uieventPar))
             {
@@ -161,7 +161,7 @@ namespace ProjApp.ViewModel
             }
         }
 
-        public async Task DisplayCorrectUI(UI_Event uiEvent)
+        public async Task DisplayCorrectUI(UI_Event<string> uiEvent)
         {
             switch(uiEvent.EventType)
             {

@@ -13,6 +13,7 @@ using System.Diagnostics;
 using Mapsui.ViewportAnimations;
 using ProjApp.MapEl.GPS;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using ProjApp.Messagges;
 #if ANDROID
 using static ProjApp.MainActivity;
 #endif
@@ -21,6 +22,15 @@ namespace ProjApp;
 
 public partial class MainPage : ContentPage
 {
+
+    public const string INFO_PARTITA_TEXT_DEFAULT = "Informazioni partita";
+    public const string INFO_PARTITA_TEXT_AVVISO = "Avviso";
+
+    public const string AVVISO_NOTIFICA = "VibrazioneSingola";
+    public const string AVVISO_INSEGUIMENTO = "VibrazioniAnsiose";
+
+    public static CancellationTokenSource _cancelTokenSourceAvviso = null;
+
     public MainPage(MainPageViewModel viewModel)
     {
         InitializeComponent();
@@ -30,7 +40,52 @@ public partial class MainPage : ContentPage
         //BAD PRACTICE -----> MA DOBBIAMO CONSEGNARE, NON C'E' TEMPO
         WeakReferenceMessenger.Default.Register<OpenAvvisoMessage>(this, async(r, m) =>
         {
-            await OpenDrawer(m.Value);
+            try
+            {
+                //solo un avviso per volta
+                if (_cancelTokenSourceAvviso != null)
+                {
+                    _cancelTokenSourceAvviso.Cancel();
+                }
+                _cancelTokenSourceAvviso = new();
+                TimeSpan vibrationLength = TimeSpan.Zero;
+                int numeroVibr = 0;
+                (BindingContext as MainPageViewModel).TendinaText = INFO_PARTITA_TEXT_AVVISO;
+                _ = Task.Run(async () =>
+                {
+                    switch (m.Value.EventType)
+                    {
+                        case (AVVISO_NOTIFICA):
+                            vibrationLength = TimeSpan.FromSeconds(1);
+                            Vibration.Default.Vibrate(vibrationLength);
+                            break;
+                        case (AVVISO_INSEGUIMENTO):
+                            numeroVibr = 4;
+                            for (int i = 0; i < 4; i++)
+                            {
+                                Vibration.Default.Vibrate();
+                                await Task.Delay(2500, _cancelTokenSourceAvviso.Token);
+
+                                if (_cancelTokenSourceAvviso.IsCancellationRequested)
+                                {
+                                    return;
+                                }
+                            }
+                            break;
+                    }
+                });
+
+                await OpenDrawer(m.Value.EventParameter, _cancelTokenSourceAvviso.Token);
+
+                await Task.Delay(15000, _cancelTokenSourceAvviso.Token);
+
+                if (!_cancelTokenSourceAvviso.IsCancellationRequested)
+                {
+                    await CloseDrawer();
+                    (BindingContext as MainPageViewModel).TendinaText = INFO_PARTITA_TEXT_DEFAULT;
+                }
+            } catch(TaskCanceledException ex) { //BELLO QUI PALESE ESPLODE TUTTO RIP
+                                              }
         });
     }
 
@@ -64,15 +119,16 @@ public partial class MainPage : ContentPage
     }
 
     //messaggio per aprire la tendina per gli avvisi generati ad eventi per la distanza tra giocatori
-    public class OpenAvvisoMessage : ValueChangedMessage<double>
+    public class OpenAvvisoMessage : ValueChangedMessage<UI_Event<double>>
     {
-        public OpenAvvisoMessage(double value) : base(value)
+        public OpenAvvisoMessage(UI_Event<double> value) : base(value)
         {
         }
     }
     //gestione messaggio
-    async Task OpenDrawer(double customOpenY)
+    async Task OpenDrawer(double customOpenY, CancellationToken tk)
     {
+        if(tk.IsCancellationRequested) return;
         await Task.WhenAll
         (
             BottomDrawer.TranslateTo(0, customOpenY, length: duration, easing: Easing.CubicInOut),

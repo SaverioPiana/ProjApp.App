@@ -80,7 +80,7 @@ namespace ProjApp.Gioco
 
         public void JoinLobby(string lid, string jsonUser)
         {
-            Connessione.con.InvokeAsync("JoinLobby", lid, jsonUser);
+            Connessione.con.InvokeAsync("JoinLobby", lid, jsonUser, MyUser.user.UserID);
             //joino la lobby con quell'id
             Cod_partita = lid;
             MyUser.AddToCurrPartita(MyUser.user);
@@ -203,7 +203,7 @@ namespace ProjApp.Gioco
         {
             Connessione.con.On<bool>("GameStarted", (isCacciatore) =>
             {
-                MyUser.SEND_POSITION |= true;
+                MyUser.SEND_POSITION = true;
                 Task.Run(MyUser.inviaPosSignalR);
                 if (isCacciatore)
                 {

@@ -37,9 +37,6 @@ namespace ProjApp.ViewModel
         [ObservableProperty]
         private string tendinaText = INFO_PARTITA_TEXT_DEFAULT;
 
-        public const string INFO_PARTITA_TEXT_DEFAULT = "Informazioni partita";
-        public const string INFO_PARTITA_TEXT_AVVISO = "Avviso";
-
         private static List<IDisposable> serverRegistrations = new();
 
         private static object lockPreMatchPins = new object();
@@ -104,7 +101,7 @@ namespace ProjApp.ViewModel
         [RelayCommand]
         private async void Prova_avviso()
         {
-            await ApriTendinaAvviso(325);
+            await ApriTendinaAvviso(325, AVVISO_INSEGUIMENTO);
         }
 
         //////////////////////////////////////////////////////////////////
@@ -114,9 +111,9 @@ namespace ProjApp.ViewModel
         //////////////////////////////////////////////////////////////////
 
 
-        private async Task ApriTendinaAvviso(double openY)
+        private async Task ApriTendinaAvviso(double openY, string eventType)
         {
-            WeakReferenceMessenger.Default.Send<OpenAvvisoMessage>(new(openY));
+            WeakReferenceMessenger.Default.Send<OpenAvvisoMessage>(new OpenAvvisoMessage(new(eventType, openY)));
         }
 
         [RelayCommand]
