@@ -391,8 +391,8 @@ namespace ProjApp.ViewModel
                                     {
                                         if (PinVisibilityPolicySet)
                                         {
-                                            //se non è stato preso dobiamo decidere
-                                            if (!received.IsPreso)
+                                            //se non è stato preso ne lui ne io dobbiamo usare le policy
+                                            if (!received.IsPreso && !MyUser.user.isPreso)
                                             {
                                                 double distanceInMeters = 0;
                                                 if (IsHuntPossible)
@@ -404,12 +404,14 @@ namespace ProjApp.ViewModel
                                                 p.IsVisible = await GameLogic.ShouldPinBeVisible(p.Label, received.IsCercatore, p.IsVisible,
                                                                                                  distanceInMeters, IsHuntPossible);
                                             } //altrimenti tutti possono vedere i presi
+                                              //e i presi possono vedere tutti
                                             else
                                             {
                                                 p.IsVisible = true;
-                                                p.Icon = received.UserIcon;
+                                                if(received.IsPreso) p.Icon = received.UserIcon;
                                             }
                                         }
+
 
                                         if (p.IsVisible)
                                         {
