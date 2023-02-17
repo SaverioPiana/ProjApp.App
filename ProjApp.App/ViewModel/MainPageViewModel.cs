@@ -404,7 +404,11 @@ namespace ProjApp.ViewModel
                                                 p.IsVisible = await GameLogic.ShouldPinBeVisible(p.Label, received.IsCercatore, p.IsVisible,
                                                                                                  distanceInMeters, IsHuntPossible);
                                             } //altrimenti tutti possono vedere i presi
-                                            else p.IsVisible = true;
+                                            else
+                                            {
+                                                p.IsVisible = true;
+                                                p.Icon = received.UserIcon;
+                                            }
                                         }
 
                                         if (p.IsVisible)
@@ -526,8 +530,8 @@ namespace ProjApp.ViewModel
         public static async void OnPreso()
         {
             Console.WriteLine($"()())()())))()()()()(  PRESOOOOOOOOOOOO: sono {MyUser.user.UserID}   ()()()()()())()()())(");
-            MyUser.user.IsPreso = true;
             MyUser.user.UserIcon = ReadResource(DEAD_ICON_FILENAME);
+            MyUser.user.UserPin.Icon = MyUser.user.UserIcon;
             MyUser.SEND_POSITION = false;
             //aspettiamo che un minimo passi dall'ultimo invio
             await Task.Delay(1000);

@@ -22,7 +22,7 @@ namespace ProjApp.Gioco
 
         private const long TICS_PER_SECOND = 10000000;
 
-        public const int DELAY_INIZIO_GIOCO = 60000;
+        public const int DELAY_INIZIO_GIOCO = 3000;
 
         private const double APERTURA_TENDINA_AVVISI = 325;
 
@@ -151,6 +151,7 @@ namespace ProjApp.Gioco
                     //se non sei il cacciatore ti marchi come preso
                     if (!MyUser.user.IsCercatore && !MyUser.user.isPreso)
                     {
+                        MyUser.user.IsPreso = true;
                         MainPageViewModel.OnPreso();
                     }
                     await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_CATTURA);
