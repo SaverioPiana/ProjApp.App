@@ -22,7 +22,7 @@ namespace ProjApp.Gioco
 
         private const long TICS_PER_SECOND = 10000000;
 
-        public const int DELAY_INIZIO_GIOCO = 180000;
+        public const int DELAY_INIZIO_GIOCO = 60000;
 
         private const double APERTURA_TENDINA_AVVISI = 325;
 
@@ -133,30 +133,6 @@ namespace ProjApp.Gioco
         {
             bool res = previousVal;
 
-            //avviso solo la prima volta
-            if (distanceMts <= DISTANZA_AVVISO)
-            {
-                //SAS AVVISO SILENZIOSOS
-                if ((DateTime.Now.Ticks - UidToLastTime_AvvisoNotifica[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
-                {
-                    GameLogic.UidToLastTime_AvvisoNotifica[uid] = DateTime.Now.Ticks;
-                    await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_NOTIFICA);
-                }
-                //e in ogni caso -> 
-                res = false;
-            }
-            //la prima volta avviso e vibrazione(a ogni cooldown del timer), poi solo visibilita true del pin
-            if (distanceMts <= DISTANZA_INSEGUIMENTO)
-            {
-                //SAS INSEGUIMENTO PAZZO
-                if ((DateTime.Now.Ticks - UidToLastTime_AvvisoInseguimento[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
-                {
-                    GameLogic.UidToLastTime_AvvisoInseguimento[uid] = DateTime.Now.Ticks;
-                    await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_INSEGUIMENTO);
-                }
-                //e in ogni caso -> 
-                res = true;
-            }
             //solo una volta, evento cattura
             if (distanceMts <= DISTANZA_CATTURA)
             {
@@ -170,7 +146,7 @@ namespace ProjApp.Gioco
                 }
                 //SAS PRESOS
                 //se non è gia stato preso
-                if(!otherUser.isPreso)
+                if (!otherUser.isPreso)
                 {
                     //se non sei il cacciatore ti marchi come preso
                     if (!MyUser.user.IsCercatore)
@@ -181,7 +157,36 @@ namespace ProjApp.Gioco
                     await Task.Delay(1500);
                 }
             }
-
+            else
+            {
+                //la prima volta avviso e vibrazione(a ogni cooldown del timer), poi solo visibilita true del pin
+                if (distanceMts <= DISTANZA_INSEGUIMENTO)
+                {
+                    //SAS INSEGUIMENTO PAZZO
+                    if ((DateTime.Now.Ticks - UidToLastTime_AvvisoInseguimento[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
+                    {
+                        GameLogic.UidToLastTime_AvvisoInseguimento[uid] = DateTime.Now.Ticks;
+                        await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_INSEGUIMENTO);
+                    }
+                    //e in ogni caso -> 
+                    res = true;
+                }
+                 else
+                {
+                    //avviso solo la prima volta
+                    if (distanceMts <= DISTANZA_AVVISO)
+                    {
+                        //SAS AVVISO SILENZIOSOS
+                        if ((DateTime.Now.Ticks - UidToLastTime_AvvisoNotifica[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
+                        {
+                            GameLogic.UidToLastTime_AvvisoNotifica[uid] = DateTime.Now.Ticks;
+                            await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_NOTIFICA);
+                        }
+                        //e in ogni caso -> 
+                        res = false;
+                    }
+                }
+            }
             return res;
         }
 
