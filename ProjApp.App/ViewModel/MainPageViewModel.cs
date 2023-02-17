@@ -400,6 +400,13 @@ namespace ProjApp.ViewModel
                                 {
                                     if (received.UserID.Equals(p.Label))
                                     {
+                                        //aggiorno lo user nella lista della partita
+                                        User alreadyIn = MyUser.currPartita.Players.Where((x) =>
+                                        x.UserID.Equals(p.Label)).First();
+
+                                        alreadyIn.Position = new(newposition.Latitude, newposition.Longitude);
+                                        alreadyIn.IsCercatore = received.IsCercatore;
+
                                         if (PinVisibilityPolicySet)
                                         {
                                             //se non è stato preso ne lui ne io e non siamo salvi dobbiamo usare le policy
@@ -421,15 +428,24 @@ namespace ProjApp.ViewModel
                                                 p.IsVisible = true;
                                                 if (received.IsPreso)
                                                 {
-                                                    //incrementa giocatori presi
-                                                    numGiocatoriPresi++;
-                                                    p.Icon = received.UserIcon;
+                                                    if(!alreadyIn.IsPreso) 
+                                                    {
+                                                        //incrementa giocatori presi
+                                                        numGiocatoriPresi++;
+                                                        alreadyIn.IsPreso = received.IsPreso;
+                                                        p.Icon = received.UserIcon;
+                                                    }
+                                                    
                                                 }
                                                 else if (received.IsSalvo)
                                                 {
-                                                    //incrementa giocatori presi
-                                                    numGiocatoriTanati++;
-                                                    p.Icon = received.UserIcon;
+                                                    if (!alreadyIn.IsSalvo)
+                                                    {
+                                                        //incrementa giocatori presi
+                                                        numGiocatoriTanati++;
+                                                        alreadyIn.IsSalvo = received.IsSalvo;
+                                                        p.Icon = received.UserIcon;
+                                                    }
                                                 }
                                                 if (numGiocatoriPresi + numGiocatoriTanati == (numGiocatori - QuantiCacciatori()))
                                                 {
@@ -447,14 +463,6 @@ namespace ProjApp.ViewModel
                                         {
                                             p.Position = newposition;
                                         }
-
-                                        //aggiorno lo user nella lista della partita
-                                        //ma che sto facendo AIUTO!
-                                        User alreadyIn = MyUser.currPartita.Players.Where((x) =>
-                                        x.UserID.Equals(p.Label)).First();
-
-                                        alreadyIn.Position = new(newposition.Latitude, newposition.Longitude);
-                                        alreadyIn.IsCercatore = received.IsCercatore;
                                     }
                                 }
 
@@ -465,6 +473,24 @@ namespace ProjApp.ViewModel
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     })
                 );
+        }
+
+        private bool WasAlreadyCounted(string eventoDiGioco, string UID)
+        {
+            
+                switch (eventoDiGioco)
+                {
+                    case (EVENTO_CATTURA):
+                        {
+
+                            break;
+                        }
+                    case (EVENTO_TANATO):
+                        {
+                        
+                            break;
+                        }
+                }
         }
 
         private int QuantiCacciatori()
@@ -598,6 +624,13 @@ namespace ProjApp.ViewModel
 
         public static async void EventoDiGioco(string iconfilename, string eventoDiGioco)
         {
+            //ultimo invio a tutti con icona morto/tanato e isPreso/isSalvo = true
+            MyUser.user.UserIcon = ReadResource(iconfilename);
+            MyUser.user.UserPin.Icon = MyUser.user.UserIcon;
+            MyUser.SEND_POSITION = false;
+            //aspettiamo che un minimo passi dall'ultimo invio
+            await Task.Delay(1000);
+
             //aggiungere te stesso all evento giusto
             switch (eventoDiGioco)
             {
@@ -612,13 +645,7 @@ namespace ProjApp.ViewModel
                     break;
                 }
             }          
-            MyUser.user.UserIcon = ReadResource(iconfilename);
-            MyUser.user.UserPin.Icon = MyUser.user.UserIcon;
-            MyUser.SEND_POSITION = false;
-            //aspettiamo che un minimo passi dall'ultimo invio
-            await Task.Delay(1000);
 
-            //ultimo invio a tutti con icona morto/tanato e isPreso/isSalvo = true
             await MyUser.inviaPosOneLastTime();
 
             cancellationTokenSource.Cancel();
