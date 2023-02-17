@@ -233,7 +233,7 @@ namespace ProjApp.ViewModel
                 result.Add(newpin);
                 //e' subito avvisabile il giocatore perche quando lo aggiungo al dizionario gli tolgo gia il timeout
                 GameLogic.UidToLastTime_AvvisoNotifica.Add(newpin.Label, DateTime.Now.Ticks - GameLogic.TIMEOUT_NOTIFICHE_AVVISO);
-                GameLogic.UidToLastTime_AvvisoNotifica.Add(newpin.Label, DateTime.Now.Ticks - GameLogic.TIMEOUT_NOTIFICHE_INSEGUIMENTO);
+                GameLogic.UidToLastTime_AvvisoInseguimento.Add(newpin.Label, DateTime.Now.Ticks - GameLogic.TIMEOUT_NOTIFICHE_INSEGUIMENTO);
             }
             return result;
         }
