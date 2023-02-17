@@ -184,6 +184,8 @@ namespace ProjApp.Gioco
 
         private void LobbyParamReset()
         {
+            MyUser.user.isPreso = false;
+            MyUser.user.IsCercatore = false;
             MyUser.isAdmin = false;
             MyUser.SEND_POSITION = false;
             //RIMUOVO I PIN DAI PIN PREPARTITA
@@ -227,7 +229,6 @@ namespace ProjApp.Gioco
                 s.Dispose();
             }
         }
-
 
         //crea un codice hash per la partita usando data e ora e userID
         private static string CreateCode()

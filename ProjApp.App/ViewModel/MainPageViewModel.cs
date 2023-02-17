@@ -550,6 +550,17 @@ namespace ProjApp.ViewModel
         }
 
 
+        private void OnPreso()
+        {
+            Connessione.con.On("Preso", () =>
+            {
+                MyUser.user.isPreso = true;
+
+            }
+            );
+        }
+
+
         /////////////////////////////////////////////////////////////////////////////////
         ///ALTRO MODO DI IMPLEMENTARE MA DEVI CHIAMARE DUE VOLTE UPDATE POSITION PERCHE//
         // UPDATE MAP TO POS VA FATTA MEGLIO/////////////////////////////////////////////

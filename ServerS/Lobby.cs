@@ -14,6 +14,7 @@ namespace ServerS
         public List<string> cacciatori { get; set; } = new List<string>();
         public List<string> ConnectedClients { get; set; } = new List<string>();
 
+        public Dictionary<string, string> UidToConnectedClient { get; set; } = new();
 
 
         public Lobby(string id)

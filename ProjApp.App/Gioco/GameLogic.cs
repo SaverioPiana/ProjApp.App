@@ -140,6 +140,7 @@ namespace ProjApp.Gioco
                 if(!otherUser.isPreso)
                 {
                     //prendilo
+                    await Connessione.con.InvokeAsync("GiocatorePreso", MyUser.currPartita.Cod_partita, uid);
                 }
             }
 
