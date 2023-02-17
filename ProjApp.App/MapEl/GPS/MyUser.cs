@@ -109,7 +109,7 @@ namespace ProjApp.MapEl.GPS
             catch (Exception ex)
             {
                 Console.WriteLine($"EXCEPTION position not found {ex.Message}");
-
+                await Task.Delay(200);
             }
             finally
             {
