@@ -43,16 +43,23 @@ public partial class MainPage : ContentPage
 
     public static CancellationTokenSource _cancelTokenSourceAvviso = null;
 
+    Brush originalStroke;
+
     public MainPage(MainPageViewModel viewModel)
     {
         InitializeComponent();
         BindingContext = viewModel;
        
-        Brush originalStroke = InfoPartBorder.Stroke;
+        originalStroke = InfoPartBorder.Stroke;
 
         //registro la pagina per i messaggi con il viewmodel
         //BAD PRACTICE -----> MA DOBBIAMO CONSEGNARE, NON C'E' TEMPO
-        WeakReferenceMessenger.Default.Register<OpenAvvisoMessage>(this, async(r, m) =>
+        Task.Run(AvvisoRicevuto);
+    }
+
+    private void AvvisoRicevuto()
+    {
+        WeakReferenceMessenger.Default.Register<OpenAvvisoMessage>(this, async (r, m) =>
         {
             try
             {
@@ -73,10 +80,10 @@ public partial class MainPage : ContentPage
                     switch (m.Value.EventType)
                     {
                         case (AVVISO_NOTIFICA):
-                            if(MyUser.user.IsCercatore)
+                            if (MyUser.user.IsCercatore)
                             {
                                 (BindingContext as MainPageViewModel).TendinaTextDetail = TEXTDETAIL_NOTIFICA_SEEKER;
-                            } 
+                            }
                             else (BindingContext as MainPageViewModel).TendinaTextDetail = TEXTDETAIL_NOTIFICA_HIDER;
 
                             vibrationLength = TimeSpan.FromSeconds(1);
@@ -129,9 +136,10 @@ public partial class MainPage : ContentPage
                 //reset scritta
                 (BindingContext as MainPageViewModel).TendinaTextDetail = "";
 
-            } catch(TaskCanceledException ex) 
-              { //BELLO QUI PALESE ESPLODE TUTTO RIP
-              }
+            }
+            catch (TaskCanceledException ex)
+            { //BELLO QUI PALESE ESPLODE TUTTO RIP
+            }
         });
     }
 
