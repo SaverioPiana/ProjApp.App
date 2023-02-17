@@ -25,7 +25,7 @@ namespace ProjApp.Gioco
         private WritableLayer tanalayer;
         private WritableLayer circleLayer;
         private Geometry cerchio; 
-        private const double RADIUS_TANA = 50;
+        public const double RADIUS_TANA = 50;
 
         public Geometry Cerchio { get { return cerchio; } }
 

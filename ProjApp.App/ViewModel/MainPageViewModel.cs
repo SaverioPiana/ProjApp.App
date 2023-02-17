@@ -23,6 +23,7 @@ using static ProjApp.Gioco.GameLogic;
 using ShimSkiaSharp;
 using Microsoft.VisualBasic;
 using static Google.Android.Material.Tabs.TabLayout;
+using Java.Nio.Channels;
 
 namespace ProjApp.ViewModel
 {
@@ -40,7 +41,10 @@ namespace ProjApp.ViewModel
         private string tendinaText = INFO_PARTITA_TEXT_DEFAULT;
         [ObservableProperty]
         private string tendinaTextDetail = "";
-
+        //per vedere se vincono i cacciatori
+        private static int numGiocatoriPresi = 0;
+        private static int numGiocatoriTanati = 0;
+        private int numGiocatori = MyUser.currPartita.Players.Count;
 
         private static List<IDisposable> serverRegistrations = new();
 
@@ -68,6 +72,12 @@ namespace ProjApp.ViewModel
         }
 
         public const string DEAD_ICON_FILENAME = "deathicon.png";
+
+        public const string TANATO_ICON_FILENAME = "tanatoicon.png";
+
+        public const string EVENTO_CATTURA = "Evento Cattura";
+        public const string EVENTO_TANATO = "Evento Tanato";
+
 
         const double STARTING_RES = 2;
         //private bool update_once = true;   //carina l'idea ma non penso la useremo,
@@ -375,6 +385,7 @@ namespace ProjApp.ViewModel
             serverRegistrations.Add( 
                 Connessione.con.On<string>("PositionReceived",  async(receiveduser) =>
                     {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                         Task.Run(async () =>
                         {
                             SerializableUser received = JsonSerializer.Deserialize<SerializableUser>(receiveduser);
@@ -391,8 +402,8 @@ namespace ProjApp.ViewModel
                                     {
                                         if (PinVisibilityPolicySet)
                                         {
-                                            //se non è stato preso ne lui ne io dobbiamo usare le policy
-                                            if (!received.IsPreso && !MyUser.user.isPreso)
+                                            //se non è stato preso ne lui ne io e non siamo salvi dobbiamo usare le policy
+                                            if (!received.IsPreso && !MyUser.user.IsPreso && !received.IsSalvo && !MyUser.user.IsSalvo)
                                             {
                                                 double distanceInMeters = 0;
                                                 if (IsHuntPossible)
@@ -407,8 +418,24 @@ namespace ProjApp.ViewModel
                                               //e i presi possono vedere tutti
                                             else
                                             {
+                                                p.Icon = received.UserIcon;
                                                 p.IsVisible = true;
-                                                if(received.IsPreso) p.Icon = received.UserIcon;
+                                                if (received.IsPreso)
+                                                {
+                                                    //incrementa giocatori presi
+                                                    numGiocatoriPresi++;
+
+                                                }
+                                                else if (received.IsSalvo)
+                                                {
+                                                    //incrementa giocatori presi
+                                                    numGiocatoriTanati++;
+
+                                                }
+                                                if (numGiocatoriPresi + numGiocatoriTanati == (numGiocatori - QuantiCacciatori()))
+                                                {
+                                                    FinePartita();
+                                                }
                                             }
                                         }
 
@@ -431,12 +458,34 @@ namespace ProjApp.ViewModel
                                         alreadyIn.IsCercatore = received.IsCercatore;
                                     }
                                 }
+
+
                             }
+
                         });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     })
                 );
         }
 
+        private int QuantiCacciatori()
+        {
+            if (numGiocatori/ 3 > 0)
+            {
+                return (numGiocatori) - (numGiocatori / 3);
+            }else
+            {
+                return 1;
+            }
+        }
+
+        private void FinePartita()
+        {
+            Console.WriteLine($"sono stati presi:{numGiocatoriPresi} e {numGiocatoriTanati} giocatori si sono salvati");
+
+            //CARLO FAI QUI LA NAVIGAZIONE
+
+        }
         private double GetDistance(double longitude, double latitude, double otherLongitude, double otherLatitude)
         {
             var d1 = latitude * (Math.PI / 180.0);
@@ -495,8 +544,27 @@ namespace ProjApp.ViewModel
                 }
                 updateCtr++;
                 Console.WriteLine($"Position updated from {MyUser.user.UserID} {updateCtr} times (continuos update)");
+
+                //check se sei arrivato nellarea della tana
+                if (!MyUser.user.IsSalvo && !MyUser.user.IsCercatore) IsMYUserInsideTana();
+
             }
             Console.WriteLine("!?!?!?!?!?!?! CANCELLATION REQUESTED FOR TASKS IN MAIN PAGE !?!?!?!??!?!?!?!");
+        }
+
+        private void IsMYUserInsideTana()
+        {
+            double mylatitude = MyUser.user.Position.Latitude;
+            double mylongitude = MyUser.user.Position.Longitude;
+            double tanalatitude = MyUser.currPartita.tana.position.Latitude;
+            double tanalongitude = MyUser.currPartita.tana.position.Longitude;
+
+            if (GetDistance(mylongitude, mylatitude, tanalongitude, tanalatitude)<= Tana.RADIUS_TANA)
+            {
+                MyUser.user.IsSalvo = true;
+                //smetti di inviare posizione e cambia icona e diventa invulnerabile
+                EventoDiGioco(TANATO_ICON_FILENAME, EVENTO_TANATO);
+            }
         }
 
 
@@ -529,17 +597,31 @@ namespace ProjApp.ViewModel
         }
 
 
-        public static async void OnPreso()
+        public static async void EventoDiGioco(string iconfilename, string eventoDiGioco)
         {
-            Console.WriteLine($"()())()())))()()()()(  PRESOOOOOOOOOOOO: sono {MyUser.user.UserID}   ()()()()()())()()())(");
-            MyUser.user.UserIcon = ReadResource(DEAD_ICON_FILENAME);
+            //aggiungere te stesso all evento giusto
+            switch (eventoDiGioco)
+            {
+                case (EVENTO_CATTURA):
+                {
+                    numGiocatoriPresi++;
+
+                    break;
+                }
+                case (EVENTO_TANATO):
+                {
+                    numGiocatoriTanati++;
+                    break;
+                }
+            }          
+            MyUser.user.UserIcon = ReadResource(iconfilename);
             MyUser.user.UserPin.Icon = MyUser.user.UserIcon;
             MyUser.SEND_POSITION = false;
             //aspettiamo che un minimo passi dall'ultimo invio
             await Task.Delay(1000);
-                
+
             //ultimo invio a tutti con icona morto e isPreso = true
-            await MyUser.inviaPosCatturatoOneLastTime();
+            await MyUser.inviaPosOneLastTime();
 
             cancellationTokenSource.Cancel();
         }

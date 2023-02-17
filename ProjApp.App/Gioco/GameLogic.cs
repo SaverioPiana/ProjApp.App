@@ -146,13 +146,13 @@ namespace ProjApp.Gioco
                 }
                 //SAS PRESOS
                 //se non è gia stato preso
-                if (!otherUser.isPreso)
+                if (!otherUser.IsPreso)
                 {
                     //se non sei il cacciatore ti marchi come preso
-                    if (!MyUser.user.IsCercatore && !MyUser.user.isPreso)
+                    if (!MyUser.user.IsCercatore && !MyUser.user.IsPreso)
                     {
                         MyUser.user.IsPreso = true;
-                        MainPageViewModel.OnPreso();
+                        MainPageViewModel.EventoDiGioco(MainPageViewModel.DEAD_ICON_FILENAME, MainPageViewModel.EVENTO_CATTURA);
                     }
                     await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_CATTURA);
                 }

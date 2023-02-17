@@ -66,6 +66,7 @@
 	  <MauiImage Remove="Resources\Images\reddot.png" />
 	  <MauiImage Remove="Resources\Images\red_pinicon.png" />
 	  <MauiImage Remove="Resources\Images\tanaicon.png" />
+	  <MauiImage Remove="Resources\Images\tanatoicon.png" />
 	  <MauiImage Remove="Resources\Images\yellow_pinicon.png" />
 	</ItemGroup>
 
@@ -81,6 +82,7 @@
 	  <EmbeddedResource Include="Resources\Images\deathicon.png" />
 	  <EmbeddedResource Include="Resources\Images\green_pinicon.png" />
 	  <EmbeddedResource Include="Resources\Images\red_pinicon.png" />
+	  <EmbeddedResource Include="Resources\Images\tanatoicon.png" />
 	  <EmbeddedResource Include="Resources\Images\yellow_pinicon.png" />
 	  <EmbeddedResource Include="Resources\Images\reddot.png" />
 	  <EmbeddedResource Include="Resources\Images\tanaicon.png" />
