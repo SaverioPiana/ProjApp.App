@@ -216,7 +216,8 @@ namespace ProjApp.Gioco
                 {
                     Console.WriteLine("GameStarted message from server, non sei il cacciatore");
                 }
-                GameLogic.UidToLastTime.Clear();
+                GameLogic.UidToLastTime_AvvisoNotifica.Clear();
+                GameLogic.UidToLastTime_AvvisoInseguimento.Clear();
 
                 WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(NAVIGATE_TO_MAIN_PAGE, NO_PAR));
             });

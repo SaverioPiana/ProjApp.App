@@ -25,8 +25,10 @@ namespace ProjApp.Gioco
         public const long TIMEOUT_NOTIFICHE_INSEGUIMENTO = TICS_PER_SECOND*30;
 
         //mappa per ogni giocatore quando e' stato inviato l'ultimo avviso -> da clearare per ogni start game
-        public static Dictionary<string, long> UidToLastTime = new();
-        
+        public static Dictionary<string, long> UidToLastTime_AvvisoNotifica = new();
+        public static Dictionary<string, long> UidToLastTime_AvvisoInseguimento = new();
+
+
         public static async Task<List<User>> whoOutsideTheArea()
         {
             List<Coordinate> bordi = MyUser.currPartita.area.bordi;
@@ -103,9 +105,9 @@ namespace ProjApp.Gioco
             if (distanceMts <= DISTANZA_AVVISO)
             {
                 //SAS AVVISO SILENZIOSOS
-                if ((DateTime.Now.Ticks - UidToLastTime[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
+                if ((DateTime.Now.Ticks - UidToLastTime_AvvisoNotifica[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
                 {
-                    GameLogic.UidToLastTime[uid] = DateTime.Now.Ticks;
+                    GameLogic.UidToLastTime_AvvisoNotifica[uid] = DateTime.Now.Ticks;
 
 
 
@@ -117,9 +119,9 @@ namespace ProjApp.Gioco
             if (distanceMts <= DISTANZA_INSEGUIMENTO)
             {
                 //SAS INSEGUIMENTO PAZZO
-                if ((DateTime.Now.Ticks - UidToLastTime[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
+                if ((DateTime.Now.Ticks - UidToLastTime_AvvisoInseguimento[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
                 {
-                    GameLogic.UidToLastTime[uid] = DateTime.Now.Ticks;
+                    GameLogic.UidToLastTime_AvvisoInseguimento[uid] = DateTime.Now.Ticks;
                 }
                 //e in ogni caso -> 
                 res = true;
