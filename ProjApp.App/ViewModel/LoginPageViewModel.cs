@@ -127,31 +127,32 @@ namespace ProjApp.ViewModel
         }
         [RelayCommand]
         private async Task NavigateToStartPage() {
-           
-            
-                //if (AppShell.Current == null)
-                //{
-                //    Application.Current.MainPage = new AppShell();
-                //}
-                await AppShell.Current.GoToAsync($"//{nameof(ProfilePage)}",false);
+            //if (AppShell.Current == null)
+            //{
+            //    Application.Current.MainPage = new AppShell();
+            //}
+            await AppShell.Current.GoToAsync($"//{nameof(ProfilePage)}",false);
 
-
-                //SOLO LA PRIMA VOLTA (da login -> profile)
-                //passiamo lo username alla pagina profilo solo se ha gia interagito con lo user per il nickmname
-                if (FIRST_TIME_LOGGING)
-                {
-                    WeakReferenceMessenger.Default.Register<ReadyToBuildUserMessage>(this, (r, m) =>
-                    {
-                        WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
-                    });
-                    FIRST_TIME_LOGGING = false;
-                }
-                else //la prifle page è gia stata creata ed è pronta a ricevere il nuovo username senza aspettare
+            if(Username == null)
+            {
+                Username = "NoID";
+            }
+            //SOLO LA PRIMA VOLTA (da login -> profile)
+            //passiamo lo username alla pagina profilo solo se ha gia interagito con lo user per il nickmname
+            if (FIRST_TIME_LOGGING)
+            {
+                WeakReferenceMessenger.Default.Register<ReadyToBuildUserMessage>(this, (r, m) =>
                 {
                     WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
-                }
-
+                });
+                FIRST_TIME_LOGGING = false;
             }
+            else //la prifle page è gia stata creata ed è pronta a ricevere il nuovo username senza aspettare
+            {
+                WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
+            }
+
+        }
         
     };
 
