@@ -8,4 +8,5 @@ public class SerializableUser
     public byte[] UserIcon { get; set; }
     public bool IsCercatore { get; set; }
     public bool IsPreso { get; set; }
+    public bool IsSalvo { get; set;}
 }

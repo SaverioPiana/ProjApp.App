@@ -24,9 +24,10 @@ namespace ProjApp.Gioco
         private object lockObject = new object();
         private Location position;
         private bool isCercatore = false;
-        public bool isPreso = false;
-
+        private bool isPreso = false;
+        private bool isSalvo = false;
         public bool IsCercatore { get; set; }
+        public bool IsSalvo { get; set; }
         public bool IsPreso { get; set; }
         public string Nickname { get; set; }
         public string UserID { get; set; }

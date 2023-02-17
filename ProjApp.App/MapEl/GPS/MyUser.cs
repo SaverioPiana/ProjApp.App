@@ -240,7 +240,7 @@ namespace ProjApp.MapEl.GPS
             }
         }
 
-        public static async Task inviaPosCatturatoOneLastTime()
+        public static async Task inviaPosOneLastTime()
         {
             //aspetta di essere connesso
             while (!Connessione.con.State.Equals(HubConnectionState.Connected))
