@@ -201,7 +201,6 @@ namespace ProjApp.ViewModel
             Codice = string.Empty;
             HasToNavigate = false;
         }
-
         ////////////////////////////////////////////////////////////////////////
     }
 }
