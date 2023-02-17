@@ -26,8 +26,20 @@ public partial class MainPage : ContentPage
     public const string INFO_PARTITA_TEXT_DEFAULT = "Informazioni partita";
     public const string INFO_PARTITA_TEXT_AVVISO = "Avviso";
 
-    public const string AVVISO_NOTIFICA = "VibrazioneSingola";
-    public const string AVVISO_INSEGUIMENTO = "VibrazioniAnsiose";
+    //detail text cacciatori
+    public const string TEXTDETAIL_NOTIFICA_SEEKER = "Qualcuno si nasconde nei dintorni";
+    public const string TEXTDETAIL_INSEGUIMENTO_SEEKER = "SEI VICINO, CATTURALO!";
+    public const string TEXTDETAIL_CATTURA_SEEKER = "Cattura completata! :)";
+
+    //detail text hiders
+    public const string TEXTDETAIL_NOTIFICA_HIDER = "Un cacciatore è nei paraggi";
+    public const string TEXTDETAIL_INSEGUIMENTO_HIDER = "SCAPPA DAL CACCIATORE!";
+    public const string TEXTDETAIL_CATTURA_HIDER = "Sei stato catturato! :(";
+
+    //avvisi
+    public const string AVVISO_NOTIFICA = "EventoNotifica";
+    public const string AVVISO_INSEGUIMENTO = "EventoInseguimento";
+    public const string AVVISO_CATTURA = "EventoCattura";
 
     public static CancellationTokenSource _cancelTokenSourceAvviso = null;
 
@@ -35,6 +47,8 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
         BindingContext = viewModel;
+       
+        Brush originalStroke = InfoPartBorder.Stroke;
 
         //registro la pagina per i messaggi con il viewmodel
         //BAD PRACTICE -----> MA DOBBIAMO CONSEGNARE, NON C'E' TEMPO
@@ -42,6 +56,9 @@ public partial class MainPage : ContentPage
         {
             try
             {
+                //cambio colore
+                InfoPartBorder.Stroke = Brush.IndianRed;
+
                 //solo un avviso per volta
                 if (_cancelTokenSourceAvviso != null)
                 {
@@ -56,10 +73,22 @@ public partial class MainPage : ContentPage
                     switch (m.Value.EventType)
                     {
                         case (AVVISO_NOTIFICA):
+                            if(MyUser.user.IsCercatore)
+                            {
+                                (BindingContext as MainPageViewModel).TendinaTextDetail = TEXTDETAIL_NOTIFICA_SEEKER;
+                            } 
+                            else (BindingContext as MainPageViewModel).TendinaTextDetail = TEXTDETAIL_NOTIFICA_HIDER;
+
                             vibrationLength = TimeSpan.FromSeconds(1);
                             Vibration.Default.Vibrate(vibrationLength);
                             break;
                         case (AVVISO_INSEGUIMENTO):
+                            if (MyUser.user.IsCercatore)
+                            {
+                                (BindingContext as MainPageViewModel).TendinaTextDetail = TEXTDETAIL_INSEGUIMENTO_SEEKER;
+                            }
+                            else (BindingContext as MainPageViewModel).TendinaTextDetail = TEXTDETAIL_INSEGUIMENTO_HIDER;
+
                             numeroVibr = 4;
                             for (int i = 0; i < 4; i++)
                             {
@@ -71,6 +100,16 @@ public partial class MainPage : ContentPage
                                     return;
                                 }
                             }
+                            break;
+                        case (AVVISO_CATTURA):
+                            if (MyUser.user.IsCercatore)
+                            {
+                                (BindingContext as MainPageViewModel).TendinaTextDetail = TEXTDETAIL_CATTURA_SEEKER;
+                            }
+                            else (BindingContext as MainPageViewModel).TendinaTextDetail = TEXTDETAIL_CATTURA_HIDER;
+
+                            vibrationLength = TimeSpan.FromSeconds(2);
+                            Vibration.Default.Vibrate(vibrationLength);
                             break;
                     }
                 });
@@ -84,8 +123,15 @@ public partial class MainPage : ContentPage
                     await CloseDrawer();
                     (BindingContext as MainPageViewModel).TendinaText = INFO_PARTITA_TEXT_DEFAULT;
                 }
-            } catch(TaskCanceledException ex) { //BELLO QUI PALESE ESPLODE TUTTO RIP
-                                              }
+
+                //cambio colore
+                InfoPartBorder.Stroke = originalStroke;
+                //reset scritta
+                (BindingContext as MainPageViewModel).TendinaTextDetail = "";
+
+            } catch(TaskCanceledException ex) 
+              { //BELLO QUI PALESE ESPLODE TUTTO RIP
+              }
         });
     }
 

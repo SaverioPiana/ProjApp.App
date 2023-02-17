@@ -21,6 +21,7 @@ using System.Text;
 using System.Data;
 using ShimSkiaSharp;
 using static ProjApp.MainPage;
+using Microsoft.VisualBasic;
 
 namespace ProjApp.ViewModel
 {
@@ -36,6 +37,8 @@ namespace ProjApp.ViewModel
         private bool avvisoHasCome = false;
         [ObservableProperty]
         private string tendinaText = INFO_PARTITA_TEXT_DEFAULT;
+        [ObservableProperty]
+        private string tendinaTextDetail = "";
 
         private static List<IDisposable> serverRegistrations = new();
 
@@ -61,6 +64,8 @@ namespace ProjApp.ViewModel
                 }
             }
         }
+
+        public const string DEAD_ICON_FILENAME = "deathicon.png";
 
         const double STARTING_RES = 2;
         //private bool update_once = true;   //carina l'idea ma non penso la useremo,
@@ -93,25 +98,7 @@ namespace ProjApp.ViewModel
             MapInitializer();
         }
 
-        //////////////////////////////////////////////////////////////////
-        
-                        //DA CANCELLARE
-
-        //////////////////////////////////////////////////////////////////
-        [RelayCommand]
-        private async void Prova_avviso()
-        {
-            await ApriTendinaAvviso(325, AVVISO_INSEGUIMENTO);
-        }
-
-        //////////////////////////////////////////////////////////////////
-
-        //DA CANCELLARE
-
-        //////////////////////////////////////////////////////////////////
-
-
-        private async Task ApriTendinaAvviso(double openY, string eventType)
+        public static async Task ApriTendinaAvviso(double openY, string eventType)
         {
             WeakReferenceMessenger.Default.Send<OpenAvvisoMessage>(new OpenAvvisoMessage(new(eventType, openY)));
         }
@@ -257,6 +244,8 @@ namespace ProjApp.ViewModel
             Task.Run(aggiungiAltriGiocatoriAllaMappa);
 
             Task.Run(CreaAreaETana);
+
+            Task.Run(OnPreso);
         }
 
         public void CreaAreaETana()
@@ -400,15 +389,20 @@ namespace ProjApp.ViewModel
                                 {
                                     if (PinVisibilityPolicySet)
                                     {
-                                        double distanceInMeters = 0;
-                                        if (IsHuntPossible)
+                                        //se non è stato preso dobiamo decidere
+                                        if (!received.IsPreso)
                                         {
-                                            distanceInMeters = GetDistance(MyUser.user.Position.Longitude, 
-                                                MyUser.user.Position.Latitude,
-                                                received.Position.Longitude, received.Position.Latitude);
-                                        }
-                                        p.IsVisible = await GameLogic.ShouldPinBeVisible(p.Label, received.IsCercatore, p.IsVisible,
-                                                                                         distanceInMeters, IsHuntPossible);
+                                            double distanceInMeters = 0;
+                                            if (IsHuntPossible)
+                                            {
+                                                distanceInMeters = GetDistance(MyUser.user.Position.Longitude,
+                                                    MyUser.user.Position.Latitude,
+                                                    received.Position.Longitude, received.Position.Latitude);
+                                            }
+                                            p.IsVisible = await GameLogic.ShouldPinBeVisible(p.Label, received.IsCercatore, p.IsVisible,
+                                                                                             distanceInMeters, IsHuntPossible);
+                                        } //altrimenti tutti possono vedere i presi
+                                        else p.IsVisible = true;
                                     }
 
                                     if(p.IsVisible)
@@ -553,12 +547,20 @@ namespace ProjApp.ViewModel
 
         private void OnPreso()
         {
-            Connessione.con.On("Preso", () =>
+            serverRegistrations.Add( Connessione.con.On("Preso", async () =>
             {
                 MyUser.user.isPreso = true;
+                MyUser.user.UserIcon = ReadResource(DEAD_ICON_FILENAME);
+                MyUser.SEND_POSITION = false;
+                //aspettiamo che un minimo passi dall'ultimo invio
+                await Task.Delay(1000);
+                
+                //ultimo invio a tutti con icona morto e isPreso = true
+                await MyUser.inviaPosCatturatoOneLastTime();
 
+                cancellationTokenSource.Cancel();
             }
-            );
+            ));
         }
 
 

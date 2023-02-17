@@ -27,6 +27,7 @@ namespace ProjApp.Gioco
         public bool isPreso = false;
 
         public bool IsCercatore { get; set; }
+        public bool IsPreso { get; set; }
         public string Nickname { get; set; }
         public string UserID { get; set; }
         [JsonIgnore]

@@ -61,6 +61,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Remove="Resources\Images\deathicon.png" />
 	  <MauiImage Remove="Resources\Images\green_pinicon.png" />
 	  <MauiImage Remove="Resources\Images\reddot.png" />
 	  <MauiImage Remove="Resources\Images\red_pinicon.png" />
@@ -77,6 +78,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Images\deathicon.png" />
 	  <EmbeddedResource Include="Resources\Images\green_pinicon.png" />
 	  <EmbeddedResource Include="Resources\Images\red_pinicon.png" />
 	  <EmbeddedResource Include="Resources\Images\yellow_pinicon.png" />

@@ -147,7 +147,6 @@ namespace ServerS
            var lobby = lobbies[lobbyId];
 
            await Clients.Client(lobby.UidToConnectedClient[uid]).SendAsync("Preso");
-           
         }
 
 

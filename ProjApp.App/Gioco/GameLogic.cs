@@ -4,8 +4,10 @@ using Mapsui.Projections;
 using Microsoft.AspNetCore.SignalR.Client;
 using NetTopologySuite.Geometries;
 using ProjApp.MapEl.GPS;
+using ProjApp.ViewModel;
 using Location = Microsoft.Maui.Devices.Sensors.Location;
 using Point = NetTopologySuite.Geometries.Point;
+using ProjApp;
 
 namespace ProjApp.Gioco
 {
@@ -19,6 +21,8 @@ namespace ProjApp.Gioco
         private const long TICS_PER_SECOND = 10000000;
 
         public const int DELAY_INIZIO_GIOCO = 180000;
+
+        private const double APERTURA_TENDINA_AVVISI = 325;
 
         public const long TIMEOUT_NOTIFICHE_AVVISO = TICS_PER_SECOND*120;
 
@@ -108,9 +112,7 @@ namespace ProjApp.Gioco
                 if ((DateTime.Now.Ticks - UidToLastTime_AvvisoNotifica[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
                 {
                     GameLogic.UidToLastTime_AvvisoNotifica[uid] = DateTime.Now.Ticks;
-
-
-
+                    await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, MainPage.AVVISO_NOTIFICA);
                 }
                 //e in ogni caso -> 
                 res = false;
@@ -122,6 +124,7 @@ namespace ProjApp.Gioco
                 if ((DateTime.Now.Ticks - UidToLastTime_AvvisoInseguimento[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
                 {
                     GameLogic.UidToLastTime_AvvisoInseguimento[uid] = DateTime.Now.Ticks;
+                    await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, MainPage.AVVISO_INSEGUIMENTO);
                 }
                 //e in ogni caso -> 
                 res = true;
@@ -143,6 +146,7 @@ namespace ProjApp.Gioco
                 {
                     //prendilo
                     await Connessione.con.InvokeAsync("GiocatorePreso", MyUser.currPartita.Cod_partita, uid);
+                    await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, MainPage.AVVISO_CATTURA);
                 }
             }
 
