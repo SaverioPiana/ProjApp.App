@@ -7,12 +7,7 @@
              Shell.TabBarIsVisible="False"
              
              Title="MainPage">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="bottomDrawer" TargetType="Border" BasedOn="{StaticResource bottomDrawer}"/>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
