@@ -128,73 +128,72 @@
                         Radius="40"
                         Opacity="0.55" />
             </Border.Shadow>
-            <ScrollView VerticalScrollBarVisibility="Never">
-                <Grid Padding="4">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="60"/>
-                        <RowDefinition Height="17"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.65*"/>
-                        <ColumnDefinition Width="0.35*"/>
-                    </Grid.ColumnDefinitions>
 
-                    <Label 
-                            Text="Informazioni Lobby:"
-                            FontSize="18"
-                            HorizontalOptions="Start"
-                            VerticalOptions="Center"
-                            Grid.Column="0"
-                            Grid.Row="0"
-                            Margin="15,0,0,0"
-                        />
-                    
-                    
+            <Grid Padding="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="17"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.65*"/>
+                    <ColumnDefinition Width="0.35*"/>
+                </Grid.ColumnDefinitions>
 
-                    <Border Padding="14" Grid.Column="1" Grid.Row="0" IsVisible="{Binding IsCodiceVisible}" StrokeThickness="2.5">
-
-                        <Button
-                                Margin="-5"
-                                Text="{Binding Codice}"
-                                FontSize="15"
-                                FontAttributes="Bold"
-                                VerticalOptions="Center"
-                                HeightRequest="50"
-                                WidthRequest="100"
-                                Command="{Binding CopyCodeCommand}"
-                                BackgroundColor="Transparent"
-                                Style="{StaticResource ButtonInfoLobby}"
-                            />
-                    </Border>
-
-                    <Label 
-                            Grid.Row="1" Grid.Column="1" 
-                            Text="Copiato!"
-                            FontSize="12"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center"
-                            IsVisible="{Binding HasCopied}"
+                <Label 
+                        Text="Informazioni Lobby:"
+                        FontSize="18"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Margin="15,0,0,0"
                         />
 
-                    <CollectionView ItemsSource="{Binding GiocatoriLobby}" SelectionMode="None">
-                         
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="classiGioco:User">
-                                <Border>
-                                    <Label 
+
+
+                <Border Padding="14" Grid.Column="1" Grid.Row="0" IsVisible="{Binding IsCodiceVisible}" StrokeThickness="2.5">
+
+                    <Button
+                            Margin="-5"
+                            Text="{Binding Codice}"
+                            FontSize="15"
+                            FontAttributes="Bold"
+                            VerticalOptions="Center"
+                            HeightRequest="50"
+                            WidthRequest="100"
+                            Command="{Binding CopyCodeCommand}"
+                            BackgroundColor="Transparent"
+                            Style="{StaticResource ButtonInfoLobby}"
+                        />
+                </Border>
+
+                <Label 
+                        Grid.Row="1" Grid.Column="1" 
+                        Text="Copiato!"
+                        FontSize="12"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        IsVisible="{Binding HasCopied}"
+                    />
+
+                <CollectionView ItemsSource="{Binding GiocatoriLobby}" SelectionMode="None" Grid.Row="2" Grid.ColumnSpan="2"
+                                HorizontalOptions="Center">
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="classiGioco:User">
+                            <Border Padding="15" WidthRequest="300" Margin="2">
+                                <Label 
                                         Text="{Binding Nickname}" 
                                         HorizontalOptions="Center"
                                         VerticalOptions="Center"/>
-                                </Border>
-                                
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                            </Border>
 
-                </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-            </ScrollView>
+            </Grid>
 
         </Border>
 

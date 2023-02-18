@@ -126,13 +126,13 @@ public partial class MainPage : ContentPage
                         case (AVVISO_MATCH_OVER):
                             if (MyUser.user.IsCercatore)
                             {
-                                IList<User> presi = m.Value.EventParameter.Item2;
+                                IList<string> presi = m.Value.EventParameter.Item2;
                                 string messaggioFinePartita = TEXTDETAIL_MATCHOVER + $"hai catturato {presi.Count} buddies!\n" +
                                 "Tra questi ci sono:\n";
                                 //per ogni giocatore che abbiamo preso lo
-                                foreach (var preso in presi)
+                                foreach (var presoNick in presi)
                                 {
-                                    messaggioFinePartita += "- " + preso.Nickname + "\n";
+                                    messaggioFinePartita += "- " + presoNick + "\n";
                                 }
                                 (BindingContext as MainPageViewModel).TendinaTextDetail = messaggioFinePartita;
                             }

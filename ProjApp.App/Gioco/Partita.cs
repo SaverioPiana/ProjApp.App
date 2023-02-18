@@ -6,6 +6,7 @@ using ProjApp.MapEl;
 using ProjApp.MapEl.GPS;
 using ProjApp.MapEl.Serializable;
 using ProjApp.ViewModel;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
@@ -25,10 +26,10 @@ namespace ProjApp.Gioco
         public Tana tana;
 
         private string meJson;
-        private IList<User> players;
+        private ObservableCollection<User> players;
 
 
-        public IList<User> Players
+        public ObservableCollection<User> Players
         {
             get
             {
@@ -53,7 +54,7 @@ namespace ProjApp.Gioco
         public Partita()
         {
             area = new();
-            Players = new List<User>();
+            Players = new ObservableCollection<User>();
             serverRegistrations.Add(
                 Connessione.con.On<string>("ServerError", (errormsg) => ServerError(errormsg))
             );
