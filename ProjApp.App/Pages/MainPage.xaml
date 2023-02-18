@@ -75,12 +75,12 @@
 
                         <Label
                             Grid.Column="0"
-                            Text="00:00"
+                            Text="{Binding CountDowntimer}"
                             FontSize="24"
                             VerticalTextAlignment="Center"
                             VerticalOptions="Center"
                             HorizontalOptions="Start"
-                            HeightRequest="35"
+                            HeightRequest="40"
                             Margin="20,10,0,0"
                         />
 

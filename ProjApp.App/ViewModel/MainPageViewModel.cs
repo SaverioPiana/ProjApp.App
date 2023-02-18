@@ -330,7 +330,11 @@ namespace ProjApp.ViewModel
                             await Task.Delay(2000);
                             PinVisibilityPolicySet = true;
                             await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_RUOLO);
+                            //avvio il countdown pre hunting
+                            StartCountdown((GameLogic.DELAY_INIZIO_GIOCO / 1000) / 60);
                             await Task.Delay(GameLogic.DELAY_INIZIO_GIOCO);
+                            //avvio il countdown della partita in minuti
+                            StartCountdown(10);
                             IsHuntPossible = true;
                         });
                     })
@@ -364,14 +368,20 @@ namespace ProjApp.ViewModel
                         inviaOggettiDiGioco();
 
                         //causa problemi l'await???
-                        await Task.Run(async () =>
+                        #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                        Task.Run(async () =>
                         {
                             await Task.Delay(2000);
                             PinVisibilityPolicySet = true;
                             await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_RUOLO);
+                            //avvio il countdown pre hunting
+                            StartCountdown(((double)GameLogic.DELAY_INIZIO_GIOCO / 1000) / 60);
                             await Task.Delay(GameLogic.DELAY_INIZIO_GIOCO);
+                            //avvio il countdown della partita in minuti
+                            StartCountdown(GameLogic.TEMPO_DI_GIOCO_MINUTI);
                             IsHuntPossible = true;
                         });
+                        #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     }
                     else tap_counter--;
                     break;
@@ -445,7 +455,7 @@ namespace ProjApp.ViewModel
                                                         MyUser.user.Position.Latitude,
                                                         received.Position.Longitude, received.Position.Latitude);
                                                 }
-                                                p.IsVisible = await GameLogic.ShouldPinBeVisible(p.Label, received.IsCercatore, p.IsVisible,
+                                                p.IsVisible = await GameLogic.ShouldPinBeVisible(received, p.IsVisible,
                                                                                                  distanceInMeters, IsHuntPossible);
                                             } //altrimenti tutti possono vedere i presi
                                               //e i presi possono vedere tutti
@@ -664,6 +674,9 @@ namespace ProjApp.ViewModel
         DateTime _startTime;
         CancellationTokenSource _cancellationTokenSourceForTimer;
         double _duration;
+        [ObservableProperty]
+        private string countDowntimer = "-Starting-";
+
         private void StartCountdown(double minuti)
         {
             _startTime = DateTime.Now;
@@ -679,10 +692,35 @@ namespace ProjApp.ViewModel
                 int secondsRemaining = (int)(_duration - elapsedTime.TotalMilliseconds) / 1000;
 
                 //metti secondsRemaining nella view
-
+                timerToString(secondsRemaining);
                 // More stuff to come ...
 
-                await Task.Delay(500);
+                await Task.Delay(1000);
+            }
+        }
+
+        private void timerToString(int secondsRemaining)
+        {
+            int minuti;
+            int secondi;
+
+            if(secondsRemaining/60 > 0)
+            {
+                minuti = secondsRemaining/60;
+
+                secondi = secondsRemaining%60;
+                if (secondi < 10)
+                {
+                    CountDowntimer = $"⏱  {minuti}:0{secondi}";
+                }
+                else
+                {
+                    CountDowntimer = $"⏱  {minuti}:{secondi}";
+                }
+            }
+            else
+            {
+                CountDowntimer = $"🚨  {secondsRemaining}";
             }
         }
 

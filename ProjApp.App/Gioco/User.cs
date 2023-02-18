@@ -26,6 +26,9 @@ namespace ProjApp.Gioco
         private bool isCercatore = false;
         private bool isPreso = false;
         private bool isSalvo = false;
+        private HashSet<string> nicknameGiocatoriPresi = new HashSet<string>();
+
+        public HashSet<string> NicknameGiocatoriPresi { get; set; }
         public bool IsCercatore { get; set; }
         public bool IsSalvo { get; set; }
         public bool IsPreso { get; set; }
