@@ -184,7 +184,7 @@ namespace ProjApp.ViewModel
                     IsCodiceVisible = false;
                     Codice = string.Empty;
                     HasCreated = false;
-                    GiocatoriLobby = new();
+                    MyUser.currPartita.Players = new();
                     GiocatoriLobby = MyUser.currPartita.Players;
                     break;
 
