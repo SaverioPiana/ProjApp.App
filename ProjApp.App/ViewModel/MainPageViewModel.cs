@@ -145,7 +145,11 @@ namespace ProjApp.ViewModel
             ////forse non va fatto??
             ///////////////////////
 
+            MyUser.currPartita.DisposeServerRegistrations();
+
             Task.Delay(50).Wait();
+
+            MyUser.currPartita = new();
 
             tap_counter = 0;
             WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(LOBBY_HAS_BEEN_DELETED, NO_PAR));
@@ -506,7 +510,7 @@ namespace ProjApp.ViewModel
 
                 if (!cancellationTokenSource.IsCancellationRequested) cancellationTokenSource.Cancel();
 
-                if (serverRegistrations != null && serverRegistrations.Count > 0)
+                if(serverRegistrations != null && serverRegistrations.Count > 0 ) 
                 {
                     foreach (var subscription in serverRegistrations)
                     {

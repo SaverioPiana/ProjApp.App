@@ -67,13 +67,8 @@ namespace ProjApp.Gioco
             );
 
             meJson = MyUser.CreateJsonUser(MyUser.user);
-        }
 
-        public void ResetPartita()
-        {
-            area = new();
-            tana = new();
-            Players.Clear();
+            WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(UPDATE_LIST, NO_PAR));
         }
 
         public void CreateLobby(string jsonUser)
@@ -92,6 +87,7 @@ namespace ProjApp.Gioco
             //joino la lobby con quell'id
             Cod_partita = lid;
             MyUser.AddToCurrPartita(MyUser.user);
+            StartPageViewModel.GiocatoriLobbyModifiyng.Add(MyUser.user);
             Task.Run(IsGameStarted);
             Task.Run(OnDeletedLobby);
             Task.Run(RemoveUserFromListAndPins);
@@ -110,6 +106,7 @@ namespace ProjApp.Gioco
                     if (p.UserID.Equals(userId))
                     {
                         MyUser.currPartita.Players.Remove(p);
+                        StartPageViewModel.GiocatoriLobbyModifiyng.Remove(p);
                         MainPageViewModel.PreMatchPins.Remove(p.UserPin);
                         break;
                     }
@@ -147,6 +144,7 @@ namespace ProjApp.Gioco
             };
 
             MyUser.AddToCurrPartita(joineduser);
+            StartPageViewModel.GiocatoriLobbyModifiyng.Add(joineduser);
 
             //mando il mio user al client appena joinato (clientId) se non sono l'ultimo joinato
             if (hasToSend)
@@ -191,19 +189,18 @@ namespace ProjApp.Gioco
             });
         }
 
-        private void LobbyParamReset()
+        public static void LobbyParamReset()
         {
-            area = new();
-            tana = new();
             MyUser.user.IsPreso = false;
             MyUser.user.IsCercatore = false;
             MyUser.isAdmin = false;
             MyUser.SEND_POSITION = false;
             //RIMUOVO I PIN DAI PIN PREPARTITA
-            GameLogic.UidToLastTime_AvvisoNotifica.Clear();
-            GameLogic.UidToLastTime_AvvisoInseguimento.Clear();
-            MainPageViewModel.PreMatchPins.Clear();
-            MyUser.currPartita.Players.Clear();
+            GameLogic.UidToLastTime_AvvisoNotifica?.Clear();
+            GameLogic.UidToLastTime_AvvisoInseguimento?.Clear();
+            MainPageViewModel.PreMatchPins?.Clear();
+            MyUser.currPartita.Players?.Clear();
+            GiocatoriLobbyModifiyng.Clear();
         }
 
         public void StartGame()

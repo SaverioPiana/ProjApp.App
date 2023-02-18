@@ -24,6 +24,7 @@ namespace ProjApp.ViewModel
         public const string LOBBY_HAS_BEEN_DELETED = "lobbyHasBeenDeleted";
         public const string NICK_CHANGED = "nickChanged";
         public const string NAVIGATE_TO_MAIN_PAGE = "navigateToMainPage";
+        public const string UPDATE_LIST = "UpdatePlayersList";
         //no parametri messaggio
         public const string NO_PAR = "";
 
@@ -49,7 +50,8 @@ namespace ProjApp.ViewModel
         [ObservableProperty]
         string codice;
 
-        public ObservableCollection<User> GiocatoriLobby { get; set; } = MyUser.currPartita.Players;
+        public static ObservableCollection<User> GiocatoriLobbyModifiyng = new();
+        public ObservableCollection<User> GiocatoriLobby { get; set; } = GiocatoriLobbyModifiyng;
 
         [ObservableProperty]
         bool hasCopied = false;
@@ -175,7 +177,6 @@ namespace ProjApp.ViewModel
                     Codice = uiEvent.EventParameter;
                     CanJoin = false;
                     IsCodiceVisible = true;
-                    GiocatoriLobby = MyUser.currPartita.Players;
                     await MainThread.InvokeOnMainThreadAsync(WaitToNavigate);
                     break;
 
@@ -184,7 +185,7 @@ namespace ProjApp.ViewModel
                     IsCodiceVisible = false;
                     Codice = string.Empty;
                     HasCreated = false;
-                    GiocatoriLobby = MyUser.currPartita.Players;
+                    GiocatoriLobbyModifiyng.Clear();
                     break;
 
                 case (NICK_CHANGED):
