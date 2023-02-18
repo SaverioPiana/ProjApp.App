@@ -41,7 +41,7 @@ namespace ProjApp.Gioco
         public const string TEXTDETAIL_INSEGUIMENTO_SEEKER = "SEI VICINO, CATTURALO! 🏃";
         public const string TEXTDETAIL_CATTURA_SEEKER = "CATTURA COMPLETATA! 😎";
         public const string TEXTDETAIL_TANATO_SEEKER = "Sei un hacker? Non potresti tanarti da cacciatore! 👨‍💻";
-        public const string TEXTDETAIL_INIZIO_SEEKER = "La partita è cominciata, cha la caccia abbia inizio!";
+        public const string TEXTDETAIL_INIZIO_SEEKER = "La partita è cominciata, che la caccia abbia inizio!";
 
 
         //detail text hiders

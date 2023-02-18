@@ -49,7 +49,7 @@ namespace ProjApp.ViewModel
         [ObservableProperty]
         string codice;
 
-        public ObservableCollection<User> GiocatoriLobby { get; set; } = MyUser.currPartita.Players;
+        public ObservableCollection<User> GiocatoriLobby { get; set; } = new();
 
         [ObservableProperty]
         bool hasCopied = false;
@@ -81,6 +81,7 @@ namespace ProjApp.ViewModel
             IsCodiceVisible = true;
             HasCreated= true;
             CanJoin = false;
+            GiocatoriLobby = MyUser.currPartita.Players;
         }
 
         [RelayCommand]
@@ -97,6 +98,7 @@ namespace ProjApp.ViewModel
         {
             if(HasCreated)
             {
+                GiocatoriLobby = new();
                 MyUser.currPartita.DeleteLobby();
                 HasCreated= false;
                 CanJoin = true;
@@ -124,7 +126,6 @@ namespace ProjApp.ViewModel
                 //faccio inserire il codice all'utente
                 MyUser.currPartita.IfCheckThenJoin(entry.Text.ToUpper(), jsonUser);
                 entry.Text = string.Empty;
-                
             }
         }
 
@@ -176,6 +177,7 @@ namespace ProjApp.ViewModel
                     Codice = uiEvent.EventParameter;
                     CanJoin = false;
                     IsCodiceVisible = true;
+                    GiocatoriLobby = MyUser.currPartita.Players;
                     await MainThread.InvokeOnMainThreadAsync(WaitToNavigate);
                     break;
 
@@ -184,8 +186,7 @@ namespace ProjApp.ViewModel
                     IsCodiceVisible = false;
                     Codice = string.Empty;
                     HasCreated = false;
-                    MyUser.currPartita.Players = new();
-                    GiocatoriLobby = MyUser.currPartita.Players;
+                    GiocatoriLobby = new();
                     break;
 
                 case (NICK_CHANGED):
