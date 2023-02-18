@@ -138,9 +138,9 @@
                             HeightRequest="30"
                             VerticalOptions="Start"
                             HorizontalOptions="Start"
-                        />
-                            <ScrollView HorizontalScrollBarVisibility="Never" VerticalScrollBarVisibility="Never">
-                                <Label Grid.Row="1"
+                                />
+                            <ScrollView Grid.Row="1" HorizontalScrollBarVisibility="Never" VerticalScrollBarVisibility="Never">
+                                <Label 
                                 Text="{Binding TendinaTextDetail}"
                                 FontSize="12"
                                 Margin="10,0,0,0"

@@ -184,6 +184,7 @@ namespace ProjApp.ViewModel
                     IsCodiceVisible = false;
                     Codice = string.Empty;
                     HasCreated = false;
+                    GiocatoriLobby = MyUser.currPartita.Players;
                     break;
 
                 case (NICK_CHANGED):

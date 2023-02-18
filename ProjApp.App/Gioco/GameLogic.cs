@@ -22,7 +22,7 @@ namespace ProjApp.Gioco
 
         private const long TICS_PER_SECOND = 10000000;
 
-        public const int DELAY_INIZIO_GIOCO = 3000;
+        public const int DELAY_INIZIO_GIOCO = 90000;
 
         public const int TEMPO_DI_GIOCO_MINUTI = 10;
 
