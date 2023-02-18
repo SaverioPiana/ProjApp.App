@@ -27,6 +27,8 @@ public partial class MainPage : ContentPage
 
     Brush originalStroke;
 
+    private bool TendinaAvvisoBehavior { get; set; } = false;
+
     public MainPage(MainPageViewModel viewModel)
     {
         InitializeComponent();
@@ -38,6 +40,7 @@ public partial class MainPage : ContentPage
         originalStroke = InfoPartBorder.Stroke;
         WeakReferenceMessenger.Default.Register<OpenAvvisoMessage>(this, async (r, m) =>
         {
+            TendinaAvvisoBehavior = true;
             try
             {
                 //cambio colore
@@ -130,6 +133,7 @@ public partial class MainPage : ContentPage
             catch (TaskCanceledException ex)
             { //BELLO QUI PALESE ESPLODE TUTTO RIP
             }
+            TendinaAvvisoBehavior = false;
         });
     }
 
@@ -203,19 +207,26 @@ public partial class MainPage : ContentPage
     {
         if (e.StatusType == GestureStatus.Running)
         {
-            
             lastPanY = e.TotalY;
             Debug.WriteLine($"Running: {e.TotalY}");
             if (e.TotalY > 0)
             {
-                BottomDrawer.TranslationY = openY + e.TotalY;
+                BottomDrawer.TranslationY = TendinaAvvisoBehavior ? 
+                    APERTURA_TENDINA_AVVISI + e.TotalY : openY + e.TotalY;
             }
 
         }
         else if (e.StatusType == GestureStatus.Completed)
         {
+            double minimunForClose = 70;
+            if (TendinaAvvisoBehavior)
+            {
+                minimunForClose = 30;
+                TendinaAvvisoBehavior = false; 
+            }
+
             //Debug.WriteLine($"Completed: {e.TotalY}");
-            if (lastPanY < 70)
+            if (lastPanY < minimunForClose)
             {
                 await OpenDrawer();
             }
