@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using ProjApp.Messagges;
 using System.Runtime.ConstrainedExecution;
 using ProjApp.Gioco;
+using System.Collections.ObjectModel;
 
 namespace ProjApp.ViewModel
 {
@@ -16,6 +17,7 @@ namespace ProjApp.ViewModel
         //poi basterà che ogni client in partita attraverso la funzione aggiungiGiocatoriAllaMappa
         //aggiorni i dati di posizione dei pin (gia lo fa)
         private string jsonUser;
+
 
         //messaggi
         public const string USER_HAS_JOINED_EVENT = "userHasJoinedEvent";
@@ -46,6 +48,9 @@ namespace ProjApp.ViewModel
         string nick;
         [ObservableProperty]
         string codice;
+        
+        public ObservableCollection<User> GiocatoriLobby = (ObservableCollection<User>)MyUser.currPartita.Players;
+
         [ObservableProperty]
         bool hasCopied = false;
         [ObservableProperty]
