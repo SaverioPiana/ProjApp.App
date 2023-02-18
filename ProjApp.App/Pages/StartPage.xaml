@@ -4,29 +4,24 @@
              x:Class="ProjApp.StartPage"
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:StartPageViewModel"
-             Title="StartPage"
-             Shell.TabBarIsVisible="{Binding IsTabBarVisible}">
+             Title="StartPage">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
+    
             <!--Schermata di lobby-->
-            <Grid Grid.RowSpan="2" RowSpacing="10" IsVisible="{Binding IsLobbyPageVisible}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" x:Name="Row0"></RowDefinition>
-                <RowDefinition Height="Auto" x:Name="Row1"></RowDefinition>
-                <RowDefinition Height="Auto" x:Name="Row2"></RowDefinition>
-                <RowDefinition Height="Auto" x:Name="Row3"></RowDefinition>
-                <RowDefinition Height="Auto" x:Name="Row4"></RowDefinition>
-                <RowDefinition Height="*" x:Name="LobbyBorderRow"></RowDefinition>
-                <RowDefinition Height="50"></RowDefinition>
-                <RowDefinition Height="50"></RowDefinition>
-                <RowDefinition Height="0"></RowDefinition>
-            </Grid.RowDefinitions>
+    <Grid RowSpacing="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" x:Name="Row0"></RowDefinition>
+            <RowDefinition Height="Auto" x:Name="Row1"></RowDefinition>
+            <RowDefinition Height="Auto" x:Name="Row2"></RowDefinition>
+            <RowDefinition Height="Auto" x:Name="Row3"></RowDefinition>
+            <RowDefinition Height="Auto" x:Name="Row4"></RowDefinition>
+            <RowDefinition Height="*" x:Name="LobbyBorderRow"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="0"></RowDefinition>
+        </Grid.RowDefinitions>
 
-            <Rectangle
+        <Rectangle
                 Grid.Row="0"
                 Margin="0"
                 Style="{StaticResource TopRectangle}"
@@ -36,7 +31,7 @@
                 VerticalOptions="Start"
              />
 
-            <Label
+        <Label
                 Grid.Row="1"
                 Text="{ Binding Nick, StringFormat='Ciao, {0}'}"
                 FontAttributes="Bold"
@@ -44,8 +39,8 @@
                 Margin="15,20,0,0"
                 IsVisible="{Binding CanJoin}"
             />
-        
-            <Label
+
+        <Label
                 Grid.Row="2"
                 Text="Per giocare hai bisogno di una lobby"
                 FontSize="20"
@@ -53,13 +48,13 @@
                 IsVisible="{Binding CanJoin}"
             />
 
-            <Grid Grid.Row="3" x:Name="CreateLobby" IsVisible="{Binding CanJoin}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="7*"></ColumnDefinition>
-                    <ColumnDefinition Width="4*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
+        <Grid Grid.Row="3" x:Name="CreateLobby" IsVisible="{Binding CanJoin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*"></ColumnDefinition>
+                <ColumnDefinition Width="4*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-                <Label 
+            <Label 
                     Grid.Column="0"
                     Text="Per creare una lobby:"
                     Margin="15"
@@ -69,9 +64,9 @@
                     IsVisible="{Binding CanJoin}"
                 />
 
-            
-                <!--Clicked="OnClickedCreaPartitaOrJoin" LHO LEVATO PERCHE ANCORA NON FUNZIONA, GUARDA STARTPAGE.CS-->
-                <Button
+
+            <!--Clicked="OnClickedCreaPartitaOrJoin" LHO LEVATO PERCHE ANCORA NON FUNZIONA, GUARDA STARTPAGE.CS-->
+            <Button
                     Grid.Column="1"
                     Margin="35"
                     Command="{Binding CreateLobbyCommand}"
@@ -81,23 +76,23 @@
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
                     IsVisible="{Binding CanJoin}">
-                
-                    <Button.Shadow>
-                        <Shadow Brush="Black"
+
+                <Button.Shadow>
+                    <Shadow Brush="Black"
                         Offset="0,0"
                         Radius="50"
                         Opacity="0.7" />
-                    </Button.Shadow>
-                </Button>
-            </Grid>
+                </Button.Shadow>
+            </Button>
+        </Grid>
 
-            <Grid  Grid.Row="4" x:Name="JoinStackLayout" IsVisible="{Binding CanJoin}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="7*"></ColumnDefinition>
-                    <ColumnDefinition Width="4*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
+        <Grid  Grid.Row="4" x:Name="JoinStackLayout" IsVisible="{Binding CanJoin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*"></ColumnDefinition>
+                <ColumnDefinition Width="4*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-                <Label 
+            <Label 
                     Grid.Column="0"
                     Text="Per unirti:"
                     Margin="15"
@@ -106,7 +101,7 @@
                     HorizontalOptions="Start"
                 />
 
-                <Entry
+            <Entry
                     Grid.Column="1"
                     x:Name="CodiceLobby"
                     Placeholder=" CODICE "
@@ -123,28 +118,28 @@
                     ReturnType="Done"
                 />
 
-            </Grid>
+        </Grid>
 
-            <Border  x:Name="LobbyBorder"  Grid.Row="5" Padding="5" Margin="5"  StrokeThickness="2.5">
-                <Border.Shadow>
-                    <Shadow Brush="Black"
+        <Border  x:Name="LobbyBorder"  Grid.Row="5" Padding="5" Margin="5"  StrokeThickness="2.5">
+            <Border.Shadow>
+                <Shadow Brush="Black"
                         Offset="0,0"
                         Radius="40"
                         Opacity="0.55" />
-                </Border.Shadow>
-                <ScrollView VerticalScrollBarVisibility="Never">
-                    <Grid Padding="4">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="60"/>
-                            <RowDefinition Height="17"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.65*"/>
-                            <ColumnDefinition Width="0.35*"/>
-                        </Grid.ColumnDefinitions>
+            </Border.Shadow>
+            <ScrollView VerticalScrollBarVisibility="Never">
+                <Grid Padding="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="17"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.65*"/>
+                        <ColumnDefinition Width="0.35*"/>
+                    </Grid.ColumnDefinitions>
 
-                        <Label 
+                    <Label 
                             Text="Informazioni Lobby:"
                             FontSize="18"
                             HorizontalOptions="Start"
@@ -154,9 +149,9 @@
                             Margin="15,0,0,0"
                         />
 
-                        <Border Padding="14" Grid.Column="1" Grid.Row="0" IsVisible="{Binding IsCodiceVisible}" StrokeThickness="2.5">
+                    <Border Padding="14" Grid.Column="1" Grid.Row="0" IsVisible="{Binding IsCodiceVisible}" StrokeThickness="2.5">
 
-                            <Button
+                        <Button
                                 Margin="-5"
                                 Text="{Binding Codice}"
                                 FontSize="15"
@@ -168,9 +163,9 @@
                                 BackgroundColor="Transparent"
                                 Style="{StaticResource ButtonInfoLobby}"
                             />
-                        </Border>
+                    </Border>
 
-                        <Label 
+                    <Label 
                             Grid.Row="1" Grid.Column="1" 
                             Text="Copiato!"
                             FontSize="12"
@@ -179,13 +174,13 @@
                             IsVisible="{Binding HasCopied}"
                         />
 
-                    </Grid>
+                </Grid>
 
-                </ScrollView>
+            </ScrollView>
 
-            </Border>
+        </Border>
 
-            <Button
+        <Button
                 Grid.Row="6"
                 Text="Avvia partita!"
                 HeightRequest="50"
@@ -198,7 +193,7 @@
                 IsVisible="{Binding HasCreated}"
             />
 
-            <Button
+        <Button
                 Grid.Row="7"
                 Text="Lascia lobby"
                 BackgroundColor="{StaticResource AllertButton}"
@@ -212,7 +207,7 @@
                 IsVisible="{Binding HasCreated}"
             />
 
-            <Button
+        <Button
                 Grid.Row="7"
                 Text="Lascia lobby"
                 BackgroundColor="{StaticResource AllertButton}"
@@ -225,95 +220,5 @@
                 IsVisible="{Binding HasJoined}"
             />
 
-        </Grid>
-        
-        <!--Schermata fine partita (va messa qui perchè MAUI si bugga :(  )-->
-        <!--SCHERMATA FINE PARTITA-->
-
-        <Grid Grid.RowSpan="2" IsVisible="{Binding IsPartitaFinita}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-
-            <Rectangle
-                Grid.Row="0"
-                Margin="0"
-                WidthRequest="400"
-                HeightRequest="25"
-                Style="{StaticResource TopRectangle}"
-            />
-
-            <Image
-                Grid.Row="1"
-                Source="black_pin_icon"
-                HorizontalOptions="Center"
-                WidthRequest="250"
-                HeightRequest="250"
-                Margin="0,20,0,0"
-            />
-
-            <Label
-                Grid.Row="2"
-                Text="PARTITA FINITA!"
-                FontSize="34"
-                FontFamily="NewRodin"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                Margin="0,25,0,0"
-            />
-            
-            <Grid Grid.Row="3" Margin="0,20,0,0" HeightRequest="50">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <Label 
-                    Grid.Column="0"
-                    Text="Hanno vinto i: "
-                    FontSize="24"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Start"
-                    Margin="20,0,0,0"
-                />
-
-                <Label 
-                    Grid.Column="1"
-                    Text="SQUADRA"
-                    FontSize="20"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Start"
-                />
-            </Grid>
-
-            <Button
-                Grid.Row="4"
-                Text="Torna alla HOME"
-                Command="{Binding ReturnToLobbyUICommand}"
-                FontAttributes="Bold"
-                FontSize="24"
-                BackgroundColor="{StaticResource AllertButtonsLight}"
-                HeightRequest="70"
-                WidthRequest="250"
-                VerticalOptions="Center"
-                HorizontalOptions="Center"
-                Margin="15">
-
-                <Button.Shadow>
-                    <Shadow Brush="Black"
-                    Offset="0,0"
-                    Radius="50"
-                    Opacity="0.7"/>
-                </Button.Shadow>
-            </Button>
-
-
-        </Grid>
-
     </Grid>
-
 </ContentPage>

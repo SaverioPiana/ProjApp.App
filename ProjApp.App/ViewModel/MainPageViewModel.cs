@@ -132,8 +132,8 @@ namespace ProjApp.ViewModel
             HasLeft = true;
 
             //per myposalways
-            if(!cancellationTokenSource.IsCancellationRequested) cancellationTokenSource.Cancel();
-            
+            if (!cancellationTokenSource.IsCancellationRequested) cancellationTokenSource.Cancel();
+
             MyUser.currPartita.LeaveLobby();
 
             Task.Delay(10).Wait();
@@ -160,8 +160,18 @@ namespace ProjApp.ViewModel
 
 
             tap_counter = 0;
-            WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(eventType, NO_PAR));
-            await AppShell.Current.GoToAsync("..", false);
+            WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(LOBBY_HAS_BEEN_DELETED, NO_PAR));
+
+            switch (eventType) {
+                case LOBBY_HAS_BEEN_DELETED:
+                    await AppShell.Current.GoToAsync("..", false);
+                    break;
+
+                case MATCH_OVER:
+                    await AppShell.Current.GoToAsync(nameof(EndPage), true);
+                    break;
+            }
+            
         }
 
         //forse va messa una condizione in modo tale che non runni sempre all avvio, tipo salvarci un bool su un file boh
@@ -504,7 +514,7 @@ namespace ProjApp.ViewModel
 
                 await Task.Delay(5000);
 
-                await AbbandonaPartita(MATCH_IS_OVER);
+                await AbbandonaPartita(MATCH_OVER);
             }
         }
         private double GetDistance(double longitude, double latitude, double otherLongitude, double otherLatitude)

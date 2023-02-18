@@ -21,7 +21,6 @@ namespace ProjApp.ViewModel
         public const string LOBBY_HAS_BEEN_DELETED = "lobbyHasBeenDeleted";
         public const string NICK_CHANGED = "nickChanged";
         public const string NAVIGATE_TO_MAIN_PAGE = "navigateToMainPage";
-        public const string MATCH_IS_OVER = "MatchIsOver";
         //no parametri messaggio
         public const string NO_PAR = "";
 
@@ -58,12 +57,6 @@ namespace ProjApp.ViewModel
         bool canJoin = true;
         [ObservableProperty]
         bool entryEnabled = true;
-        [ObservableProperty, NotifyPropertyChangedFor(nameof(IsLobbyPageVisible))]
-        bool isPartitaFinita = false;
-        [ObservableProperty]
-        bool isTabBarVisible = true;
-
-        public bool IsLobbyPageVisible => !IsPartitaFinita;
 
         public bool HasJoined => (!HasCreated && !CanJoin);
 
@@ -159,19 +152,6 @@ namespace ProjApp.ViewModel
         
 
 
-        ////////////////////////  MATCH IS OVER   //////////////////////////////
-
-        [RelayCommand]
-        private async Task ReturnToLobbyUI()
-        {
-            await DisplayCorrectUI(new(LOBBY_HAS_BEEN_DELETED, NO_PAR));
-            IsPartitaFinita = false;
-            IsTabBarVisible= true;
-        }
-
-        ////////////////////////////////////////////////////////////////////////
-
-
         ////////////////////////////////////////////////////////////////////////
         //to know whenever we need to change the UI
         public class UIChangeAlertStartPage : ValueChangedMessage<UI_Event<string>>
@@ -200,10 +180,6 @@ namespace ProjApp.ViewModel
                     break;
                 case (NICK_CHANGED):
                     Nick = uiEvent.EventParameter;
-                    break;
-                case (MATCH_IS_OVER):
-                    IsPartitaFinita = true;
-                    IsTabBarVisible = false;
                     break;
                 case (NAVIGATE_TO_MAIN_PAGE):
                     if(!HasToNavigate)

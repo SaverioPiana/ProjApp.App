@@ -1,9 +1,12 @@
-namespace ProjApp.Pages;
+using ProjApp.ViewModel;
+
+namespace ProjApp;
 
 public partial class EndPage : ContentPage
 {
-	public EndPage()
+	public EndPage(EndPageViewModel vm)
 	{
 		InitializeComponent();
+		BindingContext = vm;
 	}
 }

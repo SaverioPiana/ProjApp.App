@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.Input;
 
 namespace ProjApp.ViewModel
 {
-    internal class EndPageViewModel
+    public partial class EndPageViewModel
     {
+
+        [RelayCommand]
+        private async Task ReturnToStartPage()
+        {
+            await AppShell.Current.GoToAsync("../..", false);
+        }
+
     }
 }

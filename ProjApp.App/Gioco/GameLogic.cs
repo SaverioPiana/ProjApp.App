@@ -51,6 +51,8 @@ namespace ProjApp.Gioco
         public const string AVVISO_INSEGUIMENTO = "EventoInseguimento";
         public const string AVVISO_CATTURA = "EventoCattura";
 
+        public const string MATCH_OVER = "MatchIsOver";
+
         //mappa per ogni giocatore quando e' stato inviato l'ultimo avviso -> da clearare per ogni start game
         public static Dictionary<string, long> UidToLastTime_AvvisoNotifica = new();
         public static Dictionary<string, long> UidToLastTime_AvvisoInseguimento = new();
