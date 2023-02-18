@@ -647,6 +647,7 @@ namespace ProjApp.ViewModel
                 }
                 case (EVENTO_TANATO):
                 {
+                    await ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_TANATO);
                     numGiocatoriTanati++;
                     break;
                 }

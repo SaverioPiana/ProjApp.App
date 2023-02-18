@@ -38,18 +38,21 @@ namespace ProjApp.Gioco
         public const string TEXTDETAIL_NOTIFICA_SEEKER = "Qualcuno si nasconde nei dintorni 👀";
         public const string TEXTDETAIL_INSEGUIMENTO_SEEKER = "SEI VICINO, CATTURALO! 🏃";
         public const string TEXTDETAIL_CATTURA_SEEKER = "CATTURA COMPLETATA! 😎";
+        public const string TEXTDETAIL_TANATO_SEEKER = "Sei un hacker? Non potresti tanarti da cacciatore! 👨‍💻";
 
         //detail text hiders
         public const string TEXTDETAIL_RUOLO_HIDER = "Nasconditi dai cacciatori! 😶‍🌫";
         public const string TEXTDETAIL_NOTIFICA_HIDER = "Un cacciatore è nei paraggi 👀";
         public const string TEXTDETAIL_INSEGUIMENTO_HIDER = "SCAPPA DAL CACCIATORE! 😱";
         public const string TEXTDETAIL_CATTURA_HIDER = "SEI STATO CATTURATO! 💀";
+        public const string TEXTDETAIL_TANATO_HIDER = "Ti sei tanato, HAI VINTO! 🥳";
 
         //avvisi
         public const string AVVISO_RUOLO = "EventoRuolo";
         public const string AVVISO_NOTIFICA = "EventoNotifica";
         public const string AVVISO_INSEGUIMENTO = "EventoInseguimento";
         public const string AVVISO_CATTURA = "EventoCattura";
+        public const string AVVISO_TANATO = "EventoTanato";
 
         public const string MATCH_OVER = "MatchIsOver";
 
