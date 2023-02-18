@@ -29,7 +29,7 @@ To Do:
 - DARE UN NOME ALL'APP
 
 - creare un icona e spash per lapp
--------------------------------------- ^COSE FATTE SOPRA^
+- ------------------------------------- ^COSE FATTE SOPRA^
 
 Miglioramenti/Problemini:
 
