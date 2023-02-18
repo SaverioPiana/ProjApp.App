@@ -2,108 +2,240 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProjApp.StartPage"
+             xmlns:classiGioco="clr-namespace:ProjApp.Gioco"
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:StartPageViewModel"
-
              Title="StartPage">
 
-    <StackLayout Orientation="Vertical" Spacing="10" >
+    
+            <!--Schermata di lobby-->
+    <Grid RowSpacing="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" x:Name="Row0"></RowDefinition>
+            <RowDefinition Height="Auto" x:Name="Row1"></RowDefinition>
+            <RowDefinition Height="Auto" x:Name="Row2"></RowDefinition>
+            <RowDefinition Height="Auto" x:Name="Row3"></RowDefinition>
+            <RowDefinition Height="Auto" x:Name="Row4"></RowDefinition>
+            <RowDefinition Height="*" x:Name="LobbyBorderRow"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="0"></RowDefinition>
+        </Grid.RowDefinitions>
 
         <Rectangle
-            Margin="0"
-            Fill="#9051F6"
-            WidthRequest="400"
-            HeightRequest="25"
-            HorizontalOptions="Start"
-            
-            />
-
-        <Label
-            Text="Ciao, USERNAME"
-            FontAttributes="Bold"
-            FontSize="24"
-            Margin="10"
-            />
-        <Label
-            Text="Per giocare avrai bisogno di una lobby, e amici :) "
-            FontSize="20"
-            Margin="10"
-            />
-
-        <StackLayout Orientation="Horizontal" Spacing="130">
-
-
-            <Label 
-                Text="Per creare una lobby:   "
-                Margin="10"
-                FontSize="20"
-                VerticalOptions="Center"
+                Grid.Row="0"
+                Margin="0"
+                Style="{StaticResource TopRectangle}"
+                WidthRequest="400"
+                HeightRequest="25"
                 HorizontalOptions="Start"
+                VerticalOptions="Start"
              />
 
+        <Label
+                Grid.Row="1"
+                Text="{ Binding Nick, StringFormat='Ciao, {0}'}"
+                FontAttributes="Bold"
+                FontSize="24"
+                Margin="15,20,0,0"
+                IsVisible="{Binding CanJoin}"
+            />
+
+        <Label
+                Grid.Row="2"
+                Text="Per giocare hai bisogno di una lobby"
+                FontSize="20"
+                Margin="15"
+                IsVisible="{Binding CanJoin}"
+            />
+
+        <Grid Grid.Row="3" x:Name="CreateLobby" IsVisible="{Binding CanJoin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*"></ColumnDefinition>
+                <ColumnDefinition Width="4*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Label 
+                    Grid.Column="0"
+                    Text="Per creare una lobby:"
+                    Margin="15"
+                    FontSize="20"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                    IsVisible="{Binding CanJoin}"
+                />
+
+
+            <!--Clicked="OnClickedCreaPartitaOrJoin" LHO LEVATO PERCHE ANCORA NON FUNZIONA, GUARDA STARTPAGE.CS-->
             <Button
-                ImageSource="plus_icon.png"
-                HeightRequest="40"
-                WidthRequest="40"
-                VerticalOptions="End"
-                BackgroundColor="Transparent"
-               />
+                    Grid.Column="1"
+                    Margin="35"
+                    Command="{Binding CreateLobbyCommand}"
+                    ImageSource="plus_icon.png"
+                    HeightRequest="36"
+                    WidthRequest="36"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding CanJoin}">
 
-        </StackLayout>
+                <Button.Shadow>
+                    <Shadow Brush="Black"
+                        Offset="0,0"
+                        Radius="50"
+                        Opacity="0.7" />
+                </Button.Shadow>
+            </Button>
+        </Grid>
 
-        <StackLayout Orientation="Horizontal" Spacing="7">
-
+        <Grid  Grid.Row="4" x:Name="JoinStackLayout" IsVisible="{Binding CanJoin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*"></ColumnDefinition>
+                <ColumnDefinition Width="4*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
             <Label 
-                Text="Per unirti ad una lobby con codice:   "
-                Margin="10"
-                FontSize="20"
-                VerticalOptions="Center"
-                HorizontalOptions="Start"
-             />
+                    Grid.Column="0"
+                    Text="Per unirti:"
+                    Margin="15"
+                    FontSize="20"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                />
 
             <Entry
-                x:Name="CodiceLobby"
-                Placeholder="CODICE"
-                TextColor="Black"
-                Keyboard="Numeric"
-                FontAttributes="Bold"
-                Margin="20"
-                HorizontalOptions="Center"
-             />
+                    Grid.Column="1"
+                    x:Name="CodiceLobby"
+                    Placeholder=" CODICE "
+                    FontSize="20"
+                    ReturnCommand="{Binding JoinLobbyCommand}"
+                    ReturnCommandParameter="{x:Reference CodiceLobby}"
+                    FontAttributes="Bold"
+                    IsTextPredictionEnabled="False"
+                    IsSpellCheckEnabled="False"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    IsEnabled="{Binding EntryEnabled}"
+                    Keyboard="Text"
+                    ReturnType="Done"
+                />
 
-        </StackLayout>
+        </Grid>
 
-        <Border  Padding="5" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Margin="20"
-               >
-            <StackLayout Orientation="Vertical" Spacing="15">
+        <Border  x:Name="LobbyBorder"  Grid.Row="5" Padding="5" Margin="5"  StrokeThickness="2.5">
+            <Border.Shadow>
+                <Shadow Brush="Black"
+                        Offset="0,0"
+                        Radius="40"
+                        Opacity="0.55" />
+            </Border.Shadow>
+
+            <Grid Padding="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="17"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.65*"/>
+                    <ColumnDefinition Width="0.35*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label 
+                        Text="Informazioni Lobby:"
+                        FontSize="18"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Margin="15,0,0,0"
+                        />
 
 
-                <Label Text="  Informazioni Lobby:"
-                       FontSize="20"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Start"/>
 
+                <Border Padding="14" Grid.Column="1" Grid.Row="0" IsVisible="{Binding IsCodiceVisible}" StrokeThickness="2.5">
 
+                    <Button
+                            Margin="-5"
+                            Text="{Binding Codice}"
+                            FontSize="15"
+                            FontAttributes="Bold"
+                            VerticalOptions="Center"
+                            HeightRequest="50"
+                            WidthRequest="100"
+                            Command="{Binding CopyCodeCommand}"
+                            BackgroundColor="Transparent"
+                            Style="{StaticResource ButtonInfoLobby}"
+                        />
+                </Border>
 
+                <Label 
+                        Grid.Row="1" Grid.Column="1" 
+                        Text="Copiato!"
+                        FontSize="12"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        IsVisible="{Binding HasCopied}"
+                    />
 
+                <CollectionView ItemsSource="{Binding GiocatoriLobby}" SelectionMode="None" Grid.Row="2" Grid.ColumnSpan="2"
+                                HorizontalOptions="Center">
 
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="classiGioco:User">
+                            <Border Padding="15" WidthRequest="300" Margin="2">
+                                <Label 
+                                        Text="{Binding Nickname}" 
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center"/>
+                            </Border>
 
-            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </Grid>
 
         </Border>
 
-
+        <Button
+                Grid.Row="6"
+                Text="Avvia partita!"
+                HeightRequest="50"
+                WidthRequest="350"
+                FontSize="18"
+                FontAttributes="Bold"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Command="{Binding AvviaPartitaCommand}"
+                IsVisible="{Binding HasCreated}"
+            />
 
         <Button
-            Text="Avvia partita!"
-            Margin="20"
-            HeightRequest="50"
-            WidthRequest="180"
-            VerticalOptions="End"
-            Command="{Binding NavigateToMainPageCommand}"/>
+                Grid.Row="7"
+                Text="Lascia lobby"
+                BackgroundColor="{StaticResource AllertButton}"
+                FontSize="18"
+                FontAttributes="Bold"
+                HeightRequest="50"
+                WidthRequest="350"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Command="{Binding DeleteLobbyCommand}"
+                IsVisible="{Binding HasCreated}"
+            />
 
+        <Button
+                Grid.Row="7"
+                Text="Lascia lobby"
+                BackgroundColor="{StaticResource AllertButton}"
+                HeightRequest="50"
+                WidthRequest="180"
+                FontAttributes="Bold"
+                VerticalOptions="Center"
+                Margin="0,0,0,60"
+                Command="{Binding LeaveLobbyCommand}"
+                IsVisible="{Binding HasJoined}"
+            />
 
-    </StackLayout>
-    
+    </Grid>
 </ContentPage>

@@ -7,7 +7,7 @@ namespace ProjApp;
 
 public partial class App : Application
 {
-    public App()
+    public App(AppShell shell)
     {
         InitializeComponent();
 
@@ -19,6 +19,6 @@ public partial class App : Application
             await Connessione.con.StartAsync());
         });
 
-        MainPage = new LoginPage(new ViewModel.LoginPageViewModel());
+        MainPage = shell;
     }
 }

@@ -1,61 +1,165 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
+using Firebase.Auth;
+using Firebase.Auth.Providers;
+using Microsoft.Maui.Controls.PlatformConfiguration;
 using ProjApp.MapEl.GPS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ProjApp.ViewModel.ProfilePageViewModel;
+
+
 
 namespace ProjApp.ViewModel
 {
     public partial class LoginPageViewModel : ObservableObject
     {
+        private static bool FIRST_TIME_LOGGING = true;
 
-        public LoginPageViewModel() { }
+        public LoginPageViewModel()
+        {
+            Constructor();
+        }
 
-        [ObservableProperty] public string username;
-        [ObservableProperty] public string password;
-        private bool succesfullLogin = true; ////////per ora true semrpe
+        public void Constructor()
+        {
+            Username = string.Empty;
+            Password = string.Empty;
+            if(Fbclient?.User != null)
+            {
+                Fbclient.SignOut();
+                redirectedUrl= string.Empty;
+                Sourceurl = string.Empty;
+                Android.Webkit.CookieManager.Instance.RemoveAllCookie();
+            }
+        }
 
+        [ObservableProperty] 
+        private string username;
+        [ObservableProperty] 
+        private string password;
+
+        //sign in configs
+        [ObservableProperty]
+        private bool webviewvisible = false;
+
+        [ObservableProperty]
+        private bool othersarevisible = true;
+
+        [ObservableProperty]
+        private string sourceurl = string.Empty;
+
+        private string redirectedUrl = string.Empty;
+
+        //firebase auth
+        [ObservableProperty]
+        private FirebaseAuthClient fbclient;
+        //
+
+
+        FirebaseAuthConfig config = new FirebaseAuthConfig
+        {
+            ApiKey = "AIzaSyByATKL15ARJgSIxRHibyF-j2E3UUTNrWE",
+            AuthDomain = "nascondapp.firebaseapp.com",
+            Providers = new FirebaseAuthProvider[]
+           {
+                // Add and configure individual providers
+                new EmailProvider(),
+                new GithubProvider().AddScopes("user:email")
+           },
+        };
+
+        [RelayCommand]
+        public async void RegisterUserWithMail()
+        {
+
+            Fbclient = new FirebaseAuthClient(config);
+
+            await Fbclient.SignInWithEmailAndPasswordAsync(Username, Password);
+        }
 
 
         [RelayCommand]
-        Task NavigateToStartPage() {
-            if (succesfullLogin)
-            {
-                MainThread.BeginInvokeOnMainThread(SetNick);
-                
-                Application.Current.MainPage = new AppShell();
-            }
-            return Task.CompletedTask;
-        }
-
-        public async void SetNick()
+        public async void SignInWithGitHub()
         {
-            if (MainThread.IsMainThread)
+            Fbclient = new FirebaseAuthClient(config);
+            try
             {
-                string retrievedNick = MyUser.RetrieveNickFromFile(MyUser.NICK_FILENAME);
-                if (retrievedNick.Equals(""))
+                await Fbclient.SignInWithRedirectAsync(FirebaseProviderType.Github, async uris =>
                 {
-                    string newnick;
-
-                    newnick = await Application.Current.MainPage.DisplayPromptAsync("Come ti chiami?",
-                    "Inserisci il nome che gli altri utenti visualizzeranno", "Conferma", "Annulla",
-                    "Nickname");
-
-                    MyUser.SaveLastNickOnFile(newnick);
-                    MyUser.nick = newnick;
-                }
-                else
-                {
-                    MyUser.nick = retrievedNick;
-                }
+                   
+                    Sourceurl = uris;
+                    Othersarevisible = false;
+                    while (!redirectedUrl.StartsWith(config.RedirectUri))
+                    {
+                        await Task.Delay(200);
+                    }
+                    return redirectedUrl;
+                });
             }
-            else Console.WriteLine("///////////////////NON STAI CHIAMANDO QUESTA SETNICK() DAL MAIN THREAD!!!!");
-            
-            MyUser.BuildMyUser(Username); //username sarebbe l'ID
+            //per catchare errori http per non far crashare lapp
+            catch (Exception ex)
+            { 
+                redirectedUrl = String.Empty;
+                Android.Webkit.CookieManager.Instance.RemoveAllCookie();
+            }
+            if (Fbclient.User != null) {
+                Username = Fbclient.User.Uid;
+                await NavigateToStartPage(); 
+            }
         }
 
+        public void OnNavigated(object sender, WebNavigatedEventArgs e)
+        {
+            if(e.Url.StartsWith("https://github.com/login") && Webviewvisible!=true) Webviewvisible = true;
+
+            if (e.Url.StartsWith(config.RedirectUri))
+            { 
+                Webviewvisible = false;
+                Othersarevisible = true;
+                redirectedUrl = e.Url;
+            }
+        }
+        [RelayCommand]
+        private async Task NavigateToStartPage() {
+            //if (AppShell.Current == null)
+            //{
+            //    Application.Current.MainPage = new AppShell();
+            //}
+            await AppShell.Current.GoToAsync($"//{nameof(ProfilePage)}",false);
+
+            if(Username == null)
+            {
+                Username = "NoID";
+            }
+            //SOLO LA PRIMA VOLTA (da login -> profile)
+            //passiamo lo username alla pagina profilo solo se ha gia interagito con lo user per il nickmname
+            if (FIRST_TIME_LOGGING)
+            {
+                WeakReferenceMessenger.Default.Register<ReadyToBuildUserMessage>(this, (r, m) =>
+                {
+                    WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
+                });
+                FIRST_TIME_LOGGING = false;
+            }
+            else //la prifle page è gia stata creata ed è pronta a ricevere il nuovo username senza aspettare
+            {
+                WeakReferenceMessenger.Default.Send(new BuildUserMessage(Username));
+            }
+
+        }
+        
     };
+
+    internal class ReadyToBuildUserMessage : ValueChangedMessage<string>
+    {
+        public ReadyToBuildUserMessage(string value) : base(value)
+        {
+        }
+    }
 }

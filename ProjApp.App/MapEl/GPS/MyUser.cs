@@ -7,79 +7,117 @@ using System.Text.Json;
 using Mapsui.Nts;
 using Mapsui.Extensions;
 using static System.Net.Mime.MediaTypeNames;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
+using static ProjApp.ViewModel.StartPageViewModel;
+using Firebase.Auth;
+using User = ProjApp.Gioco.User;
 
 namespace ProjApp.MapEl.GPS
 {
-    public class MyUser
+    public static class MyUser 
     {
         private static CancellationTokenSource _cancelTokenSource;
         private static bool _isCheckingLocation;
         public static User user;
-        public static Partita currPartita = new();
+        public static Partita currPartita;
+        public static List<Partita> partiteRecenti = new();
         public static bool isAdmin = false;
         public static string NICK_FILENAME = "playerNick.txt";
-        public static string nick = "";
+        public static bool IsUserUpdating = false;
 
+        private static int consecutiveChecks = 0;
 
         //SignalR Parametri
         public readonly static int SEND_POS_DELAY = 3000;
-        private static bool want_sendposition = true;
-
+        public static bool SEND_POSITION = false;
 
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
-        public static void BuildMyUser(string ID)
+        public static void BuildMyUser(string ID, string nick)
         {
+            IsUserUpdating = true;
             Location loc = RetrieveLocFromFile("lastSavedPosition.txt");
             user = new(nick, ID, loc);
+            currPartita = new();
+            //serve senno alcune componenti nel codice provano ad
+            //accedere allo user prima che sia stato creato
+            //WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new("canDisplayNick", nick));
+            IsUserUpdating = false;
         }
 
         public static void ChangeNick(string newnick) 
-        { 
-            nick= newnick;
-            MyUser.user.Nickname=nick;
+        {
+            IsUserUpdating = true;
+            user.Nickname = newnick;
+            SaveLastNickOnFile(newnick);
+            IsUserUpdating = false;
+        }
+
+        public static void ChangeID(string newID)
+        {
+            IsUserUpdating = true;
+            user.UserID = newID;
+            IsUserUpdating = false;
         }
 
         public static void AddToCurrPartita(User u)
         {
             currPartita.Players.Add(u);
         }
+
         public static async Task Get_Position()
         {
             try
+            {
+                _isCheckingLocation = true;
+
+                GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(6));
+
+                _cancelTokenSource = new CancellationTokenSource();
+
+                Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
+                    
+                if (_cancelTokenSource.IsCancellationRequested) 
+                { 
+                    return;
+                }
+
+                if (location != null && location.Accuracy < 50)
                 {
-                    _isCheckingLocation = true;
-
-                    GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(6));
-
-                    _cancelTokenSource = new CancellationTokenSource();
-
-                    Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
-
-
-                    if (location != null && location.Accuracy < 50)
+                    user.Position = location;
+                    SaveLastPositionOnFile(location);
+                    Console.WriteLine($"GET_POSITION::: Accuracy: {location.Accuracy} Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+                } else {
+                    consecutiveChecks++;
+                    if (consecutiveChecks >= 5)
                     {
-                        user.Position = location;
-                        SaveLastPositionOnFile(location);
-                        Console.WriteLine($"GET_POSITION::: Accuracy: {location.Accuracy} Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            Microsoft.Maui.Controls.Application.Current.MainPage.DisplayAlert("Ao? 🤔",
+                            "Pare che il tuo GPS prenda molto male",
+                            "Prometto di uscire dal bunker");
+                        });
+                        consecutiveChecks = 0;
                     }
+                }
 
-                }
-                // Catch one of the following exceptions:
-                //   FeatureNotSupportedException
-                //   FeatureNotEnabledException
-                //   PermissionException
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"EXCEPTION position not found {ex.Message}");
-
-                }
-                finally
-                {
-                    _isCheckingLocation = false;
-                }
+            }
+            // Catch one of the following exceptions:
+            //   FeatureNotSupportedException
+            //   FeatureNotEnabledException
+            //   PermissionException
+            catch (Exception ex)
+            {
+                Console.WriteLine($"EXCEPTION position not found {ex.Message}");
+                await Task.Delay(200);
+            }
+            finally
+            {
+                _isCheckingLocation = false;
+            }
             
         }
-        public void CancelRequest()
+        public static void CancelPositionRequest()
         {
             if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
                 _cancelTokenSource.Cancel();
@@ -185,26 +223,47 @@ namespace ProjApp.MapEl.GPS
         }
 
 
-        public static async void inviaPosSignalR()
+        public static async Task inviaPosSignalR()
         {
-            while (want_sendposition)
+            while(SEND_POSITION)
             {
                 if (Connessione.con.State.Equals(HubConnectionState.Connected))
                 {
-                    string jsonUser = JsonSerializer.Serialize<User>(user,
-                          new JsonSerializerOptions
-                          {
-                              NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-                              PropertyNameCaseInsensitive = true
-                          });
+                    string jsonUser = CreateJsonUser(user);
 
                     await Connessione.con.InvokeAsync("SendPosition",
-                          arg1: jsonUser,
-                          //Codice lobby
-                          arg2: currPartita.Cod_partita);
+                            arg1: jsonUser,
+                            //Codice lobby
+                            arg2: currPartita.Cod_partita);
                 }
                 await Task.Delay(SEND_POS_DELAY);
             }
+        }
+
+        public static async Task inviaPosOneLastTime()
+        {
+            //aspetta di essere connesso
+            while (!Connessione.con.State.Equals(HubConnectionState.Connected))
+            {
+                await Task.Delay(500);
+            }
+           
+            string jsonUser = CreateJsonUser(user);
+
+            await Connessione.con.InvokeAsync("SendPosition",
+                    arg1: jsonUser,
+                    //Codice lobby
+                    arg2: currPartita.Cod_partita); 
+        }
+
+        public static string CreateJsonUser(User u)
+        {
+            return JsonSerializer.Serialize<User>(u,
+                    new JsonSerializerOptions
+                    {
+                        NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+                        PropertyNameCaseInsensitive = true
+                    });
         }
     }
 }

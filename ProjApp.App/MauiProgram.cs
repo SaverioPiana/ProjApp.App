@@ -10,25 +10,32 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-            .UseSkiaSharp()
+            .UseSkiaSharp(true)
             .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                fonts.AddFont("comici.ttf", "ComicSansRegular");
+
+                fonts.AddFont("OriginTech.otf", "OriginTech");
+                fonts.AddFont("NewRodin_Pro_EB.otf", "NewRodin");
+                fonts.AddFont("SuperMarioBrosWii.otf", "Mario");
+                fonts.AddFont("Starjedi.ttf", "Jedi");
+                fonts.AddFont("Glitch.otf", "Glitch");
+                fonts.AddFont("space.ttf", "Space");
             });
-        builder.Services.AddSingleton<SettingsPageViewModel>();
-        builder.Services.AddSingleton<SettingsPage>();
+
 		builder.Services.AddSingleton<StartPageViewModel>();
         builder.Services.AddSingleton<StartPage>();
-        builder.Services.AddSingleton<MainPageViewModel>();
-        builder.Services.AddSingleton<MainPage>();
         builder.Services.AddSingleton<ProfilePageViewModel>();
         builder.Services.AddSingleton<ProfilePage>();
-        builder.Services.AddTransient<LoginPageViewModel>();
-        builder.Services.AddTransient<LoginPage>();
-        
+        builder.Services.AddSingleton<AppShell>();
 
+        builder.Services.AddTransient<MainPageViewModel>();
+        builder.Services.AddTransient<MainPage>();
+
+        builder.Services.AddSingleton<LoginPageViewModel>();
+        builder.Services.AddSingleton<LoginPage>();
+        
         return builder.Build();
 	}
 }

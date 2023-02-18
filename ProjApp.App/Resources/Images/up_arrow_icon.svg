@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M 18.53 9.47 C 18.823 9.763 18.823 10.237 18.53 10.53 L 12.53 16.53 C 12.237 16.823 11.763 16.823 11.47 16.53 L 5.47 10.53 C 5.177 10.237 5.177 9.763 5.47 9.47 C 5.763 9.177 6.237 9.177 6.53 9.47 L 12 14.939 L 17.47 9.47 C 17.763 9.177 18.237 9.177 18.53 9.47 Z" fill="#030D45" transform="matrix(-1, 0, 0, -1, 24, 26)"/>
+</svg>

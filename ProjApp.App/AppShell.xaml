@@ -4,46 +4,33 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:ProjApp"
-    
     Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False"
     >
 
-    <TabBar>
-        
-        <ShellContent
-            Title="Profilo"
-            ContentTemplate="{DataTemplate local:ProfilePage}"
-            Route= "ProfilePage"
-            Icon="profile_icon.png"
-            />
-        
-        <ShellContent 
-            Title="Play"
-            ContentTemplate="{DataTemplate local:StartPage}"
-            Route= "StartPage" 
-            Icon="play_icon.png"
-            />
-
-    </TabBar>
-
     <ShellContent
-        Title="Impostazioni"
-        ContentTemplate="{DataTemplate local:SettingsPage}"
-        Route= "SettingsPage"
-        Icon="settings_icon.png"
-    />
-
-    <ShellContent
-        Title=""
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route= "MainPage" 
-    />
-
-    <ShellContent
-        Title="Login"
         ContentTemplate="{DataTemplate local:LoginPage}"
         Route="LoginPage"
     />
-    
+
+    <TabBar>
+        
+        <Tab Route="ProfilePage"
+             Icon="profile_icon.png">
+            <ShellContent
+                ContentTemplate="{DataTemplate local:ProfilePage}"
+            />
+
+        </Tab>
+        
+        <Tab Route="StartPage"
+             Icon="home_icon.png">
+            <ShellContent
+                ContentTemplate="{DataTemplate local:StartPage}"
+            />
+        </Tab>
+        
+    </TabBar>
+
+
 </Shell>

@@ -1,6 +1,8 @@
 using CommunityToolkit.Mvvm.Messaging;
 using ProjApp.ViewModel;
+#if ANDROID
 using static ProjApp.MainActivity;
+#endif
 
 namespace ProjApp;
 
@@ -12,11 +14,12 @@ public partial class ProfilePage : ContentPage
         BindingContext = viewModel;
     }
 
-    #if ANDROID
+    
     protected override void OnAppearing()
-    {
+   {
         base.OnAppearing();
+        #if ANDROID
         WeakReferenceMessenger.Default.Send(new FullScreenMessage("HideOsNavigationBar"));
+        #endif
     }
-    #endif
 }

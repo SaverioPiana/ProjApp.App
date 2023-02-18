@@ -1,4 +1,4 @@
-﻿using Android.Icu.Number;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using HarfBuzzSharp;
 using Mapsui;
 using Mapsui.Extensions;
@@ -11,6 +11,7 @@ using Mapsui.UI.Objects;
 using NetTopologySuite.Geometries;
 using ProjApp.MapEl;
 using ProjApp.MapEl.Serializable;
+using static ProjApp.ViewModel.MainPageViewModel;
 using Color = Microsoft.Maui.Graphics.Color;
 using Font = Mapsui.Styles.Font;
 using Polygon = NetTopologySuite.Geometries.Polygon;
@@ -24,7 +25,7 @@ namespace ProjApp.Gioco
         private WritableLayer tanalayer;
         private WritableLayer circleLayer;
         private Geometry cerchio; 
-        private const double RADIUS_TANA = 50;
+        public const double RADIUS_TANA = 50;
 
         public Geometry Cerchio { get { return cerchio; } }
 
@@ -32,26 +33,26 @@ namespace ProjApp.Gioco
         public Tana(MPoint p)
         {
             MPoint punto = new(SphericalMercator.ToLonLat(p));
-            position = new(punto.Y, punto.X);  
+            position = new(punto.Y, punto.X);
         }
 
         //questo costruttore lo usiamo quando creiamo la tana da server
-        public Tana(SerializableCoordinate c)
+        public Tana(SerializableCoordinate c, MapView mv)
         {
             //qua "c" ci arriva gia in lat lon perche l'admin la crea col
             //costruttore sopra che gia la converte in lat lon
             position = new(c.Y, c.X);
 
-            drawArea();
+            drawArea(mv);
         }
 
-        public void drawArea()
+        public void drawArea(MapView mv)
         {
-            CreaLayersTana();
-            OurMapController.mapView.Map.Layers.Add(circleLayer);
-            OurMapController.mapView.Map.Layers.Add(tanalayer);
+            CreaLayersTana(mv);
+            mv.Map.Layers.Add(circleLayer);
+            mv.Map.Layers.Add(tanalayer);
         }
-        public void CreaLayersTana()
+        public void CreaLayersTana(MapView mv)
         {
             tanalayer = new WritableLayer()
             {
@@ -63,10 +64,10 @@ namespace ProjApp.Gioco
                 Style = null
             };
 
-            CreateTanaFeatures();
+            CreateTanaFeatures(mv);
         }
 
-        public void CreateTanaFeatures()
+        public void CreateTanaFeatures(MapView mv)
         {
             IFeature feature = new PointFeature(position.ToMapsui());
 
@@ -82,7 +83,7 @@ namespace ProjApp.Gioco
                 FillColor = Color.FromRgba("#006F0032"),
                 StrokeColor = Colors.Green,
                 StrokeWidth = 2,
-                MaxVisible = OurMapController.mapView.Map.Resolutions[16]
+                MaxVisible = mv.Map.Resolutions[mv.Map.Resolutions.Count()-4]
             };
 
             circleLayer.Add(circle.Feature);

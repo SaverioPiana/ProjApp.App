@@ -7,83 +7,142 @@
              Shell.TabBarIsVisible="False"
              
              Title="LoginPage">
-    
-    <VerticalStackLayout>
+
+    <Grid RowSpacing="10">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
 
         <Rectangle
+            Grid.Row="0"
             Margin="0"
-            Fill="#5BAFEC"
             WidthRequest="400"
             HeightRequest="25"
-            HorizontalOptions="Start"
-            
-            />
+            Style="{StaticResource TopRectangle}"
+        />
 
 
-        <Label 
-            Text="&#10;Benvenuto!"
-            FontSize="45"
-            FontAttributes="Bold"
-            VerticalOptions="Center" 
+        <Label
+            IsVisible="{Binding Othersarevisible}"
+            Grid.Row="1"
+            ZIndex="1"
+            Text="BUDDY HUNT"
+            FontSize="38"
+            FontFamily="NewRodin"
             HorizontalOptions="Center"
-            Margin="20"
-            Padding="20"/>
+            VerticalOptions="Center"
+            Margin="0,125,0,0"
+        />
 
         <Image
-            Source="profile_icon_azz.png"
+            IsVisible="{Binding Othersarevisible}"
+            Grid.Row="1"
+            ZIndex="0"
+            Source="black_pin_icon"
             HorizontalOptions="Center"
-            WidthRequest="80"
-            HeightRequest="80"
-            
-            Margin="0"
-            
-            
-            />
+            WidthRequest="250"
+            HeightRequest="250"
+            Margin="0,20,0,0"
+        />
 
         <Label 
-            Text="Sign in to continue"
-            FontSize="25"
+            IsVisible="{Binding Othersarevisible}"
+            Grid.Row="2"
+            Text="Accedi per continuare"
+            FontSize="16"
             VerticalOptions="Center" 
             HorizontalOptions="Center"
-            Margin="20 "
-            />
+            Margin="0,0,0,15"
+        />
 
         <Entry
+            IsVisible="{Binding Othersarevisible}"
+            Grid.Row="3"
             Text="{Binding Username}"
             x:Name="Username"
+            Margin="6"
             Placeholder="Username                                             "
-            TextColor="Black"
             FontAttributes="Bold"
-            Margin="20"
             HorizontalOptions="Center"
-            
-             />
-
+            ClearButtonVisibility="WhileEditing"
+            MaximumWidthRequest="220"
+            Keyboard="Email"
+        />
+        
         <Entry 
+            IsVisible="{Binding Othersarevisible}"
+            Grid.Row="4"
             Text="{Binding Password}"
-            IsPassword="True"
             x:Name="Password"
+            Margin="7"
             Placeholder="Password                                             "
-            TextColor="Black"
             FontAttributes="Bold"
-            Margin="10"
             HorizontalOptions="Center"
+            IsPassword="True"
+            MaximumWidthRequest="220"
+            ClearButtonVisibility="WhileEditing"
+        />
 
-             />
+        <Frame
+            Grid.Row="5"
+            Grid.RowSpan="8"
+            IsVisible="{Binding Webviewvisible}"
+            HeightRequest="655"
+            WidthRequest="350"
+            Padding="0"
+            HorizontalOptions="Center">
+            <Frame.Shadow>
+                <Shadow Brush="Black"
+                    Offset="0,0"
+                    Radius="40"
+                    Opacity="0.55" />
+            </Frame.Shadow>
+
+            <WebView 
+                MaximumWidthRequest="350"
+                x:Name="loginWebView"
+                Source="{Binding Sourceurl}">
+            </WebView>
+        </Frame>
 
         <Button
-            Text="SiGN IN"
+            IsVisible="{Binding Othersarevisible}"
+            Grid.Row="6"
+            Text="SIGN IN"
             Command="{Binding NavigateToStartPageCommand}"
-            BackgroundColor="#5BAFEC"
-            Margin="15"
+            FontAttributes="Bold"
+            HeightRequest="55"
+            WidthRequest="150"
+            VerticalOptions="Start"
+            CharacterSpacing="2"
+        />
+        <Button
+            Grid.Row="7"
+            IsVisible="{Binding Othersarevisible}"
+            Command="{Binding SignInWithGitHubCommand}"
+            ImageSource="github_icon"
             HeightRequest="50"
-            WidthRequest="200"
-            VerticalOptions="End"/>
-            
-           
-
-
-    </VerticalStackLayout>
+            WidthRequest="50"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            Margin="15">
+            <Button.Shadow>
+                <Shadow Brush="Black"
+                    Offset="0,0"
+                    Radius="50"
+                    Opacity="0.7"/>
+            </Button.Shadow>
+        </Button>
+        
+    </Grid>
     
     
 </ContentPage>

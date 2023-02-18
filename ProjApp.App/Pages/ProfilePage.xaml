@@ -4,113 +4,192 @@
              x:Class="ProjApp.ProfilePage"
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:ProfilePageViewModel"
+             
              Title="ProfilePage">
-    
-    
-    <StackLayout Orientation="Vertical" Spacing="15">
+
+
+    <Grid RowSpacing="20">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
 
         <Rectangle
-            Margin="0"
-            Fill="#9051F6"
+            Grid.Row="0"
+            Style="{StaticResource TopRectangle}"
             WidthRequest="400"
             HeightRequest="25"
             HorizontalOptions="Start"
-            
          />
 
-        <StackLayout Orientation="Horizontal" Spacing="165" > 
+        <Grid Grid.Row="1" HeightRequest="80">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Image
+                Grid.Column="0"
+                Source="{AppThemeBinding Light=profile_icon_lig, Dark=profile_icon_dar}"
+                HeightRequest="48"
+                WidthRequest="48"
+                Margin="15,0,0,0">
+            </Image>
             
             <Label 
+                Grid.Column="1"
                 Text="Profilo"
-                Margin="20"
                 FontSize="36"
+                HorizontalOptions="Start"
                 VerticalOptions="Center"
-             />
+                Margin="10,0,0,0"
+            />
 
-            <Button
+        </Grid>
+
+
+
+        <Border Grid.Row="2" Padding="5" Margin="5" StrokeThickness="3">
+            <Border.Shadow>
+                <Shadow Brush="Black"
+                    Offset="0,0"
+                    Radius="40"
+                    Opacity="0.55"/>
+            </Border.Shadow>
             
-            Command="{Binding NavigateToSettingsPageCommand}"
-            BackgroundColor="#9051F6"
-            ImageSource="settings_icon.png"
-            Margin="15"
-            CornerRadius="20"
-            HeightRequest="50"
-            WidthRequest="50"
-            VerticalOptions="End"
-             />
-            
-        </StackLayout>
-
-        
-
-
-        <Border  Padding="5" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Margin="20"
-               >
-            <StackLayout Orientation="Horizontal" Spacing="15">
-                
-                
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="165"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="60"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
                 <Label 
-                    Text="  Nickname: "
+                    Grid.Column="0"
+                    Text="Nickname: "
                     FontSize="20"
                     VerticalOptions="Center"
                     HorizontalOptions="Start"
-                       
-                    />
-                
-                
-                <Entry
-                    x:Name="Nickname"
-                    Placeholder="Inserisci nickname        "
-                    TextColor="Black"
-                    FontAttributes="Bold"
-                    Margin="0"
+                    Margin="15"
+                />
+
+                <Label 
+                    Grid.Column="1"
+                    Text="{Binding Nick}"
+                    FontSize="20"
                     VerticalOptions="Center"
-                    HorizontalOptions="Center"
-            
-                    />
+                    HorizontalOptions="Start" 
+                    Margin="-5"
+                    IsVisible="{Binding DoneChangingNickname}"
+                />
+
+                <Entry
+                    Grid.Column="1"
+                    Text="{Binding Nick}"
+                    FontSize="20"
+                    FontFamily="NewRodin"
+                    ReturnCommand="{Binding DoneChangingNickCommand}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                    Margin="-9,-9,-9,-10"
+                    IsVisible="{Binding ChangingNick}"
+                    IsTextPredictionEnabled="False"
+                    IsSpellCheckEnabled="False"
+                    HorizontalTextAlignment="Start"
+                    CursorPosition="0"
+                    IsEnabled="{Binding ChangingNick}"
+                />
+
+                <Button
+                    Grid.Column="2"
+                    Command="{Binding ChangeNickCommand}"
+                    ImageSource="pencil_icon.png"
+                    CornerRadius="12"
+                    HeightRequest="30"
+                    WidthRequest="30"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Margin="0,0,10,0"
+                    IsVisible="{Binding DoneChangingNickname}"
+                />
+
+                <Button 
+                    Grid.Column="2"
+                    Command="{Binding DoneChangingNickCommand}"
+                    ImageSource="check_icon.png"
+                    CornerRadius="12"
+                    HeightRequest="30"
+                    WidthRequest="30"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Margin="0,0,10,0"
+                    IsVisible="{Binding ChangingNick}"
+                />
                 
-            </StackLayout>
-            
+            </Grid>
         </Border>
 
-
-        <Label 
-            
+        <!--<Label 
+            Grid.Row="3"
             Text="Max Score:"
             FontSize="20"
-            Margin="20"
-             />
+            Margin="15"
+            HeightRequest="26"
+            IsVisible="False"
+        />
 
         <Label 
-            Text="Total Score:&#10;"
+            Grid.Row="4"
+            Text="Total Score:"
             FontSize="20"
-            Margin="20"
+            Margin="15"
+            HeightRequest="26"
+            IsVisible="False"
+        />-->
+
+        <Border  Grid.Row="3" Padding="5" Margin="5" StrokeThickness="3" >
+            <Border.Shadow>
+                <Shadow Brush="Black"
+                    Offset="0,0"
+                    Radius="40"
+                    Opacity="0.55" />
+            </Border.Shadow>
+
+            <Label 
+                Text="Giocatori recenti:"
+                FontSize="20"
+                Margin="15"
+                VerticalOptions="Start"
+                HorizontalOptions="Start"
             />
-
-
-        <Border  Padding="5" Stroke="#9051F6" StrokeShape="RoundRectangle 18" Margin="20"
-               >
-            <StackLayout Orientation="Vertical" Spacing="15">
-
-
-                <Label Text="  Giocatori recenti:"
-                       FontSize="20"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Start"/>
-
-                
-                
-
-
-
-            </StackLayout>
-
+            
         </Border>
 
+        <Button
+            Grid.Row="4"
+            Text="LOG OUT"
+            Command="{Binding NavigateToLoginPageCommand}"
+            HorizontalOptions="Center"
+            VerticalOptions="End"
+            HeightRequest="50"
+            WidthRequest="200"
+            Margin="0,0,0,20"
+            FontSize="18"
+            FontAttributes="Bold"
+            CharacterSpacing="2">
+
+            <Button.Shadow>
+                <Shadow Brush="Black"
+                    Offset="0,0"
+                    Radius="50"
+                    Opacity="0.7" />
+            </Button.Shadow>
+        </Button>
 
 
-
-
-    </StackLayout>
+    </Grid>
     
 </ContentPage>

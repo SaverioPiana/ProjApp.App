@@ -5,14 +5,14 @@
    viewBox="0 0 48 48"
    id="magicoon-Filled"
    version="1.1"
-   sodipodi:docname="profile_icon.svg"
+   sodipodi:docname="profile_icon_ver.svg"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
-     id="namedview269"
+     id="namedview300"
      pagecolor="#ffffff"
      bordercolor="#000000"
      borderopacity="0.25"
@@ -21,9 +21,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="17.883909"
-     inkscape:cx="22.254642"
-     inkscape:cy="21.248151"
+     inkscape:zoom="20.875"
+     inkscape:cx="24"
+     inkscape:cy="24"
      inkscape:window-width="2498"
      inkscape:window-height="1417"
      inkscape:window-x="1974"
@@ -31,20 +31,33 @@
      inkscape:window-maximized="1"
      inkscape:current-layer="magicoon-Filled" />
   <defs
-     id="defs262">
+     id="defs293">
+    <linearGradient
+       id="linearGradient1075"
+       inkscape:swatch="gradient">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop1071" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop1073" />
+    </linearGradient>
     <style
-       id="style260">.cls-1{fill:#41416e;}</style>
+       id="style291">.cls-1{fill:#41416e;}</style>
   </defs>
   <title
-     id="title264">user</title>
+     id="title295">user</title>
   <g
      id="user-Filled"
-     transform="matrix(1.2012952,0,0,1.2251477,-4.8310509,-5.4023524)">
+     transform="translate(2.8184385e-5,9.7329697e-4)"
+     style="fill:#2b0b98;fill-opacity:1">
     <path
        id="user-Filled-2"
        data-name="user-Filled"
        class="cls-1"
        d="M 14,15 A 10,10 0 1 1 24,25 10.012,10.012 0 0 1 14,15 Z m 18.234,12.142 a 4.622,4.622 0 0 0 -3.34,0.436 10.092,10.092 0 0 1 -9.788,0 4.63,4.63 0 0 0 -3.34,-0.436 9.018,9.018 0 0 0 -6.766,8.8 v 2.022 a 7.07,7.07 0 0 0 0.986,3.6 2.988,2.988 0 0 0 2.57,1.434 h 22.888 a 2.986,2.986 0 0 0 2.57,-1.436 7.058,7.058 0 0 0 0.986,-3.6 v -2.028 a 9.018,9.018 0 0 0 -6.766,-8.792 z"
-       style="fill:#000000" />
+       style="fill:#2b0b98;fill-opacity:1" />
   </g>
 </svg>
