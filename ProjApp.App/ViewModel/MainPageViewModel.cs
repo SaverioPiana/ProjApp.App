@@ -329,10 +329,10 @@ namespace ProjApp.ViewModel
             MPoint worldPosition = Mapview.Viewport.ScreenToWorld(e.ScreenPosition);
             switch (tap_counter)
             {
-                case < 6:
+                case < 11:
                     p.area.puntoBordo(worldPosition, Mapview);
                     break;
-                case 6:
+                case 11:
                     p.area.creaArea(Mapview);
                     List<User> UO = GameLogic.whoOutsideTheArea().Result;
                     if(UO.Count > 0)
@@ -340,7 +340,7 @@ namespace ProjApp.ViewModel
                         await OnUserOutside(UO);
                     }
                     break;
-                case 7:
+                case 12:
                     p.tana = new(worldPosition);
                     if (GameLogic.IsInsideTheArea(p.area.bordi, worldPosition))
                     {
