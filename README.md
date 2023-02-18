@@ -2,6 +2,10 @@
 
 Progetto in MAUI per esame di MobileComputing presso RomaTre
 
+TO ABSOLUTELY DO :
+
+- Tana libera tutti è un POWER UP che appare o a caso o se rimagono pochi hiders, ed è piu o meno lontano dalla tana, cosi che entrambe le squadre possono decidere tatticamnete dove andare. Uso: se ti tani con il power up equipaggiato liberi tutti e vincono a prescindere gli hiders
+
 To Do:
 
 - problema con posizione gps -> capire come funge (fatto)
