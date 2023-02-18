@@ -134,7 +134,7 @@
 
                             <Label Grid.Row="0"
                             Text="{Binding TendinaText}"
-                            FontSize="20"
+                            FontSize="19"
                             Margin="10,15,0,0"
                             HeightRequest="30"
                             VerticalOptions="Start"
