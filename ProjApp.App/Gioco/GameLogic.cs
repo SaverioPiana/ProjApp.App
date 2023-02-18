@@ -24,6 +24,8 @@ namespace ProjApp.Gioco
 
         public const int DELAY_INIZIO_GIOCO = 3000;
 
+        public const int TEMPO_DI_GIOCO_MINUTI = 10;
+
         public const double APERTURA_TENDINA_AVVISI = 325;
 
         public const long TIMEOUT_NOTIFICHE_AVVISO = TICS_PER_SECOND*120;
@@ -109,29 +111,29 @@ namespace ProjApp.Gioco
         }
 
         //LOGICA EVENTI DISTANZA E VISIBILITA PIN
-        public static async Task<bool> ShouldPinBeVisible(string uid, bool isPinCercatore, bool previousVal, double distanceMts, bool IsHuntPossible)
+        public static async Task<bool> ShouldPinBeVisible(SerializableUser receivedUser, bool previousVal, double distanceMts, bool IsHuntPossible)
         {
             bool res = previousVal;
 
             //stesso ruolo
-            if ((isPinCercatore && MyUser.user.IsCercatore) || (!isPinCercatore && !MyUser.user.IsCercatore))
+            if ((receivedUser.IsCercatore && MyUser.user.IsCercatore) || (!receivedUser.IsCercatore && !MyUser.user.IsCercatore))
             {
                 res = true;
             }
             //ruoli diversi
-            if (!isPinCercatore && MyUser.user.IsCercatore)
+            if (!receivedUser.IsCercatore && MyUser.user.IsCercatore)
             {
                 if (IsHuntPossible)
                 {
-                    res = await EventOnDistance(uid, distanceMts, previousVal);
+                    res = await EventOnDistance(receivedUser, distanceMts, previousVal);
                 }
                 else return false;
             }
-            if (isPinCercatore && !MyUser.user.IsCercatore)
+            if (receivedUser.IsCercatore && !MyUser.user.IsCercatore)
             {
                 if (IsHuntPossible)
                 {
-                    res = await EventOnDistance(uid, distanceMts, previousVal);
+                    res = await EventOnDistance(receivedUser, distanceMts, previousVal);
                 }
                 else return false;
             }
@@ -140,24 +142,16 @@ namespace ProjApp.Gioco
         }
 
         //DA FARE
-        public static async Task<bool> EventOnDistance(string uid, double distanceMts, bool previousVal)
+        public static async Task<bool> EventOnDistance(SerializableUser receivedUser, double distanceMts, bool previousVal)
         {
             bool res = previousVal;
 
             //solo una volta, evento cattura
             if (distanceMts <= DISTANZA_CATTURA)
             {
-                User otherUser = null;
-                foreach (User u in MyUser.currPartita.Players)
-                {
-                    if (u.UserID == uid)
-                    {
-                        otherUser = u;
-                    }
-                }
                 //SAS PRESOS
                 //se non è gia stato preso
-                if (!otherUser.IsPreso)
+                if (!receivedUser.IsPreso)
                 {
                     //se non sei il cacciatore ti marchi come preso
                     if (!MyUser.user.IsCercatore && !MyUser.user.IsPreso)
@@ -166,6 +160,12 @@ namespace ProjApp.Gioco
                         MainPageViewModel.EventoDiGioco(MainPageViewModel.DEAD_ICON_FILENAME, MainPageViewModel.EVENTO_CATTURA);
                     }
                     await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_CATTURA);
+                    //se sei il cercatore aggiungi laltro user alla lista dei tuoi presi
+                    if (MyUser.user.IsCercatore)
+                    {
+                        MyUser.user.NicknameGiocatoriPresi.Add(receivedUser.Nickname);
+                    }
+
                 }
             }
             else
@@ -174,9 +174,9 @@ namespace ProjApp.Gioco
                 if (distanceMts <= DISTANZA_INSEGUIMENTO)
                 {
                     //SAS INSEGUIMENTO PAZZO
-                    if ((DateTime.Now.Ticks - UidToLastTime_AvvisoInseguimento[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
+                    if ((DateTime.Now.Ticks - UidToLastTime_AvvisoInseguimento[receivedUser.UserID]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
                     {
-                        GameLogic.UidToLastTime_AvvisoInseguimento[uid] = DateTime.Now.Ticks;
+                        GameLogic.UidToLastTime_AvvisoInseguimento[receivedUser.UserID] = DateTime.Now.Ticks;
                         await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_INSEGUIMENTO);
                     }
                     //e in ogni caso -> 
@@ -188,9 +188,9 @@ namespace ProjApp.Gioco
                     if (distanceMts <= DISTANZA_AVVISO)
                     {
                         //SAS AVVISO SILENZIOSOS
-                        if ((DateTime.Now.Ticks - UidToLastTime_AvvisoNotifica[uid]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
+                        if ((DateTime.Now.Ticks - UidToLastTime_AvvisoNotifica[receivedUser.UserID]) > TIMEOUT_NOTIFICHE_INSEGUIMENTO) //prima volta o timer scaduto -> avviso
                         {
-                            GameLogic.UidToLastTime_AvvisoNotifica[uid] = DateTime.Now.Ticks;
+                            GameLogic.UidToLastTime_AvvisoNotifica[receivedUser.UserID] = DateTime.Now.Ticks;
                             await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_NOTIFICA);
                         }
                         //e in ogni caso -> 
