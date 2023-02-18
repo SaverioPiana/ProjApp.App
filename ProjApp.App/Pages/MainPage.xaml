@@ -128,7 +128,6 @@
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
 
@@ -140,27 +139,15 @@
                             VerticalOptions="Start"
                             HorizontalOptions="Start"
                         />
+                            <ScrollView HorizontalScrollBarVisibility="Never" VerticalScrollBarVisibility="Never">
+                                <Label Grid.Row="1"
+                                Text="{Binding TendinaTextDetail}"
+                                FontSize="12"
+                                Margin="10,0,0,0"
+                                VerticalOptions="Start"
+                                HorizontalOptions="Start"/>
+                            </ScrollView>
 
-                            <Label Grid.Row="1"
-                            Text="{Binding TendinaTextDetail}"
-                            FontSize="12"
-                            Margin="10,0,0,0"
-                            HeightRequest="60"
-                            VerticalOptions="Start"
-                            HorizontalOptions="Start"
-                        />
-
-                            <!--<CollectionView>
-                                <CollectionView.ItemsSource>
-                                    <x:Array Type="{x:Type lista:Giocatore}">
-                                       <lista:Giocatore Name="Porco"/>
-                                    </x:Array>
-                                </CollectionView.ItemsSource>
-                            </CollectionView>
-                            <DataTemplate x:DataType="lista:Giocatore">
-                            
-                            </DataTemplate>-->
-                            
                         </Grid>
 
                     </Border>

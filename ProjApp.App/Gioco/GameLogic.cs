@@ -64,9 +64,9 @@ namespace ProjApp.Gioco
         public static Dictionary<string, long> UidToLastTime_AvvisoInseguimento = new();
 
         //messaggio per aprire la tendina per gli avvisi generati ad eventi per la distanza tra giocatori
-        public class OpenAvvisoMessage : ValueChangedMessage<UI_Event<(double, bool)>>
+        public class OpenAvvisoMessage : ValueChangedMessage<UI_Event<(double, IList<User>)>>
         {
-            public OpenAvvisoMessage(UI_Event<(double,bool)> value) : base(value)
+            public OpenAvvisoMessage(UI_Event<(double, IList<User>)> value) : base(value)
             {
             }
         }
