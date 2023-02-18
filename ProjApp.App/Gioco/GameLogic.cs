@@ -24,7 +24,7 @@ namespace ProjApp.Gioco
 
         public const int DELAY_INIZIO_GIOCO = 90000;
 
-        public const int TEMPO_DI_GIOCO_MINUTI = 10;
+        public const int TEMPO_DI_GIOCO_MINUTI = 20;
 
         public const double APERTURA_TENDINA_AVVISI = 325;
 

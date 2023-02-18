@@ -691,7 +691,7 @@ namespace ProjApp.ViewModel
                 //metti secondsRemaining nella view
                 timerToString(secondsRemaining);
 
-                if (secondsRemaining == 0)
+                if (secondsRemaining <= 0)
                 {
                     if (IsHuntPossible)
                     {
