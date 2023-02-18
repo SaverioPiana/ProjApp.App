@@ -29,6 +29,8 @@ namespace ProjApp.Gioco
 
         public Geometry Cerchio { get { return cerchio; } }
 
+        //for resetting match
+        public Tana() { }
 
         public Tana(MPoint p)
         {

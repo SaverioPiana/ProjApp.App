@@ -69,6 +69,13 @@ namespace ProjApp.Gioco
             meJson = MyUser.CreateJsonUser(MyUser.user);
         }
 
+        public void ResetPartita()
+        {
+            area = new();
+            tana = new();
+            Players.Clear();
+        }
+
         public void CreateLobby(string jsonUser)
         {
             MyUser.isAdmin = true;
@@ -77,7 +84,6 @@ namespace ProjApp.Gioco
             Connessione.con.InvokeAsync("CreateLobby", arg1: cod_partita);
             this.IfCheckThenJoin(Cod_partita, jsonUser);
             Console.WriteLine($"Lobby Creata con codice {cod_partita}");
-
         }
 
         public void JoinLobby(string lid, string jsonUser)
@@ -187,6 +193,8 @@ namespace ProjApp.Gioco
 
         private void LobbyParamReset()
         {
+            area = new();
+            tana = new();
             MyUser.user.IsPreso = false;
             MyUser.user.IsCercatore = false;
             MyUser.isAdmin = false;
