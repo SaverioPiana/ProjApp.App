@@ -169,22 +169,24 @@ public partial class MainPage : ContentPage
                 if (m.Value.EventType.Equals(AVVISO_MATCH_OVER))
                 {
                     await OpenDrawer(openY, _cancelTokenSourceAvviso.Token);
-                    return;
                 }
-
-                await Task.Delay(15000, _cancelTokenSourceAvviso.Token);
-
-                if (!_cancelTokenSourceAvviso.IsCancellationRequested)
+                else
                 {
-                    await CloseDrawer();
-                    (BindingContext as MainPageViewModel).TendinaText = INFO_PARTITA_TEXT_DEFAULT;
+                    await OpenDrawer(m.Value.EventParameter, _cancelTokenSourceAvviso.Token);
+
+                    await Task.Delay(15000, _cancelTokenSourceAvviso.Token);
+
+                    if (!_cancelTokenSourceAvviso.IsCancellationRequested)
+                    {
+                        await CloseDrawer();
+                        (BindingContext as MainPageViewModel).TendinaText = INFO_PARTITA_TEXT_DEFAULT;
+                    }
+
+                    //cambio colore
+                    InfoPartBorder.Stroke = originalStroke;
+                    //reset scritta
+                    (BindingContext as MainPageViewModel).TendinaTextDetail = "";
                 }
-
-                //cambio colore
-                InfoPartBorder.Stroke = originalStroke;
-                //reset scritta
-                (BindingContext as MainPageViewModel).TendinaTextDetail = "";
-
             }
             catch (TaskCanceledException ex)
             { //BELLO QUI PALESE ESPLODE TUTTO RIP

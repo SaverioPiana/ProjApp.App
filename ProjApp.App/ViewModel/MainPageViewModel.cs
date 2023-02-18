@@ -83,7 +83,7 @@ namespace ProjApp.ViewModel
         const double STARTING_RES = 2;
         //private bool update_once = true;   //carina l'idea ma non penso la useremo,
                                             //a sto punto forse meglio usare due funzioni updateposition(ONCE/ALWAYS)
-        const int INTERPOLATION_STEPS = 100;
+        const int INTERPOLATION_STEPS = 50;
 
         private int updateCtr = 0;
         private int tap_counter;
@@ -662,7 +662,6 @@ namespace ProjApp.ViewModel
 
         //TIMER
         DateTime _startTime;
-        CancellationTokenSource _cancellationTokenSourceForTimer;
         double _duration;
         [ObservableProperty]
         private string countDowntimer = "Starting";
@@ -670,13 +669,13 @@ namespace ProjApp.ViewModel
         private void StartCountdown(double minuti)
         {
             _startTime = DateTime.Now;
-            _cancellationTokenSourceForTimer = new CancellationTokenSource();
+            CancellationTokenSource cancellationTokenSourceForTimer = new CancellationTokenSource();
             _duration = TimeSpan.FromMinutes(minuti).TotalMilliseconds;
-            Task.Run(CountDown, _cancellationTokenSourceForTimer.Token);
+            Task.Run(() => CountDown(cancellationTokenSourceForTimer), cancellationTokenSourceForTimer.Token);
         }
-        private async Task CountDown()
+        private async Task CountDown(CancellationTokenSource cs)
         {
-            while (!_cancellationTokenSourceForTimer.IsCancellationRequested)
+            while (!cs.IsCancellationRequested)
             {
                 var elapsedTime = (DateTime.Now - _startTime);
                 int secondsRemaining = (int)(_duration - elapsedTime.TotalMilliseconds) / 1000;
@@ -684,16 +683,16 @@ namespace ProjApp.ViewModel
                 //metti secondsRemaining nella view
                 timerToString(secondsRemaining);
 
-                if (secondsRemaining <= 0)
+                if (secondsRemaining == 0)
                 {
                     if (IsHuntPossible)
                     {
-                        _cancellationTokenSourceForTimer.Cancel();
+                        cs.Cancel();
                         await FinePartita();
                     }
                     else
                     {
-                        _cancellationTokenSourceForTimer.Cancel();
+                        cs.Cancel();
                     }
                 }
                 await Task.Delay(1000);
