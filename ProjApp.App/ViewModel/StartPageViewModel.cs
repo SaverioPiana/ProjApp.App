@@ -81,7 +81,6 @@ namespace ProjApp.ViewModel
             IsCodiceVisible = true;
             HasCreated= true;
             CanJoin = false;
-            GiocatoriLobby = MyUser.currPartita.Players;
         }
 
         [RelayCommand]
@@ -98,7 +97,6 @@ namespace ProjApp.ViewModel
         {
             if(HasCreated)
             {
-                GiocatoriLobby = new();
                 MyUser.currPartita.DeleteLobby();
                 HasCreated= false;
                 CanJoin = true;
@@ -149,7 +147,6 @@ namespace ProjApp.ViewModel
                 MyUser.currPartita.LeaveLobby();
                 CanJoin = true;
                 IsCodiceVisible = false;
-                GiocatoriLobby = new();
             } 
             else Application.Current.MainPage.DisplayAlert("Are u an hacker?",
                 "non puoi lasciare una lobby se non sei in una lobby, come hai clickato sto pulsante???",
@@ -188,6 +185,7 @@ namespace ProjApp.ViewModel
                     Codice = string.Empty;
                     HasCreated = false;
                     GiocatoriLobby = new();
+                    GiocatoriLobby = MyUser.currPartita.Players;
                     break;
 
                 case (NICK_CHANGED):
