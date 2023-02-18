@@ -23,16 +23,12 @@ namespace ProjApp.Gioco
         [JsonIgnore]
         private object lockObject = new object();
         private Location position;
-        private bool isCercatore = false;
-        private bool isPreso = false;
-        private bool isSalvo = false;
 
-        private IList<string> nicknameGiocatoriPresi = new List<string>();
+        public IList<string> NicknameGiocatoriPresi { get; set; } = new List<string>();
 
-        public IList<string> NicknameGiocatoriPresi { get; set; }
-        public bool IsCercatore { get; set; }
-        public bool IsSalvo { get; set; }
-        public bool IsPreso { get; set; }
+        public bool IsCercatore { get; set; } = false;
+        public bool IsSalvo { get; set; } = false;
+        public bool IsPreso { get; set; } = false;
         public string Nickname { get; set; }
         public string UserID { get; set; }
         [JsonIgnore]

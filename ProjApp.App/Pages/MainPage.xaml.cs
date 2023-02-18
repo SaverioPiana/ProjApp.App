@@ -139,7 +139,7 @@ public partial class MainPage : ContentPage
                             if (MyUser.user.IsCercatore)
                             {
                                 IList<string> presi = MyUser.user.NicknameGiocatoriPresi;
-                                messaggioFinePartita += presi!=null ? $"hai catturato {presi.Count} buddies!\n" +
+                                messaggioFinePartita += presi.Count==0 ? $"hai catturato {presi.Count} buddies!\n" +
                                 "Tra questi ci sono:\n" : "non hai catturato nessuno, hai perso!\n";
                                 //per ogni giocatore che abbiamo preso lo
                                 foreach (var presoNick in presi)
