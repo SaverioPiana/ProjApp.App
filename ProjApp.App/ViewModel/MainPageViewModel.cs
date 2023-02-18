@@ -675,7 +675,7 @@ namespace ProjApp.ViewModel
         CancellationTokenSource _cancellationTokenSourceForTimer;
         double _duration;
         [ObservableProperty]
-        private string countDowntimer = "-Starting-";
+        private string countDowntimer = "Starting";
 
         private void StartCountdown(double minuti)
         {
