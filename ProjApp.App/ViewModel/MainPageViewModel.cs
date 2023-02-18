@@ -135,9 +135,12 @@ namespace ProjApp.ViewModel
                 //event unsubscription
                 Mapview.SingleTap -= creaPin;
             }
-            foreach (var subscription in serverRegistrations)
+            if(serverRegistrations != null && serverRegistrations.Count > 0 ) 
             {
-                subscription.Dispose();
+                foreach (var subscription in serverRegistrations)
+                {
+                    subscription.Dispose();
+                }
             }
             ////forse non va fatto??
             ///////////////////////
@@ -505,6 +508,8 @@ namespace ProjApp.ViewModel
             if (!HasLeft)
             {
                 Console.WriteLine($"sono stati presi:{numGiocatoriPresi} e {numGiocatoriTanati} giocatori si sono salvati");
+
+
 
                 await Task.Delay(5000);
 

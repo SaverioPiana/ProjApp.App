@@ -26,6 +26,7 @@ namespace ProjApp.Gioco
         public Tana tana;
 
         private string meJson;
+
         private ObservableCollection<User> players;
 
 
