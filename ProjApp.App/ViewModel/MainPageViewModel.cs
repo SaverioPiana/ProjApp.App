@@ -324,6 +324,7 @@ namespace ProjApp.ViewModel
                             StartCountdown(((double)GameLogic.DELAY_INIZIO_GIOCO / 1000) / 60);
                             await Task.Delay(GameLogic.DELAY_INIZIO_GIOCO);
                             //avvio il countdown della partita in minuti
+                            await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_INIZIO);
                             StartCountdown(TEMPO_DI_GIOCO_MINUTI);
                             IsHuntPossible = true;
                         });
@@ -368,6 +369,7 @@ namespace ProjApp.ViewModel
                             StartCountdown(((double)GameLogic.DELAY_INIZIO_GIOCO / 1000) / 60);
                             await Task.Delay(GameLogic.DELAY_INIZIO_GIOCO);
                             //avvio il countdown della partita in minuti
+                            await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_INIZIO);
                             StartCountdown(GameLogic.TEMPO_DI_GIOCO_MINUTI);
                             IsHuntPossible = true;
                         });
@@ -644,11 +646,13 @@ namespace ProjApp.ViewModel
                 case (EVENTO_CATTURA):
                 {
                     numGiocatoriPresi++;
+                    RuoloText = "👻 Preso";
                     break;
                 }
                 case (EVENTO_TANATO):
                 {
                     await ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_TANATO);
+                    RuoloText = "😇 Tanato";
                     numGiocatoriTanati++;
                     break;
                 }

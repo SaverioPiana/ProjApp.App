@@ -41,7 +41,8 @@ namespace ProjApp.Gioco
         public const string TEXTDETAIL_INSEGUIMENTO_SEEKER = "SEI VICINO, CATTURALO! 🏃";
         public const string TEXTDETAIL_CATTURA_SEEKER = "CATTURA COMPLETATA! 😎";
         public const string TEXTDETAIL_TANATO_SEEKER = "Sei un hacker? Non potresti tanarti da cacciatore! 👨‍💻";
-         
+        public const string TEXTDETAIL_INIZIO_SEEKER = "La partita è cominciata, cha la caccia abbia inizio!";
+
 
         //detail text hiders
         public const string TEXTDETAIL_RUOLO_HIDER = "Nasconditi dai cacciatori! 😶‍🌫";
@@ -49,6 +50,7 @@ namespace ProjApp.Gioco
         public const string TEXTDETAIL_INSEGUIMENTO_HIDER = "SCAPPA DAL CACCIATORE! 😱";
         public const string TEXTDETAIL_CATTURA_HIDER = "SEI STATO CATTURATO! 💀";
         public const string TEXTDETAIL_TANATO_HIDER = "Ti sei tanato, HAI VINTO! 🥳";
+        public const string TEXTDETAIL_INIZIO_HIDER = "La partita è cominciata, non farti prendere";
 
         //detail text match over
         public const string TEXTDETAIL_MATCHOVER = "La partita è finita, ";
@@ -60,6 +62,7 @@ namespace ProjApp.Gioco
         public const string AVVISO_CATTURA = "EventoCattura";
         public const string AVVISO_TANATO = "EventoTanato";
         public const string AVVISO_MATCH_OVER = "MatchIsOver";
+        public const string AVVISO_INIZIO = "MatchIsBegan";
 
         //mappa per ogni giocatore quando e' stato inviato l'ultimo avviso -> da clearare per ogni start game
         public static Dictionary<string, long> UidToLastTime_AvvisoNotifica = new();
