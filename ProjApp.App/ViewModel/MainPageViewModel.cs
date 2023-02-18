@@ -50,7 +50,7 @@ namespace ProjApp.ViewModel
 
         //serve per lo xaml perche non ho tempo di vedere come si fa bene
         [ObservableProperty]
-        private string eventoAbbandona = MATCH_IS_OVER;
+        private string eventoAbbandona = LOBBY_HAS_BEEN_DELETED;
 
         //per vedere se vincono i cacciatori
         private static int numGiocatoriPresi = 0;
