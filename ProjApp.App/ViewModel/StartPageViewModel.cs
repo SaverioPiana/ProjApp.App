@@ -149,6 +149,7 @@ namespace ProjApp.ViewModel
                 MyUser.currPartita.LeaveLobby();
                 CanJoin = true;
                 IsCodiceVisible = false;
+                GiocatoriLobby = new();
             } 
             else Application.Current.MainPage.DisplayAlert("Are u an hacker?",
                 "non puoi lasciare una lobby se non sei in una lobby, come hai clickato sto pulsante???",
