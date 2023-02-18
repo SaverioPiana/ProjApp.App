@@ -38,10 +38,8 @@ namespace ProjApp.ViewModel
         [ObservableProperty]
         private string tendinaTextDetail = "";
         [ObservableProperty]
-        private string ruoloText = RuoloStaticDaTogliere;
+        private string ruoloText = MyUser.user.IsCercatore ? "🤠 Seeker" : "😶‍🌫 Hider";
 
-        //ASSOLUTAMENTE DA LEVARE , NON ABBIAMO TEMPO ORA
-        private static string RuoloStaticDaTogliere = MyUser.user.IsCercatore? "🤠 Seeker" : "😶‍🌫 Hider";
         private bool HasLeft { get; set; } = false;
 
         //per vedere se vincono i cacciatori
@@ -575,6 +573,13 @@ namespace ProjApp.ViewModel
                 //check se sei arrivato nellarea della tana
                 if (!MyUser.user.IsSalvo && !MyUser.user.IsCercatore && IsHuntPossible) IsMYUserInsideTana();
 
+                if(MyUser.user.IsPreso)
+                {
+                    RuoloText = "👻 Preso";
+                } else if(MyUser.user.IsSalvo)
+                {
+                    RuoloText = "😇 Tanato";
+                }
             }
             Console.WriteLine("!?!?!?!?!?!?! CANCELLATION REQUESTED FOR TASKS IN MAIN PAGE !?!?!?!??!?!?!?!");
         }
@@ -639,13 +644,11 @@ namespace ProjApp.ViewModel
                 case (EVENTO_CATTURA):
                 {
                     numGiocatoriPresi++;
-                    RuoloStaticDaTogliere = "👻 Preso";
                     break;
                 }
                 case (EVENTO_TANATO):
                 {
                     await ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_TANATO);
-                    RuoloStaticDaTogliere = "😇 Tanato";
                     numGiocatoriTanati++;
                     break;
                 }
