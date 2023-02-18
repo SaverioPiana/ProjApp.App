@@ -149,8 +149,8 @@ public partial class MainPage : ContentPage
                             }
                             else
                             {
-                                messaggioFinePartita += MyUser.user.IsPreso ? "sei stato preso quindi hai perso" :
-                                                        (MyUser.user.IsSalvo ? "ti sei tanato quindi hai vinto!"
+                                messaggioFinePartita += MyUser.user.IsPreso ? "sei stato preso quindi hai perso\n" :
+                                                        (MyUser.user.IsSalvo ? "ti sei tanato quindi hai vinto!\n"
                                                         : "è finito il tempo\ne non sei riuscito a tanarti, hai perso!\n");
                             }
 

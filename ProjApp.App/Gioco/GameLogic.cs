@@ -163,7 +163,7 @@ namespace ProjApp.Gioco
                         MainPageViewModel.EventoDiGioco(MainPageViewModel.DEAD_ICON_FILENAME, MainPageViewModel.EVENTO_CATTURA);
                     }
                     //se sei il cercatore aggiungi laltro user alla lista dei tuoi presi
-                    else
+                    if(MyUser.user.IsCercatore)
                     {
                         MyUser.user.NicknameGiocatoriPresi.Add(receivedUser.Nickname);
                     }
