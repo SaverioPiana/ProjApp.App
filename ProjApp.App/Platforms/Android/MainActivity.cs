@@ -20,17 +20,21 @@ public class MainActivity : MauiAppCompatActivity
     protected override void OnCreate(Bundle savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
-
+#if ANDROID
         WeakReferenceMessenger.Default.Register<FullScreenMessage>(this, (r, m) =>
         {
-            IWindowInsetsController wicController = Window.InsetsController;
-            Window.SetDecorFitsSystemWindows(false);
-            Window.SetFlags(WindowManagerFlags.Fullscreen, WindowManagerFlags.Fullscreen);
-
-            if (wicController != null)
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.R)
             {
-                wicController.Hide(WindowInsets.Type.NavigationBars());
+                IWindowInsetsController wicController = Window.InsetsController;
+                Window.SetDecorFitsSystemWindows(false);
+                Window.SetFlags(WindowManagerFlags.Fullscreen, WindowManagerFlags.Fullscreen);
+
+                if (wicController != null)
+                {
+                    wicController.Hide(WindowInsets.Type.NavigationBars());
+                }
             }
         });
+#endif
     }
 }
