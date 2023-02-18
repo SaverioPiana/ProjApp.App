@@ -135,27 +135,26 @@ public partial class MainPage : ContentPage
                             break;
 
                         case (AVVISO_MATCH_OVER):
+                            string messaggioFinePartita = TEXTDETAIL_MATCHOVER;
                             if (MyUser.user.IsCercatore)
                             {
-                                IList<string> presi = m.Value.EventParameter.Item2;
-                                string messaggioFinePartita = TEXTDETAIL_MATCHOVER + $"hai catturato {presi.Count} buddies!\n" +
+                                IList<string> presi = MyUser.user.NicknameGiocatoriPresi?.ToList<string>();
+                                messaggioFinePartita += $"hai catturato {presi.Count} buddies!\n" +
                                 "Tra questi ci sono:\n";
                                 //per ogni giocatore che abbiamo preso lo
                                 foreach (var presoNick in presi)
                                 {
                                     messaggioFinePartita += "- " + presoNick + "\n";
                                 }
-                                (BindingContext as MainPageViewModel).TendinaTextDetail = messaggioFinePartita;
                             }
                             else
                             {
-                                string messaggioFinePartita = TEXTDETAIL_MATCHOVER;
                                 messaggioFinePartita += MyUser.user.IsPreso ? "sei stato preso quindi hai perso" :
                                                         (MyUser.user.IsSalvo ? "ti sei tanato quindi hai vinto!"
-                                                        : "è finito il tempo\ne non sei riuscito a tanarti, hai perso!");
-
-                                (BindingContext as MainPageViewModel).TendinaTextDetail = messaggioFinePartita;
+                                                        : "è finito il tempo\ne non sei riuscito a tanarti, hai perso!\n");
                             }
+
+                            (BindingContext as MainPageViewModel).TendinaTextDetail = messaggioFinePartita + "Per uscire clicca su \"Abbandona Partita\"";
 
                             vibrationLength = TimeSpan.FromSeconds(2);
                             Vibration.Default.Vibrate(vibrationLength);
@@ -163,7 +162,10 @@ public partial class MainPage : ContentPage
                     }
                 });
 
-                await OpenDrawer(m.Value.EventParameter.Item1, _cancelTokenSourceAvviso.Token);
+                await OpenDrawer(m.Value.EventParameter, _cancelTokenSourceAvviso.Token);
+
+                //se la partita è finita facciamo che l'avviso rimane
+                if (m.Value.EventType.Equals(AVVISO_MATCH_OVER)) return;
 
                 await Task.Delay(15000, _cancelTokenSourceAvviso.Token);
 

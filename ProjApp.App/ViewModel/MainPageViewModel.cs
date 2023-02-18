@@ -113,16 +113,7 @@ namespace ProjApp.ViewModel
 
         public static async Task ApriTendinaAvviso(double openY, string eventType)
         {
-            if (eventType.Equals(AVVISO_MATCH_OVER))
-            {
-                WeakReferenceMessenger.Default.Send<OpenAvvisoMessage>(new OpenAvvisoMessage(
-                    new(eventType, (openY, MyUser.user.NicknameGiocatoriPresi.ToList<string>()))));
-            }
-            else
-            {
-                WeakReferenceMessenger.Default.Send<OpenAvvisoMessage>(new OpenAvvisoMessage(
-                    new(eventType, (openY, new List<string>()))));
-            }
+            WeakReferenceMessenger.Default.Send<OpenAvvisoMessage>(new OpenAvvisoMessage(new(eventType, openY))); 
         }
 
         [RelayCommand]
@@ -688,7 +679,7 @@ namespace ProjApp.ViewModel
                 //metti secondsRemaining nella view
                 timerToString(secondsRemaining);
                 
-                if(secondsRemaining < 0 && IsHuntPossible) 
+                if(secondsRemaining <= 0 && IsHuntPossible) 
                 {
                     await FinePartita();
                 }
