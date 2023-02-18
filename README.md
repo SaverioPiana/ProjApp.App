@@ -16,8 +16,6 @@ To Do:
 
 - capire come funzionano i layers della mappa e come aggiungere dei punti/pins personalizzati(fatto)
 
---------------------------------------
-
 - UI bella pulita -> da fare assolutmente alla svelta
 
 - logiche di gioco(non molte) -> da fare quando avremo almeno qualche bottone
@@ -31,6 +29,7 @@ To Do:
 - DARE UN NOME ALL'APP
 
 - creare un icona e spash per lapp
+-------------------------------------- ^COSE FATTE SOPRA^
 
 Miglioramenti/Problemini:
 
@@ -42,4 +41,4 @@ Miglioramenti/Problemini:
 
 - vediamo se aggiungere un tema musicale per il menu
 
-- vedere se si possono fare temi non hard coded
+- vedere se si possono fare temi non hard coded(Ci siamo)
