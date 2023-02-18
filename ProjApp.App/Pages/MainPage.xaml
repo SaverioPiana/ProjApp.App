@@ -13,33 +13,31 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition> <!--PER MAPPA E TENDINA-->
-            <RowDefinition Height="*"></RowDefinition> <!--SCHERMATA FINE PARTITA-->
         </Grid.RowDefinitions>
 
         <!--PER MAPPA E TENDINA-->
-        <Grid Grid.Row="0" Grid.RowSpan="2" IsVisible="true">
+        <Grid Grid.RowSpan="1" IsVisible="true">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <ContentView Grid.RowSpan="2" ZIndex="0" Content="{Binding Mapview}" x:Name="Mapview"/>
-            
+            <ContentView Grid.RowSpan="2"  Content="{Binding Mapview}" x:Name="Mapview"/>
+
             <Border
                 Grid.Row="1"
                 x:Name="BottomDrawer"
-                ZIndex="1"
                 HeightRequest="530"
                 VerticalOptions="End"
                 IsVisible="True"
                 Style="{StaticResource bottomDrawer}">
-            
-            <Border.GestureRecognizers>
-                <PanGestureRecognizer
+
+                <Border.GestureRecognizers>
+                    <PanGestureRecognizer
                     PanUpdated="PanGestureRecognizer_PanUpdated"/>
-            </Border.GestureRecognizers>
-            
-            <!--Questa è la tendina:-->
+                </Border.GestureRecognizers>
+
+                <!--Questa è la tendina:-->
                 <Grid RowSpacing="5" Margin="5" Padding="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="23"></RowDefinition>
@@ -56,7 +54,7 @@
                        HeightRequest="30"
                        WidthRequest="100"
                     />
-                    
+
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -146,7 +144,7 @@
                                     <lista:Giocatore Name="Porco"/>
                                 </x:Array>
                             </CollectionView.ItemsSource>
-                        </CollectionView>-->
+                            </CollectionView>-->
                         </Grid>
 
                     </Border>
@@ -156,6 +154,7 @@
                         Text="Abbandona"
                         BackgroundColor="{StaticResource AllertButton}"
                         Command="{Binding AbbandonaPartitaCommand}"
+                        CommandParameter="{Binding EventoAbbandona}"
                         Margin="0,0,0,110"
                         HeightRequest="40"
                         WidthRequest="150"
@@ -163,95 +162,9 @@
                         FontAttributes="Bold"
                         VerticalOptions="Start"
                         Padding="0,0,0,5"/>
-                
+                    
                 </Grid>
             </Border>
-        </Grid>
-
-        <!--SCHERMATA FINE PARTITA-->
-        
-        <Grid Grid.RowSpan="2" IsVisible="false">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-
-            <Rectangle
-                Grid.Row="0"
-                Margin="0"
-                WidthRequest="400"
-                HeightRequest="25"
-                Style="{StaticResource TopRectangle}"
-            />
-
-            <Image
-                Grid.Row="1"
-                ZIndex="0"
-                Source="black_pin_icon"
-                HorizontalOptions="Center"
-                WidthRequest="250"
-                HeightRequest="250"
-                Margin="0,20,0,0"
-            />
-
-            <Label
-                Grid.Row="2"
-                Text="PARTITA FINITA!"
-                FontSize="34"
-                FontFamily="NewRodin"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                Margin="0,25,0,0"
-            />
-            
-            <Grid Grid.Row="3" Margin="0,20,0,0" HeightRequest="50">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <Label 
-                    Grid.Column="0"
-                    Text="Hanno vinto i: "
-                    FontSize="24"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Start"
-                    Margin="20,0,0,0"
-                />
-
-                <Label 
-                    Grid.Column="1"
-                    Text="SQUADRA"
-                    FontSize="20"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Start"
-                />
-            </Grid>
-
-            <Button
-                Grid.Row="4"
-                Command="{Binding }"
-                Text="Torna alla HOME"
-                FontAttributes="Bold"
-                FontSize="24"
-                BackgroundColor="{StaticResource AllertButtonsLight}"
-                HeightRequest="70"
-                WidthRequest="250"
-                VerticalOptions="Center"
-                HorizontalOptions="Center"
-                Margin="15">
-                <Button.Shadow>
-                    <Shadow Brush="Black"
-                    Offset="0,0"
-                    Radius="50"
-                    Opacity="0.7"/>
-                </Button.Shadow>
-            </Button>
-
-
         </Grid>
 
     </Grid>

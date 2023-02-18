@@ -43,6 +43,13 @@ namespace ProjApp.ViewModel
         private string tendinaText = INFO_PARTITA_TEXT_DEFAULT;
         [ObservableProperty]
         private string tendinaTextDetail = "";
+
+        private bool HasLeft { get; set; } = false;
+
+        //serve per lo xaml perche non ho tempo di vedere come si fa bene
+        [ObservableProperty]
+        private string eventoAbbandona = MATCH_IS_OVER;
+
         //per vedere se vincono i cacciatori
         private static int numGiocatoriPresi = 0;
         private static int numGiocatoriTanati = 0;
@@ -118,8 +125,10 @@ namespace ProjApp.ViewModel
         }
 
         [RelayCommand]
-        public async Task AbbandonaPartita()
+        public async Task AbbandonaPartita(string eventType)
         {
+            HasLeft = true;
+
             //per myposalways
             if(!cancellationTokenSource.IsCancellationRequested) cancellationTokenSource.Cancel();
             
@@ -143,13 +152,13 @@ namespace ProjApp.ViewModel
 
             MyUser.currPartita.DisposeServerRegistrations();
 
-            Task.Delay(10).Wait();
+            Task.Delay(50).Wait();
 
             MyUser.currPartita = new();
 
 
             tap_counter = 0;
-            WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(LOBBY_HAS_BEEN_DELETED, NO_PAR));
+            WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(eventType, NO_PAR));
             await AppShell.Current.GoToAsync("..", false);
         }
 
@@ -437,8 +446,6 @@ namespace ProjApp.ViewModel
                                                         numGiocatoriPresi++;
                                                         alreadyIn.IsPreso = received.IsPreso;
                                                     }
-                                                        
-                                                    
                                                 }
                                                 else if (received.IsSalvo)
                                                 {
@@ -451,11 +458,10 @@ namespace ProjApp.ViewModel
                                                 }
                                                 if (numGiocatoriPresi + numGiocatoriTanati == (numGiocatori - QuantiCacciatori()))
                                                 {
-                                                    FinePartita();
+                                                    await FinePartita();
                                                 }
                                             }
                                         }
-
 
                                         if (p.IsVisible)
                                         {
@@ -467,10 +473,7 @@ namespace ProjApp.ViewModel
                                         }
                                     }
                                 }
-
-
                             }
-
                         });
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     })
@@ -489,12 +492,16 @@ namespace ProjApp.ViewModel
             }
         }
 
-        private void FinePartita()
+        private async Task FinePartita()
         {
-            Console.WriteLine($"sono stati presi:{numGiocatoriPresi} e {numGiocatoriTanati} giocatori si sono salvati");
+            if (!HasLeft)
+            {
+                Console.WriteLine($"sono stati presi:{numGiocatoriPresi} e {numGiocatoriTanati} giocatori si sono salvati");
 
-            //CARLO FAI QUI LA NAVIGAZIONE
+                await Task.Delay(5000);
 
+                await AbbandonaPartita(MATCH_IS_OVER);
+            }
         }
         private double GetDistance(double longitude, double latitude, double otherLongitude, double otherLatitude)
         {
