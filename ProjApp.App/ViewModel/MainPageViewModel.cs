@@ -321,10 +321,10 @@ namespace ProjApp.ViewModel
                             PinVisibilityPolicySet = true;
                             await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_RUOLO);
                             //avvio il countdown pre hunting
-                            StartCountdown((GameLogic.DELAY_INIZIO_GIOCO / 1000) / 60);
+                            StartCountdown(((double)GameLogic.DELAY_INIZIO_GIOCO / 1000) / 60);
                             await Task.Delay(GameLogic.DELAY_INIZIO_GIOCO);
                             //avvio il countdown della partita in minuti
-                            StartCountdown(10);
+                            StartCountdown(TEMPO_DI_GIOCO_MINUTI);
                             IsHuntPossible = true;
                         });
                     })
