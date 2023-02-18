@@ -49,7 +49,7 @@ namespace ProjApp.ViewModel
         [ObservableProperty]
         string codice;
         
-        public ObservableCollection<User> GiocatoriLobby = (ObservableCollection<User>)MyUser.currPartita.Players;
+        public ObservableCollection<User> GiocatoriLobby { get; set; } = (ObservableCollection<User>)MyUser.currPartita.Players;
 
         [ObservableProperty]
         bool hasCopied = false;

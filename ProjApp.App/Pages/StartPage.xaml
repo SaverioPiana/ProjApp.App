@@ -181,8 +181,11 @@
                          
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="classiGioco:User">
-                                <Border Style="bottomDrawer">
-                                    <Label Text="{Binding Nickname}" />
+                                <Border>
+                                    <Label 
+                                        Text="{Binding Nickname}" 
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center"/>
                                 </Border>
                                 
                             </DataTemplate>
