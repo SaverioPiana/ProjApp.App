@@ -27,9 +27,9 @@ namespace ProjApp.Gioco
         private bool isPreso = false;
         private bool isSalvo = false;
 
-        private HashSet<string> nicknameGiocatoriPresi = new HashSet<string>();
+        private IList<string> nicknameGiocatoriPresi = new List<string>();
 
-        public HashSet<string> NicknameGiocatoriPresi { get; set; }
+        public IList<string> NicknameGiocatoriPresi { get; set; }
         public bool IsCercatore { get; set; }
         public bool IsSalvo { get; set; }
         public bool IsPreso { get; set; }

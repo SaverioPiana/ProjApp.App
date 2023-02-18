@@ -38,8 +38,10 @@ namespace ProjApp.ViewModel
         [ObservableProperty]
         private string tendinaTextDetail = "";
         [ObservableProperty]
-        private string ruoloText = MyUser.user.IsCercatore ? "🤠 Seeker" : "😶‍🌫 Hider";
+        private string ruoloText = RuoloStaticDaTogliere;
 
+        //ASSOLUTAMENTE DA LEVARE , NON ABBIAMO TEMPO ORA
+        private static string RuoloStaticDaTogliere = MyUser.user.IsCercatore? "🤠 Seeker" : "😶‍🌫 Hider";
         private bool HasLeft { get; set; } = false;
 
         //per vedere se vincono i cacciatori
@@ -637,13 +639,13 @@ namespace ProjApp.ViewModel
                 case (EVENTO_CATTURA):
                 {
                     numGiocatoriPresi++;
-                    RuoloText = "👻 Preso";
+                    RuoloStaticDaTogliere = "👻 Preso";
                     break;
                 }
                 case (EVENTO_TANATO):
                 {
                     await ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_TANATO);
-                    RuoloText = "😇 Tanato";
+                    RuoloStaticDaTogliere = "😇 Tanato";
                     numGiocatoriTanati++;
                     break;
                 }
