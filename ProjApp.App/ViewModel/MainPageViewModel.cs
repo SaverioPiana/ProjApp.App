@@ -315,11 +315,7 @@ namespace ProjApp.ViewModel
                             await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_RUOLO);
                             //avvio il countdown pre hunting
                             StartCountdown(((double)GameLogic.DELAY_INIZIO_GIOCO / 1000) / 60);
-                            await Task.Delay(GameLogic.DELAY_INIZIO_GIOCO);
                             //avvio il countdown della partita in minuti
-                            await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_INIZIO);
-                            StartCountdown(TEMPO_DI_GIOCO_MINUTI);
-                            IsHuntPossible = true;
                         });
                     })
             );
@@ -360,11 +356,6 @@ namespace ProjApp.ViewModel
                             await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_RUOLO);
                             //avvio il countdown pre hunting
                             StartCountdown(((double)GameLogic.DELAY_INIZIO_GIOCO / 1000) / 60);
-                            await Task.Delay(GameLogic.DELAY_INIZIO_GIOCO);
-                            //avvio il countdown della partita in minuti
-                            await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_INIZIO);
-                            StartCountdown(GameLogic.TEMPO_DI_GIOCO_MINUTI);
-                            IsHuntPossible = true;
                         });
                         #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     }
@@ -705,6 +696,9 @@ namespace ProjApp.ViewModel
                     else
                     {
                         cs.Cancel();
+                        await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_INIZIO);
+                        isHuntPossible = true;
+                        StartCountdown(TEMPO_DI_GIOCO_MINUTI);
                     }
                 }
                 await Task.Delay(1000);
