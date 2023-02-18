@@ -135,11 +135,12 @@ public partial class MainPage : ContentPage
                             break;
 
                         case (AVVISO_MATCH_OVER):
+                            TendinaAvvisoBehavior = false;
                             string messaggioFinePartita = TEXTDETAIL_MATCHOVER;
                             if (MyUser.user.IsCercatore)
                             {
                                 IList<string> presi = MyUser.user.NicknameGiocatoriPresi;
-                                messaggioFinePartita += presi.Count==0 ? $"hai catturato {presi.Count} buddies!\n" +
+                                messaggioFinePartita += presi.Count!=0 ? $"hai catturato {presi.Count} buddies!\n" +
                                 "Tra questi ci sono:\n" : "non hai catturato nessuno, hai perso!\n";
                                 //per ogni giocatore che abbiamo preso lo
                                 foreach (var presoNick in presi)
@@ -162,10 +163,14 @@ public partial class MainPage : ContentPage
                     }
                 });
 
-                await OpenDrawer(m.Value.EventParameter, _cancelTokenSourceAvviso.Token);
+                
 
                 //se la partita è finita facciamo che l'avviso rimane
-                if (m.Value.EventType.Equals(AVVISO_MATCH_OVER)) return;
+                if (m.Value.EventType.Equals(AVVISO_MATCH_OVER))
+                {
+                    await OpenDrawer(openY, _cancelTokenSourceAvviso.Token);
+                    return;
+                }
 
                 await Task.Delay(15000, _cancelTokenSourceAvviso.Token);
 
