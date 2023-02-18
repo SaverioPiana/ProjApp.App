@@ -56,6 +56,17 @@ public partial class MainPage : ContentPage
                 {
                     switch (m.Value.EventType)
                     {
+                        case (AVVISO_RUOLO):
+                            if (MyUser.user.IsCercatore)
+                            {
+                                (BindingContext as MainPageViewModel).TendinaTextDetail = TEXTDETAIL_RUOLO_SEEKER;
+                            }
+                            else (BindingContext as MainPageViewModel).TendinaTextDetail = TEXTDETAIL_RUOLO_HIDER;
+
+                            vibrationLength = TimeSpan.FromSeconds(1);
+                            Vibration.Default.Vibrate(vibrationLength);
+                            break;
+
                         case (AVVISO_NOTIFICA):
                             if (MyUser.user.IsCercatore)
                             {
@@ -66,6 +77,7 @@ public partial class MainPage : ContentPage
                             vibrationLength = TimeSpan.FromSeconds(1);
                             Vibration.Default.Vibrate(vibrationLength);
                             break;
+
                         case (AVVISO_INSEGUIMENTO):
                             if (MyUser.user.IsCercatore)
                             {
@@ -85,6 +97,7 @@ public partial class MainPage : ContentPage
                                 }
                             }
                             break;
+
                         case (AVVISO_CATTURA):
                             if (MyUser.user.IsCercatore)
                             {

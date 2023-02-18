@@ -93,7 +93,7 @@ namespace ProjApp.MapEl.GPS
                     {
                         MainThread.BeginInvokeOnMainThread(() =>
                         {
-                            Microsoft.Maui.Controls.Application.Current.MainPage.DisplayAlert("Ao?",
+                            Microsoft.Maui.Controls.Application.Current.MainPage.DisplayAlert("Ao? 🤔",
                             "Pare che il tuo GPS prenda molto male",
                             "Prometto di uscire dal bunker");
                         });

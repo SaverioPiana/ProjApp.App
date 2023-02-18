@@ -43,6 +43,8 @@ namespace ProjApp.ViewModel
         private string tendinaText = INFO_PARTITA_TEXT_DEFAULT;
         [ObservableProperty]
         private string tendinaTextDetail = "";
+        [ObservableProperty]
+        private string ruoloText = MyUser.user.IsCercatore ? "🤠 Seeker" : "😶‍🌫 Hider";
 
         private bool HasLeft { get; set; } = false;
 
@@ -108,7 +110,7 @@ namespace ProjApp.ViewModel
         //////////////////////////////////////////////////////////////////////////////////////////////////
 
         //DEVO FARLO PER UN BUG IN MAUI DOVE LE SHELL CONTENT CON DATA BINDING NON VENGONO MAI CREATI PIU DI UNA VOLTA
-        //ANCHE SE USI TRANSIENT<>
+        //ANCHE SE USI TRANSIENT<> (ora MainPage non e piu nella shell quindi sta roba FORSE si puo levare ma finche funziona lascio cosi)
         public void Constructor()
         {
             //runniamo il check dei permessi sul main thread
@@ -316,6 +318,7 @@ namespace ProjApp.ViewModel
                         { 
                             await Task.Delay(2000);
                             PinVisibilityPolicySet = true;
+                            await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_RUOLO);
                             await Task.Delay(GameLogic.DELAY_INIZIO_GIOCO);
                             IsHuntPossible = true;
                         });
@@ -354,6 +357,7 @@ namespace ProjApp.ViewModel
                         {
                             await Task.Delay(2000);
                             PinVisibilityPolicySet = true;
+                            await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_RUOLO);
                             await Task.Delay(GameLogic.DELAY_INIZIO_GIOCO);
                             IsHuntPossible = true;
                         });

@@ -24,7 +24,7 @@ namespace ProjApp.Gioco
 
         public const int DELAY_INIZIO_GIOCO = 3000;
 
-        private const double APERTURA_TENDINA_AVVISI = 325;
+        public const double APERTURA_TENDINA_AVVISI = 325;
 
         public const long TIMEOUT_NOTIFICHE_AVVISO = TICS_PER_SECOND*120;
 
@@ -34,16 +34,19 @@ namespace ProjApp.Gioco
         public const string INFO_PARTITA_TEXT_AVVISO = "Avviso";
 
         //detail text cacciatori
-        public const string TEXTDETAIL_NOTIFICA_SEEKER = "Qualcuno si nasconde nei dintorni";
-        public const string TEXTDETAIL_INSEGUIMENTO_SEEKER = "SEI VICINO, CATTURALO!";
-        public const string TEXTDETAIL_CATTURA_SEEKER = "Cattura completata! :)";
+        public const string TEXTDETAIL_RUOLO_SEEKER = "Sei un cacciatore 🤠, aspetta che gli altri si nascondano";
+        public const string TEXTDETAIL_NOTIFICA_SEEKER = "Qualcuno si nasconde nei dintorni 👀";
+        public const string TEXTDETAIL_INSEGUIMENTO_SEEKER = "SEI VICINO, CATTURALO! 🏃";
+        public const string TEXTDETAIL_CATTURA_SEEKER = "CATTURA COMPLETATA! 😎";
 
         //detail text hiders
-        public const string TEXTDETAIL_NOTIFICA_HIDER = "Un cacciatore è nei paraggi";
-        public const string TEXTDETAIL_INSEGUIMENTO_HIDER = "SCAPPA DAL CACCIATORE!";
-        public const string TEXTDETAIL_CATTURA_HIDER = "Sei stato catturato! :(";
+        public const string TEXTDETAIL_RUOLO_HIDER = "Nasconditi dai cacciatori! 😶‍🌫";
+        public const string TEXTDETAIL_NOTIFICA_HIDER = "Un cacciatore è nei paraggi 👀";
+        public const string TEXTDETAIL_INSEGUIMENTO_HIDER = "SCAPPA DAL CACCIATORE! 😱";
+        public const string TEXTDETAIL_CATTURA_HIDER = "SEI STATO CATTURATO! 💀";
 
         //avvisi
+        public const string AVVISO_RUOLO = "EventoRuolo";
         public const string AVVISO_NOTIFICA = "EventoNotifica";
         public const string AVVISO_INSEGUIMENTO = "EventoInseguimento";
         public const string AVVISO_CATTURA = "EventoCattura";
