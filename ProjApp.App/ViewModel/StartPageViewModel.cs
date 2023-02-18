@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using ProjApp.Messagges;
 using System.Runtime.ConstrainedExecution;
+using ProjApp.Gioco;
 
 namespace ProjApp.ViewModel
 {
@@ -180,6 +181,14 @@ namespace ProjApp.ViewModel
                     break;
                 case (NICK_CHANGED):
                     Nick = uiEvent.EventParameter;
+                    break;
+                case (GameLogic.MATCH_OVER):
+                    while(nameof(AppShell.Current.CurrentPage).Equals(nameof(StartPage))) 
+                    {
+                        await Task.Delay(50);
+                    }
+                    await AppShell.Current.GoToAsync(nameof(EndPage), true);
+                    
                     break;
                 case (NAVIGATE_TO_MAIN_PAGE):
                     if(!HasToNavigate)

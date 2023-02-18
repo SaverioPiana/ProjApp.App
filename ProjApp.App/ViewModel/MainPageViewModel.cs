@@ -168,7 +168,8 @@ namespace ProjApp.ViewModel
                     break;
 
                 case MATCH_OVER:
-                    await AppShell.Current.GoToAsync(nameof(EndPage), true);
+                    await AppShell.Current.GoToAsync("..", false);
+                    WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(MATCH_OVER, NO_PAR));
                     break;
             }
             

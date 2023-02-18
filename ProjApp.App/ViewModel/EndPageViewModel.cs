@@ -8,7 +8,7 @@ namespace ProjApp.ViewModel
         [RelayCommand]
         private async Task ReturnToStartPage()
         {
-            await AppShell.Current.GoToAsync("../..", false);
+            await AppShell.Current.GoToAsync("..", false);
         }
 
     }
