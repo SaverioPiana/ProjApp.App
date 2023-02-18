@@ -122,10 +122,22 @@ public partial class MainPage : ContentPage
                             vibrationLength = TimeSpan.FromSeconds(2);
                             Vibration.Default.Vibrate(vibrationLength);
                             break;
+
+                        case (AVVISO_MATCH_OVER):
+                            if (MyUser.user.IsCercatore)
+                            {
+                                string messaggioFinePartita = TEXTDETAIL_MATCHOVER + "";
+                                (BindingContext as MainPageViewModel).TendinaTextDetail = messaggioFinePartita;
+                            }
+                            else (BindingContext as MainPageViewModel).TendinaTextDetail = TEXTDETAIL_MATCHOVER;
+
+                            vibrationLength = TimeSpan.FromSeconds(2);
+                            Vibration.Default.Vibrate(vibrationLength);
+                            break;
                     }
                 });
 
-                await OpenDrawer(m.Value.EventParameter, _cancelTokenSourceAvviso.Token);
+                await OpenDrawer(m.Value.EventParameter.Item1, _cancelTokenSourceAvviso.Token);
 
                 await Task.Delay(15000, _cancelTokenSourceAvviso.Token);
 

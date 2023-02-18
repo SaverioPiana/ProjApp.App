@@ -20,12 +20,6 @@ using ProjApp.MapEl.Serializable;
 using System.Text;
 using System.Data;
 using static ProjApp.Gioco.GameLogic;
-using ShimSkiaSharp;
-using Microsoft.VisualBasic;
-using static Google.Android.Material.Tabs.TabLayout;
-using Java.Nio.Channels;
-using System.Diagnostics;
-using System.Threading;
 
 namespace ProjApp.ViewModel
 {
@@ -47,10 +41,6 @@ namespace ProjApp.ViewModel
         private string ruoloText = MyUser.user.IsCercatore ? "🤠 Seeker" : "😶‍🌫 Hider";
 
         private bool HasLeft { get; set; } = false;
-
-        //serve per lo xaml perche non ho tempo di vedere come si fa bene
-        [ObservableProperty]
-        private string eventoAbbandona = LOBBY_HAS_BEEN_DELETED;
 
         //per vedere se vincono i cacciatori
         private static int numGiocatoriPresi = 0;
@@ -127,7 +117,7 @@ namespace ProjApp.ViewModel
         }
 
         [RelayCommand]
-        public async Task AbbandonaPartita(string eventType)
+        public async Task AbbandonaPartita()
         {
             HasLeft = true;
 
@@ -162,18 +152,9 @@ namespace ProjApp.ViewModel
             tap_counter = 0;
             WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(LOBBY_HAS_BEEN_DELETED, NO_PAR));
 
-            switch (eventType) {
-                case LOBBY_HAS_BEEN_DELETED:
-                    await AppShell.Current.GoToAsync("..", false);
-                    break;
-
-                case MATCH_OVER:
-                    await AppShell.Current.GoToAsync("..", false);
-                    WeakReferenceMessenger.Default.Send<UIChangeAlertStartPage>(new(MATCH_OVER, NO_PAR));
-                    break;
-            }
-            
-        }
+            await AppShell.Current.GoToAsync("..", false);
+        } 
+        
 
         //forse va messa una condizione in modo tale che non runni sempre all avvio, tipo salvarci un bool su un file boh
         private async void CheckANDSetPermission()
@@ -515,7 +496,7 @@ namespace ProjApp.ViewModel
 
                 await Task.Delay(5000);
 
-                await AbbandonaPartita(MATCH_OVER);
+                await ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_MATCH_OVER);
             }
         }
         private double GetDistance(double longitude, double latitude, double otherLongitude, double otherLatitude)

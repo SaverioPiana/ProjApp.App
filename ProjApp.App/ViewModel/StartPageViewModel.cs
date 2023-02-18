@@ -81,7 +81,7 @@ namespace ProjApp.ViewModel
         [RelayCommand]
         public async void AvviaPartita()
         {
-            if(HasCreated)
+            if (HasCreated)
             {
                 MyUser.currPartita.StartGame();
             }
@@ -173,23 +173,18 @@ namespace ProjApp.ViewModel
                     IsCodiceVisible = true;
                     await MainThread.InvokeOnMainThreadAsync(WaitToNavigate);
                     break;
+
                 case (LOBBY_HAS_BEEN_DELETED):
                     CanJoin = true;
                     IsCodiceVisible = false;
                     Codice = string.Empty;
                     HasCreated = false;
                     break;
+
                 case (NICK_CHANGED):
                     Nick = uiEvent.EventParameter;
                     break;
-                case (GameLogic.MATCH_OVER):
-                    while(nameof(AppShell.Current.CurrentPage).Equals(nameof(StartPage))) 
-                    {
-                        await Task.Delay(50);
-                    }
-                    await AppShell.Current.GoToAsync(nameof(EndPage), true);
-                    
-                    break;
+
                 case (NAVIGATE_TO_MAIN_PAGE):
                     if(!HasToNavigate)
                     {
