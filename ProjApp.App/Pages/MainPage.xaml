@@ -151,12 +151,16 @@
                         />
 
                             <!--<CollectionView>
-                            <CollectionView.ItemsSource>
-                                <x:Array Type="{x:Type lista:Giocatore}">
-                                    <lista:Giocatore Name="Porco"/>
-                                </x:Array>
-                            </CollectionView.ItemsSource>
-                            </CollectionView>-->
+                                <CollectionView.ItemsSource>
+                                    <x:Array Type="{x:Type lista:Giocatore}">
+                                       <lista:Giocatore Name="Porco"/>
+                                    </x:Array>
+                                </CollectionView.ItemsSource>
+                            </CollectionView>
+                            <DataTemplate x:DataType="lista:Giocatore">
+                            
+                            </DataTemplate>-->
+                            
                         </Grid>
 
                     </Border>
