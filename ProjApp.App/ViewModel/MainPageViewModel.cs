@@ -676,9 +676,9 @@ namespace ProjApp.ViewModel
             _startTime = DateTime.Now;
             _cancellationTokenSourceForTimer = new CancellationTokenSource();
             _duration = TimeSpan.FromMinutes(minuti).TotalMilliseconds;
-            CountDown();
+            Task.Run(CountDown, _cancellationTokenSourceForTimer.Token);
         }
-        private async void CountDown()
+        private async Task CountDown()
         {
             while (!_cancellationTokenSourceForTimer.IsCancellationRequested)
             {
@@ -687,12 +687,19 @@ namespace ProjApp.ViewModel
 
                 //metti secondsRemaining nella view
                 timerToString(secondsRemaining);
-                
-                if(secondsRemaining < 0 && IsHuntPossible) 
-                {
-                    await FinePartita();
-                }
 
+                if (secondsRemaining <= 0)
+                {
+                    if (IsHuntPossible)
+                    {
+                        _cancellationTokenSourceForTimer.Cancel();
+                        await FinePartita();
+                    }
+                    else
+                    {
+                        _cancellationTokenSourceForTimer.Cancel();
+                    }
+                }
                 await Task.Delay(1000);
             }
         }
