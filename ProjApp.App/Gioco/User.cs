@@ -22,13 +22,32 @@ namespace ProjApp.Gioco
         ////////////////////////////////////////////////////////////////////////////////////
         [JsonIgnore]
         private object lockObject = new object();
+        [JsonIgnore]
+        private object lockObjectpreso = new object();
         private Location position;
+        private bool isPreso;
 
         public IList<string> NicknameGiocatoriPresi { get; set; } = new List<string>();
 
         public bool IsCercatore { get; set; } = false;
         public bool IsSalvo { get; set; } = false;
-        public bool IsPreso { get; set; } = false;
+        public bool IsPreso
+        {
+            get
+            {
+                lock (lockObjectpreso)
+                {
+                    return isPreso;
+                }
+            }
+            set
+            {
+                lock (lockObjectpreso)
+                {
+                    isPreso = value;
+                }
+            }
+        }
         public string Nickname { get; set; }
         public string UserID { get; set; }
         [JsonIgnore]
@@ -67,6 +86,7 @@ namespace ProjApp.Gioco
             //dobbiamo crearlo dopo perche non abbiamo piu la mapview
             UserPin = new();
             position = posizione;
+            IsPreso = false;
         }
 
         public static List<string> GetIconsFromImages()
