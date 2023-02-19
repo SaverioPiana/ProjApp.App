@@ -21,20 +21,20 @@ namespace ProjApp.Gioco
                 .WithAutomaticReconnect()
                 .Build();
 
-            Task.Run(this.serverMessages);
+            //Task.Run(this.serverMessages);
 
         }
 
-        private void serverMessages()
-        {
+        //private void serverMessages()
+        //{
 
-            con.On<string>("ServerMessage", (mess) =>
-            {
-                Console.WriteLine($"///SERVER///::  {mess}");
+        //    con.On<string>("ServerMessage", (mess) =>
+        //    {
+        //        Console.WriteLine($"///SERVER///::  {mess}");
 
-            });
+        //    });
 
-        }
+        //}
 
 
 
