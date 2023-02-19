@@ -137,8 +137,10 @@ namespace ProjApp.ViewModel
             //aggiungo ai gioc rec se gia non ci sono, al massimo i primi 5 gioc
             foreach(User user in daInserire)
             {
-                if(!ProfilePageViewModel.GiocatoriRecenti.Contains(user))
+                if (!ProfilePageViewModel.GiocatoriRecenti.Contains(user))
+                {
                     ProfilePageViewModel.GiocatoriRecenti.Add(user);
+                }
 
                 i++;
                 if (i == 5) break;
@@ -504,6 +506,8 @@ namespace ProjApp.ViewModel
                 await Task.Delay(5000);
 
                 await ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_MATCH_OVER);
+
+                cstimer.Cancel();
             }
         }
         private double GetDistance(double longitude, double latitude, double otherLongitude, double otherLatitude)
@@ -541,9 +545,9 @@ namespace ProjApp.ViewModel
             while (!cancellationTokenSource.IsCancellationRequested)
             {
                 await MyUser.Get_Position();
-                Position p = MyUser.user.UserPin.Position;
+                Position pos = new(MyUser.user.Position.Latitude, MyUser.user.Position.Longitude);
                 //ma serve ancora sta cosa???? ----- Carlo: SI zi
-                Mapview.MyLocationLayer.UpdateMyLocation(p, false);
+                Mapview.MyLocationLayer.UpdateMyLocation(pos, false);
                 if (firstupdate)
                 {
                     Mapview.Navigator.FlyTo(SphericalMercator.FromLonLat(
@@ -562,6 +566,14 @@ namespace ProjApp.ViewModel
                     firstupdate = false;
                     Mapview.IsMyLocationButtonVisible = true;
                 }
+                foreach (Pin pin in Mapview.Pins)
+                {
+                    if (pin.Label.Equals(MyUser.user.UserID)) 
+                    {
+                        pin.Position = pos;
+                    }
+                }
+
                 updateCtr++;
                 Console.WriteLine($"Position updated from {MyUser.user.UserID} {updateCtr} times (continuos update)");
 
@@ -631,7 +643,6 @@ namespace ProjApp.ViewModel
             MyUser.user.UserPin.Icon = MyUser.user.UserIcon;
 
             cancellationTokenSource.Cancel();
-            MyUser.CancelPositionRequest();
 
             //aggiungere te stesso all evento giusto
             switch (eventoDiGioco)
@@ -655,15 +666,16 @@ namespace ProjApp.ViewModel
         //TIMER
         DateTime _startTime;
         double _duration;
+        CancellationTokenSource cstimer = new CancellationTokenSource();
         [ObservableProperty]
         private string countDowntimer = "Starting";
 
         private async Task StartCountdown(double minuti)
         {
             _startTime = DateTime.Now;
-            CancellationTokenSource cancellationTokenSourceForTimer = new CancellationTokenSource();
             _duration = TimeSpan.FromMinutes(minuti).TotalMilliseconds;
-            await CountDown(cancellationTokenSourceForTimer);
+            cstimer = new();
+            await CountDown(cstimer);
         }
         private async Task CountDown(CancellationTokenSource cs)
         {

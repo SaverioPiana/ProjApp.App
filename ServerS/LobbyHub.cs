@@ -16,30 +16,36 @@ namespace ServerS
         public static Dictionary<string, Lobby> lobbies = new Dictionary<string, Lobby>();
         public async Task SendPosition(string user, string lobbid)
         {
+            await Clients.Caller.SendAsync("ServerMessage", "ryewuirywu");
             await Clients.OthersInGroup(lobbid).SendAsync("PositionReceived", user);
             //await Clients.Group(lobbid).SendAsync("PositionReceived", user);
         }
         
         public void CreateLobby(string id)
         {
+            Clients.Caller.SendAsync("ServerMessage", id);
             // create a new lobby
             var lobby = new Lobby(id);
+            Clients.Caller.SendAsync("ServerMessage", lobby!=null ? lobby.ToString() : "lobby nulla");
 
             // add the lobby to the list of lobbies
             lobbies.Add(lobby.Id, lobby);
+            Clients.Caller.SendAsync("ServerMessage", "added" + lobby.ToString());
         }
 
         public async Task IfCheckThenJoin(string lobbyId, string jsonUser)
         {
             try 
-            { 
-            bool lobbyvalid = lobbies.ContainsKey(lobbyId);
+            {
+                await Clients.Caller.SendAsync("ServerMessage", "ryewuirywu");
+                //await Clients.Caller.SendAsync("ServerMessage", lobbyId);
+                bool lobbyvalid = lobbies.ContainsKey(lobbyId);
                 if (lobbyvalid) {
                     if (lobbies[lobbyId].IsStarted)
                     {
                         await Clients.Caller.SendAsync("ServerError", PARTITA_IN_CORSO);
                     }
-                        else await Clients.Caller.SendAsync("JoinLobby", lobbyId, jsonUser);
+                    else await Clients.Caller.SendAsync("JoinLobby", lobbyId, jsonUser);
                 }
                 else {
                     await Clients.Caller.SendAsync("ServerError", INVALID_ID); }

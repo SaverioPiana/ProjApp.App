@@ -30,7 +30,7 @@ namespace ProjApp.MapEl.GPS
 
         //SignalR Parametri
         public readonly static int SEND_POS_DELAY = 3000;
-        public readonly static int FIND_POS_DELAY = 500;
+        public readonly static int FIND_POS_DELAY = 200;
         public static bool SEND_POSITION = false;
 
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
@@ -70,21 +70,19 @@ namespace ProjApp.MapEl.GPS
         {
             try
             {
+
                 _isCheckingLocation = true;
 
                 GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(6));
 
+
                 _cancelTokenSource = new CancellationTokenSource();
 
                 Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
-                    
-                if (_cancelTokenSource.IsCancellationRequested) 
-                { 
-                    return;
-                }
 
-                if (location != null && location.Accuracy < 40)
+                if (location != null && location.Accuracy < 50)
                 {
+                    consecutiveChecks = 0;
                     user.Position = location;
                     SaveLastPositionOnFile(location);
                     Console.WriteLine($"GET_POSITION::: Accuracy: {location.Accuracy} Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
@@ -115,6 +113,7 @@ namespace ProjApp.MapEl.GPS
             finally
             {
                 _isCheckingLocation = false;
+                await Task.Delay(FIND_POS_DELAY);
             }
             
         }
@@ -227,7 +226,7 @@ namespace ProjApp.MapEl.GPS
         public static async Task inviaPosSignalR()
         {
             while(SEND_POSITION)
-            {
+            {   
                 if (Connessione.con.State.Equals(HubConnectionState.Connected))
                 {
                     string jsonUser = CreateJsonUser(user);

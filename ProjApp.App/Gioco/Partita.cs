@@ -73,6 +73,7 @@ namespace ProjApp.Gioco
 
         public void CreateLobby(string jsonUser)
         {
+            
             MyUser.isAdmin = true;
             cod_partita = CreateCode();
 
