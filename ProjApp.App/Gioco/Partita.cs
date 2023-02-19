@@ -193,6 +193,7 @@ namespace ProjApp.Gioco
         public static void LobbyParamReset()
         {
             MyUser.user.IsPreso = false;
+            MyUser.user.IsSalvo = false;
             MyUser.user.IsCercatore = false;
             MyUser.isAdmin = false;
             MyUser.SEND_POSITION = false;
