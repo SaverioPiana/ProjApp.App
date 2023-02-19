@@ -160,13 +160,15 @@ namespace ProjApp.Gioco
                     if (!MyUser.user.IsCercatore && !MyUser.user.IsPreso)
                     {
                         MainPageViewModel.EventoDiGioco(MainPageViewModel.DEAD_ICON_FILENAME, MainPageViewModel.EVENTO_CATTURA);
+                        await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_CATTURA);
                     }
                     //se sei il cercatore aggiungi laltro user alla lista dei tuoi presi
-                    if(MyUser.user.IsCercatore && !receivedUser.IsSalvo)
+                    if(MyUser.user.IsCercatore && !receivedUser.IsSalvo && !MyUser.user.NicknameGiocatoriPresi.Contains(receivedUser.Nickname))
                     {
                         MyUser.user.NicknameGiocatoriPresi.Add(receivedUser.Nickname);
+                        await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_CATTURA);
                     }
-                    await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_CATTURA);
+                    
                 }
             }
             else

@@ -139,7 +139,7 @@ public partial class MainPage : ContentPage
                             string messaggioFinePartita = TEXTDETAIL_MATCHOVER;
                             if (MyUser.user.IsCercatore)
                             {
-                                IList<string> presi = MyUser.user.NicknameGiocatoriPresi;
+                                List<string> presi = MyUser.user.NicknameGiocatoriPresi;
                                 messaggioFinePartita += presi.Count!=0 ? $"hai catturato {presi.Count} buddies!\n" +
                                 "Tra questi ci sono:\n" : "non hai catturato nessuno, hai perso!\n";
                                 //per ogni giocatore che abbiamo preso lo

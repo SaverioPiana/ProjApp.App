@@ -27,7 +27,7 @@ namespace ProjApp.Gioco
         private Location position;
         private bool isPreso;
 
-        public IList<string> NicknameGiocatoriPresi { get; set; } = new List<string>();
+        public List<string> NicknameGiocatoriPresi { get; set; } = new List<string>();
 
         public bool IsCercatore { get; set; } = false;
         public bool IsSalvo { get; set; } = false;
