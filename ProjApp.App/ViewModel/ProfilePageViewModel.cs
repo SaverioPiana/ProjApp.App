@@ -2,7 +2,9 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using ProjApp.Gioco;
 using ProjApp.MapEl.GPS;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using static ProjApp.ViewModel.StartPageViewModel;
 
@@ -24,6 +26,9 @@ namespace ProjApp.ViewModel
         private bool changingNick = false;
         [ObservableProperty]
         private bool doneChangingNickname = true;
+
+        public static ObservableCollection<User> GiocatoriRecenti { get; set; } = new();
+        public ObservableCollection<User> GiocatoriRecentiBinding { get; set; } = GiocatoriRecenti;
 
         private bool firstTime = true;
 

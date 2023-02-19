@@ -20,6 +20,7 @@ using ProjApp.MapEl.Serializable;
 using System.Text;
 using System.Data;
 using static ProjApp.Gioco.GameLogic;
+using System.Collections.ObjectModel;
 
 namespace ProjApp.ViewModel
 {
@@ -123,6 +124,19 @@ namespace ProjApp.ViewModel
 
             //per myposalways
             if (!cancellationTokenSource.IsCancellationRequested) cancellationTokenSource.Cancel();
+
+            ObservableCollection<User> daInserire = new(MyUser.currPartita.Players.Where((user) => !user.UserID.Equals(MyUser.user.UserID)));
+            int i = 0;
+            foreach(User user in daInserire)
+            {
+                if(!ProfilePageViewModel.GiocatoriRecenti.Contains(user))
+                    ProfilePageViewModel.GiocatoriRecenti.Add(user);
+
+                i++;
+                if (i == 5) break;
+            }
+            
+            //ProfilePageViewModel.GiocatoriRecenti = MyUser.currPartita.Players;
 
             MyUser.currPartita.LeaveLobby();
 
@@ -298,7 +312,7 @@ namespace ProjApp.ViewModel
         private void riceviOggettiDiGioco()
         {
             serverRegistrations.Add( 
-                Connessione.con.On<string, string>("RiceviOggettiDiGioco", (coordarea, tana) =>
+                Connessione.con.On<string, string>("RiceviOggettiDiGioco", async(coordarea, tana) =>
                     {
                         SerializableCoordinate[] ca = JsonSerializer.Deserialize<SerializableCoordinate[]>(coordarea);
                         SerializableCoordinate ct = JsonSerializer.Deserialize<SerializableCoordinate>(tana);
@@ -308,13 +322,13 @@ namespace ProjApp.ViewModel
                         //DA CAMBIARE
                         //ricevuti gli oggetti di gioco la partita "comincia" dopo qualche secondo, potremmo 
                         //fare che l'admin ha un bottone "inizia" e li i pin saranno visibili in base al ruolo
-                        Task.Run(async() => 
+                        await Task.Run(async() => 
                         { 
                             await Task.Delay(2000);
                             PinVisibilityPolicySet = true;
                             await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_RUOLO);
                             //avvio il countdown pre hunting
-                            StartCountdown(((double)GameLogic.DELAY_INIZIO_GIOCO / 1000) / 60);
+                            await StartCountdown(((double)GameLogic.DELAY_INIZIO_GIOCO / 1000) / 60);
                             //avvio il countdown della partita in minuti
                         });
                     })
@@ -348,16 +362,14 @@ namespace ProjApp.ViewModel
                         inviaOggettiDiGioco();
 
                         //causa problemi l'await???
-                        #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                        Task.Run(async () =>
+                        await Task.Run(async () =>
                         {
                             await Task.Delay(2000);
                             PinVisibilityPolicySet = true;
                             await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_RUOLO);
                             //avvio il countdown pre hunting
-                            StartCountdown(((double)GameLogic.DELAY_INIZIO_GIOCO / 1000) / 60);
+                            await StartCountdown(((double)GameLogic.DELAY_INIZIO_GIOCO / 1000) / 60);
                         });
-                        #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     }
                     else tap_counter--;
                     break;
@@ -669,12 +681,12 @@ namespace ProjApp.ViewModel
         [ObservableProperty]
         private string countDowntimer = "Starting";
 
-        private void StartCountdown(double minuti)
+        private async Task StartCountdown(double minuti)
         {
             _startTime = DateTime.Now;
             CancellationTokenSource cancellationTokenSourceForTimer = new CancellationTokenSource();
             _duration = TimeSpan.FromMinutes(minuti).TotalMilliseconds;
-            Task.Run(() => CountDown(cancellationTokenSourceForTimer), cancellationTokenSourceForTimer.Token);
+            await CountDown(cancellationTokenSourceForTimer);
         }
         private async Task CountDown(CancellationTokenSource cs)
         {
@@ -697,8 +709,8 @@ namespace ProjApp.ViewModel
                     {
                         cs.Cancel();
                         await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_INIZIO);
-                        isHuntPossible = true;
-                        StartCountdown(TEMPO_DI_GIOCO_MINUTI);
+                        IsHuntPossible = true;
+                        await StartCountdown(TEMPO_DI_GIOCO_MINUTI);
                     }
                 }
                 await Task.Delay(1000);

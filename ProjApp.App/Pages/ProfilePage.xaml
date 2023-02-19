@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:classiGioco="clr-namespace:ProjApp.Gioco"
              x:Class="ProjApp.ProfilePage"
              xmlns:viewmodel="clr-namespace:ProjApp.ViewModel"
              x:DataType="viewmodel:ProfilePageViewModel"
@@ -158,14 +159,37 @@
                     Opacity="0.55" />
             </Border.Shadow>
 
-            <Label 
-                Text="Giocatori recenti:"
-                FontSize="20"
-                Margin="15"
-                VerticalOptions="Start"
-                HorizontalOptions="Start"
-            />
-            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label 
+                    Grid.Row="0"
+                    Text="Giocatori recenti:"
+                    FontSize="20"
+                    Margin="15"
+                    HeightRequest="30"
+                    VerticalOptions="Start"
+                    HorizontalOptions="Start"
+                />
+
+                <CollectionView ItemsSource="{Binding GiocatoriRecentiBinding}" SelectionMode="None" Grid.Row="1"
+                                    HorizontalOptions="Center">
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="classiGioco:User">
+                            <Border Padding="15" WidthRequest="300" Margin="2">
+                                <Label 
+                                            Text="{Binding Nickname}" 
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center"/>
+                            </Border>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
         </Border>
 
         <Button
