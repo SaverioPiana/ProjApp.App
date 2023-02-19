@@ -79,7 +79,7 @@ namespace ServerS
             await Clients.OthersInGroup(lobbyId).SendAsync("RiceviOggettiDiGioco",
                 arg1: area,
                 arg2: tana);
-            //await Clients.Group(lobbyId).SendAsync("ServerMessage", "OGGETTI DI GIOCO INVIATI");
+            await Clients.Group(lobbyId).SendAsync("ServerMessage", "OGGETTI DI GIOCO INVIATI");
 
         } 
         public async Task LeaveLobby(string lobbyId, string uid)
