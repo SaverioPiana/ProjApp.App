@@ -241,22 +241,6 @@ namespace ProjApp.MapEl.GPS
             }
         }
 
-        public static async Task inviaPosOneLastTime()
-        {
-            //aspetta di essere connesso
-            while (!Connessione.con.State.Equals(HubConnectionState.Connected))
-            {
-                await Task.Delay(500);
-            }
-           
-            string jsonUser = CreateJsonUser(user);
-
-            await Connessione.con.InvokeAsync("SendPosition",
-                    arg1: jsonUser,
-                    //Codice lobby
-                    arg2: currPartita.Cod_partita); 
-        }
-
         public static string CreateJsonUser(User u)
         {
             return JsonSerializer.Serialize<User>(u,

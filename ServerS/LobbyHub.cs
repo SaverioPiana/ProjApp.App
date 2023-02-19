@@ -136,5 +136,25 @@ namespace ServerS
             await Clients.GroupExcept(lobbyId, lobby.cacciatori).SendAsync("GameStarted" , false);
             //await Clients.Group(lobbyId).SendAsync("GameStarted", false);
         }
+
+        public async Task GiocatorePreso(string lid)
+        {
+            var lobby = lobbies[lid];
+            lobby.NumGiocatoriPresi++;
+            if (lobby.IsPartitaFinita())
+            {
+                await Clients.Group(lid).SendAsync("FinePartita");
+            }
+        }
+
+        public async Task GiocatoreTanato(string lid)
+        {
+            var lobby = lobbies[lid];
+            lobby.NumGiocatoriTanati++;
+            if (lobby.IsPartitaFinita())
+            {
+                await Clients.Group(lid).SendAsync("FinePartita");
+            }
+        }
     }
 }

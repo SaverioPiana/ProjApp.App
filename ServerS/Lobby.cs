@@ -12,8 +12,16 @@ namespace ServerS
         public bool IsStarted { get; set; }
 
         public List<string> cacciatori { get; set; } = new List<string>();
-        public List<string> ConnectedClients { get; set; } = new List<string>();
 
+        //va aggiornata con i gioactori crashati (non ho contatti da loro per tipo 30 se / 1 min)
+        public List<string> ConnectedClients { get; set; } = new List<string>();
+        public int NumGiocatoriPresi { get; set; } = 0;
+        public int NumGiocatoriTanati { get; set; } = 0;
+        
+        public bool IsPartitaFinita()
+        {
+            return (NumGiocatoriPresi + NumGiocatoriTanati) == (ConnectedClients.Count - cacciatori.Count);
+        }
 
         public Lobby(string id)
         {

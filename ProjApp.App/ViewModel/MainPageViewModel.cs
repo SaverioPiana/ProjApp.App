@@ -289,6 +289,8 @@ namespace ProjApp.ViewModel
             Task.Run(aggiungiAltriGiocatoriAllaMappa);
 
             Task.Run(CreaAreaETana);
+
+            Task.Run(() => { Connessione.con.On("FinePartita", FinePartita); });
         }
 
         public void CreaAreaETana()
@@ -463,28 +465,6 @@ namespace ProjApp.ViewModel
                                             {
                                                 p.IsVisible = true;
                                                 p.Icon = received.UserIcon;
-                                                if (received.IsPreso)
-                                                {
-                                                    if(!alreadyIn.IsPreso) 
-                                                    {
-                                                        //incrementa giocatori presi
-                                                        numGiocatoriPresi++;
-                                                        alreadyIn.IsPreso = received.IsPreso;
-                                                    }
-                                                }
-                                                else if (received.IsSalvo)
-                                                {
-                                                    if (!alreadyIn.IsSalvo)
-                                                    {
-                                                        //incrementa giocatori presi
-                                                        numGiocatoriTanati++;
-                                                        alreadyIn.IsSalvo = received.IsSalvo;
-                                                    }
-                                                }
-                                                if (numGiocatoriPresi + numGiocatoriTanati == (numGiocatori - QuantiCacciatori()))
-                                                {
-                                                    await FinePartita();
-                                                }
                                             }
                                         }
 
@@ -503,18 +483,6 @@ namespace ProjApp.ViewModel
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     })
                 );
-        }
-
-
-        private int QuantiCacciatori()
-        {
-            if (numGiocatori/ 3 > 0)
-            {
-                return (numGiocatori) - (numGiocatori / 3);
-            }else
-            {
-                return 1;
-            }
         }
 
         private async Task FinePartita()
@@ -661,9 +629,9 @@ namespace ProjApp.ViewModel
             //ultimo invio a tutti con icona morto/tanato e isPreso/isSalvo = true
             MyUser.user.UserIcon = ReadResource(iconfilename);
             MyUser.user.UserPin.Icon = MyUser.user.UserIcon;
+
+            cancellationTokenSource.Cancel();
             MyUser.SEND_POSITION = false;
-            //aspettiamo che un minimo passi dall'ultimo invio
-            await Task.Delay(1000);
 
             //aggiungere te stesso all evento giusto
             switch (eventoDiGioco)
@@ -671,20 +639,16 @@ namespace ProjApp.ViewModel
                 case (EVENTO_CATTURA):
                 {
                     MyUser.user.IsPreso = true;
-                    numGiocatoriPresi++;
+                    await Connessione.con.InvokeAsync("GiocatorePreso", MyUser.currPartita.Cod_partita);
                     break;
                 }
                 case (EVENTO_TANATO):
                 {
+                    await Connessione.con.InvokeAsync("GiocatoreTanato", MyUser.currPartita.Cod_partita);
                     await ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_TANATO);
-                    numGiocatoriTanati++;
                     break;
                 }
             }
-            
-            await MyUser.inviaPosOneLastTime();
-
-            cancellationTokenSource.Cancel();
         }
 
 
