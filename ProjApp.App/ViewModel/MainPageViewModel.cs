@@ -127,6 +127,14 @@ namespace ProjApp.ViewModel
 
             ObservableCollection<User> daInserire = new(MyUser.currPartita.Players.Where((user) => !user.UserID.Equals(MyUser.user.UserID)));
             int i = 0;
+            //se sono piu di 5 rimuovo i primi 3 (i piu vecchi)
+            if(ProfilePageViewModel.GiocatoriRecenti.Count > 5) 
+            {
+                ProfilePageViewModel.GiocatoriRecenti.RemoveAt(0);
+                ProfilePageViewModel.GiocatoriRecenti.RemoveAt(1);
+                ProfilePageViewModel.GiocatoriRecenti.RemoveAt(2);
+            }
+            //aggiungo ai gioc rec se gia non ci sono, al massimo i primi 5 gioc
             foreach(User user in daInserire)
             {
                 if(!ProfilePageViewModel.GiocatoriRecenti.Contains(user))
