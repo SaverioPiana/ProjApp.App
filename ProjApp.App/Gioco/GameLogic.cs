@@ -162,7 +162,7 @@ namespace ProjApp.Gioco
                         MainPageViewModel.EventoDiGioco(MainPageViewModel.DEAD_ICON_FILENAME, MainPageViewModel.EVENTO_CATTURA);
                     }
                     //se sei il cercatore aggiungi laltro user alla lista dei tuoi presi
-                    if(MyUser.user.IsCercatore)
+                    if(MyUser.user.IsCercatore && !receivedUser.IsSalvo)
                     {
                         MyUser.user.NicknameGiocatoriPresi.Add(receivedUser.Nickname);
                     }

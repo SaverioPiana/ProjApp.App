@@ -160,6 +160,7 @@ namespace ServerS
             lobby.NumGiocatoriTanati++;
             if (lobby.IsPartitaFinita())
             {
+                await Clients.Group(lid).SendAsync("ServerMessage", "FINEPARTITA");
                 await Clients.Group(lid).SendAsync("FinePartita");
             }
         }

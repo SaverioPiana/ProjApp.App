@@ -344,6 +344,7 @@ namespace ProjApp.ViewModel
                             PinVisibilityPolicySet = true;
                             await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_RUOLO);
                             //avvio il countdown pre hunting
+                            bool ciao = MainThread.IsMainThread;
                             await StartCountdown(((double)GameLogic.DELAY_INIZIO_GIOCO / 1000) / 60);
                             //avvio il countdown della partita in minuti
                         });
@@ -426,8 +427,7 @@ namespace ProjApp.ViewModel
                 Connessione.con.On<string>("PositionReceived",  async(receiveduser) =>
                     {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                        Task.Run(async () =>
-                        {
+                        
                             SerializableUser received = JsonSerializer.Deserialize<SerializableUser>(receiveduser);
                             Console.WriteLine($"/////////Posizione ricevuta da:{received.UserID} , " +
                                 $"lat:{received.Position.Latitude}, lon: {received.Position.Longitude}");
@@ -481,7 +481,7 @@ namespace ProjApp.ViewModel
                                     }
                                 }
                             }
-                        });
+                        
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     })
                 );
@@ -709,7 +709,7 @@ namespace ProjApp.ViewModel
                         cs.Cancel();
                         await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_INIZIO);
                         IsHuntPossible = true;
-                        await StartCountdown(TEMPO_DI_GIOCO_MINUTI);
+                        Task.Run(async() => await StartCountdown(TEMPO_DI_GIOCO_MINUTI));
                     }
                 }
                 await Task.Delay(1000);
