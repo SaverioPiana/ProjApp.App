@@ -426,8 +426,8 @@ namespace ProjApp.ViewModel
             serverRegistrations.Add( 
                 Connessione.con.On<string>("PositionReceived",  async(receiveduser) =>
                     {
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                        
+                        await Task.Run(async () =>
+                        {
                             SerializableUser received = JsonSerializer.Deserialize<SerializableUser>(receiveduser);
                             Console.WriteLine($"/////////Posizione ricevuta da:{received.UserID} , " +
                                 $"lat:{received.Position.Latitude}, lon: {received.Position.Longitude}");
@@ -481,8 +481,7 @@ namespace ProjApp.ViewModel
                                     }
                                 }
                             }
-                        
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                        });
                     })
                 );
         }
