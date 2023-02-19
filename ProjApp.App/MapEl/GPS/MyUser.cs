@@ -83,7 +83,7 @@ namespace ProjApp.MapEl.GPS
                     return;
                 }
 
-                if (location != null && location.Accuracy < 25)
+                if (location != null && location.Accuracy < 40)
                 {
                     user.Position = location;
                     SaveLastPositionOnFile(location);

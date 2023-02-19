@@ -233,6 +233,7 @@ namespace ProjApp.ViewModel
 
         public void MapInitializer()
         {
+            cancellationTokenSource = new CancellationTokenSource();
             MPoint initpos = new MPoint(MyUser.user.Position.Longitude,
                 MyUser.user.Position.Latitude);
             Mapview.MyLocationLayer.UpdateMyLocation(initpos.ToMaui());
@@ -254,7 +255,6 @@ namespace ProjApp.ViewModel
                 Mapview.Pins.Add(toAdd);
             }
 
-            cancellationTokenSource = new CancellationTokenSource();
             Task.Run(RestInitializer);
         }
 
@@ -631,7 +631,7 @@ namespace ProjApp.ViewModel
             MyUser.user.UserPin.Icon = MyUser.user.UserIcon;
 
             cancellationTokenSource.Cancel();
-            MyUser.SEND_POSITION = false;
+            MyUser.CancelPositionRequest();
 
             //aggiungere te stesso all evento giusto
             switch (eventoDiGioco)
