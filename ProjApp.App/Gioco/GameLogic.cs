@@ -16,13 +16,13 @@ namespace ProjApp.Gioco
     public static class GameLogic
     {
         //costanti
-        public const double DISTANZA_AVVISO = 50;
-        public const double DISTANZA_INSEGUIMENTO = 30;
+        public const double DISTANZA_AVVISO = 40;
+        public const double DISTANZA_INSEGUIMENTO = 25;
         public const double DISTANZA_CATTURA = 8;
 
         private const long TICS_PER_SECOND = 10000000;
 
-        public const int DELAY_INIZIO_GIOCO = 5000;
+        public const int DELAY_INIZIO_GIOCO = 60000;
 
         public const int TEMPO_DI_GIOCO_MINUTI = 20;
 
