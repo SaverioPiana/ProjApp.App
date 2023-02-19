@@ -149,6 +149,7 @@ namespace ServerS
             lobby.NumGiocatoriPresi++;
             if (lobby.IsPartitaFinita())
             {
+                await Clients.Group(lid).SendAsync("ServerMessage", "FINEPARTITA");
                 await Clients.Group(lid).SendAsync("FinePartita");
             }
         }

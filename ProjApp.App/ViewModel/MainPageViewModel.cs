@@ -292,7 +292,7 @@ namespace ProjApp.ViewModel
 
             Task.Run(CreaAreaETana);
 
-            Task.Run(() => { Connessione.con.On("FinePartita", FinePartita); });
+            Task.Run(OnFinePartita);
         }
 
         public void CreaAreaETana()
@@ -495,7 +495,7 @@ namespace ProjApp.ViewModel
 
                 if (!cancellationTokenSource.IsCancellationRequested) cancellationTokenSource.Cancel();
 
-                if(serverRegistrations != null && serverRegistrations.Count > 0 ) 
+                if (serverRegistrations != null && serverRegistrations.Count > 0)
                 {
                     foreach (var subscription in serverRegistrations)
                     {
@@ -510,6 +510,16 @@ namespace ProjApp.ViewModel
                 cstimer.Cancel();
             }
         }
+
+        private async Task OnFinePartita()
+        {
+            Connessione.con.On("FinePartita", async() =>
+            {
+                await FinePartita();
+            });
+        }
+
+
         private double GetDistance(double longitude, double latitude, double otherLongitude, double otherLatitude)
         {
             var d1 = latitude * (Math.PI / 180.0);
@@ -600,7 +610,6 @@ namespace ProjApp.ViewModel
 
             if (GetDistance(mylongitude, mylatitude, tanalongitude, tanalatitude) <= Tana.RADIUS_TANA)
             {
-                MyUser.user.IsSalvo = true;
                 //smetti di inviare posizione e cambia icona e diventa invulnerabile
                 EventoDiGioco(TANATO_ICON_FILENAME, EVENTO_TANATO);
             }
@@ -655,6 +664,7 @@ namespace ProjApp.ViewModel
                 }
                 case (EVENTO_TANATO):
                 {
+                    MyUser.user.IsSalvo = true;
                     await Connessione.con.InvokeAsync("GiocatoreTanato", MyUser.currPartita.Cod_partita);
                     await ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_TANATO);
                     break;
