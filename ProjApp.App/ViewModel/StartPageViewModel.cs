@@ -56,7 +56,7 @@ namespace ProjApp.ViewModel
         [ObservableProperty]
         bool hasCopied = false;
         [ObservableProperty]
-        bool hasToNavigate = false;
+        bool cannotNavigate = true;
         [ObservableProperty]
         bool isCodiceVisible = false;
         [ObservableProperty, NotifyPropertyChangedFor(nameof(HasJoined))]
@@ -103,6 +103,7 @@ namespace ProjApp.ViewModel
                 HasCreated= false;
                 CanJoin = true;
                 IsCodiceVisible = false;
+                CannotNavigate= true;
             } else Application.Current.MainPage.DisplayAlert("Are u an hacker?",
                 "non puoi chiudere una partita se non sei l'admin, come hai clickato sto pulsante???",
                 "Non lo so sorry");
@@ -149,6 +150,7 @@ namespace ProjApp.ViewModel
                 MyUser.currPartita.LeaveLobby();
                 CanJoin = true;
                 IsCodiceVisible = false;
+                CannotNavigate = true;
             } 
             else Application.Current.MainPage.DisplayAlert("Are u an hacker?",
                 "non puoi lasciare una lobby se non sei in una lobby, come hai clickato sto pulsante???",
@@ -193,24 +195,26 @@ namespace ProjApp.ViewModel
                     break;
 
                 case (NAVIGATE_TO_MAIN_PAGE):
-                    if(!HasToNavigate)
+                    if(CannotNavigate)
                     {
-                        HasToNavigate = true;
+                        CannotNavigate = false;
                     }
                     break;
             };
         }
 
+        int i = 0;
         public async Task WaitToNavigate()
         {
-            while(!HasToNavigate)
+            i++;
+            while(CannotNavigate)
             {
                 await Task.Delay(500);
             }
             bool g = MainThread.IsMainThread;
             await AppShell.Current.GoToAsync(nameof(MainPage), false);
             Codice = string.Empty;
-            HasToNavigate = false;
+            CannotNavigate = true;
         }
         ////////////////////////////////////////////////////////////////////////
     }
