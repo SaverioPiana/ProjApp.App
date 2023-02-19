@@ -69,7 +69,7 @@ namespace ProjApp.Gioco
             position = posizione;
         }
 
-        private static List<string> GetIconsFromImages()
+        public static List<string> GetIconsFromImages()
         {
             List<string> icons = new();
             foreach(string resource in Assembly.GetExecutingAssembly().GetManifestResourceNames())

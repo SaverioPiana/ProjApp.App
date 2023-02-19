@@ -58,9 +58,9 @@ namespace ServerS
             lobby.ConnectedClients.Add(clientId);
             await Groups.AddToGroupAsync(clientId, lobbyId);
 
-            string mess = $"{clientId} joined {lobbyId}";
-            await Clients.Caller.SendAsync("ServerMessage", "SEI TU --->");
-            await Clients.Group(lobbyId).SendAsync("ServerMessage", mess);
+            //string mess = $"{clientId} joined {lobbyId}";
+            //await Clients.Caller.SendAsync("ServerMessage", "SEI TU --->");
+            //await Clients.Group(lobbyId).SendAsync("ServerMessage", mess);
             //se ci sei solo tu non serve
             if (lobby.ConnectedClients.Count > 1)
             {
@@ -79,7 +79,7 @@ namespace ServerS
             await Clients.OthersInGroup(lobbyId).SendAsync("RiceviOggettiDiGioco",
                 arg1: area,
                 arg2: tana);
-            await Clients.Group(lobbyId).SendAsync("ServerMessage", "OGGETTI DI GIOCO INVIATI");
+            //await Clients.Group(lobbyId).SendAsync("ServerMessage", "OGGETTI DI GIOCO INVIATI");
 
         } 
         public async Task LeaveLobby(string lobbyId, string uid)
@@ -110,10 +110,10 @@ namespace ServerS
             // find the lobby with the specified ID
             var lobby = lobbies[lobbyId];
             lobby.IsStarted = true;
-            foreach (string s in lobby.ConnectedClients){
-                string mess = $"Giocatore :({s}) nella lobby : ({lobbyId})";
-                await Clients.Group(lobbyId).SendAsync("ServerMessage", mess);
-            }
+            //foreach (string s in lobby.ConnectedClients){
+              //  string mess = $"Giocatore :({s}) nella lobby : ({lobbyId})";
+               // await Clients.Group(lobbyId).SendAsync("ServerMessage", mess);
+            //}
             int num_clients = lobby.ConnectedClients.Count();
             int num_cacciatori = num_clients / 3;
             Random random = new Random();

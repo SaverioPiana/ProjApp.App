@@ -18,7 +18,7 @@ namespace ProjApp.Gioco
         //costanti
         public const double DISTANZA_AVVISO = 50;
         public const double DISTANZA_INSEGUIMENTO = 30;
-        public const double DISTANZA_CATTURA = 5;
+        public const double DISTANZA_CATTURA = 8;
 
         private const long TICS_PER_SECOND = 10000000;
 
@@ -159,7 +159,6 @@ namespace ProjApp.Gioco
                     //se non sei il cacciatore ti marchi come preso
                     if (!MyUser.user.IsCercatore && !MyUser.user.IsPreso)
                     {
-                        MyUser.user.IsPreso = true;
                         MainPageViewModel.EventoDiGioco(MainPageViewModel.DEAD_ICON_FILENAME, MainPageViewModel.EVENTO_CATTURA);
                     }
                     //se sei il cercatore aggiungi laltro user alla lista dei tuoi presi

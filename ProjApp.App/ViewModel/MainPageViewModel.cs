@@ -169,6 +169,10 @@ namespace ProjApp.ViewModel
 
             MyUser.currPartita.DisposeServerRegistrations();
 
+            //resetto l'icona
+            MyUser.user.UserIcon = MainPageViewModel.ReadResource(User.GetIconsFromImages().ToArray()[new Random().Next(0, 3)]);
+            MyUser.user.UserPin.Icon = MyUser.user.UserIcon;
+
             Task.Delay(50).Wait();
 
             MyUser.currPartita = new();
@@ -251,7 +255,7 @@ namespace ProjApp.ViewModel
             }
 
             cancellationTokenSource = new CancellationTokenSource();
-            Task.Run(RestInitializer, cancellationTokenSource.Token);
+            Task.Run(RestInitializer);
         }
 
 
@@ -666,6 +670,7 @@ namespace ProjApp.ViewModel
             {
                 case (EVENTO_CATTURA):
                 {
+                    MyUser.user.IsPreso = true;
                     numGiocatoriPresi++;
                     break;
                 }
@@ -675,8 +680,8 @@ namespace ProjApp.ViewModel
                     numGiocatoriTanati++;
                     break;
                 }
-            }          
-
+            }
+            
             await MyUser.inviaPosOneLastTime();
 
             cancellationTokenSource.Cancel();

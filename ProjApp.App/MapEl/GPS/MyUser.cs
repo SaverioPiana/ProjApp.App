@@ -30,6 +30,7 @@ namespace ProjApp.MapEl.GPS
 
         //SignalR Parametri
         public readonly static int SEND_POS_DELAY = 3000;
+        public readonly static int FIND_POS_DELAY = 500;
         public static bool SEND_POSITION = false;
 
         //IL NICKNAME DOVRA METTERLO L UTENTE CON UNA BOX
@@ -89,12 +90,12 @@ namespace ProjApp.MapEl.GPS
                     Console.WriteLine($"GET_POSITION::: Accuracy: {location.Accuracy} Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
                 } else {
                     consecutiveChecks++;
-                    if (consecutiveChecks >= 5)
+                    if (consecutiveChecks >= 15)
                     {
                         MainThread.BeginInvokeOnMainThread(() =>
                         {
                             Microsoft.Maui.Controls.Application.Current.MainPage.DisplayAlert("Ao? 🤔",
-                            "Pare che il tuo GPS prenda molto male",
+                            "Pare che il tuo GPS prenda molto male, prova ad appicciare il wi-fi",
                             "Prometto di uscire dal bunker");
                         });
                         consecutiveChecks = 0;
