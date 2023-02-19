@@ -345,7 +345,7 @@ namespace ProjApp.ViewModel
                             await ApriTendinaAvviso(GameLogic.APERTURA_TENDINA_AVVISI, AVVISO_RUOLO);
                             //avvio il countdown pre hunting
                             bool ciao = MainThread.IsMainThread;
-                            await StartCountdown(((double)GameLogic.DELAY_INIZIO_GIOCO / 1000) / 60);
+                            Task.Run(async ()=>await StartCountdown(((double)GameLogic.DELAY_INIZIO_GIOCO / 1000) / 60));
                             //avvio il countdown della partita in minuti
                         });
                     })
