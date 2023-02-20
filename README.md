@@ -1,4 +1,4 @@
-# ProjApp
+# BUDDY HUNT
 
 Progetto in MAUI per esame di MobileComputing presso RomaTre
 
