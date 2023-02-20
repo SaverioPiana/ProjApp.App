@@ -168,7 +168,6 @@ namespace ProjApp.Gioco
                         MyUser.user.NicknameGiocatoriPresi.Add(receivedUser.Nickname);
                         await MainPageViewModel.ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_CATTURA);
                     }
-                    
                 }
             }
             else
