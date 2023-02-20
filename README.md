@@ -2,7 +2,7 @@
 
 Progetto in MAUI per esame di MobileComputing presso RomaTre
 
-TO ABSOLUTELY DO :
+TO ABSOLUTELY DO(nel senso che sarebbe bello):
 
 - Tana libera tutti è un POWER UP che appare o a caso o se rimagono pochi hiders, ed è piu o meno lontano dalla tana, cosi che entrambe le squadre possono decidere tatticamnete dove andare. Uso: se ti tani con il power up equipaggiato liberi tutti e vincono a prescindere gli hiders
 
@@ -38,7 +38,7 @@ Miglioramenti/Problemini:
 
 - forse bisognerebbe interpolare il myuserpin, va un po a scatti
 
-- togliere i task delay 
+- togliere i task delay (ci siamo dai ...)
 
 - vediamo se aggiungere un tema musicale per il menu
 
