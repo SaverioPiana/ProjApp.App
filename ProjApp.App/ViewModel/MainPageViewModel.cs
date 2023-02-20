@@ -490,6 +490,7 @@ namespace ProjApp.ViewModel
         {
             if (!HasLeft)
             {
+                await Task.Delay(5000);
                 Console.WriteLine($"sono stati presi:{numGiocatoriPresi} e {numGiocatoriTanati} giocatori si sono salvati");
 
                 if (!cancellationTokenSource.IsCancellationRequested) cancellationTokenSource.Cancel();
@@ -502,7 +503,6 @@ namespace ProjApp.ViewModel
                     }
                 }
 
-                await Task.Delay(5000);
 
                 await ApriTendinaAvviso(APERTURA_TENDINA_AVVISI, AVVISO_MATCH_OVER);
 
@@ -514,7 +514,7 @@ namespace ProjApp.ViewModel
         {
             Connessione.con.On("FinePartita", async() =>
             {
-                await FinePartita();
+                Task.Run(async () => await FinePartita());
             });
         }
 
@@ -610,7 +610,7 @@ namespace ProjApp.ViewModel
             if (GetDistance(mylongitude, mylatitude, tanalongitude, tanalatitude) <= Tana.RADIUS_TANA)
             {
                 //smetti di inviare posizione e cambia icona e diventa invulnerabile
-                EventoDiGioco(TANATO_ICON_FILENAME, EVENTO_TANATO);
+                Task.Run(async()=> await EventoDiGioco(TANATO_ICON_FILENAME, EVENTO_TANATO));
             }
         }
 
@@ -644,7 +644,7 @@ namespace ProjApp.ViewModel
         }
 
 
-        public static async void EventoDiGioco(string iconfilename, string eventoDiGioco)
+        public static async Task EventoDiGioco(string iconfilename, string eventoDiGioco)
         {
             //ultimo invio a tutti con icona morto/tanato e isPreso/isSalvo = true
             MyUser.user.UserIcon = ReadResource(iconfilename);

@@ -80,7 +80,7 @@ namespace ProjApp.MapEl.GPS
 
                 Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
 
-                if (location != null && location.Accuracy < 50)
+                if (location != null && location.Accuracy < 30)
                 {
                     consecutiveChecks = 0;
                     user.Position = location;
