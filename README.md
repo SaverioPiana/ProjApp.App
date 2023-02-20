@@ -32,6 +32,7 @@ To Do:
 - ------------------------------------- ^COSE FATTE SOPRA^
 
 Miglioramenti/Problemini:
+- Va fixato il codice negli ultimi giorni che e' stato un po rushato (a volte crasha e da problemi nelle partite successive alla prima)
 
 - Loffset dei pin del draw area non e' centrato
 
